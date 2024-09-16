@@ -111,7 +111,7 @@
                 android:fontFamily="sans-serif-medium"
                 android:hint="@string/add_expense_name"
                 android:inputType="text"
-                android:text="@{viewModel.expenseName}"
+                android:text="@={viewModel.expenseName}"
                 android:textAlignment="center"
                 android:textSize="24sp"
                 app:layout_constraintLeft_toLeftOf="parent"

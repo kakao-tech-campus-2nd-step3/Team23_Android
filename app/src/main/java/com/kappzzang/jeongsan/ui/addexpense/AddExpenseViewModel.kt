@@ -1,5 +1,6 @@
 package com.kappzzang.jeongsan.ui.addexpense
 
+import androidx.databinding.Bindable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -35,14 +36,13 @@ class AddExpenseViewModel : ViewModel() {
     }
 
     private val _manualMode = MutableStateFlow(true)
-    private val _expenseName = MutableStateFlow("Demo")
     private val _uploadedImage = MutableStateFlow(false)
 
 
     val manualMode: StateFlow<Boolean> = _manualMode.asStateFlow()
     val uploadedImage: StateFlow<Boolean> = _uploadedImage.asStateFlow()
     val expenseItemList: StateFlow<List<ExpenseItemInput>> = _expenseItemList.asStateFlow()
-    val expenseName: StateFlow<String> = _expenseName.asStateFlow()
+    val expenseName = MutableStateFlow("Demo")
 
     fun setManualMode(mode: ManualMode) {
         viewModelScope.launch(Dispatchers.Main) {
