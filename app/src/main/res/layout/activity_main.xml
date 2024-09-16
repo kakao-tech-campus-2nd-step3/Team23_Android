@@ -1,19 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     tools:context=".ui.main.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/profileImage_imageView"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_margin="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/userName_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/profileImage_imageView"
+            app:layout_constraintStart_toEndOf="@id/profileImage_imageView"
+            app:layout_constraintTop_toTopOf="@id/profileImage_imageView"
+            tools:text="라이언" />
+
+        <TextView
+            android:id="@+id/userNameSuffix_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/main_userNameSuffix"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/userName_textView"
+            app:layout_constraintStart_toEndOf="@id/userName_textView"
+            app:layout_constraintTop_toTopOf="@id/userName_textView" />
+
+        <!-- TODO: 진행중인 모임과 완료된 모임을 나타낼 방법 고안하기
+        일단은 각 모임의 header item을 만들어 둬서, 구분하는 방식으로 구현 -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/groupList_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="16dp"
+            app:layout_constraintBottom_toTopOf="@id/createGroup_button"
+            app:layout_constraintTop_toBottomOf="@id/userNameSuffix_textView"
+            tools:listitem="@layout/item_main_group" />
+
+        <Button
+            android:id="@+id/createGroup_button"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_margin="24dp"
+            android:background="@drawable/main_create_group_button"
+            android:text="@string/main_createGroup"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

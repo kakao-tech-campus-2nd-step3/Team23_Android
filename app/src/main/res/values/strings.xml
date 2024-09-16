@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Jeongsan</string>
+
+    <!-- 메인 페이지 -->
+    <string name="main_userNameSuffix">님</string>
+    <string name="main_createGroup">그룹 만들기</string>
+    <string name="main_progressGroup">진행중인 모임</string>
+    <string name="main_doneGroup">완료된 모임</string>
 </resources>
