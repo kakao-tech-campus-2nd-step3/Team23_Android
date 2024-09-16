@@ -20,11 +20,11 @@ fun attachList(recyclerView: RecyclerView, items: StateFlow<List<ExpenseItemInpu
     }
 }
 
-object BindingAdapter{
+object BindingAdapter {
     @BindingAdapter("stringText")
     @JvmStatic
-    fun setTextValue(view: EditText, value: String?){
-        if(value == null){
+    fun setTextValue(view: EditText, value: String?) {
+        if (value == null) {
             view.setText("")
             return
         }
@@ -33,9 +33,9 @@ object BindingAdapter{
 
     @InverseBindingAdapter(attribute = "stringText")
     @JvmStatic
-    fun getTextValue(view: EditText):String? {
+    fun getTextValue(view: EditText): String? {
         val parsedString = view.text.toString()
-        if(parsedString.isBlank()){
+        if (parsedString.isBlank()) {
             return null
         }
         return parsedString
@@ -43,8 +43,8 @@ object BindingAdapter{
 
     @BindingAdapter("integerText")
     @JvmStatic
-    fun setIntegerValue(view: EditText, value: Int?){
-        if(value == null){
+    fun setIntegerValue(view: EditText, value: Int?) {
+        if (value == null) {
             view.setText("")
             return
         }
@@ -59,15 +59,15 @@ object BindingAdapter{
 
     @BindingAdapter("integerTextAttrChanged")
     @JvmStatic
-    fun setIntegerTextListener(view:EditText, listener:InverseBindingListener){
-        view.addTextChangedListener{
+    fun setIntegerTextListener(view: EditText, listener: InverseBindingListener) {
+        view.addTextChangedListener {
             listener.onChange()
         }
     }
 
     @BindingAdapter("stringTextAttrChanged")
     @JvmStatic
-    fun setStringTextListener(view:EditText, listener:InverseBindingListener){
+    fun setStringTextListener(view: EditText, listener: InverseBindingListener) {
         view.addTextChangedListener {
             listener.onChange()
         }
@@ -76,14 +76,18 @@ object BindingAdapter{
 
 class AddExpenseActivity : AppCompatActivity() {
     private val viewModel: AddExpenseViewModel by viewModels()
-    private val binding: ActivityAddExpenseBinding by lazy {ActivityAddExpenseBinding.inflate(layoutInflater)}
+    private val binding: ActivityAddExpenseBinding by lazy {
+        ActivityAddExpenseBinding.inflate(
+            layoutInflater
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        if(savedInstanceState == null){
+        if (savedInstanceState == null) {
             initiateViewModel()
         }
 
@@ -91,12 +95,11 @@ class AddExpenseActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
-    private fun initiateViewModel(){
+    private fun initiateViewModel() {
         val expenseMode = intent.extras?.getString(INTENT_EXPENSE_MODE)
-        if(expenseMode == EXPENSE_MODE_MANUAL){
+        if (expenseMode == EXPENSE_MODE_MANUAL) {
             viewModel.setManualMode(AddExpenseViewModel.Companion.ManualMode.MANUAL)
-        }
-        else if(expenseMode == EXPENSE_MODE_RECEIPT){
+        } else if (expenseMode == EXPENSE_MODE_RECEIPT) {
             viewModel.setManualMode(AddExpenseViewModel.Companion.ManualMode.RECEIPT)
             viewModel.initiateDemoData()
         }

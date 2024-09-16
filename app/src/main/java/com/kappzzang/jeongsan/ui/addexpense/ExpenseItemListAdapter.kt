@@ -10,10 +10,16 @@ import com.kappzzang.jeongsan.databinding.ItemExpenseItemBinding
 class ExpenseItemListAdapter :
     ListAdapter<ExpenseItemInput, ExpenseItemListAdapter.ExpenseItemViewHolder>(object :
         DiffUtil.ItemCallback<ExpenseItemInput>() {
-        override fun areItemsTheSame(oldItem: ExpenseItemInput, newItem: ExpenseItemInput): Boolean =
+        override fun areItemsTheSame(
+            oldItem: ExpenseItemInput,
+            newItem: ExpenseItemInput
+        ): Boolean =
             oldItem === newItem
 
-        override fun areContentsTheSame(oldItem: ExpenseItemInput, newItem: ExpenseItemInput): Boolean =
+        override fun areContentsTheSame(
+            oldItem: ExpenseItemInput,
+            newItem: ExpenseItemInput
+        ): Boolean =
             oldItem == newItem
     }) {
     class ExpenseItemViewHolder(

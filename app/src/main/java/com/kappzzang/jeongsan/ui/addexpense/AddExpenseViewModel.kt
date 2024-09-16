@@ -9,9 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 private fun createDemoItem(index: Int): ExpenseItemInput = ExpenseItemInput(
-    itemName = "item $index",
-    itemPrice = 100 * index,
-    itemQuantity = index % 4 + 1
+    itemName = "item $index", itemPrice = 100 * index, itemQuantity = index % 4 + 1
 )
 
 private fun createDemoList(): List<ExpenseItemInput> = listOf(

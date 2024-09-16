@@ -20,7 +20,7 @@ fun attachList(recyclerView: RecyclerView, items: StateFlow<List<ExpenseDetailIt
 
 @BindingAdapter("app:detail_selection")
 fun attachList(view: AutoCompleteTextView, position: Int) {
-    if(position < 0 || position >= view.adapter.count){
+    if (position < 0 || position >= view.adapter.count) {
         view.setText("0", false)
         return
     }
@@ -46,15 +46,16 @@ class ExpenseDetailActivity : AppCompatActivity() {
     }
 
     private fun initiateRecyclerView() {
-        binding.expenseDetailItemListRecyclerview.adapter = ExpenseDetailItemListAdapter(this, object:ExpenseDetailCallback{
-            override fun onCheckedChange(enable: Boolean, index: Int) {
-                viewModel.updateItemCheck(enable, index)
-            }
+        binding.expenseDetailItemListRecyclerview.adapter =
+            ExpenseDetailItemListAdapter(this, object : ExpenseDetailCallback {
+                override fun onCheckedChange(enable: Boolean, index: Int) {
+                    viewModel.updateItemCheck(enable, index)
+                }
 
-            override fun onSelectedQuantityChanged(quantity: Int, index: Int) {
-                viewModel.updateSelectedQuantity(quantity, index)
-            }
-        })
+                override fun onSelectedQuantityChanged(quantity: Int, index: Int) {
+                    viewModel.updateSelectedQuantity(quantity, index)
+                }
+            })
         binding.expenseDetailItemListRecyclerview.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }

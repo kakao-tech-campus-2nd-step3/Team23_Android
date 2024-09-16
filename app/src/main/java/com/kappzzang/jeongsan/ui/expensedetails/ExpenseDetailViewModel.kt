@@ -52,8 +52,8 @@ class ExpenseDetailViewModel : ViewModel() {
     val expenseName: StateFlow<String> = _expenseName.asStateFlow()
 
     private fun itemWithEnabled(item: ExpenseDetailItem, enabled: Boolean): ExpenseDetailItem {
-        if(enabled){
-            return if(item.selectedQuantity>0)
+        if (enabled) {
+            return if (item.selectedQuantity > 0)
                 item
             else ExpenseDetailItem(
                 id = item.id,
@@ -62,9 +62,8 @@ class ExpenseDetailViewModel : ViewModel() {
                 itemPrice = item.itemPrice,
                 selectedQuantity = 1
             )
-        }
-        else{
-            return if(item.selectedQuantity == 0)
+        } else {
+            return if (item.selectedQuantity == 0)
                 item
             else ExpenseDetailItem(
                 id = item.id,
@@ -87,7 +86,7 @@ class ExpenseDetailViewModel : ViewModel() {
     }
 
     fun updateItemCheck(checked: Boolean, index: Int) {
-        if(index < 0 || index >= _expenseItemList.value.count()){
+        if (index < 0 || index >= _expenseItemList.value.count()) {
             Log.e("Jeongsan", "Invalid index")
             return
         }
@@ -102,7 +101,7 @@ class ExpenseDetailViewModel : ViewModel() {
     }
 
     fun updateSelectedQuantity(quantity: Int, index: Int) {
-        if(index < 0 || index >= _expenseItemList.value.count()){
+        if (index < 0 || index >= _expenseItemList.value.count()) {
             Log.e("Jeongsan", "Invalid index")
             return
         }
