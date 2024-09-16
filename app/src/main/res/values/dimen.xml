@@ -9,4 +9,10 @@
     <dimen name="all_bottom_button_margin_bottom"> 22dp </dimen>>
     <dimen name="all_bottom_button_margin_horizontal"> 24dp </dimen>
     <dimen name="all_bottom_button_text_size"> 20sp </dimen>
+
+    <!-- 영수증 추가 -->
+    <dimen name="add_expense_item_name_bias"> 0.45 </dimen>
+    <dimen name="add_expense_item_price_bias"> 0.2 </dimen>
+    <dimen name="add_expense_item_quantity_bias"> 0.12 </dimen>
+    <dimen name="add_expense_item_button_size"> 30dp </dimen>
 </resources>
