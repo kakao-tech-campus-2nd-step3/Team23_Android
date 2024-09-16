@@ -14,4 +14,9 @@
     <string name="item_expense_price">단가</string>
     <string name="item_expense_quantity">수량</string>
     <string name="item_expense_selected_quantity">선택 수량</string>
+
+    <!-- 지출 상세 내역 -->
+    <string name="expense_detail_header">지출 상세 내역</string>
+    <string name="expense_detail_description">지출 내용이에요.\n내가 구매한 상품을 선택하세요!</string>
+    <string name="expense_detail_submit">선택 완료</string>
 </resources>

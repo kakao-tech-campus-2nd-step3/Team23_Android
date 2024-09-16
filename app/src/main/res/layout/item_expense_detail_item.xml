@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="itemCallback"
+            type="com.kappzzang.jeongsan.ui.expensedetails.ExpenseDetailItemCallback" />
+
+        <variable
+            name="isPlaceholder"
+            type="Boolean" />
+
+        <variable
+            name="viewHolder"
+            type="com.kappzzang.jeongsan.ui.expensedetails.ExpenseDetailItemListAdapter.ExpenseDetailItemViewHolder" />
+
+        <variable
+            name="item"
+            type="com.kappzzang.jeongsan.domain.model.ExpenseDetailItem" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:paddingHorizontal="10dp"
+        android:paddingBottom="10dp">
+
+        <CheckBox
+            android:id="@+id/expense_enable_checkbox"
+            android:layout_width="@dimen/expense_detail_checkbox_width"
+            android:layout_height="0dp"
+            android:checked="@{item.selectedQuantity>0}"
+            android:onCheckedChanged="@{itemCallback.onCheckedChange}"
+            app:buttonTint="#49454F"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/expense_name_textview"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/expense_name_textview"
+            style="@style/ExpenseDetailText"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="@{item.itemName}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/expense_enable_checkbox"
+            app:layout_constraintRight_toLeftOf="@id/expense_price_textview"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="@dimen/expense_detail_item_name_bias" />
+
+        <TextView
+            android:id="@+id/expense_price_textview"
+            style="@style/ExpenseDetailText"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="@{String.valueOf(item.itemPrice)}"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/expense_name_textview"
+            app:layout_constraintRight_toLeftOf="@id/expense_quantity_textview"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="@dimen/expense_detail_item_price_bias" />
+
+        <TextView
+            android:id="@+id/expense_quantity_textview"
+            style="@style/ExpenseDetailText"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="@{String.valueOf(item.itemQuantity)}"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/expense_price_textview"
+            app:layout_constraintRight_toLeftOf="@id/expense_selected_quantity"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="@dimen/expense_detail_item_quantity_bias" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/expense_selected_quantity"
+            style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginVertical="8dp"
+            android:enabled="@{item.selectedQuantity>0}"
+            android:paddingHorizontal="0dp"
+            app:boxBackgroundColor="@color/white"
+            app:endIconMinSize="24dp"
+            app:endIconScaleType="fitEnd"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="@dimen/expense_detail_item_selected_quantity_bias">
+
+            <AutoCompleteTextView
+                android:id="@+id/auto_complete_textview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="0dp"
+                android:afterTextChanged="@{itemCallback.onSelectedQuantityChanged}"
+                android:inputType="none"
+                android:padding="0dp"
+                android:textSize="12sp"
+                app:detail_selection="@{item.selectedQuantity}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

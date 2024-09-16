@@ -15,4 +15,11 @@
     <dimen name="add_expense_item_price_bias"> 0.2 </dimen>
     <dimen name="add_expense_item_quantity_bias"> 0.12 </dimen>
     <dimen name="add_expense_item_button_size"> 30dp </dimen>
+
+    <!-- 지출 상세 내역 -->
+    <dimen name="expense_detail_checkbox_width"> 30dp </dimen>
+    <dimen name="expense_detail_item_name_bias"> 0.3 </dimen>
+    <dimen name="expense_detail_item_price_bias"> 0.15 </dimen>
+    <dimen name="expense_detail_item_quantity_bias"> 0.12 </dimen>
+    <dimen name="expense_detail_item_selected_quantity_bias"> 0.2 </dimen>
 </resources>

@@ -25,6 +25,9 @@
         <activity
             android:name=".ui.addexpense.AddExpenseActivity"
             android:exported="true" />
+        <activity
+            android:name=".ui.expensedetails.ExpenseDetailActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
