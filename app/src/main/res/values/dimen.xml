@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="all_header_text_size"> 25sp </dimen>
+    <dimen name="all_header_margin"> 27dp </dimen>
+    <dimen name="all_description_text_size"> 13sp </dimen>
+    <dimen name="all_container_corner_radius"> 15dp </dimen>
+    <dimen name="all_container_elevation"> 3dp </dimen>
+
+    <dimen name="all_bottom_button_margin_bottom"> 22dp </dimen>>
+    <dimen name="all_bottom_button_margin_horizontal"> 24dp </dimen>
+    <dimen name="all_bottom_button_text_size"> 20sp </dimen>
+</resources>
