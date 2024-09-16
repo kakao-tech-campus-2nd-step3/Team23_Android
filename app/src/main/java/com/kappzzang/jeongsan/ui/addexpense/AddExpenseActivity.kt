@@ -87,18 +87,23 @@ class AddExpenseActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
-    private fun initiateViewModel() {
+    private fun checkIfReceiptMode(): Boolean {
         val expenseMode = intent.extras?.getString(INTENT_EXPENSE_MODE)
-        if (expenseMode == EXPENSE_MODE_MANUAL) {
-            viewModel.setManualMode(AddExpenseViewModel.Companion.ManualMode.MANUAL)
-        } else if (expenseMode == EXPENSE_MODE_RECEIPT) {
+
+        return expenseMode == EXPENSE_MODE_RECEIPT
+    }
+
+    private fun initiateViewModel() {
+        if (checkIfReceiptMode()) {
             viewModel.setManualMode(AddExpenseViewModel.Companion.ManualMode.RECEIPT)
             viewModel.initiateDemoData()
+        }
+        else {
+            viewModel.setManualMode(AddExpenseViewModel.Companion.ManualMode.MANUAL)
         }
     }
 
     private fun initiateRecyclerView() {
-
         with(binding.addexpenseItemListRecyclerview) {
             adapter = ExpenseItemListAdapter()
             layoutManager =
