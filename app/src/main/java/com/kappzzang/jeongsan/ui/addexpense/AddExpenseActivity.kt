@@ -24,11 +24,7 @@ object BindingAdapter {
     @BindingAdapter("stringText")
     @JvmStatic
     fun setTextValue(view: EditText, value: String?) {
-        if (value == null) {
-            view.setText("")
-            return
-        }
-        view.setText(value)
+        view.setText(value?:"")
     }
 
     @InverseBindingAdapter(attribute = "stringText")
@@ -44,11 +40,7 @@ object BindingAdapter {
     @BindingAdapter("integerText")
     @JvmStatic
     fun setIntegerValue(view: EditText, value: Int?) {
-        if (value == null) {
-            view.setText("")
-            return
-        }
-        view.setText(value.toString())
+        view.setText(value?.toString()?:"")
     }
 
     @InverseBindingAdapter(attribute = "integerText")
