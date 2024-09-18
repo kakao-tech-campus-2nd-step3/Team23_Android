@@ -2,7 +2,7 @@ name: Caching After Merge
 
 on:
   push:
-    branches: [ "Master", "Develop" "Weekly/*" ]
+    branches: [ 'Master', 'Develop', 'Weekly/*' ]
 
 jobs:
   build_cache:
