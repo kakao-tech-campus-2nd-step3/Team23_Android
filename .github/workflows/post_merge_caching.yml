@@ -1,0 +1,67 @@
+name: Caching After Merge
+
+on:
+  push:
+    branches: [ "Master", "Develop" "Weekly/*" ]
+
+jobs:
+  build_cache:
+    name: Build and Create Cache
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        api-level: [ 29 ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+        # JDK 17 설정
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Gradle Caching
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+        # Gradle 스크립트 실행을 위한 권한 설정
+      - name: Grant Execute Permission for Gradlew
+        run: chmod +x gradlew
+
+      - name: AVD cache
+        # Weekly 브랜치에서는 AVD 캐싱 생략
+        if: !contains( github.ref, 'refs/heads/Weekly' )
+        uses: actions/cache@v4
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-${{ matrix.api-level }}
+
+        # AVD 캐시미스 발생 시 캐싱을 위한 AVD 스냅샷 생성
+      - name: Create AVD and generate snapshot for caching
+        # Weekly 브랜치에서는 스냅샷 생성 생략
+        if: steps.avd-cache.outputs.cache-hit != 'true' && !contains( github.ref, 'refs/heads/Weekly' )
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level }}
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: false
+          profile: Nexus 6
+          script: echo "Generated AVD snapshot for caching."
+
+        # Gradle 빌드
+      - name: Build
+        if: success() || failure()
+        run: ./gradlew build --no-daemon
