@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.kappzzang.jeongsan.ui.expensedetails.ExpenseDetailViewModel" />
+            type="com.kappzzang.jeongsan.ui.expensedetail.ExpenseDetailViewModel" />
 
     </data>
 
@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        tools:context=".ui.expensedetails.ExpenseDetailActivity">
+        tools:context=".ui.expensedetail.ExpenseDetailActivity">
 
         <TextView
             android:id="@+id/expense_detail_header_textview"

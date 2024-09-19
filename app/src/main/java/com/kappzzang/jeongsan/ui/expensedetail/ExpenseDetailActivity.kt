@@ -1,4 +1,4 @@
-package com.kappzzang.jeongsan.ui.expensedetails
+package com.kappzzang.jeongsan.ui.expensedetail
 
 import android.os.Bundle
 import android.widget.AutoCompleteTextView

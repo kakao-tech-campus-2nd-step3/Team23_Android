@@ -6,7 +6,7 @@
 
         <variable
             name="itemCallback"
-            type="com.kappzzang.jeongsan.ui.expensedetails.ExpenseDetailItemCallback" />
+            type="com.kappzzang.jeongsan.ui.expensedetail.ExpenseDetailItemCallback" />
 
         <variable
             name="isPlaceholder"
@@ -14,7 +14,7 @@
 
         <variable
             name="viewHolder"
-            type="com.kappzzang.jeongsan.ui.expensedetails.ExpenseDetailItemListAdapter.ExpenseDetailItemViewHolder" />
+            type="com.kappzzang.jeongsan.ui.expensedetail.ExpenseDetailItemListAdapter.ExpenseDetailItemViewHolder" />
 
         <variable
             name="item"
