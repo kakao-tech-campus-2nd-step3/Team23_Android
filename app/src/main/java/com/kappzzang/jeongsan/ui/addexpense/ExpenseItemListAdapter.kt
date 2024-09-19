@@ -8,22 +8,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kappzzang.jeongsan.databinding.ItemExpenseItemBinding
 
 class ExpenseItemListAdapter :
-    ListAdapter<ExpenseItemInput, ExpenseItemListAdapter.ExpenseItemViewHolder>(object :
-        DiffUtil.ItemCallback<ExpenseItemInput>() {
-        override fun areItemsTheSame(
-            oldItem: ExpenseItemInput,
-            newItem: ExpenseItemInput
-        ): Boolean =
-            oldItem === newItem
+    ListAdapter<ExpenseItemInput, ExpenseItemListAdapter.ExpenseItemViewHolder>(
+        object :
+            DiffUtil.ItemCallback<ExpenseItemInput>() {
+            override fun areItemsTheSame(
+                oldItem: ExpenseItemInput,
+                newItem: ExpenseItemInput,
+            ): Boolean = oldItem === newItem
 
-        override fun areContentsTheSame(
-            oldItem: ExpenseItemInput,
-            newItem: ExpenseItemInput
-        ): Boolean =
-            oldItem == newItem
-    }) {
+            override fun areContentsTheSame(
+                oldItem: ExpenseItemInput,
+                newItem: ExpenseItemInput,
+            ): Boolean = oldItem == newItem
+        },
+    ) {
     class ExpenseItemViewHolder(
-        private val binding: ItemExpenseItemBinding
+        private val binding: ItemExpenseItemBinding,
     ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ExpenseItemInput) {
@@ -33,7 +33,10 @@ class ExpenseItemListAdapter :
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExpenseItemViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): ExpenseItemViewHolder {
         val viewHolderBinding =
             ItemExpenseItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         val viewHolder = ExpenseItemViewHolder(viewHolderBinding)
@@ -41,7 +44,10 @@ class ExpenseItemListAdapter :
         return viewHolder
     }
 
-    override fun onBindViewHolder(holder: ExpenseItemViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: ExpenseItemViewHolder,
+        position: Int,
+    ) {
         holder.bind(currentList[position])
     }
 }

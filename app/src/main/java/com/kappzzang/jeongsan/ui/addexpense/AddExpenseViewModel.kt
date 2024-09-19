@@ -1,6 +1,5 @@
 package com.kappzzang.jeongsan.ui.addexpense
 
-import androidx.databinding.Bindable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -9,35 +8,38 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-private fun createDemoItem(index: Int): ExpenseItemInput = ExpenseItemInput(
-    itemName = "item $index", itemPrice = 100 * index, itemQuantity = index % 4 + 1
-)
+private fun createDemoItem(index: Int): ExpenseItemInput =
+    ExpenseItemInput(
+        itemName = "item $index",
+        itemPrice = 100 * index,
+        itemQuantity = index % 4 + 1,
+    )
 
-private fun createDemoList(): List<ExpenseItemInput> = listOf(
-    createDemoItem(0),
-    createDemoItem(1),
-    createDemoItem(2),
-    createDemoItem(3),
-    createDemoItem(4),
-    createDemoItem(0),
-    createDemoItem(1),
-    createDemoItem(2),
-    createDemoItem(3),
-    createDemoItem(4),
-)
+private fun createDemoList(): List<ExpenseItemInput> =
+    listOf(
+        createDemoItem(0),
+        createDemoItem(1),
+        createDemoItem(2),
+        createDemoItem(3),
+        createDemoItem(4),
+        createDemoItem(0),
+        createDemoItem(1),
+        createDemoItem(2),
+        createDemoItem(3),
+        createDemoItem(4),
+    )
 
 class AddExpenseViewModel : ViewModel() {
     private val _expenseItemList by lazy {
         MutableStateFlow(
             listOf(
-                ExpenseItemInput(null, null, null)
-            )
+                ExpenseItemInput(null, null, null),
+            ),
         )
     }
 
     private val _manualMode = MutableStateFlow(true)
     private val _uploadedImage = MutableStateFlow(false)
-
 
     val manualMode: StateFlow<Boolean> = _manualMode.asStateFlow()
     val uploadedImage: StateFlow<Boolean> = _uploadedImage.asStateFlow()
@@ -63,7 +65,7 @@ class AddExpenseViewModel : ViewModel() {
 
     private suspend fun insertExpenseItemList(expenseItemList: List<ExpenseItemInput>) {
         _expenseItemList.emit(
-            expenseItemList + _expenseItemList.value
+            expenseItemList + _expenseItemList.value,
         )
     }
 

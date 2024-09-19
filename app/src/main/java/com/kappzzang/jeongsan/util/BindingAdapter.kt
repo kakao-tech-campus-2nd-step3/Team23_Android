@@ -9,8 +9,11 @@ import androidx.databinding.InverseBindingListener
 object BindingAdapter {
     @BindingAdapter("stringText")
     @JvmStatic
-    fun setTextValue(view: EditText, value: String?) {
-        view.setText(value?:"")
+    fun setTextValue(
+        view: EditText,
+        value: String?,
+    ) {
+        view.setText(value ?: "")
     }
 
     @InverseBindingAdapter(attribute = "stringText")
@@ -25,8 +28,11 @@ object BindingAdapter {
 
     @BindingAdapter("integerText")
     @JvmStatic
-    fun setIntegerValue(view: EditText, value: Int?) {
-        view.setText(value?.toString()?:"")
+    fun setIntegerValue(
+        view: EditText,
+        value: Int?,
+    ) {
+        view.setText(value?.toString() ?: "")
     }
 
     @InverseBindingAdapter(attribute = "integerText")
@@ -37,7 +43,10 @@ object BindingAdapter {
 
     @BindingAdapter("integerTextAttrChanged")
     @JvmStatic
-    fun setIntegerTextListener(view: EditText, listener: InverseBindingListener) {
+    fun setIntegerTextListener(
+        view: EditText,
+        listener: InverseBindingListener,
+    ) {
         view.addTextChangedListener {
             listener.onChange()
         }
@@ -45,7 +54,10 @@ object BindingAdapter {
 
     @BindingAdapter("stringTextAttrChanged")
     @JvmStatic
-    fun setStringTextListener(view: EditText, listener: InverseBindingListener) {
+    fun setStringTextListener(
+        view: EditText,
+        listener: InverseBindingListener,
+    ) {
         view.addTextChangedListener {
             listener.onChange()
         }
