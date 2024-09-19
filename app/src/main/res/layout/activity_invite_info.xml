@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    tools:context=".InviteInfoActivity">
+    tools:context=".ui.inviteinfo.InviteInfoActivity">
     <TextView
         android:id="@+id/page_title_textview"
         android:layout_width="wrap_content"
@@ -14,7 +14,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/close_imageview"
-        android:text="초대 현황"
+        android:text="@string/invite_info_title"
         android:textSize="20dp"
         android:textStyle="bold"
         />

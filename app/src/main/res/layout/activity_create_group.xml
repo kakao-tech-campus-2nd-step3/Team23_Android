@@ -8,14 +8,14 @@
     android:padding="30dp"
     android:clipToPadding="false"
     android:background="@color/background_base"
-    tools:context=".CreateGroupActivity">
+    tools:context=".ui.creategroup.CreateGroupActivity">
     <TextView
         android:id="@+id/page_title_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="모임 생성"
+        android:text="@string/create_group_title"
         android:textStyle="bold"
         android:textSize="30dp"
         />
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@id/page_title_textview"
         app:layout_constraintTop_toBottomOf="@id/page_title_textview"
-        android:text="모임에 친구를 추가해 보세요!"
+        android:text="@string/create_group_description"
         android:textStyle="bold"
         />
 
@@ -46,12 +46,12 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:text="이름"
+            android:text="@string/create_group_name_menu"
             android:textStyle="bold"
             android:textSize="20dp"
             />
         <EditText
-            android:id="@+id/group_name_content_edittext"
+            android:id="@+id/group_name_value_edittext"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/group_name_menu_textview"
@@ -59,7 +59,7 @@
             app:layout_constraintTop_toTopOf="@id/group_name_menu_textview"
             app:layout_constraintBottom_toBottomOf="@id/group_name_menu_textview"
             android:layout_marginStart="50dp"
-            android:hint="모임 이름"
+            android:hint="@string/create_group_name_value"
             android:background="@null"
             />
 
@@ -70,7 +70,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/group_name_menu_textview"
             android:layout_marginTop="30dp"
-            android:text="목적"
+            android:text="@string/create_group_category_menu"
             android:textStyle="bold"
             android:textSize="20dp"
             />
@@ -79,7 +79,7 @@
             android:id="@+id/group_category_content_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/group_name_content_edittext"
+            app:layout_constraintStart_toStartOf="@id/group_name_value_edittext"
             app:layout_constraintTop_toTopOf="@id/group_category_menu_textview"
             app:layout_constraintBottom_toBottomOf="@id/group_category_menu_textview"
             />
@@ -104,7 +104,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:text="멤버 추가"
+            android:text="@string/create_group_member_menu"
             android:textSize="20dp"
             android:textStyle="bold"
             />
@@ -116,7 +116,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/member_menu_textview"
             app:layout_constraintBottom_toBottomOf="@id/member_menu_textview"
-            android:text="+ 추가"
+            android:text="@string/create_group_add_button"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:background="@drawable/all_background_button"
@@ -140,7 +140,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/member_layout"
         android:layout_marginTop="30dp"
-        android:text="모임 생성하기"
+        android:text="@string/create_group_button"
         android:textStyle="bold"
         android:textSize="20dp"
         android:textColor="@color/white"

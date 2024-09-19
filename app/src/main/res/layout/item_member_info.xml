@@ -13,7 +13,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginEnd="10dp"
-        android:text="초대완료"
+        android:text="@string/itme_member_info_status"
         android:textColor="@color/success"
         android:gravity="center_vertical"
         />
@@ -25,7 +25,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginVertical="20dp"
-        android:text="재전송"
+        android:text="@string/item_member_info_button"
         android:textColor="@color/white"
         android:background="@drawable/all_background_button"
         />
