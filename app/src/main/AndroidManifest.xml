@@ -23,6 +23,7 @@
         </activity>
 
         <activity
+            android:windowSoftInputMode="adjustNothing"
             android:name=".ui.addexpense.AddExpenseActivity"
             android:exported="true" />
         <activity
