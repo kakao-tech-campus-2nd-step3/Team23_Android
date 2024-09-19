@@ -9,9 +9,8 @@ import com.kappzzang.jeongsan.databinding.ItemMainProgressTitleBinding
 import com.kappzzang.jeongsan.domain.model.GroupItem
 import com.kappzzang.jeongsan.domain.model.GroupViewType
 
-class GroupListAdapter(
-    private val groupItemList: List<GroupItem>
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class GroupListAdapter(private val groupItemList: List<GroupItem>) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     inner class ProgressTitleViewHolder(binding: ItemMainProgressTitleBinding) :
         RecyclerView.ViewHolder(binding.root)
