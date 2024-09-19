@@ -159,6 +159,8 @@
             style="@style/BottomButton"
             android:text="@string/expense_detail_submit"
             android:textSize="@dimen/all_bottom_button_text_size"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

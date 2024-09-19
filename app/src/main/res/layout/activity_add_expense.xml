@@ -173,6 +173,8 @@
             android:id="@+id/addexpense_submit_button"
             style="@style/BottomButton"
             android:text="@string/add_expense_submit"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,6 +1,27 @@
 <resources>
     <string name="app_name">Jeongsan</string>
 
+    <string name="all_expense">정산 중</string>
+    <string name="all_pending">송금 대기</string>
+    <string name="all_complete">송금 완료</string>
+
+    <!-- 메인 페이지 -->
+    <string name="main_user_name_suffix">님</string>
+    <string name="main_create_group">그룹 만들기</string>
+    <string name="main_progress_group">진행중인 모임</string>
+    <string name="main_done_group">완료된 모임</string>
+
+    <!-- 지출 목록 페이지 -->
+    <string name="expenselist_total_expense_explain">총 소비 금액 :</string>
+    <string name="expenselist_my_total_expense_explain">내 총 지출 :</string>
+    <string name="expenselist_all_expense">전체</string>
+    <string name="expenselist_unconfirmed_expense">미확인 지출</string>
+    <string name="expenselist_confirmed_expense">확인 지출</string>
+
+    <!-- 지출 목록 상단 메뉴 -->
+    <string name="menu_invite_status">초대 현황</string>
+    <string name="menu_end_group">모임 종료</string>
+
     <!-- 영수증 추가 -->
     <string name="add_expense_header">영수증 등록 · 분석</string>
     <string name="add_expense_description">영수증을 분석했어요.\n잘못 인식된 부분이 있다면 추가/수정해 주세요!</string>
