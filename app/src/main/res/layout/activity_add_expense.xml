@@ -120,28 +120,28 @@
                 app:layout_constraintWidth_percent=".5" />
 
             <TextView
-                android:id="@+id/add_expense_label_name"
+                android:id="@+id/add_expense_label_name_textview"
                 style="@style/ExpenseLabel"
                 android:text="@string/item_expense_name"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/add_expense_label_price"
+                app:layout_constraintRight_toLeftOf="@id/add_expense_label_price_textview"
                 app:layout_constraintTop_toBottomOf="@id/addexpense_name_edittext"
                 app:layout_constraintWidth_percent="@dimen/add_expense_item_name_bias" />
 
             <TextView
-                android:id="@+id/add_expense_label_price"
+                android:id="@+id/add_expense_label_price_textview"
                 style="@style/ExpenseLabel"
                 android:text="@string/item_expense_price"
-                app:layout_constraintLeft_toRightOf="@id/add_expense_label_name"
-                app:layout_constraintRight_toLeftOf="@id/add_expense_label_quantity"
+                app:layout_constraintLeft_toRightOf="@id/add_expense_label_name_textview"
+                app:layout_constraintRight_toLeftOf="@id/add_expense_label_quantity_textview"
                 app:layout_constraintTop_toBottomOf="@id/addexpense_name_edittext"
                 app:layout_constraintWidth_percent="@dimen/add_expense_item_price_bias" />
 
             <TextView
-                android:id="@+id/add_expense_label_quantity"
+                android:id="@+id/add_expense_label_quantity_textview"
                 style="@style/ExpenseLabel"
                 android:text="@string/item_expense_quantity"
-                app:layout_constraintLeft_toRightOf="@id/add_expense_label_price"
+                app:layout_constraintLeft_toRightOf="@id/add_expense_label_price_textview"
                 app:layout_constraintRight_toLeftOf="@id/add_expense_label_button"
                 app:layout_constraintTop_toBottomOf="@id/addexpense_name_edittext"
                 app:layout_constraintWidth_percent="@dimen/add_expense_item_quantity_bias" />
@@ -152,7 +152,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text=""
-                app:layout_constraintLeft_toRightOf="@id/add_expense_label_quantity"
+                app:layout_constraintLeft_toRightOf="@id/add_expense_label_quantity_textview"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/addexpense_name_edittext" />
 
@@ -164,7 +164,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/add_expense_label_name"
+                app:layout_constraintTop_toBottomOf="@id/add_expense_label_name_textview"
                 app:layout_constraintVertical_bias="0" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
