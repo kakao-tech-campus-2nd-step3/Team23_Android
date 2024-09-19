@@ -4,4 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue500">#FF0D6EFD</color>
     <color name="danger">#FFDE3545</color>
+    <color name="success">#FF3BB90F</color>
+    <color name="background_base">#FFFBFAFD</color>
 </resources>
