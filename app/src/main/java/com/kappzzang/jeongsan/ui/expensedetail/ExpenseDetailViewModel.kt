@@ -79,15 +79,14 @@ class ExpenseDetailViewModel : ViewModel() {
         }
     }
 
-    private fun getItemWithQuantity(item: ExpenseDetailItem, quantity: Int): ExpenseDetailItem {
-        return ExpenseDetailItem(
+    private fun getItemWithQuantity(item: ExpenseDetailItem, quantity: Int): ExpenseDetailItem =
+        ExpenseDetailItem(
             id = item.id,
             itemName = item.itemName,
             itemQuantity = item.itemQuantity,
             itemPrice = item.itemPrice,
             selectedQuantity = quantity
         )
-    }
 
     fun updateItemCheck(checked: Boolean, index: Int) {
         if (index < 0 || index >= _expenseItemList.value.count()) {

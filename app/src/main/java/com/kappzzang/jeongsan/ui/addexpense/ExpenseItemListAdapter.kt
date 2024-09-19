@@ -22,9 +22,7 @@ class ExpenseItemListAdapter :
             ): Boolean = oldItem == newItem
         }
     ) {
-    class ExpenseItemViewHolder(
-        private val binding: ItemExpenseItemBinding
-    ) :
+    class ExpenseItemViewHolder(private val binding: ItemExpenseItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ExpenseItemInput) {
             binding.item = item

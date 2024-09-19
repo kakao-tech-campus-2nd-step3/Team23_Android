@@ -28,21 +28,20 @@ interface ExpenseDetailCallback {
 class ExpenseDetailItemListAdapter(
     private val context: Context,
     private val callback: ExpenseDetailCallback
-) :
-    ListAdapter<ExpenseDetailItem, ExpenseDetailItemListAdapter.ExpenseDetailItemViewHolder>(
-        object :
-            DiffUtil.ItemCallback<ExpenseDetailItem>() {
-            override fun areItemsTheSame(
-                oldItem: ExpenseDetailItem,
-                newItem: ExpenseDetailItem
-            ): Boolean = oldItem.id == newItem.id
+) : ListAdapter<ExpenseDetailItem, ExpenseDetailItemListAdapter.ExpenseDetailItemViewHolder>(
+    object :
+        DiffUtil.ItemCallback<ExpenseDetailItem>() {
+        override fun areItemsTheSame(
+            oldItem: ExpenseDetailItem,
+            newItem: ExpenseDetailItem
+        ): Boolean = oldItem.id == newItem.id
 
-            override fun areContentsTheSame(
-                oldItem: ExpenseDetailItem,
-                newItem: ExpenseDetailItem
-            ): Boolean = oldItem == newItem
-        }
-    ) {
+        override fun areContentsTheSame(
+            oldItem: ExpenseDetailItem,
+            newItem: ExpenseDetailItem
+        ): Boolean = oldItem == newItem
+    }
+) {
     class ExpenseDetailItemViewHolder(private val binding: ItemExpenseDetailItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ExpenseDetailItem) {

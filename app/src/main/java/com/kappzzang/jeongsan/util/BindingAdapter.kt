@@ -31,9 +31,7 @@ object BindingAdapter {
 
     @InverseBindingAdapter(attribute = "integerText")
     @JvmStatic
-    fun getIntegerValue(view: EditText): Int? {
-        return view.text.toString().toIntOrNull()
-    }
+    fun getIntegerValue(view: EditText): Int? = view.text.toString().toIntOrNull()
 
     @BindingAdapter("integerTextAttrChanged")
     @JvmStatic
