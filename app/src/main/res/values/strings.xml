@@ -6,20 +6,20 @@
     <string name="all_complete">송금 완료</string>
 
     <!-- 메인 페이지 -->
-    <string name="main_userNameSuffix">님</string>
-    <string name="main_createGroup">그룹 만들기</string>
-    <string name="main_progressGroup">진행중인 모임</string>
-    <string name="main_doneGroup">완료된 모임</string>
+    <string name="main_user_name_suffix">님</string>
+    <string name="main_create_group">그룹 만들기</string>
+    <string name="main_progress_group">진행중인 모임</string>
+    <string name="main_done_group">완료된 모임</string>
 
     <!-- 지출 목록 페이지 -->
-    <string name="expenseList_totalExpenseExplain">총 소비 금액 :</string>
-    <string name="expenseList_myTotalExpenseExplain">내 총 지출 :</string>
-    <string name="expenseList_allExpense">전체</string>
-    <string name="expenseList_unconfirmedExpense">미확인 지출</string>
-    <string name="expenseList_confirmedExpense">확인 지출</string>
+    <string name="expenselist_total_expense_explain">총 소비 금액 :</string>
+    <string name="expenselist_my_total_expense_explain">내 총 지출 :</string>
+    <string name="expenselist_all_expense">전체</string>
+    <string name="expenselist_unconfirmed_expense">미확인 지출</string>
+    <string name="expenselist_confirmed_expense">확인 지출</string>
 
     <!-- 지출 목록 상단 메뉴 -->
-    <string name="menu_inviteStatus">초대 현황</string>
-    <string name="menu_endGroup">모임 종료</string>
+    <string name="menu_invite_status">초대 현황</string>
+    <string name="menu_end_group">모임 종료</string>
 
 </resources>

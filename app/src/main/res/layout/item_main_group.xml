@@ -11,6 +11,7 @@
     <!-- 모임을 보여주는 item -->
 
     <TextView
+        android:id="@+id/group_name_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"

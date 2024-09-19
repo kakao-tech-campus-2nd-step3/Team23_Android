@@ -6,41 +6,41 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/myTotalExpenseExplain_textView"
+        android:id="@+id/my_total_expense_explain_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/expenseList_myTotalExpenseExplain"
+        android:text="@string/expenselist_my_total_expense_explain"
         android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/myTotalExpense_textView"
+        android:id="@+id/my_total_expense_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:textSize="20dp"
-        app:layout_constraintStart_toEndOf="@+id/myTotalExpenseExplain_textView"
+        app:layout_constraintStart_toEndOf="@+id/my_total_expense_explain_textview"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="40,000원" />
 
     <TextView
-        android:id="@+id/pending_textView"
+        android:id="@+id/pending_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginTop="24dp"
         android:text="@string/all_pending"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/myTotalExpenseExplain_textView" />
+        app:layout_constraintTop_toBottomOf="@id/my_total_expense_explain_textview" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/pendingExpenseList_recyclerView"
+        android:id="@+id/pending_expense_list_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pending_textView"
+        app:layout_constraintTop_toBottomOf="@id/pending_textview"
         tools:listitem="@layout/item_expense" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,12 +7,12 @@
     <!-- '완료된 모임'을 보여주는 header item -->
 
     <TextView
-        android:id="@+id/doneGroup_textView"
+        android:id="@+id/done_group_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:text="@string/main_doneGroup"
+        android:text="@string/main_done_group"
         android:textSize="16dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
