@@ -51,7 +51,7 @@ class ExpenseDetailViewModel : ViewModel() {
     val expenseItemList: StateFlow<List<ExpenseDetailItem>> = _expenseItemList.asStateFlow()
     val expenseName: StateFlow<String> = _expenseName.asStateFlow()
 
-    private fun itemWithEnabled(item: ExpenseDetailItem, enabled: Boolean): ExpenseDetailItem {
+    private fun getItemWithEnabled(item: ExpenseDetailItem, enabled: Boolean): ExpenseDetailItem {
         if (enabled) {
             return if (item.selectedQuantity > 0)
                 item
@@ -75,7 +75,7 @@ class ExpenseDetailViewModel : ViewModel() {
         }
     }
 
-    private fun itemWithQuantity(item: ExpenseDetailItem, quantity: Int): ExpenseDetailItem {
+    private fun getItemWithQuantity(item: ExpenseDetailItem, quantity: Int): ExpenseDetailItem {
         return ExpenseDetailItem(
             id = item.id,
             itemName = item.itemName,
@@ -94,7 +94,7 @@ class ExpenseDetailViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.Main) {
             _expenseItemList.emit(
                 _expenseItemList.value.toMutableList().also {
-                    it[index] = itemWithEnabled(it[index], checked)
+                    it[index] = getItemWithEnabled(it[index], checked)
                 }
             )
         }
@@ -109,7 +109,7 @@ class ExpenseDetailViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.Main) {
             _expenseItemList.emit(
                 _expenseItemList.value.toMutableList().also {
-                    it[index] = itemWithQuantity(it[index], quantity)
+                    it[index] = getItemWithQuantity(it[index], quantity)
                 }
             )
         }
