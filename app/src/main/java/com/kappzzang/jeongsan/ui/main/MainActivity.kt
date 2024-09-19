@@ -23,36 +23,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createDemoGroupItemList(): List<GroupItem> = listOf(
-        GroupItem(
-            viewType = GroupViewType.PROGRESS_TITLE,
-            groupName = "",
-            profileImageURL = listOf()
-        ),
-        GroupItem(
-            viewType = GroupViewType.GROUP,
-            groupName = "캡짱모임",
-            profileImageURL = listOf()
-        ),
-        GroupItem(
-            viewType = GroupViewType.DONE_TITLE,
-            groupName = "",
-            profileImageURL = listOf()
-        ),
-        GroupItem(
-            viewType = GroupViewType.GROUP,
-            groupName = "모임 이름 1",
-            profileImageURL = listOf()
-        ),
-        GroupItem(
-            viewType = GroupViewType.GROUP,
-            groupName = "모임 이름 2",
-            profileImageURL = listOf()
-        ),
-        GroupItem(
-            viewType = GroupViewType.GROUP,
-            groupName = "모임 이름 3",
-            profileImageURL = listOf()
-        ),
-
-        )
+        GroupItem(GroupViewType.PROGRESS_TITLE, "", listOf()),
+        GroupItem(GroupViewType.GROUP, "캡짱모임", listOf()),
+        GroupItem(GroupViewType.DONE_TITLE, "", listOf()),
+        GroupItem(GroupViewType.GROUP, "모임 이름 1", listOf()),
+        GroupItem(GroupViewType.GROUP, "모임 이름 2", listOf()),
+        GroupItem(GroupViewType.GROUP, "모임 이름 3", listOf())
+    )
 }

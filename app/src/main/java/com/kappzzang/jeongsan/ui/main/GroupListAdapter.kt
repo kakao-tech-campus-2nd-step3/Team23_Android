@@ -14,14 +14,10 @@ class GroupListAdapter(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     inner class ProgressTitleViewHolder(binding: ItemMainProgressTitleBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
-    }
+        RecyclerView.ViewHolder(binding.root)
 
     inner class DoneTitleViewHolder(binding: ItemMainDoneTitleBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
-    }
+        RecyclerView.ViewHolder(binding.root)
 
     inner class GroupViewHolder(private val binding: ItemMainGroupBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -31,8 +27,8 @@ class GroupListAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+        when (viewType) {
             GroupViewType.PROGRESS_TITLE.ordinal -> {
                 val binding = ItemMainProgressTitleBinding.inflate(
                     LayoutInflater.from(parent.context),
@@ -57,7 +53,6 @@ class GroupListAdapter(
                 GroupViewHolder(binding)
             }
         }
-    }
 
     override fun getItemCount(): Int = groupItemList.size
 
@@ -67,7 +62,5 @@ class GroupListAdapter(
         }
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return groupItemList[position].viewType.ordinal
-    }
+    override fun getItemViewType(position: Int): Int = groupItemList[position].viewType.ordinal
 }
