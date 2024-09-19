@@ -24,6 +24,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:windowSoftInputMode="adjustNothing"
+            android:name=".ui.addexpense.AddExpenseActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.expensedetail.ExpenseDetailActivity"
+            android:exported="true" />
     </application>
 
 </manifest>

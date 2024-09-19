@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="all_header_text_size"> 25sp </dimen>
+    <dimen name="all_header_margin"> 27dp </dimen>
+    <dimen name="all_description_text_size"> 13sp </dimen>
+    <dimen name="all_container_corner_radius"> 15dp </dimen>
+    <dimen name="all_container_elevation"> 3dp </dimen>
+
+    <dimen name="all_bottom_button_margin_bottom"> 22dp </dimen>>
+    <dimen name="all_bottom_button_margin_horizontal"> 24dp </dimen>
+    <dimen name="all_bottom_button_text_size"> 20sp </dimen>
+
+    <!-- 영수증 추가 -->
+    <dimen name="add_expense_item_name_bias"> 0.45 </dimen>
+    <dimen name="add_expense_item_price_bias"> 0.2 </dimen>
+    <dimen name="add_expense_item_quantity_bias"> 0.12 </dimen>
+    <dimen name="add_expense_item_button_size"> 30dp </dimen>
+
+    <!-- 지출 상세 내역 -->
+    <dimen name="expense_detail_checkbox_width"> 30dp </dimen>
+    <dimen name="expense_detail_item_name_bias"> 0.3 </dimen>
+    <dimen name="expense_detail_item_price_bias"> 0.15 </dimen>
+    <dimen name="expense_detail_item_quantity_bias"> 0.12 </dimen>
+    <dimen name="expense_detail_item_selected_quantity_bias"> 0.2 </dimen>
+</resources>
