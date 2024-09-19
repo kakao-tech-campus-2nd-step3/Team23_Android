@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/expenselist_my_total_expense_explain"
-        android:textSize="20dp"
+        android:textSize="@dimen/expense_list_subtitle_text_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:textSize="20dp"
+        android:textSize="@dimen/expense_list_subtitle_text_size"
         app:layout_constraintStart_toEndOf="@+id/my_total_expense_explain_textview"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="40,000원" />
@@ -28,9 +28,10 @@
         android:id="@+id/pending_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="@dimen/expense_list_fragment_title_start_margin"
+        android:layout_marginTop="@dimen/expense_list_fragment_title_top_margin"
         android:text="@string/all_pending"
+        android:textSize="@dimen/expense_list_fragment_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/my_total_expense_explain_textview" />
 

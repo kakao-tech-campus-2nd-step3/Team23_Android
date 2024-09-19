@@ -9,9 +9,10 @@
         android:id="@+id/complete_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="@dimen/expense_list_fragment_title_start_margin"
+        android:layout_marginTop="@dimen/expense_list_fragment_title_top_margin"
         android:text="@string/all_complete"
+        android:textSize="@dimen/expense_list_fragment_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -12,9 +12,9 @@
 
         <ImageView
             android:id="@+id/profile_image_imageview"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_margin="24dp"
+            android:layout_width="@dimen/main_profile_image_size"
+            android:layout_height="@dimen/main_profile_image_size"
+            android:layout_margin="@dimen/main_margin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:textSize="30dp"
+            android:textSize="@dimen/main_title_text_size"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/profile_image_imageview"
             app:layout_constraintStart_toEndOf="@id/profile_image_imageview"
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="@string/main_user_name_suffix"
-            android:textSize="30dp"
+            android:textSize="@dimen/main_title_text_size"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/user_name_textview"
             app:layout_constraintStart_toEndOf="@id/user_name_textview"
@@ -55,12 +55,8 @@
 
         <Button
             android:id="@+id/create_group_button"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_margin="24dp"
-            android:background="@drawable/main_create_group_button"
+            style="@style/BottomButton"
             android:text="@string/main_create_group"
-            android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
