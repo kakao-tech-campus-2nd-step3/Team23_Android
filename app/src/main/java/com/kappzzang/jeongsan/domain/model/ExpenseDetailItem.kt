@@ -5,5 +5,5 @@ data class ExpenseDetailItem(
     val itemName: String,
     val itemPrice: Int,
     val itemQuantity: Int,
-    val selectedQuantity: Int,
+    val selectedQuantity: Int
 )

@@ -10,10 +10,7 @@ import com.kappzzang.jeongsan.databinding.ActivityAddExpenseBinding
 import kotlinx.coroutines.flow.StateFlow
 
 @BindingAdapter("app:items")
-fun attachList(
-    recyclerView: RecyclerView,
-    items: StateFlow<List<ExpenseItemInput>>?,
-) {
+fun attachList(recyclerView: RecyclerView, items: StateFlow<List<ExpenseItemInput>>?) {
     items?.let {
         (recyclerView.adapter as? ExpenseItemListAdapter)?.submitList(it.value)
     }
@@ -23,7 +20,7 @@ class AddExpenseActivity : AppCompatActivity() {
     private val viewModel: AddExpenseViewModel by viewModels()
     private val binding: ActivityAddExpenseBinding by lazy {
         ActivityAddExpenseBinding.inflate(
-            layoutInflater,
+            layoutInflater
         )
     }
 

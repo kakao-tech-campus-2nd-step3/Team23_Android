@@ -12,20 +12,14 @@ import com.kappzzang.jeongsan.domain.model.ExpenseDetailItem
 import kotlinx.coroutines.flow.StateFlow
 
 @BindingAdapter("app:detail_items")
-fun attachList(
-    recyclerView: RecyclerView,
-    items: StateFlow<List<ExpenseDetailItem>>?,
-) {
+fun attachList(recyclerView: RecyclerView, items: StateFlow<List<ExpenseDetailItem>>?) {
     items?.let {
         (recyclerView.adapter as? ExpenseDetailItemListAdapter)?.submitList(it.value)
     }
 }
 
 @BindingAdapter("app:detail_selection")
-fun attachList(
-    view: AutoCompleteTextView,
-    position: Int,
-) {
+fun attachList(view: AutoCompleteTextView, position: Int) {
     if (position < 0 || position >= view.adapter.count) {
         view.setText("0", false)
         return
@@ -36,7 +30,7 @@ fun attachList(
 class ExpenseDetailActivity : AppCompatActivity() {
     private val binding: ActivityExpenseDetailBinding by lazy {
         ActivityExpenseDetailBinding.inflate(
-            layoutInflater,
+            layoutInflater
         )
     }
     private val viewModel: ExpenseDetailViewModel by viewModels()
@@ -55,20 +49,14 @@ class ExpenseDetailActivity : AppCompatActivity() {
             ExpenseDetailItemListAdapter(
                 this,
                 object : ExpenseDetailCallback {
-                    override fun onCheckedChange(
-                        enable: Boolean,
-                        index: Int,
-                    ) {
+                    override fun onCheckedChange(enable: Boolean, index: Int) {
                         viewModel.updateItemCheck(enable, index)
                     }
 
-                    override fun onSelectedQuantityChanged(
-                        quantity: Int,
-                        index: Int,
-                    ) {
+                    override fun onSelectedQuantityChanged(quantity: Int, index: Int) {
                         viewModel.updateSelectedQuantity(quantity, index)
                     }
-                },
+                }
             )
         binding.expenseDetailItemListRecyclerview.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)

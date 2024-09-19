@@ -14,44 +14,35 @@ import com.kappzzang.jeongsan.databinding.ItemExpenseDetailItemBinding
 import com.kappzzang.jeongsan.domain.model.ExpenseDetailItem
 
 interface ExpenseDetailItemCallback {
-    fun onCheckedChange(
-        view: CompoundButton,
-        enable: Boolean,
-    )
+    fun onCheckedChange(view: CompoundButton, enable: Boolean)
 
     fun onSelectedQuantityChanged(text: Editable)
 }
 
 interface ExpenseDetailCallback {
-    fun onCheckedChange(
-        enable: Boolean,
-        index: Int,
-    )
+    fun onCheckedChange(enable: Boolean, index: Int)
 
-    fun onSelectedQuantityChanged(
-        quantity: Int,
-        index: Int,
-    )
+    fun onSelectedQuantityChanged(quantity: Int, index: Int)
 }
 
 class ExpenseDetailItemListAdapter(
     private val context: Context,
-    private val callback: ExpenseDetailCallback,
+    private val callback: ExpenseDetailCallback
 ) :
     ListAdapter<ExpenseDetailItem, ExpenseDetailItemListAdapter.ExpenseDetailItemViewHolder>(
-            object :
-                DiffUtil.ItemCallback<ExpenseDetailItem>() {
-                override fun areItemsTheSame(
-                    oldItem: ExpenseDetailItem,
-                    newItem: ExpenseDetailItem,
-                ): Boolean = oldItem.id == newItem.id
+        object :
+            DiffUtil.ItemCallback<ExpenseDetailItem>() {
+            override fun areItemsTheSame(
+                oldItem: ExpenseDetailItem,
+                newItem: ExpenseDetailItem
+            ): Boolean = oldItem.id == newItem.id
 
-                override fun areContentsTheSame(
-                    oldItem: ExpenseDetailItem,
-                    newItem: ExpenseDetailItem,
-                ): Boolean = oldItem == newItem
-            },
-        ) {
+            override fun areContentsTheSame(
+                oldItem: ExpenseDetailItem,
+                newItem: ExpenseDetailItem
+            ): Boolean = oldItem == newItem
+        }
+    ) {
     class ExpenseDetailItemViewHolder(private val binding: ItemExpenseDetailItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ExpenseDetailItem) {
@@ -64,10 +55,7 @@ class ExpenseDetailItemListAdapter(
     private fun createSpinnerAdapter(maxIndex: Int): ArrayAdapter<Int> =
         ArrayAdapter(context, R.layout.spinner_selected_quantity, (0..maxIndex).toList())
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int,
-    ): ExpenseDetailItemViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExpenseDetailItemViewHolder {
         val viewHolderBinding =
             ItemExpenseDetailItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         val viewHolder = ExpenseDetailItemViewHolder(viewHolderBinding)
@@ -75,10 +63,7 @@ class ExpenseDetailItemListAdapter(
         viewHolderBinding.autoCompleteTextview.setAdapter(createSpinnerAdapter(20))
         viewHolderBinding.itemCallback =
             object : ExpenseDetailItemCallback {
-                override fun onCheckedChange(
-                    view: CompoundButton,
-                    enable: Boolean,
-                ) {
+                override fun onCheckedChange(view: CompoundButton, enable: Boolean) {
                     callback.onCheckedChange(enable, viewHolder.bindingAdapterPosition)
                 }
 
@@ -86,17 +71,14 @@ class ExpenseDetailItemListAdapter(
                     val parsedQuantity = text.toString().toIntOrNull() ?: return
                     callback.onSelectedQuantityChanged(
                         parsedQuantity,
-                        viewHolder.bindingAdapterPosition,
+                        viewHolder.bindingAdapterPosition
                     )
                 }
             }
         return viewHolder
     }
 
-    override fun onBindViewHolder(
-        holder: ExpenseDetailItemViewHolder,
-        position: Int,
-    ) {
+    override fun onBindViewHolder(holder: ExpenseDetailItemViewHolder, position: Int) {
         holder.bind(currentList[position])
     }
 }
