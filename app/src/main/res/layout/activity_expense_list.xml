@@ -89,6 +89,7 @@
         android:id="@+id/bottomnavigationview"
         android:layout_width="match_parent"
         android:layout_height="70dp"
+        android:background="@drawable/expense_list_bottom_nav"
         app:itemActiveIndicatorStyle="@color/transparent"
         app:itemIconTint="@drawable/expense_list_bottom_nav_color"
         app:itemTextColor="@drawable/expense_list_bottom_nav_color"
