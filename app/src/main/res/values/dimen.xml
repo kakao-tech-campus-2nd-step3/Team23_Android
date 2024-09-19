@@ -39,5 +39,4 @@
     <dimen name="expense_list_fragment_title"> 16sp </dimen>
     <dimen name="expense_list_fragment_title_start_margin"> 12sp </dimen>
     <dimen name="expense_list_fragment_title_top_margin"> 24sp </dimen>
-
 </resources>
