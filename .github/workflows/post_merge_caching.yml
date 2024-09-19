@@ -39,7 +39,7 @@ jobs:
 
       - name: AVD cache
         # Weekly 브랜치에서는 AVD 캐싱 생략
-        if: !contains( github.ref, 'refs/heads/Weekly' )
+        if: contains( github.ref, 'refs/heads/Weekly' ) != true
         uses: actions/cache@v4
         id: avd-cache
         with:
@@ -51,7 +51,7 @@ jobs:
         # AVD 캐시미스 발생 시 캐싱을 위한 AVD 스냅샷 생성
       - name: Create AVD and generate snapshot for caching
         # Weekly 브랜치에서는 스냅샷 생성 생략
-        if: steps.avd-cache.outputs.cache-hit != 'true' && !contains( github.ref, 'refs/heads/Weekly' )
+        if: steps.avd-cache.outputs.cache-hit != 'true' && contains( github.ref, 'refs/heads/Weekly' ) != true
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ matrix.api-level }}
