@@ -1,5 +1,0 @@
-# indicate this is the root of the project
-root = true
-
-[*.{kt,kts}]
-ktlint_code_style = android_studio
