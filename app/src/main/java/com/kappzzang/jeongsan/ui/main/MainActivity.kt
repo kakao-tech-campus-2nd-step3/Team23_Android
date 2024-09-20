@@ -5,8 +5,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.databinding.ActivityMainBinding
-import com.kappzzang.jeongsan.domain.model.GroupItem
-import com.kappzzang.jeongsan.domain.model.GroupViewType
 import com.kappzzang.jeongsan.ui.creategroup.CreateGroupActivity
 
 class MainActivity : AppCompatActivity() {
@@ -29,12 +27,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun createDemoGroupItemList(): List<GroupItem> = listOf(
-        GroupItem(GroupViewType.PROGRESS_TITLE, "", listOf()),
-        GroupItem(GroupViewType.GROUP, "캡짱모임", listOf()),
-        GroupItem(GroupViewType.DONE_TITLE, "", listOf()),
-        GroupItem(GroupViewType.GROUP, "모임 이름 1", listOf()),
-        GroupItem(GroupViewType.GROUP, "모임 이름 2", listOf()),
-        GroupItem(GroupViewType.GROUP, "모임 이름 3", listOf())
+    private fun createDemoGroupItemList(): List<GroupViewItem> = listOf(
+        GroupViewItem("0", "", false, listOf(), GroupViewType.PROGRESS_TITLE),
+        GroupViewItem("1", "캡짱모임", false, listOf(), GroupViewType.GROUP),
+        GroupViewItem("2", "", false, listOf(), GroupViewType.DONE_TITLE),
+        GroupViewItem("3", "모임 이름 1", true, listOf(), GroupViewType.GROUP),
+        GroupViewItem("4", "모임 이름 2", true, listOf(), GroupViewType.GROUP),
+        GroupViewItem("5", "모임 이름 3", true, listOf(), GroupViewType.GROUP)
     )
 }

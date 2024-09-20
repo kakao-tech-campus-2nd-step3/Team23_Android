@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.databinding.FragmentCompleteExpenseListBinding
-import com.kappzzang.jeongsan.domain.model.ExpenseItem
 
 class CompleteExpenseListFragment : Fragment() {
 
@@ -31,7 +30,7 @@ class CompleteExpenseListFragment : Fragment() {
         binding.completeExpenseListRecyclerview.layoutManager = LinearLayoutManager(this.context)
     }
 
-    private fun createDemoExpenseItemList(): List<ExpenseItem> = (1..9).map { i ->
-        ExpenseItem("송금 완료 내역 $i", "$i,000원", "2024.09.0$i", "#0000FF")
+    private fun createDemoExpenseItemList(): List<ExpenseViewItem> = (1..9).map { i ->
+        ExpenseViewItem("송금 완료 내역 $i", "$i,000원", "2024.09.0$i", "#0000FF")
     }
 }

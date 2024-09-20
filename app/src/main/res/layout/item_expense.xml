@@ -6,7 +6,7 @@
     <data>
         <variable
             name="expenseItem"
-            type="com.kappzzang.jeongsan.domain.model.ExpenseItem" />
+            type="com.kappzzang.jeongsan.ui.expenselist.ExpenseViewItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

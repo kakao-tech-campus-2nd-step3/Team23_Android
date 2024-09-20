@@ -1,6 +1,6 @@
-package com.kappzzang.jeongsan.domain.model
+package com.kappzzang.jeongsan.ui.expenselist
 
-data class ExpenseItem(
+data class ExpenseViewItem(
     val expenseName: String,
     val expensePrice: String,
     val expenseDate: String,

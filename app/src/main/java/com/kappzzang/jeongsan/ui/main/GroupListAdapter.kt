@@ -8,11 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kappzzang.jeongsan.databinding.ItemMainDoneTitleBinding
 import com.kappzzang.jeongsan.databinding.ItemMainGroupBinding
 import com.kappzzang.jeongsan.databinding.ItemMainProgressTitleBinding
-import com.kappzzang.jeongsan.domain.model.GroupItem
-import com.kappzzang.jeongsan.domain.model.GroupViewType
 import com.kappzzang.jeongsan.ui.expenselist.ExpenseListActivity
 
-class GroupListAdapter(private val groupItemList: List<GroupItem>) :
+class GroupListAdapter(private val groupItemList: List<GroupViewItem>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     inner class ProgressTitleViewHolder(binding: ItemMainProgressTitleBinding) :
@@ -34,8 +32,8 @@ class GroupListAdapter(private val groupItemList: List<GroupItem>) :
             }
         }
 
-        fun bind(groupItem: GroupItem) {
-            binding.groupItem = groupItem
+        fun bind(groupViewItem: GroupViewItem) {
+            binding.groupItem = groupViewItem
         }
     }
 
@@ -74,5 +72,5 @@ class GroupListAdapter(private val groupItemList: List<GroupItem>) :
         }
     }
 
-    override fun getItemViewType(position: Int): Int = groupItemList[position].viewType.ordinal
+    override fun getItemViewType(position: Int): Int = groupItemList[position].type.ordinal
 }
