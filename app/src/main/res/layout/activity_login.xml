@@ -9,17 +9,17 @@
     android:background="@color/background_base">
 
     <ImageView
-        android:id="@+id/app_icon"
+        android:id="@+id/app_icon_imageview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/login_by_kakao"
+        app:layout_constraintBottom_toTopOf="@id/login_by_kakao_imagebutton"
         android:src="@mipmap/ic_launcher"
         android:layout_marginBottom="50dp"
         />
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/login_by_kakao"
+        android:id="@+id/login_by_kakao_imagebutton"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"

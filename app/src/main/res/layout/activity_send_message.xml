@@ -49,7 +49,7 @@
         >
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/info_content_reyclerview"
+            android:id="@+id/info_content_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constrainedHeight="true"
