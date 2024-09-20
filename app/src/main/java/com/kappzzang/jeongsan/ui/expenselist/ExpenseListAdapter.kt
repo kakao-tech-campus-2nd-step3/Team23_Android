@@ -13,6 +13,11 @@ class ExpenseListAdapter(private val expenseItemList: List<ExpenseItem>) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(expenseItem: ExpenseItem) {
+            binding.categoryColorView.setBackgroundColor(
+                android.graphics.Color.parseColor(
+                    expenseItem.categoryColor
+                )
+            )
             binding.expenseItem = expenseItem
         }
     }
