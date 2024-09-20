@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.databinding.FragmentPendingExpenseListBinding
-import com.kappzzang.jeongsan.domain.model.ExpenseItem
 
 class PendingExpenseListFragment : Fragment() {
 
@@ -26,12 +25,13 @@ class PendingExpenseListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // UI 확인을 위한 임시 코드
+        binding.myTotalExpenseTextview.text = "100,000원"
         binding.pendingExpenseListRecyclerview.adapter =
             ExpenseListAdapter(createDemoExpenseItemList())
         binding.pendingExpenseListRecyclerview.layoutManager = LinearLayoutManager(this.context)
     }
 
-    private fun createDemoExpenseItemList(): List<ExpenseItem> = (1..9).map { i ->
-        ExpenseItem("송금 대기 내역 $i", "$i,000원", "2024.09.0$i", "#00FF00")
+    private fun createDemoExpenseItemList(): List<ExpenseViewItem> = (1..9).map { i ->
+        ExpenseViewItem("송금 대기 내역 $i", "$i,000원", "2024.09.0$i", "#00FF00")
     }
 }

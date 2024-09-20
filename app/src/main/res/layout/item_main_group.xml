@@ -7,7 +7,7 @@
 
         <variable
             name="groupItem"
-            type="com.kappzzang.jeongsan.domain.model.GroupItem" />
+            type="com.kappzzang.jeongsan.ui.main.GroupViewItem" />
 
     </data>
 
@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:text="@{groupItem.groupName}"
+            android:text="@{groupItem.name}"
             android:textSize="@dimen/all_header_text_size"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
