@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="30dp"
+    android:padding="@dimen/all_layout_padding"
     android:clipToPadding="false"
     android:background="@color/background_base"
     tools:context=".ui.creategroup.CreateGroupActivity">
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:text="@string/create_group_title"
         android:textStyle="bold"
-        android:textSize="30dp"
+        android:textSize="@dimen/all_header_text_size"
         />
     <TextView
         android:id="@+id/page_description_textview"
@@ -26,6 +26,7 @@
         app:layout_constraintStart_toStartOf="@id/page_title_textview"
         app:layout_constraintTop_toBottomOf="@id/page_title_textview"
         android:text="@string/create_group_description"
+        android:textSize="@dimen/all_sub_header_text_size"
         android:textStyle="bold"
         />
 
@@ -48,7 +49,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:text="@string/create_group_name_menu"
             android:textStyle="bold"
-            android:textSize="20dp"
+            android:textSize="@dimen/create_group_menu_text_size"
             />
         <EditText
             android:id="@+id/group_name_value_edittext"
@@ -72,7 +73,7 @@
             android:layout_marginTop="30dp"
             android:text="@string/create_group_category_menu"
             android:textStyle="bold"
-            android:textSize="20dp"
+            android:textSize="@dimen/create_group_menu_text_size"
             />
 
         <androidx.appcompat.widget.AppCompatSpinner
@@ -95,7 +96,7 @@
         app:layout_constraintBottom_toTopOf="@id/create_group_button"
         android:layout_marginTop="30dp"
         android:background="@drawable/all_background_frame"
-        android:elevation="10dp"
+        android:elevation="@dimen/all_container_elevation"
         android:padding="10dp"
         >
         <TextView
@@ -105,13 +106,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:text="@string/create_group_member_menu"
-            android:textSize="20dp"
+            android:textSize="@dimen/create_group_menu_text_size"
             android:textStyle="bold"
             />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/add_member_button"
-            android:layout_width="60dp"
+            android:layout_width="@dimen/create_group_add_button_width"
             android:layout_height="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/member_menu_textview"
@@ -136,13 +137,13 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/create_group_button"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/all_bottom_button_height"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/member_layout"
         android:layout_marginTop="30dp"
         android:text="@string/create_group_button"
         android:textStyle="bold"
-        android:textSize="20dp"
+        android:textSize="@dimen/all_bottom_button_text_size"
         android:textColor="@color/white"
         android:background="@drawable/all_background_button"
         />

@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/all_layout_padding"
     tools:context=".ui.sendcomplete.SendCompleteActivity">
     <TextView
         android:layout_width="wrap_content"
@@ -14,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:text="@string/send_complete_message"
-        android:textSize="30dp"
+        android:textSize="@dimen/send_complete_text_size"
         android:textStyle="bold"
         android:textColor="@color/white"
         android:background="@drawable/all_background_button"

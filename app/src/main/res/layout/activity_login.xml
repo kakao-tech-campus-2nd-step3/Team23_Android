@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.login.LoginActivity"
+    android:padding="@dimen/all_layout_padding"
     android:background="@color/background_base">
 
     <ImageView
@@ -20,7 +21,7 @@
         />
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/login_by_kakao_imagebutton"
-        android:layout_width="300dp"
+        android:layout_width="@dimen/login_kakao_button_width"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

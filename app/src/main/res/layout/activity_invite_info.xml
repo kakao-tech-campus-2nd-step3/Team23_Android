@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
+    android:padding="@dimen/invite_info_padding"
     tools:context=".ui.inviteinfo.InviteInfoActivity">
     <TextView
         android:id="@+id/page_title_textview"
@@ -15,13 +15,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/close_imageview"
         android:text="@string/invite_info_title"
-        android:textSize="20dp"
+        android:textSize="@dimen/all_header_text_size"
         android:textStyle="bold"
         />
     <ImageView
         android:id="@+id/close_imageview"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="@dimen/invite_info_close_width"
+        android:layout_height="@dimen/invite_info_close_width"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:src="@drawable/all_close"
