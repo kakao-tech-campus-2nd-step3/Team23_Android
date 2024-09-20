@@ -50,6 +50,7 @@ jobs:
           reporter: github-pr-review
           fail_on_error: true
           level: warning
+          ktlint_version: 1.3.1
 
         # 유닛 테스트 후 PR 코멘트로 결과 전송
       - name: Run Unit Test
