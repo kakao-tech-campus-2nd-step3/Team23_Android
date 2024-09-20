@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.expenselist.PendingExpenseListFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/my_total_expense_explain_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/expenselist_my_total_expense_explain"
+            android:textSize="@dimen/expense_list_subtitle_text_size"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/my_total_expense_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:textSize="@dimen/expense_list_subtitle_text_size"
+            app:layout_constraintStart_toEndOf="@+id/my_total_expense_explain_textview"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="40,000원" />
+
+        <TextView
+            android:id="@+id/pending_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/expense_list_fragment_title_start_margin"
+            android:layout_marginTop="@dimen/expense_list_fragment_title_top_margin"
+            android:text="@string/all_pending"
+            android:textSize="@dimen/expense_list_fragment_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/my_total_expense_explain_textview" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/pending_expense_list_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pending_textview"
+            tools:listitem="@layout/item_expense" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -82,4 +82,7 @@ dependencies {
     kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.48.1")
 
     implementation("nl.dionsegijn:konfetti-xml:2.0.4")
+
+    implementation("androidx.navigation:navigation-fragment-ktx:2.8.1")
+    implementation("androidx.navigation:navigation-ui-ktx:2.8.1")
 }

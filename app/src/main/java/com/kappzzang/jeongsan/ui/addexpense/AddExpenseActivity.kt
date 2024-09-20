@@ -1,5 +1,6 @@
 package com.kappzzang.jeongsan.ui.addexpense
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +8,7 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kappzzang.jeongsan.databinding.ActivityAddExpenseBinding
+import com.kappzzang.jeongsan.ui.expensedetail.ExpenseDetailActivity
 import kotlinx.coroutines.flow.StateFlow
 
 @BindingAdapter("app:items")
@@ -35,6 +37,12 @@ class AddExpenseActivity : AppCompatActivity() {
 
         initiateRecyclerView()
         setContentView(binding.root)
+
+        // TODO: 임시 연결용 코드
+        binding.addexpenseSubmitButton.setOnClickListener {
+            startActivity(Intent(this, ExpenseDetailActivity::class.java))
+            finish()
+        }
     }
 
     private fun checkIfReceiptMode(): Boolean {

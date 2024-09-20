@@ -42,6 +42,11 @@ class ExpenseDetailActivity : AppCompatActivity() {
 
         initiateRecyclerView()
         setContentView(binding.root)
+
+        // TODO: 임시 연결용 코드
+        binding.expenseDetailSubmitButton.setOnClickListener {
+            finish()
+        }
     }
 
     private fun initiateRecyclerView() {
