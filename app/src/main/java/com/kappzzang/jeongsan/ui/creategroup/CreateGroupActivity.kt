@@ -1,6 +1,5 @@
 package com.kappzzang.jeongsan.ui.creategroup
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
@@ -9,7 +8,6 @@ import com.kappzzang.jeongsan.R
 import com.kappzzang.jeongsan.databinding.ActivityCreateGroupBinding
 import com.kappzzang.jeongsan.ui.Member
 import com.kappzzang.jeongsan.ui.MemberAdapter
-import com.kappzzang.jeongsan.ui.inviteinfo.InviteInfoActivity
 
 class CreateGroupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,10 +41,6 @@ class CreateGroupActivity : AppCompatActivity() {
         }
 
         // TODO: 임시 연결용 코드
-        binding.addMemberButton.setOnClickListener {
-            val intent = Intent(this, InviteInfoActivity::class.java)
-            startActivity(intent)
-        }
         binding.createGroupButton.setOnClickListener {
             finish()
         }
