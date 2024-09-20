@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_invite_status"
+        android:title="@string/menu_invite_status" />
+
+    <item
+        android:id="@+id/menu_end_group"
+        android:title="@string/menu_end_group" />
+</menu>
