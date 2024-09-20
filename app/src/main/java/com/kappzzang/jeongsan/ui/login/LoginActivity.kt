@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.kappzzang.jeongsan.databinding.ActivityLoginBinding
 import com.kappzzang.jeongsan.ui.creategroup.CreateGroupActivity
+import com.kappzzang.jeongsan.ui.main.MainActivity
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,7 +14,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.loginByKakaoImagebutton.setOnClickListener {
-            startActivity(Intent(this, CreateGroupActivity::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
         }
 
     }
