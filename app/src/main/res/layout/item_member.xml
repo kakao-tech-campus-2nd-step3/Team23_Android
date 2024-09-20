@@ -24,6 +24,6 @@
         app:layout_constraintBottom_toBottomOf="@id/profile_image_imageview"
         android:layout_marginStart="20dp"
         android:gravity="center_vertical"
-        tools:text="item_member_name"
+        tools:text="@string/item_member_name"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,7 +12,7 @@ class LoginActivity : AppCompatActivity() {
         val binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.loginByKakao.setOnClickListener {
+        binding.loginByKakaoImagebutton.setOnClickListener {
             startActivity(Intent(this, CreateGroupActivity::class.java))
         }
 

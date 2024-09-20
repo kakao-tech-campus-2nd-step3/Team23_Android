@@ -26,9 +26,9 @@ class SendMessageActivity : AppCompatActivity() {
                 Member("Member$i")
             )
         }
-        binding.infoContentReyclerview.apply {
+        binding.infoContentRecyclerview.apply {
 
-            adapter = MemberAdapter(members.toList(), layoutInflater, R.layout.item_member_expense)
+            adapter = MemberAdapter(members.toList(), layoutInflater, R.layout.activity_main)
             layoutManager = LinearLayoutManager(
                 this@SendMessageActivity, LinearLayoutManager.VERTICAL, false
             )
