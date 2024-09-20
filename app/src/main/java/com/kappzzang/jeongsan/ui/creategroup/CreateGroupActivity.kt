@@ -39,7 +39,7 @@ class CreateGroupActivity : AppCompatActivity() {
                 category
             )
         }
-        
+
         // TODO: 임시 연결용 코드
         binding.createGroupButton.setOnClickListener {
             finish()
