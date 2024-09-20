@@ -4,12 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.expenselist.ExpenseListFragment">
 
-    <data>
-        <variable
-            name="viewModel"
-            type="com.kappzzang.jeongsan.ui.expenselist.ExpenseListViewModel" />
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -31,7 +25,6 @@
                 android:checked="true"
                 android:text="@string/expenselist_all_expense"
                 app:checkedIconVisible="false"
-                android:onClick="@{()->viewModel.clickAllExpensesChipButton()}"
                 app:chipBackgroundColor="@drawable/expense_list_chip_color" />
 
             <com.google.android.material.chip.Chip
@@ -41,7 +34,6 @@
                 android:checked="false"
                 android:text="@string/expenselist_unconfirmed_expense"
                 app:checkedIconVisible="false"
-                android:onClick="@{()->viewModel.clickOnlyNotConfirmedExpensesChipButton()}"
                 app:chipBackgroundColor="@drawable/expense_list_chip_color" />
 
             <com.google.android.material.chip.Chip
@@ -51,7 +43,6 @@
                 android:checked="false"
                 android:text="@string/expenselist_confirmed_expense"
                 app:checkedIconVisible="false"
-                android:onClick="@{()->viewModel.clickOnlyConfirmedExpensesChipButton()}"
                 app:chipBackgroundColor="@drawable/expense_list_chip_color" />
 
         </com.google.android.material.chip.ChipGroup>
@@ -62,7 +53,6 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/expense_chip_group_chipgroup"
-            expenseItems="@{viewModel.uiData}"
             tools:listitem="@layout/item_expense" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

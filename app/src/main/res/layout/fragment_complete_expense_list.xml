@@ -4,12 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.expenselist.ExpenseListFragment">
 
-    <data>
-        <variable
-            name="viewModel"
-            type="com.kappzzang.jeongsan.ui.expenselist.ExpenseListViewModel" />
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -33,7 +27,6 @@
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/complete_textview"
-            expenseItems="@{viewModel.uiData}"
             tools:listitem="@layout/item_expense" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

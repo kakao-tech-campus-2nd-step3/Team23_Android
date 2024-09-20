@@ -2,7 +2,6 @@ package com.kappzzang.jeongsan.ui.expenselist
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.navigation.NavController
@@ -13,11 +12,8 @@ import com.kappzzang.jeongsan.databinding.ActivityExpenseListBinding
 import com.kappzzang.jeongsan.ui.addexpense.AddExpenseActivity
 import com.kappzzang.jeongsan.ui.inviteinfo.InviteInfoActivity
 import com.kappzzang.jeongsan.ui.sendmessage.SendMessageActivity
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class ExpenseListActivity : AppCompatActivity() {
-    private val viewModel: ExpenseListViewModel by viewModels()
     private lateinit var binding: ActivityExpenseListBinding
     private lateinit var navController: NavController
 
@@ -26,13 +22,14 @@ class ExpenseListActivity : AppCompatActivity() {
         binding = ActivityExpenseListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // UI 확인을 위한 임시 코드
+        binding.groupNameTextview.text = "캡짱모임"
+        binding.totalExpenseTextview.text = "1,000,000원"
+
         val navHostFragment = supportFragmentManager.findFragmentById(
             binding.expenseListFragmentcontainerview.id
         ) as NavHostFragment
         navController = navHostFragment.navController
-
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = this
 
         binding.bottomnavigationview.setupWithNavController(navController)
 
