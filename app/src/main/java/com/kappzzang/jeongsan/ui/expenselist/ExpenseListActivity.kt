@@ -1,11 +1,14 @@
 package com.kappzzang.jeongsan.ui.expenselist
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.kappzzang.jeongsan.databinding.ActivityExpenseListBinding
+import com.kappzzang.jeongsan.ui.addexpense.AddExpenseActivity
+import com.kappzzang.jeongsan.ui.sendmessage.SendMessageActivity
 
 class ExpenseListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityExpenseListBinding
@@ -26,5 +29,13 @@ class ExpenseListActivity : AppCompatActivity() {
         navController = navHostFragment.navController
 
         binding.bottomnavigationview.setupWithNavController(navController)
+
+        // TODO: 임시 연결용 코드
+        binding.addExpenseFab.setOnClickListener {
+            startActivity(Intent(this, AddExpenseActivity::class.java))
+        }
+        binding.requestExpenseFab.setOnClickListener {
+            startActivity(Intent(this, SendMessageActivity::class.java))
+        }
     }
 }

@@ -7,19 +7,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.R
 import com.kappzzang.jeongsan.databinding.ActivityCreateGroupBinding
-import com.kappzzang.jeongsan.ui.HistoryActivity
 import com.kappzzang.jeongsan.ui.Member
 import com.kappzzang.jeongsan.ui.MemberAdapter
+import com.kappzzang.jeongsan.ui.inviteinfo.InviteInfoActivity
 
 class CreateGroupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityCreateGroupBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        binding.createGroupButton.setOnClickListener {
-            startActivity(Intent(this, HistoryActivity::class.java))
-        }
 
         val members = mutableListOf<Member>()
         for (i in 0..10) {
@@ -44,6 +40,15 @@ class CreateGroupActivity : AppCompatActivity() {
                 android.R.layout.simple_spinner_dropdown_item,
                 category
             )
+        }
+
+        // TODO: 임시 연결용 코드
+        binding.addMemberButton.setOnClickListener {
+            val intent = Intent(this, InviteInfoActivity::class.java)
+            startActivity(intent)
+        }
+        binding.createGroupButton.setOnClickListener {
+            finish()
         }
     }
 }

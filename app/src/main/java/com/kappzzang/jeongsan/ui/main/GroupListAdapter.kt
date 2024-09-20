@@ -1,13 +1,16 @@
 package com.kappzzang.jeongsan.ui.main
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.kappzzang.jeongsan.databinding.ItemMainDoneTitleBinding
 import com.kappzzang.jeongsan.databinding.ItemMainGroupBinding
 import com.kappzzang.jeongsan.databinding.ItemMainProgressTitleBinding
 import com.kappzzang.jeongsan.domain.model.GroupItem
 import com.kappzzang.jeongsan.domain.model.GroupViewType
+import com.kappzzang.jeongsan.ui.expenselist.ExpenseListActivity
 
 class GroupListAdapter(private val groupItemList: List<GroupItem>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -20,6 +23,16 @@ class GroupListAdapter(private val groupItemList: List<GroupItem>) :
 
     inner class GroupViewHolder(private val binding: ItemMainGroupBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        init {
+            // TODO: 임시 연결용 코드
+            binding.root.setOnClickListener {
+                startActivity(
+                    binding.root.context,
+                    Intent(binding.root.context, ExpenseListActivity::class.java),
+                    null
+                )
+            }
+        }
 
         fun bind(groupItem: GroupItem) {
             binding.groupItem = groupItem

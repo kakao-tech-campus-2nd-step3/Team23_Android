@@ -1,11 +1,13 @@
 package com.kappzzang.jeongsan.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.databinding.ActivityMainBinding
 import com.kappzzang.jeongsan.domain.model.GroupItem
 import com.kappzzang.jeongsan.domain.model.GroupViewType
+import com.kappzzang.jeongsan.ui.creategroup.CreateGroupActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -20,6 +22,11 @@ class MainActivity : AppCompatActivity() {
 
         binding.groupListRecyclerview.adapter = GroupListAdapter(createDemoGroupItemList())
         binding.groupListRecyclerview.layoutManager = LinearLayoutManager(this)
+
+        // TODO: 임시 연결용 코드
+        binding.createGroupButton.setOnClickListener {
+            startActivity(Intent(this, CreateGroupActivity::class.java))
+        }
     }
 
     private fun createDemoGroupItemList(): List<GroupItem> = listOf(
