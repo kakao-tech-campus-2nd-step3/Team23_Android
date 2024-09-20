@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="groupItem"
+            type="com.kappzzang.jeongsan.ui.main.GroupViewItem" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/main_group_item"
+        android:elevation="5dp">
+
+        <!-- 모임을 보여주는 item -->
+
+        <TextView
+            android:id="@+id/group_name_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:text="@{groupItem.name}"
+            android:textSize="@dimen/all_header_text_size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="그룹 이름" />
+
+        <!-- TODO: 그룹원의 프로필 사진이 겹치면서 보여지는 레이아웃 구현
+        참고: https://selfish-developer.com/entry/%EA%B2%B9%EC%B9%98%EB%8A%94-recyclerview-%EB%A7%8C%EB%93%A4%EA%B8%B0 -->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

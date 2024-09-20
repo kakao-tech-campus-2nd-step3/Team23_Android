@@ -1,3 +1,75 @@
 <resources>
     <string name="app_name">Jeongsan</string>
+
+    <string name="all_expense">정산 중</string>
+    <string name="all_pending">송금 대기</string>
+    <string name="all_complete">송금 완료</string>
+
+    <!-- 메인 페이지 -->
+    <string name="main_user_name_suffix">님</string>
+    <string name="main_create_group">그룹 만들기</string>
+    <string name="main_progress_group">진행중인 모임</string>
+    <string name="main_done_group">완료된 모임</string>
+
+    <!-- 지출 목록 페이지 -->
+    <string name="expenselist_total_expense_explain">총 소비 금액 :</string>
+    <string name="expenselist_my_total_expense_explain">내 총 지출 :</string>
+    <string name="expenselist_all_expense">전체</string>
+    <string name="expenselist_unconfirmed_expense">미확인 지출</string>
+    <string name="expenselist_confirmed_expense">확인 지출</string>
+
+    <!-- 지출 목록 상단 메뉴 -->
+    <string name="menu_invite_status">초대 현황</string>
+    <string name="menu_end_group">모임 종료</string>
+
+    <!-- 영수증 추가 -->
+    <string name="add_expense_header">영수증 등록 · 분석</string>
+    <string name="add_expense_description">영수증을 분석했어요.\n잘못 인식된 부분이 있다면 추가/수정해 주세요!</string>
+    <string name="add_expense_header_manual">직접 입력</string>
+    <string name="add_expense_description_manual">직접 결제 내용을 입력해주세요!</string>
+    <string name="add_expense_submit">완료</string>
+    <string name="add_expense_name">매장명</string>
+    <string name="add_expense_add_picture_text">사진 추가</string>
+
+    <string name="item_expense_name">상품명</string>
+    <string name="item_expense_price">단가</string>
+    <string name="item_expense_quantity">수량</string>
+    <string name="item_expense_selected_quantity">선택 수량</string>
+
+    <!-- 지출 상세 내역 -->
+    <string name="expense_detail_header">지출 상세 내역</string>
+    <string name="expense_detail_description">지출 내용이에요.\n내가 구매한 상품을 선택하세요!</string>
+    <string name="expense_detail_submit">선택 완료</string>
+
+    <!-- 모임 생성 페이지 -->
+    <string name="create_group_title">모임 생성</string>
+    <string name="create_group_description">모임에 친구를 추가해 보세요!</string>
+    <string name="create_group_name_menu">이름</string>
+    <string name="create_group_name_value">모임 이름</string>
+    <string name="create_group_category_menu">목적</string>
+    <string name="create_group_member_menu">멤버 추가</string>
+    <string name="create_group_add_button">+ 추가</string>
+    <string name="create_group_button">모임 생성하기</string>
+
+    <!-- 초대 현황 페이지 -->
+    <string name="invite_info_title">초대 현황</string>
+
+    <string name="item_member_info_status">초대완료</string>
+    <string name="item_member_info_button">재전송</string>
+
+    <!-- 송금 요청 금액 확인 페이지 -->
+    <string name="send_message_title">송금 요청할 금액을 확인해주세요</string>
+    <string name="send_message_menu">받을 금액 상세</string>
+    <string name="send_message_total_price_menu">합계</string>
+    <string name="send_message_total_price_value">100000원</string>
+    <string name="send_message_button">송금 요청하기</string>
+
+    <string name="item_member_expense">10000원</string>
+
+    <!-- 송금 요청 완료 페이지 -->
+    <string name="send_complete_message">송금 요청 완료!!🥳🥳🥳</string>
+
+    <!-- 멤버 아이템 -->
+    <string name="item_member_name">멤버 이름</string>
+
 </resources>
