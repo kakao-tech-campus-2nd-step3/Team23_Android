@@ -15,6 +15,5 @@ class LoginActivity : AppCompatActivity() {
         binding.loginByKakaoImagebutton.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
         }
-
     }
 }

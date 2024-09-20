@@ -1,7 +1,7 @@
 package com.kappzzang.jeongsan.ui.sendcomplete
 
-import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
 import com.kappzzang.jeongsan.databinding.ActivitySendCompleteBinding
 import nl.dionsegijn.konfetti.core.Angle
 import nl.dionsegijn.konfetti.core.Party
