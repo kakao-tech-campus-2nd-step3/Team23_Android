@@ -1,7 +1,7 @@
 package com.kappzzang.jeongsan.ui.sendcomplete
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.kappzzang.jeongsan.databinding.ActivitySendCompleteBinding
 import nl.dionsegijn.konfetti.core.Angle
 import nl.dionsegijn.konfetti.core.Party
@@ -11,6 +11,7 @@ import nl.dionsegijn.konfetti.core.emitter.Emitter
 import nl.dionsegijn.konfetti.core.models.Shape
 import nl.dionsegijn.konfetti.core.models.Size
 import java.util.concurrent.TimeUnit
+
 
 class SendCompleteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
