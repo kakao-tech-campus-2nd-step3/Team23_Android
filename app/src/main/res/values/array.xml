@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="group_category">
+        <item>일상</item>
+        <item>회식</item>
+        <item>여행</item>
+        <item>기타</item>
+    </string-array>
+</resources>

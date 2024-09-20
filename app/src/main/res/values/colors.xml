@@ -4,4 +4,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue500">#FF0D6EFD</color>
     <color name="danger">#FFDE3545</color>
+    <color name="success">#FF3BB90F</color>
+    <color name="background_base">#FFFBFAFD</color>
+    <color name="navigation_inactive">#C5C5C5</color>
+    <color name="transparent">#00000000</color>
 </resources>

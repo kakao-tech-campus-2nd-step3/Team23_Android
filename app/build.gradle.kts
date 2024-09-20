@@ -7,6 +7,10 @@ plugins {
     id("com.google.dagger.hilt.android")
 }
 
+ktlint {
+    version.set("1.3.1")
+}
+
 android {
     namespace = "com.kappzzang.jeongsan"
     compileSdk = 34
@@ -26,7 +30,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
+                "proguard-rules.pro"
             )
         }
     }
@@ -40,6 +44,7 @@ android {
 
     buildFeatures {
         dataBinding = true
+        viewBinding = true
         buildConfig = true
     }
 }
@@ -75,4 +80,9 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-intents:3.6.1")
     androidTestImplementation("com.google.dagger:hilt-android-testing:2.48.1")
     kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.48.1")
+
+    implementation("nl.dionsegijn:konfetti-xml:2.0.4")
+
+    implementation("androidx.navigation:navigation-fragment-ktx:2.8.1")
+    implementation("androidx.navigation:navigation-ui-ktx:2.8.1")
 }
