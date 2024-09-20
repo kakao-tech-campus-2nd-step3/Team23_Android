@@ -11,8 +11,8 @@ class MemberAdapter(
     val memberList: List<Member>,
     val inflater: LayoutInflater,
     val layoutId: Int
-) : RecyclerView.Adapter<MemberAdapter.MemberViewHolder>(
-) {
+) :
+    RecyclerView.Adapter<MemberAdapter.MemberViewHolder>() {
     inner class MemberViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name: TextView = itemView.findViewById(R.id.profile_name_textview)
     }
