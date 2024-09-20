@@ -1,5 +1,47 @@
 <resources>
     <string name="app_name">Jeongsan</string>
+
+    <string name="all_expense">정산 중</string>
+    <string name="all_pending">송금 대기</string>
+    <string name="all_complete">송금 완료</string>
+
+    <!-- 메인 페이지 -->
+    <string name="main_user_name_suffix">님</string>
+    <string name="main_create_group">그룹 만들기</string>
+    <string name="main_progress_group">진행중인 모임</string>
+    <string name="main_done_group">완료된 모임</string>
+
+    <!-- 지출 목록 페이지 -->
+    <string name="expenselist_total_expense_explain">총 소비 금액 :</string>
+    <string name="expenselist_my_total_expense_explain">내 총 지출 :</string>
+    <string name="expenselist_all_expense">전체</string>
+    <string name="expenselist_unconfirmed_expense">미확인 지출</string>
+    <string name="expenselist_confirmed_expense">확인 지출</string>
+
+    <!-- 지출 목록 상단 메뉴 -->
+    <string name="menu_invite_status">초대 현황</string>
+    <string name="menu_end_group">모임 종료</string>
+
+    <!-- 영수증 추가 -->
+    <string name="add_expense_header">영수증 등록 · 분석</string>
+    <string name="add_expense_description">영수증을 분석했어요.\n잘못 인식된 부분이 있다면 추가/수정해 주세요!</string>
+    <string name="add_expense_header_manual">직접 입력</string>
+    <string name="add_expense_description_manual">직접 결제 내용을 입력해주세요!</string>
+    <string name="add_expense_submit">완료</string>
+    <string name="add_expense_name">매장명</string>
+    <string name="add_expense_add_picture_text">사진 추가</string>
+
+    <string name="item_expense_name">상품명</string>
+    <string name="item_expense_price">단가</string>
+    <string name="item_expense_quantity">수량</string>
+    <string name="item_expense_selected_quantity">선택 수량</string>
+
+    <!-- 지출 상세 내역 -->
+    <string name="expense_detail_header">지출 상세 내역</string>
+    <string name="expense_detail_description">지출 내용이에요.\n내가 구매한 상품을 선택하세요!</string>
+    <string name="expense_detail_submit">선택 완료</string>
+
+    <!-- Feat/jsm-UI -->
     <string name="item_member_info_status">초대완료</string>
     <string name="item_member_info_button">재전송</string>
     <string name="send_message_title">송금 요청할 금액을 확인해주세요</string>

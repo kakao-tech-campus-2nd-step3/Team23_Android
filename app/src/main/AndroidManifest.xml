@@ -29,6 +29,21 @@
             android:name=".ui.sendmessage.SendMessageActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.expenselist.ExpenseListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:exported="false">
+        </activity>
+        <activity
+            android:windowSoftInputMode="adjustNothing"
+            android:name=".ui.addexpense.AddExpenseActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.expensedetail.ExpenseDetailActivity"
+            android:exported="true" />
+
+        <activity
             android:name=".ui.login.LoginActivity"
             android:exported="true">
             <intent-filter>

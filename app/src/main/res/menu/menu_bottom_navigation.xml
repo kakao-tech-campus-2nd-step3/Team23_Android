@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_expense"
+        android:icon="@drawable/baseline_cached_24"
+        android:title="@string/all_expense" />
+
+    <item
+        android:id="@+id/menu_pending"
+        android:icon="@drawable/baseline_more_horiz_24"
+        android:title="@string/all_pending" />
+
+    <item
+        android:id="@+id/menu_complete"
+        android:icon="@drawable/baseline_check_24"
+        android:title="@string/all_complete" />
+
+</menu>
