@@ -5,18 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.kappzzang.jeongsan.databinding.FragmentExpenseCompleteListBinding
+import com.kappzzang.jeongsan.databinding.FragmentPendingExpenseListBinding
 
-class ExpenseCompleteListFragment : Fragment() {
+class PendingExpenseListFragment : Fragment() {
 
-    private lateinit var binding: FragmentExpenseCompleteListBinding
+    private lateinit var binding: FragmentPendingExpenseListBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentExpenseCompleteListBinding.inflate(inflater, container, false)
+        binding = FragmentPendingExpenseListBinding.inflate(inflater, container, false)
         return binding.root
     }
 }
