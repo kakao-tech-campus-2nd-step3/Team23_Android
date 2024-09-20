@@ -44,6 +44,7 @@ android {
 
     buildFeatures {
         dataBinding = true
+        viewBinding = true
         buildConfig = true
     }
 }
@@ -79,4 +80,6 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-intents:3.6.1")
     androidTestImplementation("com.google.dagger:hilt-android-testing:2.48.1")
     kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.48.1")
+
+    implementation("nl.dionsegijn:konfetti-xml:2.0.4")
 }
