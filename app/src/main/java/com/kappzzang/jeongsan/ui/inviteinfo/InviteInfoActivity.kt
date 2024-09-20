@@ -1,8 +1,6 @@
 package com.kappzzang.jeongsan.ui.inviteinfo
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.R
@@ -36,9 +34,16 @@ class InviteInfoActivity : AppCompatActivity() {
             )
         }
 
-        binding.memberContentRecyclerview.adapter = MemberAdapter(members.toList(), layoutInflater, R.layout.item_member_info)
+        binding.memberContentRecyclerview.adapter =
+            MemberAdapter(
+                members.toList(),
+                layoutInflater,
+                R.layout.item_member_info
+            )
         binding.memberContentRecyclerview.layoutManager = LinearLayoutManager(
-            this, LinearLayoutManager.VERTICAL, false
+            this,
+            LinearLayoutManager.VERTICAL,
+            false
         )
     }
 }

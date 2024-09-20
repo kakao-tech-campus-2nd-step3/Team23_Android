@@ -30,14 +30,20 @@ class CreateGroupActivity : AppCompatActivity() {
 
         val category = resources.getStringArray(R.array.group_category)
 
-        binding.memberContentRecyclerview.adapter = MemberAdapter(members.toList(), layoutInflater, R.layout.item_member_invite)
+        binding.memberContentRecyclerview.adapter =
+            MemberAdapter(members.toList(), layoutInflater, R.layout.item_member_invite)
         binding.memberContentRecyclerview.layoutManager = LinearLayoutManager(
-            this, LinearLayoutManager.VERTICAL, false
+            this,
+            LinearLayoutManager.VERTICAL,
+            false
         )
 
         binding.groupCategoryContentSpinner.apply {
-            adapter = ArrayAdapter(this@CreateGroupActivity, android.R.layout.simple_spinner_dropdown_item, category)
+            adapter = ArrayAdapter(
+                this@CreateGroupActivity,
+                android.R.layout.simple_spinner_dropdown_item,
+                category
+            )
         }
     }
-
 }
