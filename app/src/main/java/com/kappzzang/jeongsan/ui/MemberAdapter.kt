@@ -7,11 +7,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.kappzzang.jeongsan.R
 
-class MemberAdapter(
-    val memberList: List<Member>,
+class MemberAdapter(val memberList: List<Member>,
     val inflater: LayoutInflater,
-    val layoutId: Int
-) :
+    val layoutId: Int) :
     RecyclerView.Adapter<MemberAdapter.MemberViewHolder>() {
     inner class MemberViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name: TextView = itemView.findViewById(R.id.profile_name_textview)
