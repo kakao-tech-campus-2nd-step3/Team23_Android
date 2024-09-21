@@ -1,6 +1,7 @@
 package com.kappzzang.jeongsan.ui.inviteinfo
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +22,7 @@ class InviteInfoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityInviteInfoBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setRecyclerView()
 
         val dm = applicationContext.resources.displayMetrics
         val width = (dm.widthPixels * 0.9).toInt()
@@ -53,5 +55,17 @@ class InviteInfoActivity : AppCompatActivity() {
             LinearLayoutManager.VERTICAL,
             false
         )
+    }
+
+    private fun setRecyclerView() {
+        binding.memberContentRecyclerview.apply {
+            adapter = MemberAdapter(
+                listOf(),
+                layoutInflater,
+                R.layout.item_member_info
+            )
+        }
+        viewModel.inviteInfo.observe(this) {
+        }
     }
 }

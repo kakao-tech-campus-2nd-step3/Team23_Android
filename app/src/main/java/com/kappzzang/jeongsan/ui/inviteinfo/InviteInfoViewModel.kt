@@ -19,6 +19,12 @@ class InviteInfoViewModel @Inject constructor(
     val inviteInfo: LiveData<List<MemberItem>>
         get() = _inviteInfo
 
+    init {
+        viewModelScope.launch {
+            getInviteInfoUseCase.insertDummyData()
+        }
+    }
+
     fun getInviteInfo() {
         viewModelScope.launch {
             _inviteInfo.postValue(getInviteInfoUseCase.invoke())
