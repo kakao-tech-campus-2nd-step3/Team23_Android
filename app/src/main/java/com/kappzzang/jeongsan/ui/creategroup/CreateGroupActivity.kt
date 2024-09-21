@@ -16,12 +16,12 @@ class CreateGroupActivity : AppCompatActivity() {
         val binding = ActivityCreateGroupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val members = mutableListOf<MemberItem>()
-//        for (i in 0..10) {
-//            members.add(
-//                Member("Member$i")
-//            )
-//        }
+        val members = mutableListOf<Member>()
+        for (i in 0..10) {
+            members.add(
+                Member("Member$i")
+            )
+        }
 
         val category = resources.getStringArray(R.array.group_category)
 

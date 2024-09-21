@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kappzzang.jeongsan.R
 import com.kappzzang.jeongsan.domain.model.MemberItem
 
-class MemberAdapter(var memberList: List<MemberItem>, val inflater: LayoutInflater, val layoutId: Int) :
+class MemberAdapter(var memberList: List<Member>, val inflater: LayoutInflater, val layoutId: Int) :
     RecyclerView.Adapter<MemberAdapter.MemberViewHolder>() {
     inner class MemberViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name: TextView = itemView.findViewById(R.id.profile_name_textview)
@@ -24,9 +24,4 @@ class MemberAdapter(var memberList: List<MemberItem>, val inflater: LayoutInflat
     }
 
     override fun getItemCount(): Int = memberList.size
-
-    fun setData(newMemberList: List<MemberItem>) {
-        memberList = newMemberList
-        notifyDataSetChanged()
-    }
 }

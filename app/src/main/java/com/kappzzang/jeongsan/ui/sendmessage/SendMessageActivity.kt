@@ -21,12 +21,12 @@ class SendMessageActivity : AppCompatActivity() {
             startActivity(Intent(this, SendCompleteActivity::class.java))
         }
 
-        val members = mutableListOf<MemberItem>()
-//        for (i in 0..3) {
-//            members.add(
-//                Member("Member$i")
-//            )
-//        }
+        val members = mutableListOf<Member>()
+        for (i in 0..3) {
+            members.add(
+                Member("Member$i")
+            )
+        }
         binding.infoContentRecyclerview.apply {
             adapter = MemberAdapter(members.toList(), layoutInflater, R.layout.item_member)
             layoutManager = LinearLayoutManager(
