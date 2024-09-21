@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.R
 import com.kappzzang.jeongsan.databinding.ActivityCreateGroupBinding
+import com.kappzzang.jeongsan.domain.model.MemberItem
 import com.kappzzang.jeongsan.ui.Member
 import com.kappzzang.jeongsan.ui.MemberAdapter
 
@@ -15,12 +16,12 @@ class CreateGroupActivity : AppCompatActivity() {
         val binding = ActivityCreateGroupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val members = mutableListOf<Member>()
-        for (i in 0..10) {
-            members.add(
-                Member("Member$i")
-            )
-        }
+        val members = mutableListOf<MemberItem>()
+//        for (i in 0..10) {
+//            members.add(
+//                Member("Member$i")
+//            )
+//        }
 
         val category = resources.getStringArray(R.array.group_category)
 

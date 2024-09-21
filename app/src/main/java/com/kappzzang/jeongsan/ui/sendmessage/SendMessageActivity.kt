@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.R
 import com.kappzzang.jeongsan.databinding.ActivitySendMessageBinding
+import com.kappzzang.jeongsan.domain.model.MemberItem
 import com.kappzzang.jeongsan.ui.Member
 import com.kappzzang.jeongsan.ui.MemberAdapter
 import com.kappzzang.jeongsan.ui.sendcomplete.SendCompleteActivity
@@ -20,12 +21,12 @@ class SendMessageActivity : AppCompatActivity() {
             startActivity(Intent(this, SendCompleteActivity::class.java))
         }
 
-        val members = mutableListOf<Member>()
-        for (i in 0..3) {
-            members.add(
-                Member("Member$i")
-            )
-        }
+        val members = mutableListOf<MemberItem>()
+//        for (i in 0..3) {
+//            members.add(
+//                Member("Member$i")
+//            )
+//        }
         binding.infoContentRecyclerview.apply {
             adapter = MemberAdapter(members.toList(), layoutInflater, R.layout.item_member)
             layoutManager = LinearLayoutManager(

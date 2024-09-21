@@ -36,36 +36,21 @@ class InviteInfoActivity : AppCompatActivity() {
         binding.closeImageview.setOnClickListener {
             finish()
         }
-
-        val members = mutableListOf<Member>()
-        for (i in 0..10) {
-            members.add(
-                Member("Member$i")
-            )
-        }
-
-        binding.memberContentRecyclerview.adapter =
-            MemberAdapter(
-                members.toList(),
-                layoutInflater,
-                R.layout.item_member_info
-            )
-        binding.memberContentRecyclerview.layoutManager = LinearLayoutManager(
-            this,
-            LinearLayoutManager.VERTICAL,
-            false
-        )
     }
 
     private fun setRecyclerView() {
         binding.memberContentRecyclerview.apply {
-            adapter = MemberAdapter(
-                listOf(),
-                layoutInflater,
-                R.layout.item_member_info
+            val adapter = MemberInfoAdapter()
+            this.adapter = adapter
+            layoutManager = LinearLayoutManager(
+                this@InviteInfoActivity,
+                LinearLayoutManager.VERTICAL,
+                false
             )
-        }
-        viewModel.inviteInfo.observe(this) {
+            viewModel.inviteInfo.observe(this@InviteInfoActivity) {
+                adapter.submitList(it)
+            }
+            viewModel.getInviteInfo()
         }
     }
 }
