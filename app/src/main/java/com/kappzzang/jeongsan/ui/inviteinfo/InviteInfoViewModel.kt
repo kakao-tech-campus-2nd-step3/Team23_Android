@@ -20,6 +20,7 @@ class InviteInfoViewModel @Inject constructor(
         get() = _inviteInfo
 
     init {
+        // 더미 데이터 삽입
         viewModelScope.launch {
             getInviteInfoUseCase.insertDummyData()
         }
