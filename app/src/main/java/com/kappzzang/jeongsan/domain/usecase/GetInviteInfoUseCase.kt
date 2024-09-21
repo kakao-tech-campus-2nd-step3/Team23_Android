@@ -8,6 +8,6 @@ class GetInviteInfoUseCase(
     private val memberRepository: MemberRepository
 ) {
     suspend operator fun invoke(): List<MemberItem> {
-        return listOf<MemberItem>()
+        return memberRepository.getAllMember()
     }
 }
