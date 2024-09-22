@@ -27,12 +27,8 @@ class MainActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
 
         setGroupListRecyclerView()
+        setCreateGroupButton()
         observeViewModel()
-
-        // TODO: 임시 연결용 코드
-        binding.createGroupButton.setOnClickListener {
-            startActivity(Intent(this, CreateGroupActivity::class.java))
-        }
     }
 
     private fun setGroupListRecyclerView() {
@@ -40,6 +36,13 @@ class MainActivity : AppCompatActivity() {
         binding.groupListRecyclerview.apply {
             adapter = groupListAdapter
             layoutManager = LinearLayoutManager(this@MainActivity)
+        }
+    }
+
+    private fun setCreateGroupButton() {
+        // TODO: 이후 Jetpack Navigation을 사용하여 화면 전환
+        binding.createGroupButton.setOnClickListener {
+            startActivity(Intent(this, CreateGroupActivity::class.java))
         }
     }
 
