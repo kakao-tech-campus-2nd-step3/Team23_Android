@@ -32,8 +32,38 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="그룹 이름" />
 
-        <!-- TODO: 그룹원의 프로필 사진이 겹치면서 보여지는 레이아웃 구현
-        참고: https://selfish-developer.com/entry/%EA%B2%B9%EC%B9%98%EB%8A%94-recyclerview-%EB%A7%8C%EB%93%A4%EA%B8%B0 -->
+        <ImageView
+            android:id="@+id/profile0_imageview"
+            android:layout_width="@dimen/main_group_profile_image_size"
+            android:layout_height="@dimen/main_group_profile_image_size"
+            android:layout_marginEnd="16dp"
+            android:elevation="3dp"
+            android:background="@drawable/main_circle_image_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/profile1_imageview"
+            android:layout_width="@dimen/main_group_profile_image_size"
+            android:layout_height="@dimen/main_group_profile_image_size"
+            android:layout_marginEnd="32dp"
+            android:elevation="2dp"
+            android:background="@drawable/main_circle_image_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/profile2_imageview"
+            android:layout_width="@dimen/main_group_profile_image_size"
+            android:layout_height="@dimen/main_group_profile_image_size"
+            android:layout_marginEnd="48dp"
+            android:elevation="1dp"
+            android:background="@drawable/main_circle_image_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
