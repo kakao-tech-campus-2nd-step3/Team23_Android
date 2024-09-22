@@ -4,7 +4,7 @@ import com.kappzzang.jeongsan.domain.repository.GroupInfoRepository
 import com.kappzzang.jeongsan.domain.repository.UserInfoRepository
 import com.kappzzang.jeongsan.domain.usecase.GetDoneGroupUseCase
 import com.kappzzang.jeongsan.domain.usecase.GetProgressingGroupUseCase
-import com.kappzzang.jeongsan.domain.usecase.GetUserNameUseCase
+import com.kappzzang.jeongsan.domain.usecase.GetUserInfoUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,6 +23,6 @@ object UseCaseModule {
         GetDoneGroupUseCase(groupInfoRepository)
 
     @Provides
-    fun provideGetUserNameUseCase(userInfoRepository: UserInfoRepository) =
-        GetUserNameUseCase(userInfoRepository)
+    fun provideGetUserInfoUseCase(userInfoRepository: UserInfoRepository) =
+        GetUserInfoUseCase(userInfoRepository)
 }
