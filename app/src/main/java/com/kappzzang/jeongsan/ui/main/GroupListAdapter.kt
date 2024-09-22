@@ -25,13 +25,15 @@ class GroupListAdapter : ListAdapter<GroupViewItem, RecyclerView.ViewHolder>(dif
     inner class GroupViewHolder(private val binding: ItemMainGroupBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
-            // TODO: 임시 연결용 코드
+            // TODO: 이후 Jetpack Navigation을 사용하여 화면 전환
             binding.root.setOnClickListener {
-                startActivity(
-                    binding.root.context,
-                    Intent(binding.root.context, ExpenseListActivity::class.java),
-                    null
-                )
+                val intent = Intent(binding.root.context, ExpenseListActivity::class.java)
+                currentList[bindingAdapterPosition].let { currentViewItem ->
+                    if (currentViewItem is GroupViewItem.Group) {
+                        intent.putExtra("groupId", currentViewItem.groupItem.id)
+                    }
+                }
+                startActivity(binding.root.context, intent, null)
             }
         }
 
