@@ -2,25 +2,32 @@ package com.kappzzang.jeongsan.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.databinding.ActivityMainBinding
-import com.kappzzang.jeongsan.domain.model.GroupItem
 import com.kappzzang.jeongsan.ui.creategroup.CreateGroupActivity
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityMainBinding
+    private val viewModel: GroupInfoViewModel by viewModels()
+    private lateinit var groupListAdapter: GroupListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setGroupListRecyclerView()
+        observeViewModel()
+
         // 임시 ui 코드
         binding.userNameTextview.text = "라이언"
-
-        binding.groupListRecyclerview.adapter = GroupListAdapter(createDemoGroupItemList())
-        binding.groupListRecyclerview.layoutManager = LinearLayoutManager(this)
 
         // TODO: 임시 연결용 코드
         binding.createGroupButton.setOnClickListener {
@@ -28,23 +35,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun createDemoGroupItemList(): List<GroupViewItem> = listOf(
-        GroupViewItem.ProgressTitle,
-        GroupViewItem.Group(GroupItem("1", "캡짱모임", false, listOf(TEST_IMAGE))),
-        GroupViewItem.DoneTitle,
-        GroupViewItem.Group(GroupItem("2", "모임 1", true, listOf(TEST_IMAGE))),
-        GroupViewItem.Group(GroupItem("3", "모임 2", true, listOf(TEST_IMAGE, TEST_IMAGE))),
-        GroupViewItem.Group(
-            GroupItem(
-                "4",
-                "모임 3",
-                true,
-                listOf(TEST_IMAGE, TEST_IMAGE, TEST_IMAGE)
-            )
-        )
-    )
+    private fun setGroupListRecyclerView() {
+        groupListAdapter = GroupListAdapter()
+        binding.groupListRecyclerview.apply {
+            adapter = groupListAdapter
+            layoutManager = LinearLayoutManager(this@MainActivity)
+        }
+    }
 
-    companion object {
-        private const val TEST_IMAGE = "https://www.studiopeople.kr/common/img/default_profile.png"
+    private fun observeViewModel() {
+        lifecycleScope.launch {
+            viewModel.groupList.collect { groupList ->
+                groupListAdapter.submitList(groupList)
+            }
+        }
     }
 }
