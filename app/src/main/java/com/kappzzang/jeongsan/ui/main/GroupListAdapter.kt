@@ -33,13 +33,13 @@ class GroupListAdapter(private val groupItemList: List<GroupViewItem>) :
         }
 
         fun bind(groupViewItem: GroupViewItem) {
-            binding.groupItem = groupViewItem
+            binding.groupItem = (groupViewItem as GroupViewItem.Group).groupItem
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         when (viewType) {
-            GroupViewType.PROGRESS_TITLE.ordinal -> {
+            ViewType.PROGRESS_TITLE -> {
                 val binding = ItemMainProgressTitleBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
@@ -48,7 +48,7 @@ class GroupListAdapter(private val groupItemList: List<GroupViewItem>) :
                 ProgressTitleViewHolder(binding)
             }
 
-            GroupViewType.DONE_TITLE.ordinal -> {
+            ViewType.DONE_TITLE -> {
                 val binding = ItemMainDoneTitleBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
@@ -57,20 +57,32 @@ class GroupListAdapter(private val groupItemList: List<GroupViewItem>) :
                 DoneTitleViewHolder(binding)
             }
 
-            else -> {
+            ViewType.GROUP -> {
                 val binding =
                     ItemMainGroupBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 GroupViewHolder(binding)
             }
+
+            else -> throw IllegalArgumentException("Invalid view type")
         }
 
     override fun getItemCount(): Int = groupItemList.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is GroupViewHolder) {
-            holder.bind(groupItemList[position])
+        if (groupItemList[position] is GroupViewItem.Group) {
+            (holder as GroupViewHolder).bind(groupItemList[position])
         }
     }
 
-    override fun getItemViewType(position: Int): Int = groupItemList[position].type.ordinal
+    override fun getItemViewType(position: Int): Int = when (groupItemList[position]) {
+        is GroupViewItem.ProgressTitle -> ViewType.PROGRESS_TITLE
+        is GroupViewItem.DoneTitle -> ViewType.DONE_TITLE
+        is GroupViewItem.Group -> ViewType.GROUP
+    }
+
+    object ViewType {
+        const val PROGRESS_TITLE = 0
+        const val DONE_TITLE = 1
+        const val GROUP = 2
+    }
 }

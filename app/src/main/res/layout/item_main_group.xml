@@ -7,7 +7,7 @@
 
         <variable
             name="groupItem"
-            type="com.kappzzang.jeongsan.ui.main.GroupViewItem" />
+            type="com.kappzzang.jeongsan.domain.model.GroupItem" />
 
     </data>
 
