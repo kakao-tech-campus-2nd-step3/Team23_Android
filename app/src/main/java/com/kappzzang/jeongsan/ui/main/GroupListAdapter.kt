@@ -4,7 +4,9 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat.startActivity
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.kappzzang.jeongsan.databinding.ItemMainDoneTitleBinding
 import com.kappzzang.jeongsan.databinding.ItemMainGroupBinding
 import com.kappzzang.jeongsan.databinding.ItemMainProgressTitleBinding
@@ -34,6 +36,23 @@ class GroupListAdapter(private val groupItemList: List<GroupViewItem>) :
 
         fun bind(groupViewItem: GroupViewItem) {
             binding.groupItem = (groupViewItem as GroupViewItem.Group).groupItem
+
+            val profileImageViewList = listOf(
+                binding.profile0Imageview,
+                binding.profile1Imageview,
+                binding.profile2Imageview
+            )
+
+            for (i in 0..2) {
+                if (i < groupViewItem.groupItem.profileImageURL.size) {
+                    Glide.with(binding.root)
+                        .load(groupViewItem.groupItem.profileImageURL[i])
+                        .circleCrop()
+                        .into(profileImageViewList[i])
+                } else {
+                    profileImageViewList[i].isVisible = false
+                }
+            }
         }
     }
 

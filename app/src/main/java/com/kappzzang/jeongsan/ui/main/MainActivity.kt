@@ -30,10 +30,21 @@ class MainActivity : AppCompatActivity() {
 
     private fun createDemoGroupItemList(): List<GroupViewItem> = listOf(
         GroupViewItem.ProgressTitle,
-        GroupViewItem.Group(GroupItem("1", "캡짱모임", false, listOf())),
+        GroupViewItem.Group(GroupItem("1", "캡짱모임", false, listOf(TEST_IMAGE))),
         GroupViewItem.DoneTitle,
-        GroupViewItem.Group(GroupItem("2", "모임 이름 1", true, listOf())),
-        GroupViewItem.Group(GroupItem("3", "모임 이름 2", true, listOf())),
-        GroupViewItem.Group(GroupItem("4", "모임 이름 3", true, listOf()))
+        GroupViewItem.Group(GroupItem("2", "모임 1", true, listOf(TEST_IMAGE))),
+        GroupViewItem.Group(GroupItem("3", "모임 2", true, listOf(TEST_IMAGE, TEST_IMAGE))),
+        GroupViewItem.Group(
+            GroupItem(
+                "4",
+                "모임 3",
+                true,
+                listOf(TEST_IMAGE, TEST_IMAGE, TEST_IMAGE)
+            )
+        )
     )
+
+    companion object {
+        private const val TEST_IMAGE = "https://www.studiopeople.kr/common/img/default_profile.png"
+    }
 }
