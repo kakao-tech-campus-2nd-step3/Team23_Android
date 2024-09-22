@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.domain.usecase.GetDoneGroupUseCase
 import com.kappzzang.jeongsan.domain.usecase.GetProgressingGroupUseCase
-import com.kappzzang.jeongsan.domain.usecase.GetUserNameUseCase
+import com.kappzzang.jeongsan.domain.usecase.GetUserInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,11 +15,14 @@ import kotlinx.coroutines.launch
 class GroupInfoViewModel @Inject constructor(
     private val getProgressingGroupUseCase: GetProgressingGroupUseCase,
     private val getDoneGroupUseCase: GetDoneGroupUseCase,
-    private val getUserNameUseCase: GetUserNameUseCase
+    private val getUserInfoUseCase: GetUserInfoUseCase
 ) : ViewModel() {
 
     private val _userName = MutableStateFlow("")
     val userName: StateFlow<String> = _userName
+
+    private val _userProfileUrl = MutableStateFlow("")
+    val userProfileUrl: StateFlow<String> = _userProfileUrl
 
     private val _groupList = MutableStateFlow<List<GroupViewItem>>(emptyList())
     val groupList: StateFlow<List<GroupViewItem>> = _groupList
@@ -31,7 +34,9 @@ class GroupInfoViewModel @Inject constructor(
 
     private fun loadUserName() {
         viewModelScope.launch {
-            _userName.value = getUserNameUseCase()
+            val userInfo = getUserInfoUseCase()
+            _userName.value = userInfo.name
+            _userProfileUrl.value = userInfo.profileUrl
         }
     }
 

@@ -6,6 +6,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.kappzzang.jeongsan.databinding.ActivityMainBinding
 import com.kappzzang.jeongsan.ui.creategroup.CreateGroupActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,15 +23,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
         setGroupListRecyclerView()
         observeViewModel()
-
-        // 임시 ui 코드
-        binding.userNameTextview.text = "라이언"
 
         // TODO: 임시 연결용 코드
         binding.createGroupButton.setOnClickListener {
@@ -50,6 +47,15 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             viewModel.groupList.collect { groupList ->
                 groupListAdapter.submitList(groupList)
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.userProfileUrl.collect { userProfileUrl ->
+                Glide.with(this@MainActivity)
+                    .load(userProfileUrl)
+                    .circleCrop()
+                    .into(binding.profileImageImageview)
             }
         }
     }

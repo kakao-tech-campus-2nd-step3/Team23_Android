@@ -5,6 +5,7 @@
     tools:context=".ui.main.MainActivity">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.kappzzang.jeongsan.ui.main.GroupInfoViewModel" />
@@ -21,6 +22,8 @@
             android:layout_width="@dimen/main_profile_image_size"
             android:layout_height="@dimen/main_profile_image_size"
             android:layout_margin="@dimen/main_margin"
+            android:background="@drawable/main_circle_image_background"
+            android:padding="1dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
