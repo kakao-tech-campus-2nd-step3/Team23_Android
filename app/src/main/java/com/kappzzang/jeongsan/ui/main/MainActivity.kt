@@ -26,6 +26,9 @@ class MainActivity : AppCompatActivity() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
+
         setGroupListRecyclerView()
         setCreateGroupButton()
         observeViewModel()
