@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kappzzang.jeongsan.databinding.ItemMainDoneTitleBinding
@@ -12,8 +14,7 @@ import com.kappzzang.jeongsan.databinding.ItemMainGroupBinding
 import com.kappzzang.jeongsan.databinding.ItemMainProgressTitleBinding
 import com.kappzzang.jeongsan.ui.expenselist.ExpenseListActivity
 
-class GroupListAdapter(private val groupItemList: List<GroupViewItem>) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class GroupListAdapter : ListAdapter<GroupViewItem, RecyclerView.ViewHolder>(diffUtil) {
 
     inner class ProgressTitleViewHolder(binding: ItemMainProgressTitleBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -85,15 +86,13 @@ class GroupListAdapter(private val groupItemList: List<GroupViewItem>) :
             else -> throw IllegalArgumentException("Invalid view type")
         }
 
-    override fun getItemCount(): Int = groupItemList.size
-
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (groupItemList[position] is GroupViewItem.Group) {
-            (holder as GroupViewHolder).bind(groupItemList[position])
+        if (currentList[position] is GroupViewItem.Group) {
+            (holder as GroupViewHolder).bind(currentList[position])
         }
     }
 
-    override fun getItemViewType(position: Int): Int = when (groupItemList[position]) {
+    override fun getItemViewType(position: Int): Int = when (currentList[position]) {
         is GroupViewItem.ProgressTitle -> ViewType.PROGRESS_TITLE
         is GroupViewItem.DoneTitle -> ViewType.DONE_TITLE
         is GroupViewItem.Group -> ViewType.GROUP
@@ -103,5 +102,17 @@ class GroupListAdapter(private val groupItemList: List<GroupViewItem>) :
         const val PROGRESS_TITLE = 0
         const val DONE_TITLE = 1
         const val GROUP = 2
+    }
+
+    companion object {
+        val diffUtil = object : DiffUtil.ItemCallback<GroupViewItem>() {
+            override fun areItemsTheSame(oldItem: GroupViewItem, newItem: GroupViewItem): Boolean =
+                oldItem == newItem
+
+            override fun areContentsTheSame(
+                oldItem: GroupViewItem,
+                newItem: GroupViewItem
+            ): Boolean = oldItem == newItem
+        }
     }
 }
