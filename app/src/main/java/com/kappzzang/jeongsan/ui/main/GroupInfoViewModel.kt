@@ -28,11 +28,11 @@ class GroupInfoViewModel @Inject constructor(
     val groupList: StateFlow<List<GroupViewItem>> = _groupList
 
     init {
-        loadUserName()
+        loadUserInfo()
         loadGroupList()
     }
 
-    private fun loadUserName() {
+    private fun loadUserInfo() {
         viewModelScope.launch {
             val userInfo = getUserInfoUseCase()
             _userName.value = userInfo.name
