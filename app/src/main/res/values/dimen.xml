@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="all_header_text_size"> 25sp </dimen>
+    <dimen name="all_header_margin"> 27dp </dimen>
+    <dimen name="all_sub_header_text_size"> 16sp </dimen>
+    <dimen name="all_description_text_size"> 13sp </dimen>
+    <dimen name="all_container_corner_radius"> 15dp </dimen>
+    <dimen name="all_container_elevation"> 3dp </dimen>
+
+    <dimen name="all_bottom_button_margin_bottom"> 22dp </dimen>>
+    <dimen name="all_bottom_button_margin_horizontal"> 24dp </dimen>
+    <dimen name="all_bottom_button_text_size"> 20sp </dimen>
+
+    <dimen name="all_layout_padding"> 30dp </dimen>
+    <dimen name="all_bottom_button_height"> 50dp </dimen>
+
+    <!-- 영수증 추가 -->
+    <dimen name="add_expense_item_name_bias"> 0.45 </dimen>
+    <dimen name="add_expense_item_price_bias"> 0.2 </dimen>
+    <dimen name="add_expense_item_quantity_bias"> 0.12 </dimen>
+    <dimen name="add_expense_item_button_size"> 30dp </dimen>
+
+    <!-- 지출 상세 내역 -->
+    <dimen name="expense_detail_checkbox_width"> 30dp </dimen>
+    <dimen name="expense_detail_item_name_bias"> 0.3 </dimen>
+    <dimen name="expense_detail_item_price_bias"> 0.15 </dimen>
+    <dimen name="expense_detail_item_quantity_bias"> 0.12 </dimen>
+    <dimen name="expense_detail_item_selected_quantity_bias"> 0.2 </dimen>
+
+    <!-- 메인 페이지 -->
+    <dimen name="main_profile_image_size"> 48dp </dimen>
+    <dimen name="main_margin"> 24dp </dimen>
+    <dimen name="main_title_text_size"> 30sp </dimen>
+
+    <!-- 지출 내역 리스트 -->
+    <dimen name="expense_list_margin"> 24dp </dimen>
+    <dimen name="expense_list_title_text_size"> 30sp </dimen>
+    <dimen name="expense_list_subtitle_text_size"> 22sp </dimen>
+    <dimen name="expense_list_dropdown_button_size"> 48dp </dimen>
+    <dimen name="expense_list_fab_size"> 56dp </dimen>
+    <dimen name="expense_list_fab_margin"> 16dp </dimen>
+    <dimen name="expense_list_fragment_title"> 16sp </dimen>
+    <dimen name="expense_list_fragment_title_start_margin"> 12sp </dimen>
+    <dimen name="expense_list_fragment_title_top_margin"> 24sp </dimen>
+
+    <!-- 초대 현황 페이지 -->
+    <dimen name="invite_info_close_width"> 50dp </dimen>
+
+    <!-- 모임 생성 페이지 -->
+    <dimen name="create_group_menu_text_size"> 20sp </dimen>
+    <dimen name="create_group_add_button_width"> 60dp </dimen>
+
+    <!-- 초대 현황 페이지 -->
+    <dimen name="invite_info_padding"> 10dp </dimen>
+
+    <!-- 로그인 페이지 -->
+    <dimen name="login_kakao_button_width"> 300dp </dimen>
+
+    <!-- 송금 요청 완료 페이지 -->
+    <dimen name="send_complete_text_size"> 30sp </dimen>
+
+    <!-- 송금 요청 금액 확인 페이지 -->
+    <dimen name="send_message_line_height"> 3dp </dimen>
+    <dimen name="send_message_menu_text_size"> 20sp </dimen>
+</resources>
