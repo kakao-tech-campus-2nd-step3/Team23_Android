@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class GroupInfoViewModel @Inject constructor(
+class MainPageViewModel @Inject constructor(
     private val getProgressingGroupUseCase: GetProgressingGroupUseCase,
     private val getDoneGroupUseCase: GetDoneGroupUseCase,
     private val getUserInfoUseCase: GetUserInfoUseCase

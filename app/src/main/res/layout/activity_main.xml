@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.kappzzang.jeongsan.ui.main.GroupInfoViewModel" />
+            type="com.kappzzang.jeongsan.ui.main.MainPageViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

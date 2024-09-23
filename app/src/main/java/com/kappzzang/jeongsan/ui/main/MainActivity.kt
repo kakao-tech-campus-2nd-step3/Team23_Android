@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val viewModel: GroupInfoViewModel by viewModels()
+    private val viewModel: MainPageViewModel by viewModels()
     private lateinit var groupListAdapter: GroupListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
