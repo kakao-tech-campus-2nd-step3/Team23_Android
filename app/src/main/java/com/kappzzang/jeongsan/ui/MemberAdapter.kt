@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.kappzzang.jeongsan.R
-import com.kappzzang.jeongsan.domain.model.MemberItem
 
 class MemberAdapter(var memberList: List<Member>, val inflater: LayoutInflater, val layoutId: Int) :
     RecyclerView.Adapter<MemberAdapter.MemberViewHolder>() {

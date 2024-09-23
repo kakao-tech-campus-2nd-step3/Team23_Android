@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.R
 import com.kappzzang.jeongsan.databinding.ActivityCreateGroupBinding
-import com.kappzzang.jeongsan.domain.model.MemberItem
 import com.kappzzang.jeongsan.ui.Member
 import com.kappzzang.jeongsan.ui.MemberAdapter
 

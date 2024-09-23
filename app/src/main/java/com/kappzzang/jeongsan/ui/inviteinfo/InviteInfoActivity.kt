@@ -50,7 +50,6 @@ class InviteInfoActivity : AppCompatActivity() {
     }
 
     // 추후 setRecyclerView함수에서 그룹원 조회를 위해 intent에서 Id를 받아오는 함수
-    private fun getGroupId(): String? {
-        return intent.getStringExtra("groupId")
-    }
+    private fun getGroupId(): String? =
+        intent.getStringExtra("groupId")
 }
