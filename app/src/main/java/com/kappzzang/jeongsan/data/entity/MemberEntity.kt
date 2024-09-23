@@ -11,14 +11,12 @@ class MemberEntity(
     @PrimaryKey val id: String,
     @ColumnInfo(MemberContract.MemberEntry.COLUMN_NAME) val name: String,
     @ColumnInfo(MemberContract.MemberEntry.COLUMN_PROFILE_IMAGE_URL) val profileImageUrl: String,
-    @ColumnInfo(MemberContract.MemberEntry.COLUMN_IS_INVITED) val isInvited: Boolean,
+    @ColumnInfo(MemberContract.MemberEntry.COLUMN_IS_INVITED) val isInvited: Boolean
 )
 
-fun MemberEntity.toVO() : MemberItem {
-    return MemberItem(
+fun MemberEntity.toVO(): MemberItem = MemberItem(
         id,
         name,
         profileImageUrl,
         isInvited
     )
-}

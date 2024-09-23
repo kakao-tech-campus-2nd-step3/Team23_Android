@@ -17,13 +17,9 @@ object RoomModule {
 
     @Provides
     @Singleton
-    fun provideMemberDatabase(
-        @ApplicationContext context: Context
-    ): MemberDatabase {
-        return Room.databaseBuilder(
+    fun provideMemberDatabase(@ApplicationContext context: Context): MemberDatabase = Room.databaseBuilder(
             context,
             MemberDatabase::class.java,
             MemberContract.DATABASE_NAME
         ).build()
-    }
 }
