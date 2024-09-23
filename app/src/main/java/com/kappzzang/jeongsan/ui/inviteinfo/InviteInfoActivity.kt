@@ -1,16 +1,11 @@
 package com.kappzzang.jeongsan.ui.inviteinfo
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.kappzzang.jeongsan.R
 import com.kappzzang.jeongsan.databinding.ActivityInviteInfoBinding
-import com.kappzzang.jeongsan.ui.Member
-import com.kappzzang.jeongsan.ui.MemberAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class InviteInfoActivity : AppCompatActivity() {

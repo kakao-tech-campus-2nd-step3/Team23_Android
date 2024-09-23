@@ -12,5 +12,7 @@ import dagger.hilt.components.SingletonComponent
 object UseCaseModule {
 
     @Provides
-    fun provideGetInviteInfoUseCase(memberRepository: MemberRepository): GetInviteInfoUseCase = GetInviteInfoUseCase(memberRepository)
+    fun provideGetInviteInfoUseCase(
+        memberRepository: MemberRepository
+    ): GetInviteInfoUseCase = GetInviteInfoUseCase(memberRepository)
 }

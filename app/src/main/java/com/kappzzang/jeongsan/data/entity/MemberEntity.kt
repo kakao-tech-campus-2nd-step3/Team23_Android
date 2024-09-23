@@ -15,8 +15,8 @@ class MemberEntity(
 )
 
 fun MemberEntity.toVO(): MemberItem = MemberItem(
-        id,
-        name,
-        profileImageUrl,
-        isInvited
-    )
+    id,
+    name,
+    profileImageUrl,
+    isInvited
+)

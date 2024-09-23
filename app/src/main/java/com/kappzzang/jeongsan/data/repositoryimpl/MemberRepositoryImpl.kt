@@ -18,8 +18,8 @@ class MemberRepositoryImpl @Inject constructor(private val memberDatabase: Membe
     }
 
     override suspend fun getAllMember(): List<MemberItem> = withContext(Dispatchers.IO) {
-            memberDatabase.getMemberDao().getAllMember().map { it.toVO() }
-        }
+        memberDatabase.getMemberDao().getAllMember().map { it.toVO() }
+    }
 
     private fun MemberItem.toEntity() = MemberEntity(
         id,

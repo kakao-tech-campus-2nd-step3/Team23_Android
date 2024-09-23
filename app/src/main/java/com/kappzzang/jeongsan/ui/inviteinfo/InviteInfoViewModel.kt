@@ -5,11 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.domain.model.MemberItem
-import com.kappzzang.jeongsan.domain.repository.MemberRepository
 import com.kappzzang.jeongsan.domain.usecase.GetInviteInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class InviteInfoViewModel @Inject constructor(
