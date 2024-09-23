@@ -23,6 +23,7 @@ class GroupInfoRepositoryImpl @Inject constructor(private val groupDatabase: Gro
         entity.id.toString(),
         entity.name,
         entity.isCompleted,
+        entity.subject,
         if (entity.memberProfileImage == "") emptyList() else listOf(entity.memberProfileImage)
     )
 }
