@@ -5,19 +5,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.databinding.FragmentExpenseListBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ExpenseListFragment : Fragment() {
-
+    private val viewModel:ExpenseListViewModel by activityViewModels()
     private lateinit var binding: FragmentExpenseListBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentExpenseListBinding.inflate(inflater, container, false)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = activity
         return binding.root
     }
 
@@ -25,11 +30,8 @@ class ExpenseListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // UI 확인을 위한 임시 코드
-        binding.expenseListRecyclerview.adapter = ExpenseListAdapter(createDemoExpenseItemList())
+        binding.expenseListRecyclerview.adapter = ExpenseListAdapter()
         binding.expenseListRecyclerview.layoutManager = LinearLayoutManager(this.context)
-    }
-
-    private fun createDemoExpenseItemList(): List<ExpenseViewItem> = (1..9).map { i ->
-        ExpenseViewItem("정산 중인 내역 $i", "$i,000원", "2024.09.0$i", "#FF0000")
+        viewModel.clickOnlyNotConfirmedExpensesChipButton()
     }
 }

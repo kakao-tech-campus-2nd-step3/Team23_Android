@@ -5,8 +5,11 @@
 
     <data>
         <variable
+            name="expenseDate"
+            type="String" />
+        <variable
             name="expenseItem"
-            type="com.kappzzang.jeongsan.ui.expenselist.ExpenseViewItem" />
+            type="com.kappzzang.jeongsan.domain.model.ExpenseItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
-            android:text="@{expenseItem.expenseName}"
+            android:text="@{expenseItem.name}"
             android:textSize="@dimen/all_header_text_size"
             app:layout_constraintStart_toEndOf="@id/category_color_view"
             app:layout_constraintTop_toTopOf="parent"
@@ -42,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="12dp"
-            android:text="@{expenseItem.expenseDate}"
+            android:text="@{expenseDate}"
             android:textSize="@dimen/all_description_text_size"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/category_color_view"
@@ -53,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:text="@{expenseItem.expensePrice}"
+            android:text="@{expenseItem.price+`원`}"
             android:textSize="@dimen/all_header_text_size"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
