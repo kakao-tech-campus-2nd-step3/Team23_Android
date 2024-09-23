@@ -1,6 +1,5 @@
 package com.kappzzang.jeongsan.domain.model
 
-import com.kappzzang.jeongsan.ui.Member
 import java.util.Date
 
 enum class ExpenseState { CONFIRMED, NOT_CONFIRMED, TRANSFER_PENDING, TRANSFERED }

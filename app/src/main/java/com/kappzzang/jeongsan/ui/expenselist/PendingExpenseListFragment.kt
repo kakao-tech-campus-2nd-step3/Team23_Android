@@ -12,7 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class PendingExpenseListFragment : Fragment() {
-    private val viewModel:ExpenseListViewModel by activityViewModels()
+    private val viewModel: ExpenseListViewModel by activityViewModels()
     private lateinit var binding: FragmentPendingExpenseListBinding
 
     override fun onCreateView(

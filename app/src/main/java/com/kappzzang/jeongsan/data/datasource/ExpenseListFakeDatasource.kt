@@ -4,13 +4,13 @@ import com.kappzzang.jeongsan.domain.model.ExpenseItem
 import com.kappzzang.jeongsan.domain.model.ExpenseListResponse
 import com.kappzzang.jeongsan.domain.model.ExpenseState
 import com.kappzzang.jeongsan.domain.model.MemberItem
+import java.util.Date
+import javax.inject.Inject
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import java.util.Date
-import javax.inject.Inject
 
-class ExpenseListFakeDatasource @Inject constructor(){
+class ExpenseListFakeDatasource @Inject constructor() {
     private val nameList = listOf("스타벅스", "GS25", "빽다방", "롯데시네마", "CGV", "롯데리아", "버거킹")
 
     private fun makeFakeItemWithState(expenseState: ExpenseState, prefix: Int): ExpenseItem {
@@ -36,33 +36,32 @@ class ExpenseListFakeDatasource @Inject constructor(){
 
     fun getExpenseData(expenseState: ExpenseState): Flow<ExpenseListResponse> = flow {
         val result =
-        when (expenseState) {
-            ExpenseState.CONFIRMED -> ExpenseListResponse(
-                120000,
-                0,
-                makeFakeItemListWithState(10, expenseState)
-            )
+            when (expenseState) {
+                ExpenseState.CONFIRMED -> ExpenseListResponse(
+                    120000,
+                    0,
+                    makeFakeItemListWithState(10, expenseState)
+                )
 
-            ExpenseState.NOT_CONFIRMED -> ExpenseListResponse(
-                120000,
-                0,
-                makeFakeItemListWithState(5, expenseState)
-            )
+                ExpenseState.NOT_CONFIRMED -> ExpenseListResponse(
+                    120000,
+                    0,
+                    makeFakeItemListWithState(5, expenseState)
+                )
 
-            ExpenseState.TRANSFER_PENDING -> ExpenseListResponse(
-                120000,
-                60000,
-                makeFakeItemListWithState(8, expenseState)
-            )
+                ExpenseState.TRANSFER_PENDING -> ExpenseListResponse(
+                    120000,
+                    60000,
+                    makeFakeItemListWithState(8, expenseState)
+                )
 
-            ExpenseState.TRANSFERED -> ExpenseListResponse(
-                120000,
-                0,
-                makeFakeItemListWithState(20, expenseState)
-            )
-        }
+                ExpenseState.TRANSFERED -> ExpenseListResponse(
+                    120000,
+                    0,
+                    makeFakeItemListWithState(20, expenseState)
+                )
+            }
         delay(1500)
         emit(result)
     }
-
 }

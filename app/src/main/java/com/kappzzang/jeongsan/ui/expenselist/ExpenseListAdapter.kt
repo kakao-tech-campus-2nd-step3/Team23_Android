@@ -14,15 +14,11 @@ class ExpenseListAdapter :
     ListAdapter<ExpenseItem, ExpenseListAdapter.MyViewHolder>(
         object :
             DiffUtil.ItemCallback<ExpenseItem>() {
-            override fun areItemsTheSame(
-                oldItem: ExpenseItem,
-                newItem: ExpenseItem
-            ): Boolean = oldItem.id === newItem.id
+            override fun areItemsTheSame(oldItem: ExpenseItem, newItem: ExpenseItem): Boolean =
+                oldItem.id === newItem.id
 
-            override fun areContentsTheSame(
-                oldItem: ExpenseItem,
-                newItem: ExpenseItem
-            ): Boolean = oldItem == newItem
+            override fun areContentsTheSame(oldItem: ExpenseItem, newItem: ExpenseItem): Boolean =
+                oldItem == newItem
         }
     ) {
 
@@ -36,7 +32,8 @@ class ExpenseListAdapter :
                 )
             )
             binding.expenseItem = expenseItem
-            binding.expenseDate = SimpleDateFormat("MM/dd HH:mm", Locale.KOREAN).format(expenseItem.date)
+            binding.expenseDate =
+                SimpleDateFormat("MM/dd HH:mm", Locale.KOREAN).format(expenseItem.date)
         }
     }
 

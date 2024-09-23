@@ -1,7 +1,5 @@
 package com.kappzzang.jeongsan.data.repositoryimpl
 
-import com.kappzzang.jeongsan.data.datasource.group.GroupDatabase
-import com.kappzzang.jeongsan.data.entity.GroupEntity
 import com.kappzzang.jeongsan.domain.model.GroupItem
 import com.kappzzang.jeongsan.domain.repository.GroupInfoRepository
 import kotlinx.coroutines.flow.Flow

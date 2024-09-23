@@ -4,14 +4,15 @@ import com.kappzzang.jeongsan.data.datasource.ExpenseListFakeDatasource
 import com.kappzzang.jeongsan.domain.model.ExpenseListResponse
 import com.kappzzang.jeongsan.domain.model.ExpenseState
 import com.kappzzang.jeongsan.domain.repository.ExpenseListRepository
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
 
 data class ExpenseListCachingKey(val expenseState: ExpenseState, val groupId: String)
 
-class ExpenseListFakeRepositoryImpl @Inject constructor(private val dataSource: ExpenseListFakeDatasource) :
-    ExpenseListRepository {
+class ExpenseListFakeRepositoryImpl @Inject constructor(
+    private val dataSource: ExpenseListFakeDatasource
+) : ExpenseListRepository {
 
     private val cachedData = HashMap<ExpenseListCachingKey, ExpenseListResponse>()
 
@@ -35,5 +36,4 @@ class ExpenseListFakeRepositoryImpl @Inject constructor(private val dataSource: 
             )
         )
     }
-
 }

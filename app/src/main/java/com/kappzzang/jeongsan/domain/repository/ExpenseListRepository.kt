@@ -2,7 +2,6 @@ package com.kappzzang.jeongsan.domain.repository
 
 import com.kappzzang.jeongsan.domain.model.ExpenseListResponse
 import com.kappzzang.jeongsan.domain.model.ExpenseState
-import com.kappzzang.jeongsan.domain.model.GroupItem
 import kotlinx.coroutines.flow.Flow
 
 interface ExpenseListRepository {
@@ -14,5 +13,4 @@ interface ExpenseListRepository {
      *  @return 지출 목록 response flow
      */
     fun getExpenseList(groupId: String, expenseState: ExpenseState): Flow<ExpenseListResponse>
-
 }

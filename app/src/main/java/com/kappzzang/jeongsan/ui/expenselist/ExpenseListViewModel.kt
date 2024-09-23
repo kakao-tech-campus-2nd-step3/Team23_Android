@@ -8,24 +8,21 @@ import com.kappzzang.jeongsan.domain.model.ExpenseState
 import com.kappzzang.jeongsan.domain.usecase.GetCurrentGroupInfoUseCase
 import com.kappzzang.jeongsan.domain.usecase.GetExpenseListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-fun Int.formatDecimalSeparator(): String {
-    return toString()
-        .reversed()
-        .chunked(3)
-        .joinToString(",")
-        .reversed()
-}
+fun Int.formatDecimalSeparator(): String = toString()
+    .reversed()
+    .chunked(3)
+    .joinToString(",")
+    .reversed()
 
 @HiltViewModel
 class ExpenseListViewModel @Inject constructor(
@@ -33,10 +30,8 @@ class ExpenseListViewModel @Inject constructor(
     private val getExpenseListUseCase: GetExpenseListUseCase
 ) : ViewModel() {
 
-    private val _currentExpenseListState = MutableStateFlow(ExpenseState.NOT_CONFIRMED)
-
-    private val _expenseList = MutableStateFlow(ExpenseListResponse.emptyList())
-    private val _groupName = getCurrentGroupInfoUseCase("").map {
+    private val expenseList = MutableStateFlow(ExpenseListResponse.emptyList())
+    private val groupName = getCurrentGroupInfoUseCase("").map {
         it.name
     }.stateIn(
         viewModelScope,
@@ -45,8 +40,8 @@ class ExpenseListViewModel @Inject constructor(
     )
 
     private val _uiData = combine(
-        _expenseList,
-        _groupName
+        expenseList,
+        groupName
     ) { expenseList, groupName ->
         val totalPrice = expenseList.totalPrice
         val priceToSend = expenseList.totalExpenseToSend
@@ -56,7 +51,7 @@ class ExpenseListViewModel @Inject constructor(
             totalPriceText = "${totalPrice.formatDecimalSeparator()}원",
             priceToSendText = "${priceToSend.formatDecimalSeparator()}원",
             groupNameText = groupName,
-            expenseItems = items,
+            expenseItems = items
         )
     }.stateIn(
         viewModelScope,
@@ -65,12 +60,10 @@ class ExpenseListViewModel @Inject constructor(
     )
 
     private var expenseListFetchingJob: Job? = null
-
-    val currentExpenseState = _currentExpenseListState.asStateFlow()
     val uiData = _uiData
 
-    private fun cancelPreviousJob(){
-        if(expenseListFetchingJob?.isCompleted != false){
+    private fun cancelPreviousJob() {
+        if (expenseListFetchingJob?.isCompleted != false) {
             return
         }
         expenseListFetchingJob?.cancel()
@@ -79,7 +72,6 @@ class ExpenseListViewModel @Inject constructor(
     private fun getCurrentGroupInfo(expenseState: ExpenseState) {
         viewModelScope.launch {
             getExpenseListUseCase("", expenseState).collect {
-
             }
         }
     }
@@ -89,7 +81,7 @@ class ExpenseListViewModel @Inject constructor(
         expenseListFetchingJob = viewModelScope.launch {
             getExpenseListUseCase("", expenseState)
                 .collect {
-                    _expenseList.emit(it)
+                    expenseList.emit(it)
                 }
         }
     }
@@ -107,7 +99,7 @@ class ExpenseListViewModel @Inject constructor(
                     totalExpenseToSend = 0
                 )
             }.collect {
-                _expenseList.emit(it)
+                expenseList.emit(it)
             }
         }
     }

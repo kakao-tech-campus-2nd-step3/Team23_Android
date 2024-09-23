@@ -10,7 +10,6 @@ import com.kappzzang.jeongsan.ui.expenselist.ExpenseListAdapter
 import com.kappzzang.jeongsan.ui.expenselist.ExpenseListViewUIData
 import kotlinx.coroutines.flow.StateFlow
 
-
 object BindingAdapter {
     @BindingAdapter("stringText")
     @JvmStatic
