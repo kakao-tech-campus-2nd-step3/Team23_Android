@@ -4,21 +4,25 @@ import com.kappzzang.jeongsan.data.repositoryimpl.GroupInfoRepositoryImpl
 import com.kappzzang.jeongsan.data.repositoryimpl.UserInfoRepositoryImpl
 import com.kappzzang.jeongsan.domain.repository.GroupInfoRepository
 import com.kappzzang.jeongsan.domain.repository.UserInfoRepository
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object RepositoryModule {
+abstract class RepositoryModule {
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideGroupInfoRepository(): GroupInfoRepository = GroupInfoRepositoryImpl()
+    abstract fun bindGroupInfoRepository(
+        groupInfoRepositoryImpl: GroupInfoRepositoryImpl
+    ): GroupInfoRepository
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideUserInfoRepository(): UserInfoRepository = UserInfoRepositoryImpl()
+    abstract fun bindUserInfoRepository(
+        userInfoRepositoryImpl: UserInfoRepositoryImpl
+    ): UserInfoRepository
 }
