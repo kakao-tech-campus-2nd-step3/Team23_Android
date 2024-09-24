@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 
-
 @HiltViewModel
 class ExpenseListViewModel @Inject constructor(
     private val getCurrentGroupInfoUseCase: GetCurrentGroupInfoUseCase,
