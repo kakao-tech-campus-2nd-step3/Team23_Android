@@ -1,11 +1,12 @@
 package com.kappzzang.jeongsan.data.repositoryimpl
 
 import com.kappzzang.jeongsan.domain.model.GroupItem
+import com.kappzzang.jeongsan.data.entity.GroupEntity
 import com.kappzzang.jeongsan.domain.repository.GroupInfoRepository
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 
-class GroupInfoRepositoryImpl @Inject constructor(private val groupDatabase: GroupDatabase) :
+class GroupInfoRepositoryImpl@Inject constructor(private val dataSource: GroupInfoFakeDatasource) :
     GroupInfoRepository {
 
     override suspend fun getProgressingGroupInfo(): List<GroupItem> {
