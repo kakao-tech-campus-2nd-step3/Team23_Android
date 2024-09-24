@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kappzzang.jeongsan.databinding.ActivityExpenseDetailBinding
 import com.kappzzang.jeongsan.domain.model.ExpenseDetailItem
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.StateFlow
 
 @BindingAdapter("app:detail_items")
@@ -27,6 +28,7 @@ fun attachList(view: AutoCompleteTextView, position: Int) {
     view.setText(view.adapter.getItem(position).toString(), false)
 }
 
+@AndroidEntryPoint
 class ExpenseDetailActivity : AppCompatActivity() {
     private val binding: ActivityExpenseDetailBinding by lazy {
         ActivityExpenseDetailBinding.inflate(

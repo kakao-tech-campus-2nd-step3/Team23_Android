@@ -1,4 +1,8 @@
 package com.kappzzang.jeongsan.data.repositoryimpl
 
-class ExpenseDetailRepositoryImpl {
+import com.kappzzang.jeongsan.domain.repository.ExpenseDetailRepository
+import javax.inject.Inject
+
+class ExpenseDetailRepositoryImpl @Inject constructor() :
+    ExpenseDetailRepository {
 }

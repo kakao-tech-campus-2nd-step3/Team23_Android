@@ -4,11 +4,14 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.domain.model.ExpenseDetailItem
+import com.kappzzang.jeongsan.domain.usecase.GetExpenseDetailUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 private fun createDemoItem(index: Int): ExpenseDetailItem = ExpenseDetailItem(
     id = "$index",
@@ -43,7 +46,10 @@ private fun createDemoList(): List<ExpenseDetailItem> = listOf(
 
 private fun createDemoExpenseName(): String = "카페 Demo 123"
 
-class ExpenseDetailViewModel : ViewModel() {
+@HiltViewModel
+class ExpenseDetailViewModel @Inject constructor(
+    private val getExpenseDetailUseCase: GetExpenseDetailUseCase
+) : ViewModel() {
     private val _expenseItemList = MutableStateFlow(createDemoList())
 
     private val _expenseName = MutableStateFlow(createDemoExpenseName())
@@ -117,4 +123,5 @@ class ExpenseDetailViewModel : ViewModel() {
             )
         }
     }
+
 }
