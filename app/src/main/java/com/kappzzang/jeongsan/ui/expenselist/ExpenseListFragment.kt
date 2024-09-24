@@ -31,7 +31,7 @@ class ExpenseListFragment : Fragment() {
 
         // UI 확인을 위한 임시 코드
         binding.expenseListRecyclerview.adapter = ExpenseListAdapter {
-            viewModel.selectExpense(it)
+            viewModel.clickExpenseItem(it)
         }
         binding.expenseListRecyclerview.layoutManager = LinearLayoutManager(this.context)
         viewModel.clickOnlyNotConfirmedExpensesChipButton()

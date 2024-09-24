@@ -36,6 +36,7 @@ class ExpenseListViewModel @Inject constructor(
 
     private val expenseList = MutableStateFlow(ExpenseListResponse.emptyList())
     private val groupName = MutableStateFlow("")
+
     private val _selectedExpense = MutableStateFlow("")
 
     private val _uiData by lazy {
@@ -73,7 +74,7 @@ class ExpenseListViewModel @Inject constructor(
         expenseListFetchingJob?.cancel()
     }
 
-    private fun getExpenseList(expenseState: ExpenseState) {
+    private fun fetchExpenseList(expenseState: ExpenseState) {
         cancelPreviousJob()
         expenseListFetchingJob = viewModelScope.launch(Dispatchers.IO) {
             getExpenseListUseCase(groupId, expenseState)
@@ -84,7 +85,7 @@ class ExpenseListViewModel @Inject constructor(
     }
 
     // 미확인 + 확인 지출 모두 불러오기
-    private fun getAllCalculatingExpenseList() {
+    private fun fetchCalculatingExpenseList() {
         cancelPreviousJob()
         expenseListFetchingJob = viewModelScope.launch(Dispatchers.IO) {
             getExpenseListUseCase(groupId, ExpenseState.CONFIRMED).zip(
@@ -101,7 +102,7 @@ class ExpenseListViewModel @Inject constructor(
         }
     }
 
-    private fun getGroupInfo() {
+    private fun fetchGroupInfo() {
         viewModelScope.launch(Dispatchers.IO) {
             getCurrentGroupInfoUseCase(groupId).map {
                 it.name
@@ -112,36 +113,36 @@ class ExpenseListViewModel @Inject constructor(
     }
 
     fun clickPendSendingMenuButton() {
-        getExpenseList(ExpenseState.TRANSFER_PENDING)
+        fetchExpenseList(ExpenseState.TRANSFER_PENDING)
     }
 
     fun clickOnCalculatingMenuButton() {
-        getExpenseList(ExpenseState.NOT_CONFIRMED)
+        fetchExpenseList(ExpenseState.NOT_CONFIRMED)
     }
 
     fun clickSentCompleteMenuButton() {
-        getExpenseList(ExpenseState.TRANSFERED)
+        fetchExpenseList(ExpenseState.TRANSFERED)
     }
 
     fun clickAllExpensesChipButton() {
-        getAllCalculatingExpenseList()
+        fetchCalculatingExpenseList()
     }
 
     fun clickOnlyNotConfirmedExpensesChipButton() {
-        getExpenseList(ExpenseState.NOT_CONFIRMED)
+        fetchExpenseList(ExpenseState.NOT_CONFIRMED)
     }
 
     fun clickOnlyConfirmedExpensesChipButton() {
-        getExpenseList(ExpenseState.CONFIRMED)
+        fetchExpenseList(ExpenseState.CONFIRMED)
     }
 
-    fun setGroupId(groupId: String) {
+    fun updateGroupId(groupId: String) {
         this.groupId = groupId
 
-        getGroupInfo()
+        fetchGroupInfo()
     }
 
-    fun selectExpense(expenseId: String) {
+    fun clickExpenseItem(expenseId: String) {
         _selectedExpense.value = expenseId
     }
 }

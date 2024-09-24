@@ -31,7 +31,7 @@ class CompleteExpenseListFragment : Fragment() {
 
         // UI 확인을 위한 임시 코드
         binding.completeExpenseListRecyclerview.adapter = ExpenseListAdapter {
-            viewModel.selectExpense(it)
+            viewModel.clickExpenseItem(it)
         }
         binding.completeExpenseListRecyclerview.layoutManager = LinearLayoutManager(this.context)
         viewModel.clickSentCompleteMenuButton()

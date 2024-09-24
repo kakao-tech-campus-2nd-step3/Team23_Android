@@ -30,7 +30,7 @@ class PendingExpenseListFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = activity
         binding.pendingExpenseListRecyclerview.adapter = ExpenseListAdapter {
-            viewModel.selectExpense(it)
+            viewModel.clickExpenseItem(it)
         }
         binding.pendingExpenseListRecyclerview.layoutManager = LinearLayoutManager(this.context)
 

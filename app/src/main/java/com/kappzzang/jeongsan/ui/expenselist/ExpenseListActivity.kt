@@ -31,7 +31,7 @@ class ExpenseListActivity : AppCompatActivity() {
         binding = ActivityExpenseListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel.setGroupId(intent.extras?.getString("groupId").toString())
+        viewModel.updateGroupId(intent.extras?.getString("groupId").toString())
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
