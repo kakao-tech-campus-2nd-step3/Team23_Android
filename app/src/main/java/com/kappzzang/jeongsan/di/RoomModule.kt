@@ -2,6 +2,9 @@ package com.kappzzang.jeongsan.di
 
 import android.content.Context
 import com.kappzzang.jeongsan.data.datasource.group.GroupDatabase
+import androidx.room.Room
+import com.kappzzang.jeongsan.data.datasource.MemberContract
+import com.kappzzang.jeongsan.data.datasource.MemberDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,4 +21,13 @@ object RoomModule {
     @Singleton
     fun provideGroupDatabase(@ApplicationContext context: Context): GroupDatabase =
         GroupDatabase.getInstance(context)
+
+    @Provides
+    @Singleton
+    fun provideMemberDatabase(@ApplicationContext context: Context): MemberDatabase =
+        Room.databaseBuilder(
+            context,
+            MemberDatabase::class.java,
+            MemberContract.DATABASE_NAME
+        ).build()
 }

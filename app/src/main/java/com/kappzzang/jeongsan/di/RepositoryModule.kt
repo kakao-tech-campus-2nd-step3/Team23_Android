@@ -4,6 +4,8 @@ import com.kappzzang.jeongsan.data.repositoryimpl.GroupInfoRepositoryImpl
 import com.kappzzang.jeongsan.data.repositoryimpl.UserInfoRepositoryImpl
 import com.kappzzang.jeongsan.domain.repository.GroupInfoRepository
 import com.kappzzang.jeongsan.domain.repository.UserInfoRepository
+import com.kappzzang.jeongsan.data.repositoryimpl.MemberRepositoryImpl
+import com.kappzzang.jeongsan.domain.repository.MemberRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -25,4 +27,8 @@ abstract class RepositoryModule {
     abstract fun bindUserInfoRepository(
         userInfoRepositoryImpl: UserInfoRepositoryImpl
     ): UserInfoRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindMemberRepository(memberRepositoryImpl: MemberRepositoryImpl): MemberRepository
 }
