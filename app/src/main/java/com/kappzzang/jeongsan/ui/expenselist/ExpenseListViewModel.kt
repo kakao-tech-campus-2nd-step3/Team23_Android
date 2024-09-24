@@ -13,6 +13,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -31,9 +32,11 @@ class ExpenseListViewModel @Inject constructor(
     private val getExpenseListUseCase: GetExpenseListUseCase
 ) : ViewModel() {
 
+    private var expenseListFetchingJob: Job? = null
     private var groupId: String = ""
     private val expenseList = MutableStateFlow(ExpenseListResponse.emptyList())
     private val groupName = MutableStateFlow("")
+    private val _selectedExpense = MutableStateFlow("")
 
     private val _uiData = combine(
         expenseList,
@@ -55,10 +58,11 @@ class ExpenseListViewModel @Inject constructor(
         ExpenseListViewUIData("", "", "", listOf())
     )
 
-    private var expenseListFetchingJob: Job? = null
     val uiData by lazy {
         _uiData
     }
+
+    val selectedExpense = _selectedExpense.asStateFlow()
 
     private fun cancelPreviousJob() {
         if (expenseListFetchingJob?.isCompleted != false) {
@@ -142,5 +146,9 @@ class ExpenseListViewModel @Inject constructor(
         this.groupId = groupId
 
         getGroupInfo()
+    }
+
+    fun selectExpense(expenseId: String){
+        _selectedExpense.value = expenseId
     }
 }

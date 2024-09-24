@@ -10,7 +10,7 @@ import com.kappzzang.jeongsan.domain.model.ExpenseItem
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class ExpenseListAdapter :
+class ExpenseListAdapter(private val onExpenseItemClickListener: (expenseId: String) -> Unit) :
     ListAdapter<ExpenseItem, ExpenseListAdapter.MyViewHolder>(
         object :
             DiffUtil.ItemCallback<ExpenseItem>() {
@@ -22,8 +22,16 @@ class ExpenseListAdapter :
         }
     ) {
 
-    inner class MyViewHolder(private val binding: ItemExpenseBinding) :
+    inner class MyViewHolder(
+        private val binding: ItemExpenseBinding,
+        private val onExpenseItemClickListener: (expenseId: String) -> Unit
+    ) :
         RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnClickListener {
+                onExpenseItemClickListener.invoke(binding.expenseItem?.id?:"")
+            }
+        }
 
         fun bind(expenseItem: ExpenseItem) {
             binding.categoryColorView.setBackgroundColor(
@@ -42,7 +50,8 @@ class ExpenseListAdapter :
             LayoutInflater.from(parent.context),
             parent,
             false
-        )
+        ),
+        onExpenseItemClickListener
     )
 
     override fun getItemCount(): Int = currentList.size
