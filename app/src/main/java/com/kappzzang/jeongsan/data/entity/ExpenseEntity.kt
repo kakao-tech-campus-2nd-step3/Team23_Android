@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.kappzzang.jeongsan.data.datasource.expense.ExpenseContract
-import com.kappzzang.jeongsan.data.datasource.group.GroupContract
 
 @Entity(tableName = ExpenseContract.ExpenseEntity.TABLE_NAME)
 class ExpenseEntity(

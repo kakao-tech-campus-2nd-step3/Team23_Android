@@ -4,9 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.kappzzang.jeongsan.data.datasource.group.GroupContract
 import com.kappzzang.jeongsan.data.entity.ExpenseEntity
-import com.kappzzang.jeongsan.data.entity.GroupEntity
 
 @Dao
 interface ExpenseDao {

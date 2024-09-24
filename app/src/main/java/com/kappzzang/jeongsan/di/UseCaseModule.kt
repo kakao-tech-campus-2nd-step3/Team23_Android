@@ -1,12 +1,12 @@
 package com.kappzzang.jeongsan.di
 
 import com.kappzzang.jeongsan.domain.repository.GroupInfoRepository
+import com.kappzzang.jeongsan.domain.repository.MemberRepository
 import com.kappzzang.jeongsan.domain.repository.UserInfoRepository
 import com.kappzzang.jeongsan.domain.usecase.GetDoneGroupUseCase
+import com.kappzzang.jeongsan.domain.usecase.GetInviteInfoUseCase
 import com.kappzzang.jeongsan.domain.usecase.GetProgressingGroupUseCase
 import com.kappzzang.jeongsan.domain.usecase.GetUserInfoUseCase
-import com.kappzzang.jeongsan.domain.repository.MemberRepository
-import com.kappzzang.jeongsan.domain.usecase.GetInviteInfoUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

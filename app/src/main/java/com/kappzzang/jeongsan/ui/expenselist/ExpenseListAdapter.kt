@@ -25,11 +25,10 @@ class ExpenseListAdapter(private val onExpenseItemClickListener: (expenseId: Str
     inner class MyViewHolder(
         private val binding: ItemExpenseBinding,
         private val onExpenseItemClickListener: (expenseId: String) -> Unit
-    ) :
-        RecyclerView.ViewHolder(binding.root) {
+    ) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
-                onExpenseItemClickListener.invoke(binding.expenseItem?.id?:"")
+                onExpenseItemClickListener.invoke(binding.expenseItem?.id ?: "")
             }
         }
 

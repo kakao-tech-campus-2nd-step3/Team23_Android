@@ -30,7 +30,7 @@ class CompleteExpenseListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // UI 확인을 위한 임시 코드
-        binding.completeExpenseListRecyclerview.adapter = ExpenseListAdapter{
+        binding.completeExpenseListRecyclerview.adapter = ExpenseListAdapter {
             viewModel.selectExpense(it)
         }
         binding.completeExpenseListRecyclerview.layoutManager = LinearLayoutManager(this.context)

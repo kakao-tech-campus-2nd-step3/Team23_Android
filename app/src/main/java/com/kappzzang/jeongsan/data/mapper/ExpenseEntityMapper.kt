@@ -5,8 +5,6 @@ import com.kappzzang.jeongsan.domain.model.ExpenseItem
 import com.kappzzang.jeongsan.domain.model.ExpenseState
 import com.kappzzang.jeongsan.domain.model.MemberItem
 import java.sql.Timestamp
-import java.time.LocalDate
-import java.util.Date
 
 object ExpenseEntityMapper {
     fun mapExpenseEntityToModel(entity: ExpenseEntity): ExpenseItem = ExpenseItem(

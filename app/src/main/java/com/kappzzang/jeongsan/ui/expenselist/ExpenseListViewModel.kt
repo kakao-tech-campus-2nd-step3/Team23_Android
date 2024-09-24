@@ -1,6 +1,5 @@
 package com.kappzzang.jeongsan.ui.expenselist
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.domain.model.ExpenseListResponse
@@ -8,8 +7,8 @@ import com.kappzzang.jeongsan.domain.model.ExpenseState
 import com.kappzzang.jeongsan.domain.usecase.GetCurrentGroupInfoUseCase
 import com.kappzzang.jeongsan.domain.usecase.GetExpenseListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -76,7 +75,7 @@ class ExpenseListViewModel @Inject constructor(
 
     private fun getExpenseList(expenseState: ExpenseState) {
         cancelPreviousJob()
-        expenseListFetchingJob = viewModelScope.launch (Dispatchers.IO){
+        expenseListFetchingJob = viewModelScope.launch(Dispatchers.IO) {
             getExpenseListUseCase(groupId, expenseState)
                 .collect {
                     expenseList.emit(it)
@@ -87,7 +86,7 @@ class ExpenseListViewModel @Inject constructor(
     // 미확인 + 확인 지출 모두 불러오기
     private fun getAllCalculatingExpenseList() {
         cancelPreviousJob()
-        expenseListFetchingJob = viewModelScope.launch (Dispatchers.IO){
+        expenseListFetchingJob = viewModelScope.launch(Dispatchers.IO) {
             getExpenseListUseCase(groupId, ExpenseState.CONFIRMED).zip(
                 getExpenseListUseCase(groupId, ExpenseState.NOT_CONFIRMED)
             ) { confirmed, notConfirmed ->
@@ -102,8 +101,8 @@ class ExpenseListViewModel @Inject constructor(
         }
     }
 
-    private fun getGroupInfo(){
-        viewModelScope.launch (Dispatchers.IO) {
+    private fun getGroupInfo() {
+        viewModelScope.launch(Dispatchers.IO) {
             getCurrentGroupInfoUseCase(groupId).map {
                 it.name
             }.collect {
@@ -142,7 +141,7 @@ class ExpenseListViewModel @Inject constructor(
         getGroupInfo()
     }
 
-    fun selectExpense(expenseId: String){
+    fun selectExpense(expenseId: String) {
         _selectedExpense.value = expenseId
     }
 }

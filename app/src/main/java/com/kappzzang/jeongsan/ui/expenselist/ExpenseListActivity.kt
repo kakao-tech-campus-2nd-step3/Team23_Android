@@ -2,7 +2,6 @@ package com.kappzzang.jeongsan.ui.expenselist
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -34,11 +33,10 @@ class ExpenseListActivity : AppCompatActivity() {
 
         viewModel.setGroupId(intent.extras?.getString("groupId").toString())
 
-
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.selectedExpense.collect{
-                    if(it.isNotEmpty()){
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.selectedExpense.collect {
+                    if (it.isNotEmpty()) {
                         startExpenseDetailActivity(it)
                     }
                 }
@@ -50,12 +48,11 @@ class ExpenseListActivity : AppCompatActivity() {
         ) as NavHostFragment
         navController = navHostFragment.navController
 
+        setOnUpperMenuClickedListener()
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
         binding.bottomnavigationview.setupWithNavController(navController)
-
-
 
         // TODO: 임시 연결용 코드
         binding.addExpenseFab.setOnClickListener {
@@ -66,7 +63,7 @@ class ExpenseListActivity : AppCompatActivity() {
         }
     }
 
-    private fun setOnUpperMenuClicked(){
+    private fun setOnUpperMenuClickedListener() {
         binding.dropdownButtonImageview.setOnClickListener { view ->
             val popupMenu = PopupMenu(this, view)
             popupMenu.menuInflater.inflate(R.menu.menu_group_setting, popupMenu.menu)
