@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class ExpenseDetailRepositoryImpl @Inject constructor() :
     ExpenseDetailRepository {
-        fun getExpenseDetail(): List<ExpenseDetailItem> =
+        override suspend fun getExpenseDetail(): List<ExpenseDetailItem> =
             listOf(
                 ExpenseDetailItem(
                     "id1",
