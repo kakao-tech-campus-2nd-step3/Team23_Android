@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.domain.model.ExpenseDetailItem
 import com.kappzzang.jeongsan.domain.usecase.GetExpenseDetailUseCase
+import com.kappzzang.jeongsan.domain.usecase.GetExpenseUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,10 +19,11 @@ private fun createDemoExpenseName(): String = "카페 Demo 123"
 
 @HiltViewModel
 class ExpenseDetailViewModel @Inject constructor(
-    private val getExpenseDetailUseCase: GetExpenseDetailUseCase
+    private val getExpenseDetailUseCase: GetExpenseDetailUseCase,
+    private val getExpenseUseCase: GetExpenseUseCase
 ) : ViewModel() {
     private val _expenseItemList = MutableStateFlow(listOf<ExpenseDetailItem>())
-    private val _expenseName = MutableStateFlow(createDemoExpenseName())
+    private val _expenseName = MutableStateFlow("")
 
     val expenseItemList: StateFlow<List<ExpenseDetailItem>> = _expenseItemList.asStateFlow()
     val expenseName: StateFlow<String> = _expenseName.asStateFlow()
@@ -30,7 +32,15 @@ class ExpenseDetailViewModel @Inject constructor(
         initExpenseItemList()
     }
 
-    fun initExpenseItemList() {
+    private fun initExpenseName() {
+        viewModelScope.launch(Dispatchers.IO) {
+            // 추후 전달할 Id
+            val expenseId = 10L
+            _expenseName.value = getExpenseUseCase.invoke(expenseId).name
+        }
+    }
+
+    private fun initExpenseItemList() {
         viewModelScope.launch(Dispatchers.IO) {
             _expenseItemList.value = getExpenseDetailUseCase.invoke()
         }
