@@ -4,6 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.main.MainActivity">
 
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.kappzzang.jeongsan.ui.main.MainPageViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
@@ -15,6 +22,8 @@
             android:layout_width="@dimen/main_profile_image_size"
             android:layout_height="@dimen/main_profile_image_size"
             android:layout_margin="@dimen/main_margin"
+            android:background="@drawable/main_circle_image_background"
+            android:padding="1dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,6 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:text="@{viewModel.userName}"
             android:textSize="@dimen/main_title_text_size"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/profile_image_imageview"
@@ -42,8 +52,6 @@
             app:layout_constraintStart_toEndOf="@id/user_name_textview"
             app:layout_constraintTop_toTopOf="@id/user_name_textview" />
 
-        <!-- TODO: 진행중인 모임과 완료된 모임을 나타낼 방법 고안하기
-        일단은 각 모임의 header item을 만들어 둬서, 구분하는 방식으로 구현 -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/group_list_recyclerview"
             android:layout_width="match_parent"
