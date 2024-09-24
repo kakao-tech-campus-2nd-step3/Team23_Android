@@ -34,7 +34,7 @@ class ExpenseListActivity : AppCompatActivity() {
 
         viewModel.setGroupId(intent.extras?.getString("groupId").toString())
 
-        lifecycleScope.launch { 
+        lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.selectedExpense.collect{
                     if(it.isNotEmpty()){
@@ -93,7 +93,7 @@ class ExpenseListActivity : AppCompatActivity() {
     }
 
     // TODO: 선택한 지출 확인용 임시 코드
-    fun startExpenseDetailActivity(expenseId: String) {
+    private fun startExpenseDetailActivity(expenseId: String) {
         Toast.makeText(this, expenseId, Toast.LENGTH_SHORT).show()
     }
 }
