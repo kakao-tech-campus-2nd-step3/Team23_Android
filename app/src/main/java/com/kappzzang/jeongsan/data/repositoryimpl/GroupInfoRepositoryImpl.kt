@@ -4,8 +4,8 @@ import com.kappzzang.jeongsan.data.datasource.group.GroupDatabase
 import com.kappzzang.jeongsan.data.entity.GroupEntity
 import com.kappzzang.jeongsan.domain.model.GroupItem
 import com.kappzzang.jeongsan.domain.repository.GroupInfoRepository
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
 class GroupInfoRepositoryImpl @Inject constructor(private val groupDatabase: GroupDatabase) :
     GroupInfoRepository {
