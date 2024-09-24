@@ -7,13 +7,12 @@ import com.kappzzang.jeongsan.domain.model.ExpenseDetailItem
 import com.kappzzang.jeongsan.domain.usecase.GetExpenseDetailUseCase
 import com.kappzzang.jeongsan.domain.usecase.GetExpenseUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
 @HiltViewModel
 class ExpenseDetailViewModel @Inject constructor(
@@ -44,7 +43,6 @@ class ExpenseDetailViewModel @Inject constructor(
             _expenseItemList.value = getExpenseDetailUseCase.invoke()
         }
     }
-
 
     private fun getItemWithEnabled(item: ExpenseDetailItem, enabled: Boolean): ExpenseDetailItem {
         if (enabled) {

@@ -3,13 +3,13 @@ package com.kappzzang.jeongsan.di
 import com.kappzzang.jeongsan.data.repositoryimpl.ExpenseDetailRepositoryImpl
 import com.kappzzang.jeongsan.data.repositoryimpl.ExpenseRepositoryImpl
 import com.kappzzang.jeongsan.data.repositoryimpl.GroupInfoRepositoryImpl
-import com.kappzzang.jeongsan.data.repositoryimpl.UserInfoRepositoryImpl
-import com.kappzzang.jeongsan.domain.repository.GroupInfoRepository
-import com.kappzzang.jeongsan.domain.repository.UserInfoRepository
 import com.kappzzang.jeongsan.data.repositoryimpl.MemberRepositoryImpl
+import com.kappzzang.jeongsan.data.repositoryimpl.UserInfoRepositoryImpl
 import com.kappzzang.jeongsan.domain.repository.ExpenseDetailRepository
 import com.kappzzang.jeongsan.domain.repository.ExpenseRepository
+import com.kappzzang.jeongsan.domain.repository.GroupInfoRepository
 import com.kappzzang.jeongsan.domain.repository.MemberRepository
+import com.kappzzang.jeongsan.domain.repository.UserInfoRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

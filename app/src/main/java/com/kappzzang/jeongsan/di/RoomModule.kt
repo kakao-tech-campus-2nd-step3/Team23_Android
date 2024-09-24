@@ -1,10 +1,10 @@
 package com.kappzzang.jeongsan.di
 
 import android.content.Context
-import com.kappzzang.jeongsan.data.datasource.group.GroupDatabase
 import androidx.room.Room
 import com.kappzzang.jeongsan.data.datasource.MemberContract
 import com.kappzzang.jeongsan.data.datasource.MemberDatabase
+import com.kappzzang.jeongsan.data.datasource.group.GroupDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
