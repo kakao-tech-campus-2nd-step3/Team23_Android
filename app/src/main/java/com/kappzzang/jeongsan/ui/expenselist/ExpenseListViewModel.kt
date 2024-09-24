@@ -6,6 +6,7 @@ import com.kappzzang.jeongsan.domain.model.ExpenseListResponse
 import com.kappzzang.jeongsan.domain.model.ExpenseState
 import com.kappzzang.jeongsan.domain.usecase.GetCurrentGroupInfoUseCase
 import com.kappzzang.jeongsan.domain.usecase.GetExpenseListUseCase
+import com.kappzzang.jeongsan.util.IntegerFormatter.formatDecimalSeparator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -19,11 +20,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 
-fun Int.formatDecimalSeparator(): String = toString()
-    .reversed()
-    .chunked(3)
-    .joinToString(",")
-    .reversed()
 
 @HiltViewModel
 class ExpenseListViewModel @Inject constructor(
