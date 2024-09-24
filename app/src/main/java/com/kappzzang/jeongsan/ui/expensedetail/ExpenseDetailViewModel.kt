@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 private fun createDemoItem(index: Int): ExpenseDetailItem = ExpenseDetailItem(
@@ -50,12 +51,22 @@ private fun createDemoExpenseName(): String = "카페 Demo 123"
 class ExpenseDetailViewModel @Inject constructor(
     private val getExpenseDetailUseCase: GetExpenseDetailUseCase
 ) : ViewModel() {
-    private val _expenseItemList = MutableStateFlow(createDemoList())
-
+    private val _expenseItemList = MutableStateFlow(listOf<ExpenseDetailItem>())
     private val _expenseName = MutableStateFlow(createDemoExpenseName())
 
     val expenseItemList: StateFlow<List<ExpenseDetailItem>> = _expenseItemList.asStateFlow()
     val expenseName: StateFlow<String> = _expenseName.asStateFlow()
+
+    init {
+        initExpenseItemList()
+    }
+
+    fun initExpenseItemList() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _expenseItemList.value = getExpenseDetailUseCase.invoke()
+        }
+    }
+
 
     private fun getItemWithEnabled(item: ExpenseDetailItem, enabled: Boolean): ExpenseDetailItem {
         if (enabled) {
@@ -95,6 +106,7 @@ class ExpenseDetailViewModel @Inject constructor(
         )
 
     fun updateItemCheck(checked: Boolean, index: Int) {
+        Log.d("Jeongsan", "checked")
         if (index < 0 || index >= _expenseItemList.value.count()) {
             Log.e("Jeongsan", "Invalid index")
             return
@@ -110,6 +122,7 @@ class ExpenseDetailViewModel @Inject constructor(
     }
 
     fun updateSelectedQuantity(quantity: Int, index: Int) {
+        Log.d("Jeongsan", "quantity changed")
         if (index < 0 || index >= _expenseItemList.value.count()) {
             Log.e("Jeongsan", "Invalid index")
             return

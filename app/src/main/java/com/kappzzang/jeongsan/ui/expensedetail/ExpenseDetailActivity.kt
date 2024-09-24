@@ -52,19 +52,19 @@ class ExpenseDetailActivity : AppCompatActivity() {
     }
 
     private fun initiateRecyclerView() {
-        binding.expenseDetailItemListRecyclerview.adapter =
-            ExpenseDetailItemListAdapter(
-                this,
-                object : ExpenseDetailCallback {
-                    override fun onCheckedChange(enable: Boolean, index: Int) {
-                        viewModel.updateItemCheck(enable, index)
-                    }
-
-                    override fun onSelectedQuantityChanged(quantity: Int, index: Int) {
-                        viewModel.updateSelectedQuantity(quantity, index)
-                    }
+        val expenseDetailAdapter = ExpenseDetailItemListAdapter(
+            this,
+            object : ExpenseDetailCallback {
+                override fun onCheckedChange(enable: Boolean, index: Int) {
+                    viewModel.updateItemCheck(enable, index)
                 }
-            )
+
+                override fun onSelectedQuantityChanged(quantity: Int, index: Int) {
+                    viewModel.updateSelectedQuantity(quantity, index)
+                }
+            }
+        )
+        binding.expenseDetailItemListRecyclerview.adapter = expenseDetailAdapter
         binding.expenseDetailItemListRecyclerview.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
