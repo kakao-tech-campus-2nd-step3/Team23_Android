@@ -34,29 +34,32 @@ class ExpenseListViewModel @Inject constructor(
 
     private var expenseListFetchingJob: Job? = null
     private var groupId: String = ""
+
     private val expenseList = MutableStateFlow(ExpenseListResponse.emptyList())
     private val groupName = MutableStateFlow("")
     private val _selectedExpense = MutableStateFlow("")
 
-    private val _uiData = combine(
-        expenseList,
-        groupName
-    ) { expenseList, groupName ->
-        val totalPrice = expenseList.totalPrice
-        val priceToSend = expenseList.totalExpenseToSend
-        val items = expenseList.expenseList
+    private val _uiData by lazy {
+        combine(
+            expenseList,
+            groupName
+        ) { expenseList, groupName ->
+            val totalPrice = expenseList.totalPrice
+            val priceToSend = expenseList.totalExpenseToSend
+            val items = expenseList.expenseList
 
-        ExpenseListViewUIData(
-            totalPriceText = "${totalPrice.formatDecimalSeparator()}원",
-            priceToSendText = "${priceToSend.formatDecimalSeparator()}원",
-            groupNameText = groupName,
-            expenseItems = items
+            ExpenseListViewUIData(
+                totalPriceText = "${totalPrice.formatDecimalSeparator()}원",
+                priceToSendText = "${priceToSend.formatDecimalSeparator()}원",
+                groupNameText = groupName,
+                expenseItems = items
+            )
+        }.stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000L),
+            ExpenseListViewUIData("", "", "", listOf())
         )
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(5000L),
-        ExpenseListViewUIData("", "", "", listOf())
-    )
+    }
 
     val uiData by lazy {
         _uiData
@@ -72,10 +75,6 @@ class ExpenseListViewModel @Inject constructor(
     }
 
     private fun getExpenseList(expenseState: ExpenseState) {
-        if(groupId == ""){
-            return
-        }
-
         cancelPreviousJob()
         expenseListFetchingJob = viewModelScope.launch (Dispatchers.IO){
             getExpenseListUseCase(groupId, expenseState)
@@ -87,10 +86,6 @@ class ExpenseListViewModel @Inject constructor(
 
     // 미확인 + 확인 지출 모두 불러오기
     private fun getAllCalculatingExpenseList() {
-        if(groupId == ""){
-            return
-        }
-
         cancelPreviousJob()
         expenseListFetchingJob = viewModelScope.launch (Dispatchers.IO){
             getExpenseListUseCase(groupId, ExpenseState.CONFIRMED).zip(
@@ -119,7 +114,6 @@ class ExpenseListViewModel @Inject constructor(
 
     fun clickPendSendingMenuButton() {
         getExpenseList(ExpenseState.TRANSFER_PENDING)
-        Log.d("KSC", "clicked Pending")
     }
 
     fun clickOnCalculatingMenuButton() {

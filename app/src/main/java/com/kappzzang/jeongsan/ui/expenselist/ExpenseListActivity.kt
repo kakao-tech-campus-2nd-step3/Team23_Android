@@ -34,6 +34,7 @@ class ExpenseListActivity : AppCompatActivity() {
 
         viewModel.setGroupId(intent.extras?.getString("groupId").toString())
 
+
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.selectedExpense.collect{

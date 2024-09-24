@@ -2,9 +2,11 @@ package com.kappzzang.jeongsan.data.repositoryimpl
 
 import com.kappzzang.jeongsan.data.datasource.group.GroupDatabase
 import com.kappzzang.jeongsan.data.entity.GroupEntity
+import com.kappzzang.jeongsan.data.mapper.ExpenseEntityMapper
 import com.kappzzang.jeongsan.domain.model.GroupItem
 import com.kappzzang.jeongsan.domain.repository.GroupInfoRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class GroupInfoRepositoryImpl @Inject constructor(private val groupDatabase: GroupDatabase) :
@@ -27,5 +29,14 @@ class GroupInfoRepositoryImpl @Inject constructor(private val groupDatabase: Gro
         entity.subject,
         if (entity.memberProfileImage == "") emptyList() else listOf(entity.memberProfileImage)
     )
-    override fun getGroupInfo(groupId: String): Flow<GroupItem> = groupDatabase.getGroupInfo()
+
+    override fun getGroupInfo(groupId: String): Flow<GroupItem> = flow {
+        emit(
+            groupId.toLongOrNull()?.let { id ->
+                groupDatabase.groupDao().inquireGroupInfo(id).firstOrNull()?.let {
+                    getGroupItemFromEntity(it)
+                } ?: GroupItem("0", "", false, "", emptyList())
+            } ?: GroupItem("0", "", false, "", emptyList())
+        )
+    }
 }
