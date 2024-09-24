@@ -15,8 +15,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-private fun createDemoExpenseName(): String = "카페 Demo 123"
-
 @HiltViewModel
 class ExpenseDetailViewModel @Inject constructor(
     private val getExpenseDetailUseCase: GetExpenseDetailUseCase,
@@ -116,5 +114,4 @@ class ExpenseDetailViewModel @Inject constructor(
             )
         }
     }
-
 }
