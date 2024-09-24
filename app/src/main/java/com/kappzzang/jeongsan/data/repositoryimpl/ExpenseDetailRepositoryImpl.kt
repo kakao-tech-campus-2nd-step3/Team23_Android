@@ -22,5 +22,19 @@ class ExpenseDetailRepositoryImpl @Inject constructor() :
                     1,
                     0
                 ),
+                ExpenseDetailItem(
+                    "id3",
+                    "밍밍한 국",
+                    500,
+                    6,
+                    0
+                ),
+                ExpenseDetailItem(
+                    "id4",
+                    "상차림비",
+                    100,
+                    10,
+                    0
+                ),
             )
 }
