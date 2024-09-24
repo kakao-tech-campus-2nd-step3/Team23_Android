@@ -8,6 +8,7 @@ import com.kappzzang.jeongsan.domain.model.ExpenseState
 import com.kappzzang.jeongsan.domain.usecase.GetCurrentGroupInfoUseCase
 import com.kappzzang.jeongsan.domain.usecase.GetExpenseListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,14 +31,9 @@ class ExpenseListViewModel @Inject constructor(
     private val getExpenseListUseCase: GetExpenseListUseCase
 ) : ViewModel() {
 
+    private var groupId: String = ""
     private val expenseList = MutableStateFlow(ExpenseListResponse.emptyList())
-    private val groupName = getCurrentGroupInfoUseCase("").map {
-        it.name
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(5000L),
-        ""
-    )
+    private val groupName = MutableStateFlow("")
 
     private val _uiData = combine(
         expenseList,
@@ -60,7 +56,9 @@ class ExpenseListViewModel @Inject constructor(
     )
 
     private var expenseListFetchingJob: Job? = null
-    val uiData = _uiData
+    val uiData by lazy {
+        _uiData
+    }
 
     private fun cancelPreviousJob() {
         if (expenseListFetchingJob?.isCompleted != false) {
@@ -69,17 +67,14 @@ class ExpenseListViewModel @Inject constructor(
         expenseListFetchingJob?.cancel()
     }
 
-    private fun getCurrentGroupInfo(expenseState: ExpenseState) {
-        viewModelScope.launch {
-            getExpenseListUseCase("", expenseState).collect {
-            }
-        }
-    }
-
     private fun getExpenseList(expenseState: ExpenseState) {
+        if(groupId == ""){
+            return
+        }
+
         cancelPreviousJob()
-        expenseListFetchingJob = viewModelScope.launch {
-            getExpenseListUseCase("", expenseState)
+        expenseListFetchingJob = viewModelScope.launch (Dispatchers.IO){
+            getExpenseListUseCase(groupId, expenseState)
                 .collect {
                     expenseList.emit(it)
                 }
@@ -88,10 +83,14 @@ class ExpenseListViewModel @Inject constructor(
 
     // 미확인 + 확인 지출 모두 불러오기
     private fun getAllCalculatingExpenseList() {
+        if(groupId == ""){
+            return
+        }
+
         cancelPreviousJob()
-        expenseListFetchingJob = viewModelScope.launch {
-            getExpenseListUseCase("", ExpenseState.CONFIRMED).zip(
-                getExpenseListUseCase("", ExpenseState.NOT_CONFIRMED)
+        expenseListFetchingJob = viewModelScope.launch (Dispatchers.IO){
+            getExpenseListUseCase(groupId, ExpenseState.CONFIRMED).zip(
+                getExpenseListUseCase(groupId, ExpenseState.NOT_CONFIRMED)
             ) { confirmed, notConfirmed ->
                 ExpenseListResponse(
                     expenseList = confirmed.expenseList.toMutableList() + notConfirmed.expenseList,
@@ -100,6 +99,16 @@ class ExpenseListViewModel @Inject constructor(
                 )
             }.collect {
                 expenseList.emit(it)
+            }
+        }
+    }
+
+    private fun getGroupInfo(){
+        viewModelScope.launch (Dispatchers.IO) {
+            getCurrentGroupInfoUseCase(groupId).map {
+                it.name
+            }.collect {
+                groupName.emit(it)
             }
         }
     }
@@ -127,5 +136,11 @@ class ExpenseListViewModel @Inject constructor(
 
     fun clickOnlyConfirmedExpensesChipButton() {
         getExpenseList(ExpenseState.CONFIRMED)
+    }
+
+    fun setGroupId(groupId: String) {
+        this.groupId = groupId
+
+        getGroupInfo()
     }
 }
