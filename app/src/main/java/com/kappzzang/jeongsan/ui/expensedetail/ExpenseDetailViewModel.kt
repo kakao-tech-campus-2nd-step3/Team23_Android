@@ -14,37 +14,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-private fun createDemoItem(index: Int): ExpenseDetailItem = ExpenseDetailItem(
-    id = "$index",
-    itemName = "아이템 item $index",
-    itemPrice = 100 * index,
-    itemQuantity = index % 4 + 1,
-    selectedQuantity = 0
-)
-
-private fun createDemoList(): List<ExpenseDetailItem> = listOf(
-    createDemoItem(0),
-    createDemoItem(1),
-    createDemoItem(2),
-    createDemoItem(3),
-    createDemoItem(4),
-    createDemoItem(0),
-    createDemoItem(1),
-    createDemoItem(2),
-    createDemoItem(3),
-    createDemoItem(4),
-    createDemoItem(0),
-    createDemoItem(1),
-    createDemoItem(2),
-    createDemoItem(3),
-    createDemoItem(4),
-    createDemoItem(0),
-    createDemoItem(1),
-    createDemoItem(2),
-    createDemoItem(3),
-    createDemoItem(4)
-)
-
 private fun createDemoExpenseName(): String = "카페 Demo 123"
 
 @HiltViewModel
