@@ -29,6 +29,7 @@ class ExpenseDetailViewModel @Inject constructor(
     val expenseName: StateFlow<String> = _expenseName.asStateFlow()
 
     init {
+        initExpenseName()
         initExpenseItemList()
     }
 
