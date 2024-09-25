@@ -15,7 +15,7 @@ class ExpenseListAdapter(private val onExpenseItemClickListener: (expenseId: Str
         object :
             DiffUtil.ItemCallback<ExpenseItem>() {
             override fun areItemsTheSame(oldItem: ExpenseItem, newItem: ExpenseItem): Boolean =
-                oldItem.id === newItem.id
+                oldItem.id == newItem.id
 
             override fun areContentsTheSame(oldItem: ExpenseItem, newItem: ExpenseItem): Boolean =
                 oldItem == newItem
