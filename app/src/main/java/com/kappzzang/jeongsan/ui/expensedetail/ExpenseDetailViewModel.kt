@@ -4,8 +4,11 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.domain.model.ExpenseDetailItem
+import com.kappzzang.jeongsan.domain.model.ExpenseItem
+import com.kappzzang.jeongsan.domain.model.ExpenseState
 import com.kappzzang.jeongsan.domain.usecase.GetExpenseDetailUseCase
 import com.kappzzang.jeongsan.domain.usecase.GetExpenseUseCase
+import com.kappzzang.jeongsan.ui.Member
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -13,34 +16,46 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.util.Date
 
 @HiltViewModel
 class ExpenseDetailViewModel @Inject constructor(
     private val getExpenseDetailUseCase: GetExpenseDetailUseCase,
     private val getExpenseUseCase: GetExpenseUseCase
 ) : ViewModel() {
-    private val _expenseItemList = MutableStateFlow(listOf<ExpenseDetailItem>())
-    private val _expenseName = MutableStateFlow("")
+    private val _expenseDetailList = MutableStateFlow(listOf<ExpenseDetailItem>())
+    private val _expense = MutableStateFlow(
+        ExpenseItem(
+            "",
+            "",
+            Member(""),
+            0,
+            "",
+            Date(),
+            ExpenseState.NOT_CONFIRMED,
+            ""
+        )
+    )
 
-    val expenseItemList: StateFlow<List<ExpenseDetailItem>> = _expenseItemList.asStateFlow()
-    val expenseName: StateFlow<String> = _expenseName.asStateFlow()
+    val expenseDetailList: StateFlow<List<ExpenseDetailItem>> = _expenseDetailList.asStateFlow()
+    val expense: StateFlow<ExpenseItem> = _expense.asStateFlow()
 
     init {
-        initExpenseName()
-        initExpenseItemList()
+        initExpense()
+        initExpenseDetailList()
     }
 
-    private fun initExpenseName() {
+    private fun initExpense() {
         viewModelScope.launch(Dispatchers.IO) {
             // 추후 전달할 Id
             val expenseId = 10L
-            _expenseName.value = getExpenseUseCase.invoke(expenseId).name
+            _expense.value = getExpenseUseCase.invoke(expenseId)
         }
     }
 
-    private fun initExpenseItemList() {
+    private fun initExpenseDetailList() {
         viewModelScope.launch(Dispatchers.IO) {
-            _expenseItemList.value = getExpenseDetailUseCase.invoke()
+            _expenseDetailList.value = getExpenseDetailUseCase.invoke()
         }
     }
 
@@ -83,14 +98,14 @@ class ExpenseDetailViewModel @Inject constructor(
 
     fun updateItemCheck(checked: Boolean, index: Int) {
         Log.d("Jeongsan", "checked")
-        if (index < 0 || index >= _expenseItemList.value.count()) {
+        if (index < 0 || index >= _expenseDetailList.value.count()) {
             Log.e("Jeongsan", "Invalid index")
             return
         }
 
         viewModelScope.launch(Dispatchers.Main) {
-            _expenseItemList.emit(
-                _expenseItemList.value.toMutableList().also {
+            _expenseDetailList.emit(
+                _expenseDetailList.value.toMutableList().also {
                     it[index] = getItemWithEnabled(it[index], checked)
                 }
             )
@@ -99,14 +114,14 @@ class ExpenseDetailViewModel @Inject constructor(
 
     fun updateSelectedQuantity(quantity: Int, index: Int) {
         Log.d("Jeongsan", "quantity changed")
-        if (index < 0 || index >= _expenseItemList.value.count()) {
+        if (index < 0 || index >= _expenseDetailList.value.count()) {
             Log.e("Jeongsan", "Invalid index")
             return
         }
 
         viewModelScope.launch(Dispatchers.Main) {
-            _expenseItemList.emit(
-                _expenseItemList.value.toMutableList().also {
+            _expenseDetailList.emit(
+                _expenseDetailList.value.toMutableList().also {
                     it[index] = getItemWithQuantity(it[index], quantity)
                 }
             )
