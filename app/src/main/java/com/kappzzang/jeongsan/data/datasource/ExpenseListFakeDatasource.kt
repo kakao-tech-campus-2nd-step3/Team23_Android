@@ -18,26 +18,17 @@ class ExpenseListFakeDatasource @Inject constructor(private val expenseDatabase:
         delay(1000)
         val result =
             when (expenseState) {
-                ExpenseState.CONFIRMED -> expenseDatabase.expenseDao().getConfirmedExpense().map {
-                    ExpenseEntityMapper.mapExpenseEntityToModel(it)
-                }
+                ExpenseState.CONFIRMED -> expenseDatabase.expenseDao().getConfirmedExpense()
 
                 ExpenseState.NOT_CONFIRMED -> expenseDatabase.expenseDao().getNotConfirmedExpense()
-                    .map {
-                        ExpenseEntityMapper.mapExpenseEntityToModel(it)
-                    }
 
                 ExpenseState.TRANSFER_PENDING -> expenseDatabase.expenseDao().getPendingExpense()
-                    .map {
-                        ExpenseEntityMapper.mapExpenseEntityToModel(it)
-                    }
 
                 ExpenseState.TRANSFERED -> expenseDatabase.expenseDao().getTransferredExpense()
-                    .map {
-                        ExpenseEntityMapper.mapExpenseEntityToModel(it)
-                    }
+            }.map {
+                ExpenseEntityMapper.mapExpenseEntityToModel(it)
             }
-        var totalPrice: Int = 0
+        var totalPrice = 0
 
         result.forEach {
             totalPrice += it.price
