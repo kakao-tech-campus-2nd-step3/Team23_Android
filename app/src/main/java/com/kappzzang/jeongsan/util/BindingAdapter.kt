@@ -5,6 +5,10 @@ import androidx.core.widget.addTextChangedListener
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
+import androidx.recyclerview.widget.RecyclerView
+import com.kappzzang.jeongsan.ui.expenselist.ExpenseListAdapter
+import com.kappzzang.jeongsan.ui.expenselist.ExpenseListViewUIData
+import kotlinx.coroutines.flow.StateFlow
 
 object BindingAdapter {
     @BindingAdapter("stringText")
@@ -46,6 +50,14 @@ object BindingAdapter {
     fun setStringTextListener(view: EditText, listener: InverseBindingListener) {
         view.addTextChangedListener {
             listener.onChange()
+        }
+    }
+
+    @BindingAdapter("expenseItems")
+    @JvmStatic
+    fun attachExpenseList(recyclerView: RecyclerView, items: StateFlow<ExpenseListViewUIData>?) {
+        items?.let {
+            (recyclerView.adapter as? ExpenseListAdapter)?.submitList(it.value.expenseItems)
         }
     }
 }

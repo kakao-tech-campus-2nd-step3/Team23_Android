@@ -1,11 +1,13 @@
 package com.kappzzang.jeongsan.di
 
+import com.kappzzang.jeongsan.data.repositoryimpl.ExpenseListFakeRepositoryImpl
 import com.kappzzang.jeongsan.data.repositoryimpl.GroupInfoRepositoryImpl
-import com.kappzzang.jeongsan.data.repositoryimpl.UserInfoRepositoryImpl
-import com.kappzzang.jeongsan.domain.repository.GroupInfoRepository
-import com.kappzzang.jeongsan.domain.repository.UserInfoRepository
 import com.kappzzang.jeongsan.data.repositoryimpl.MemberRepositoryImpl
+import com.kappzzang.jeongsan.data.repositoryimpl.UserInfoRepositoryImpl
+import com.kappzzang.jeongsan.domain.repository.ExpenseListRepository
+import com.kappzzang.jeongsan.domain.repository.GroupInfoRepository
 import com.kappzzang.jeongsan.domain.repository.MemberRepository
+import com.kappzzang.jeongsan.domain.repository.UserInfoRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -27,6 +29,12 @@ abstract class RepositoryModule {
     abstract fun bindUserInfoRepository(
         userInfoRepositoryImpl: UserInfoRepositoryImpl
     ): UserInfoRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindExpensePageRepository(
+        expenseListRepository: ExpenseListFakeRepositoryImpl
+    ): ExpenseListRepository
 
     @Binds
     @Singleton

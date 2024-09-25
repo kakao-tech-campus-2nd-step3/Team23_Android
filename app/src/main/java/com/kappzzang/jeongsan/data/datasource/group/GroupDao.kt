@@ -19,4 +19,7 @@ interface GroupDao {
 
     @Query("SELECT * FROM `${GroupContract.GroupEntity.TABLE_NAME}` WHERE is_completed = 1")
     fun getDoneGroup(): List<GroupEntity>
+
+    @Query("SELECT * FROM `${GroupContract.GroupEntity.TABLE_NAME}` WHERE id = :groupId")
+    fun inquireGroupInfo(groupId: Long): List<GroupEntity>
 }
