@@ -24,18 +24,7 @@ class ExpenseDetailViewModel @Inject constructor(
     private val getExpenseUseCase: GetExpenseUseCase
 ) : ViewModel() {
     private val _expenseDetailList = MutableStateFlow(listOf<ExpenseDetailItem>())
-    private val _expense = MutableStateFlow(
-        ExpenseItem(
-            "",
-            "",
-            Member(""),
-            0,
-            "",
-            Date(),
-            ExpenseState.NOT_CONFIRMED,
-            ""
-        )
-    )
+    private val _expense = MutableStateFlow(getBlankExpense())
 
     val expenseDetailList: StateFlow<List<ExpenseDetailItem>> = _expenseDetailList.asStateFlow()
     val expense: StateFlow<ExpenseItem> = _expense.asStateFlow()
@@ -58,6 +47,17 @@ class ExpenseDetailViewModel @Inject constructor(
             _expenseDetailList.value = getExpenseDetailUseCase.invoke()
         }
     }
+
+    private fun getBlankExpense() = ExpenseItem(
+        "",
+        "",
+        Member(""),
+        0,
+        "",
+        Date(),
+        ExpenseState.NOT_CONFIRMED,
+        ""
+    )
 
     private fun getItemWithEnabled(item: ExpenseDetailItem, enabled: Boolean): ExpenseDetailItem {
         if (enabled) {
