@@ -10,6 +10,7 @@ data class ExpenseItem(
     val name: String,
     val payer: Member,
     val price: Int,
+    val expenseImageUrl: String,
     val date: Date,
     val state: ExpenseState,
     val categoryColor: String
