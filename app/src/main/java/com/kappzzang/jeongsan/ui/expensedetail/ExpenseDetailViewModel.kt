@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.domain.model.ExpenseDetailItem
 import com.kappzzang.jeongsan.domain.model.ExpenseItem
 import com.kappzzang.jeongsan.domain.model.ExpenseState
+import com.kappzzang.jeongsan.domain.model.MemberItem
 import com.kappzzang.jeongsan.domain.usecase.GetExpenseDetailUseCase
 import com.kappzzang.jeongsan.domain.usecase.GetExpenseUseCase
 import com.kappzzang.jeongsan.ui.Member
@@ -51,7 +52,7 @@ class ExpenseDetailViewModel @Inject constructor(
     private fun getBlankExpense() = ExpenseItem(
         "",
         "",
-        Member(""),
+        MemberItem("","","",false),
         0,
         "",
         Date(),

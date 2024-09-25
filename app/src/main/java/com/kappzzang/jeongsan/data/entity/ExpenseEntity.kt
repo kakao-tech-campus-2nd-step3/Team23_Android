@@ -16,6 +16,8 @@ class ExpenseEntity(
     var createdTime: String = "",
     @ColumnInfo(name = ExpenseContract.ExpenseEntity.COLUMN_TOTAL_PRICE)
     var totalPrice: Int = 0,
+    @ColumnInfo(name = ExpenseContract.ExpenseEntity.COLUMN_IMAGE)
+    var image: String = "",
     @ColumnInfo(name = ExpenseContract.ExpenseEntity.COLUMN_CATEGORY_NAME)
     var categoryName: String = "",
     @ColumnInfo(name = ExpenseContract.ExpenseEntity.COLUMN_CATEGORY_COLOR)
