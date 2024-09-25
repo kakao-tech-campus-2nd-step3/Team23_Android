@@ -6,7 +6,6 @@ import com.kappzzang.jeongsan.data.datasource.MemberContract
 import com.kappzzang.jeongsan.data.datasource.MemberDatabase
 import com.kappzzang.jeongsan.data.datasource.expense.ExpenseDatabase
 import com.kappzzang.jeongsan.data.datasource.group.GroupDatabase
-import com.kappzzang.jeongsan.data.datasource.group.GroupDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

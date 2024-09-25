@@ -6,7 +6,6 @@ import com.kappzzang.jeongsan.domain.repository.GroupInfoRepository
 import com.kappzzang.jeongsan.domain.repository.MemberRepository
 import com.kappzzang.jeongsan.domain.repository.UserInfoRepository
 import com.kappzzang.jeongsan.domain.usecase.GetDoneGroupUseCase
-import com.kappzzang.jeongsan.domain.usecase.GetInviteInfoUseCase
 import com.kappzzang.jeongsan.domain.usecase.GetExpenseDetailUseCase
 import com.kappzzang.jeongsan.domain.usecase.GetExpenseUseCase
 import com.kappzzang.jeongsan.domain.usecase.GetInviteInfoUseCase
