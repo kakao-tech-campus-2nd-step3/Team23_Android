@@ -9,7 +9,6 @@ import com.kappzzang.jeongsan.domain.model.ExpenseState
 import com.kappzzang.jeongsan.domain.model.MemberItem
 import com.kappzzang.jeongsan.domain.usecase.GetExpenseDetailUseCase
 import com.kappzzang.jeongsan.domain.usecase.GetExpenseUseCase
-import com.kappzzang.jeongsan.ui.Member
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.Date
 import javax.inject.Inject
@@ -52,7 +51,12 @@ class ExpenseDetailViewModel @Inject constructor(
     private fun getBlankExpense() = ExpenseItem(
         "",
         "",
-        MemberItem("","","",false),
+        MemberItem(
+            "",
+            "",
+            "",
+            false
+        ),
         0,
         "",
         Date(),

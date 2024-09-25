@@ -4,7 +4,6 @@ import com.kappzzang.jeongsan.domain.model.ExpenseItem
 import com.kappzzang.jeongsan.domain.model.ExpenseState
 import com.kappzzang.jeongsan.domain.model.MemberItem
 import com.kappzzang.jeongsan.domain.repository.ExpenseRepository
-import com.kappzzang.jeongsan.ui.Member
 import java.util.Date
 import javax.inject.Inject
 
@@ -12,7 +11,12 @@ class ExpenseRepositoryImpl @Inject constructor() : ExpenseRepository {
     override suspend fun getExpense(id: Long) = ExpenseItem(
         id = "id",
         name = "지출 이름입니당",
-        payer = MemberItem("id","돈 많은 사람","",false),
+        payer = MemberItem(
+            "id",
+            "돈 많은 사람",
+            "",
+            false
+        ),
         price = 15800,
         // 임시 지출 이미지 주소 (카카오테크 캠퍼스)
         expenseImageUrl = "https://www.kakaotechcampus.com/fileUpDownload/" +
