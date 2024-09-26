@@ -54,13 +54,51 @@ class ExpenseListActivity : AppCompatActivity() {
 
         binding.bottomnavigationview.setupWithNavController(navController)
 
+        setOnAddExpenseFabClickedListener()
+
         // TODO: 임시 연결용 코드
-        binding.addExpenseFab.setOnClickListener {
-            startActivity(Intent(this, AddExpenseActivity::class.java))
-        }
         binding.requestExpenseFab.setOnClickListener {
             startActivity(Intent(this, SendMessageActivity::class.java))
         }
+    }
+
+    private fun setOnAddExpenseFabClickedListener() {
+        fun makeAddExpenseActivityIntent(isManual: Boolean): Intent {
+            val intent = Intent(
+                this, AddExpenseActivity::class.java
+            )
+
+            intent.putExtra(
+                AddExpenseActivity.INTENT_EXPENSE_MODE,
+                if (isManual) AddExpenseActivity.EXPENSE_MODE_MANUAL else AddExpenseActivity.EXPENSE_MODE_RECEIPT
+            )
+
+            return intent
+        }
+
+        val popupMenu = PopupMenu(this, binding.addExpenseFab)
+        popupMenu.menuInflater.inflate(R.menu.menu_add_expense, popupMenu.menu)
+
+        popupMenu.setOnMenuItemClickListener {
+            return@setOnMenuItemClickListener when (it.itemId) {
+                R.id.menu_from_camera -> {
+                    startActivity(makeAddExpenseActivityIntent(false))
+                    true
+                }
+
+                R.id.menu_manually -> {
+                    startActivity(makeAddExpenseActivityIntent(true))
+                    true
+                }
+
+                else -> false
+            }
+        }
+
+        binding.addExpenseFab.setOnClickListener {
+            popupMenu.show()
+        }
+
     }
 
     private fun setOnUpperMenuClickedListener() {
