@@ -1,9 +1,12 @@
 package com.kappzzang.jeongsan.data.datasource
 
 import com.kappzzang.jeongsan.data.datasource.expense.ExpenseDatabase
+import com.kappzzang.jeongsan.data.entity.ExpenseEntity
 import com.kappzzang.jeongsan.data.mapper.ExpenseEntityMapper
 import com.kappzzang.jeongsan.domain.model.ExpenseListResponse
 import com.kappzzang.jeongsan.domain.model.ExpenseState
+import com.kappzzang.jeongsan.domain.model.ReceiptItem
+import java.sql.Timestamp
 import javax.inject.Inject
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -46,5 +49,18 @@ class ExpenseListFakeDatasource @Inject constructor(private val expenseDatabase:
             totalExpenseToSend = totalPrice / 2
         )
         emit(fakeResponse)
+    }
+
+    fun addExpense(receiptItem: ReceiptItem): String {
+        val expenseEntity = ExpenseEntity(
+            name = receiptItem.title,
+            totalPrice = receiptItem.expenseDetailItemList.sumOf { it.itemPrice * it.itemQuantity },
+            createdTime = Timestamp(System.currentTimeMillis()).toString(),
+            categoryColor = receiptItem.categoryColor,
+            expenseState = ExpenseState.CONFIRMED.ordinal
+        )
+
+        expenseDatabase.expenseDao().addExpense(expenseEntity)
+        return expenseEntity.id.toString()
     }
 }

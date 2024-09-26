@@ -1,9 +1,8 @@
 package com.kappzzang.jeongsan.domain.model
 
-import android.media.Image
-
 data class ReceiptItem(
     val title: String,
-    val image: Image,
-    val expenseDetailItemList: List<ExpenseDetailItem>
+    val categoryColor: String,
+    val imageBase64: String,
+    val expenseDetailItemList: List<ReceiptDetailItem>
 )
