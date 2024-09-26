@@ -136,8 +136,6 @@ class ReceiptCameraActivity : AppCompatActivity() {
             }
 
             ReceiptCameraViewModel.ReceiptPictureState.RECEIVE_SERVER_RESPONSE -> {
-                Toast.makeText(this@ReceiptCameraActivity, "완료!", Toast.LENGTH_SHORT)
-                    .show()
 
                 viewModel.serverResponse?.let {
                     setResult(RESULT_OK, getOcrResultIntent(it))

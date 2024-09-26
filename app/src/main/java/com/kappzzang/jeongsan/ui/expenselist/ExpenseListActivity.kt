@@ -130,11 +130,7 @@ class ExpenseListActivity : AppCompatActivity() {
                 resultIntent?.getParcelableExtra(ReceiptCameraActivity.OCR_RESULT_IMAGE)
             }
 
-            Log.d("KSC", data.toString())
-            Log.d("KSC", image.toString())
-
             if (it.resultCode == RESULT_OK) {
-                Toast.makeText(this, "Succeed!", Toast.LENGTH_SHORT).show()
                 if (data !is OcrResultResponse.OcrSuccess || image == null
                 ) {
                     return@registerForActivityResult
