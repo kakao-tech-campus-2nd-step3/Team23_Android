@@ -112,6 +112,7 @@ class ReceiptCameraActivity : AppCompatActivity() {
     private fun getOcrResultIntent(response: OcrResultResponse): Intent{
         return Intent(applicationContext, ExpenseListActivity::class.java).apply {
             putExtra(OCR_RESULT ,response)
+            putExtra(OCR_RESULT_IMAGE, viewModel.pictureData.value)
         }
     }
 
@@ -122,9 +123,6 @@ class ReceiptCameraActivity : AppCompatActivity() {
             }
 
             ReceiptCameraViewModel.ReceiptPictureState.READY_TO_SEND -> {
-                viewModel.serverResponse?.let {
-                    setResult(RESULT_OK, getOcrResultIntent(it))
-                }
             }
 
             ReceiptCameraViewModel.ReceiptPictureState.SENDING_TO_SERVER -> {
@@ -199,5 +197,6 @@ class ReceiptCameraActivity : AppCompatActivity() {
 
     companion object {
         const val OCR_RESULT = "ocr_result"
+        const val OCR_RESULT_IMAGE = "ocr_result_image"
     }
 }

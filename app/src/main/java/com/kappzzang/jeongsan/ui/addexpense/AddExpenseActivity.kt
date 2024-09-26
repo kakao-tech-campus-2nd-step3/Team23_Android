@@ -1,9 +1,6 @@
 package com.kappzzang.jeongsan.ui.addexpense
 
-import android.app.Activity
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -20,6 +17,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kappzzang.jeongsan.databinding.ActivityAddExpenseBinding
+import com.kappzzang.jeongsan.domain.model.OcrResultResponse
 import com.kappzzang.jeongsan.ui.expensedetail.ExpenseDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.StateFlow
@@ -141,9 +139,37 @@ class AddExpenseActivity : AppCompatActivity() {
         }
     }
 
+    private fun getExpenseData() {
+        val intentData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent?.getParcelableExtra(
+                EXPENSE_DATA,
+                OcrResultResponse::class.java
+            )
+        } else {
+            intent?.getParcelableExtra(EXPENSE_DATA)
+        }
+
+        val intentImage = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent?.getParcelableExtra(
+                EXPENSE_IMAGE,
+                Uri::class.java
+            )
+        } else {
+            intent?.getParcelableExtra(EXPENSE_IMAGE)
+        }
+
+        val data = intentData as? OcrResultResponse.OcrSuccess ?: return
+        val image = intentImage as? Uri ?: return
+
+        // TODO: data를 사용해 Expense의 나머지 필드 초기화
+    }
+
     companion object {
         const val INTENT_EXPENSE_MODE = "expenseMode"
         const val EXPENSE_MODE_MANUAL = "manual"
         const val EXPENSE_MODE_RECEIPT = "receipt"
+
+        const val EXPENSE_DATA = "expenseData"
+        const val EXPENSE_IMAGE = "expenseImage"
     }
 }

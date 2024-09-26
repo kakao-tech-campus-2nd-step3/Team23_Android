@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -82,32 +83,69 @@ class ExpenseListActivity : AppCompatActivity() {
         setOnAddExpenseFabClickedListener()
 
 
-        activityReceiptCameraLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-            {
-                val resultIntent: Intent? = it.data
-                val data = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    resultIntent?.getParcelableExtra(
-                        ReceiptCameraActivity.OCR_RESULT,
-                        OcrResultResponse::class.java
-                    )
-                } else {
-                    resultIntent?.getParcelableExtra(ReceiptCameraActivity.OCR_RESULT)
-                }
-                if (it.resultCode == RESULT_OK) {
-                    Toast.makeText(this, "Succeed!", Toast.LENGTH_SHORT).show()
-                } else {
-                    (data as? OcrResultResponse.OcrFailed)?.message?.let {
-                        Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
+        activityReceiptCameraLauncher = createReceiptCameraLauncher()
+
 
         // TODO: 임시 연결용 코드
         binding.requestExpenseFab.setOnClickListener {
             startActivity(Intent(this, SendMessageActivity::class.java))
         }
     }
+
+    private fun startAddExpenseActivity() {
+        val intent = makeAddExpenseActivityIntent(true)
+        startActivity(intent)
+    }
+
+    private fun startAddExpenseActivity(
+        ocrResult: OcrResultResponse.OcrSuccess,
+        receiptImage: Uri
+    ) {
+        val intent = makeAddExpenseActivityIntent(false)
+        intent.extras?.putParcelable(AddExpenseActivity.EXPENSE_DATA, ocrResult)
+        intent.extras?.putParcelable(AddExpenseActivity.EXPENSE_IMAGE, receiptImage)
+
+        startActivity(intent)
+    }
+
+    private fun createReceiptCameraLauncher(): ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+        {
+            val resultIntent: Intent? = it.data
+            val data = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                resultIntent?.getParcelableExtra(
+                    ReceiptCameraActivity.OCR_RESULT,
+                    OcrResultResponse::class.java
+                )
+            } else {
+                resultIntent?.getParcelableExtra(ReceiptCameraActivity.OCR_RESULT)
+            }
+
+            val image = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                resultIntent?.getParcelableExtra(
+                    ReceiptCameraActivity.OCR_RESULT_IMAGE,
+                    Uri::class.java
+                )
+            } else {
+                resultIntent?.getParcelableExtra(ReceiptCameraActivity.OCR_RESULT_IMAGE)
+            }
+
+            Log.d("KSC", data.toString())
+            Log.d("KSC", image.toString())
+
+            if (it.resultCode == RESULT_OK) {
+                Toast.makeText(this, "Succeed!", Toast.LENGTH_SHORT).show()
+                if (data !is OcrResultResponse.OcrSuccess || image == null
+                ) {
+                    return@registerForActivityResult
+                }
+                startAddExpenseActivity(data, image)
+            } else {
+                (data as? OcrResultResponse.OcrFailed)?.message?.let { message ->
+                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
 
     private fun checkCameraPermission(): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -185,7 +223,7 @@ class ExpenseListActivity : AppCompatActivity() {
                 }
 
                 R.id.menu_manually -> {
-                    startActivity(makeAddExpenseActivityIntent(true))
+                    startAddExpenseActivity()
                     true
                 }
 
