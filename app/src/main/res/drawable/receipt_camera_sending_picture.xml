@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="316"
+    android:viewportHeight="316">
+    <group
+        android:name="firstDot"
+        android:pivotX="32"
+        android:pivotY="132"
+        android:scaleX=".7"
+        android:scaleY=".7"
+        android:translateY="0">
+        <path
+            android:name="v1"
+            android:fillColor="#000000"
+            android:pathData="
+            M64,132 A10,10 0 1,1 0,132
+            M0,132  A10,10 0 1,1 64,132" />
+    </group>
+
+    <group
+        android:name="secondDot"
+        android:pivotX="32"
+        android:pivotY="132"
+        android:scaleX=".7"
+        android:scaleY=".7"
+        android:translateY="0"
+        android:translateX="84">
+        <path
+            android:name="v2"
+            android:fillColor="#000000"
+            android:pathData="
+            M64,132 A10,10 0 1,1 0,132
+            M0,132  A10,10 0 1,1 64,132" />
+
+    </group>
+
+    <group
+        android:name="thirdDot"
+        android:pivotX="32"
+        android:pivotY="132"
+        android:scaleX=".7"
+        android:scaleY=".7"
+        android:translateY="0"
+        android:translateX="168">
+        <path
+            android:name="v3"
+            android:fillColor="#000000"
+            android:pathData="
+            M64,132 A10,10 0 1,1 0,132
+            M0,132  A10,10 0 1,1 64,132" />
+
+    </group>
+    <group
+        android:name="fourthDot"
+        android:pivotX="32"
+        android:pivotY="132"
+        android:scaleX=".7"
+        android:scaleY=".7"
+        android:translateY="0"
+        android:translateX="252">
+        <path
+            android:name="v4"
+            android:fillColor="#000000"
+            android:pathData="
+            M64,132 A10,10 0 1,1 0,132
+            M0,132  A10,10 0 1,1 64,132" />
+
+    </group>
+</vector>
