@@ -1,6 +1,7 @@
 package com.kappzzang.jeongsan.ui.addexpense
 
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -84,6 +85,24 @@ class AddExpenseActivity : AppCompatActivity() {
             binding.addexpenseImagePlusImageview.isVisible = false
             binding.addexpenseImagePlusDescriptionTextview.isVisible = false
         }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.expenseImageUri.collect{
+                    if(it == null){
+                        return@collect
+                    }
+
+                    // TODO: Glide로 대체
+                    binding.addexpenseImageImageview.setImageDrawable(
+                        Drawable.createFromStream(
+                            contentResolver.openInputStream(it),
+                            null
+                        )
+                    )
+                }
+            }
+        }
     }
 
     private fun checkIfReceiptMode(): Boolean {
@@ -95,7 +114,7 @@ class AddExpenseActivity : AppCompatActivity() {
     private fun initiateViewModel() {
         if (checkIfReceiptMode()) {
             viewModel.setManualMode(AddExpenseViewModel.Companion.ManualMode.RECEIPT)
-            viewModel.initiateDemoData()
+            getExpenseData()
         } else {
             viewModel.setManualMode(AddExpenseViewModel.Companion.ManualMode.MANUAL)
             setAddExpenseImageContainer()
@@ -159,9 +178,9 @@ class AddExpenseActivity : AppCompatActivity() {
         }
 
         val data = intentData as? OcrResultResponse.OcrSuccess ?: return
-        val image = intentImage as? Uri ?: return
+        val image = intentImage ?: return
 
-        // TODO: data를 사용해 Expense의 나머지 필드 초기화
+        viewModel.setInitialReceiptData(image, data)
     }
 
     companion object {

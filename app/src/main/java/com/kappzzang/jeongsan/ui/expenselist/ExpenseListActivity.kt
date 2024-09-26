@@ -102,8 +102,8 @@ class ExpenseListActivity : AppCompatActivity() {
         receiptImage: Uri
     ) {
         val intent = makeAddExpenseActivityIntent(false)
-        intent.extras?.putParcelable(AddExpenseActivity.EXPENSE_DATA, ocrResult)
-        intent.extras?.putParcelable(AddExpenseActivity.EXPENSE_IMAGE, receiptImage)
+        intent.putExtra(AddExpenseActivity.EXPENSE_DATA, ocrResult)
+        intent.putExtra(AddExpenseActivity.EXPENSE_IMAGE, receiptImage)
 
         startActivity(intent)
     }

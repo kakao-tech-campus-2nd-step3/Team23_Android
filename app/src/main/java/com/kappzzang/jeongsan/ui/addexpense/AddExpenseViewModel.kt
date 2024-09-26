@@ -2,6 +2,7 @@ package com.kappzzang.jeongsan.ui.addexpense
 
 import android.graphics.Bitmap
 import android.util.Base64
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.domain.model.ReceiptDetailItem
@@ -10,6 +11,7 @@ import com.kappzzang.jeongsan.domain.usecase.UploadExpenseUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
+import com.kappzzang.jeongsan.domain.model.OcrResultResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -47,11 +49,9 @@ class AddExpenseViewModel @Inject constructor(
         )
     }
 
-    private val _expenseImageBitmap = MutableStateFlow<Bitmap?>(null)
     private val _manualMode = MutableStateFlow(true)
     private val _uploadedImage = MutableStateFlow(false)
 
-    val expenseImageBitmap: StateFlow<Bitmap?> = _expenseImageBitmap.asStateFlow()
     val manualMode: StateFlow<Boolean> = _manualMode.asStateFlow()
     val uploadedImage: StateFlow<Boolean> = _uploadedImage.asStateFlow()
     val expenseItemList: StateFlow<List<ExpenseItemInput>> = _expenseItemList.asStateFlow()
@@ -64,8 +64,14 @@ class AddExpenseViewModel @Inject constructor(
         }
     }
 
-    fun setInitialReceiptData() {
-        // TODO: 영수증 모델 받아서 UI 정보 업데이트
+    fun setInitialReceiptData(imageUri: Uri, ocrResult: OcrResultResponse.OcrSuccess) {
+        viewModelScope.launch(Dispatchers.Main) {
+            _expenseImageUri.emit(imageUri)
+            expenseName.emit(ocrResult.name)
+            _expenseItemList.emit(ocrResult.detailItems.map {
+                ExpenseItemInput(it.itemName, it.itemPrice, it.itemQuantity)
+            } + _expenseItemList.value)
+        }
     }
 
     fun initiateDemoData() {

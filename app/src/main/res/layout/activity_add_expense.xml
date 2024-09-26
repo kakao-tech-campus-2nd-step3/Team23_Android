@@ -64,7 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="@{viewModel.uploadedImage?View.VISIBLE:View.GONE}"
-                app:srcCompat="@drawable/addexpense_receipt_test" />
+                android:src="@{viewModel.expenseImageUri}" />
 
             <ImageView
                 android:id="@+id/addexpense_image_plus_imageview"
