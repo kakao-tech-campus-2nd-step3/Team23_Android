@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-            <variable
-                name="viewModel"
-                type="com.kappzzang.jeongsan.ui.expenselist.ExpenseListViewModel" />
+
+        <variable
+            name="viewModel"
+            type="com.kappzzang.jeongsan.ui.expenselist.ExpenseListViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -76,23 +77,25 @@
             app:layout_constraintTop_toBottomOf="@id/total_expense_explain_textview"
             app:navGraph="@navigation/expense_list_nav_graph" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <ImageButton
             android:id="@+id/add_expense_fab"
             android:layout_width="@dimen/expense_list_fab_size"
             android:layout_height="@dimen/expense_list_fab_size"
             android:layout_margin="@dimen/expense_list_fab_margin"
-            android:backgroundTint="@color/blue500"
+            android:background="@drawable/round_button_blue"
+            android:elevation="5dp"
             android:src="@drawable/baseline_add_24"
             app:layout_constraintBottom_toTopOf="@+id/bottomnavigationview"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <ImageButton
             android:id="@+id/request_expense_fab"
             android:layout_width="@dimen/expense_list_fab_size"
             android:layout_height="@dimen/expense_list_fab_size"
             android:layout_margin="@dimen/expense_list_fab_margin"
-            android:backgroundTint="@color/blue500"
-            android:src="@drawable/icon_won_512"
+            android:background="@drawable/round_button_blue"
+            android:elevation="5dp"
+            android:src="@drawable/icon_won"
             app:layout_constraintBottom_toTopOf="@+id/add_expense_fab"
             app:layout_constraintEnd_toEndOf="parent" />
 
