@@ -1,11 +1,18 @@
 package com.kappzzang.jeongsan.ui.expenselist
 
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -25,6 +32,20 @@ class ExpenseListActivity : AppCompatActivity() {
     private val viewModel: ExpenseListViewModel by viewModels()
     private lateinit var binding: ActivityExpenseListBinding
     private lateinit var navController: NavController
+
+    private val requestCameraPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission(),
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            startCameraActivity()
+        } else {
+            Toast.makeText(
+                this,
+                resources.getString(R.string.toast_message_deny),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,19 +83,64 @@ class ExpenseListActivity : AppCompatActivity() {
         }
     }
 
-    private fun setOnAddExpenseFabClickedListener() {
-        fun makeAddExpenseActivityIntent(isManual: Boolean): Intent {
-            val intent = Intent(
-                this, AddExpenseActivity::class.java
-            )
+    private fun checkCameraPermission(): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.CAMERA
+            ) ==
+                    PackageManager.PERMISSION_GRANTED
+        } else true
+    }
 
-            intent.putExtra(
-                AddExpenseActivity.INTENT_EXPENSE_MODE,
-                if (isManual) AddExpenseActivity.EXPENSE_MODE_MANUAL else AddExpenseActivity.EXPENSE_MODE_RECEIPT
-            )
-
-            return intent
+    private fun askCameraPermission() {
+        if (shouldShowRequestPermissionRationale(android.Manifest.permission.CAMERA)) {
+            // 권한 요청 이유를 설명하는 UI를 표시
+            showNotificationPermissionDialog()
+        } else {
+            // Directly ask for the permission
+            requestCameraPermissionLauncher.launch(android.Manifest.permission.CAMERA)
         }
+    }
+
+    private fun showNotificationPermissionDialog() {
+        AlertDialog.Builder(this).apply {
+            setTitle(getString(R.string.dialog_title_ask_camera))
+            setMessage(
+                String.format(
+                    getString(R.string.dialog_body_ask_camera),
+                    getString(R.string.app_name)
+                )
+            )
+            setPositiveButton(getString(R.string.dialog_allow)) { _, _ ->
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                val uri = Uri.fromParts("package", packageName, null)
+                intent.data = uri
+                startActivity(intent)
+            }
+            setNegativeButton(getString(R.string.dialog_deny)) { _, _ -> }
+            show()
+        }
+    }
+
+    private fun makeAddExpenseActivityIntent(isManual: Boolean): Intent {
+        val intent = Intent(
+            this, AddExpenseActivity::class.java
+        )
+
+        intent.putExtra(
+            AddExpenseActivity.INTENT_EXPENSE_MODE,
+            if (isManual) AddExpenseActivity.EXPENSE_MODE_MANUAL else AddExpenseActivity.EXPENSE_MODE_RECEIPT
+        )
+
+        return intent
+    }
+
+    private fun startCameraActivity() {
+        startActivity(makeAddExpenseActivityIntent(false))
+    }
+
+    private fun setOnAddExpenseFabClickedListener() {
 
         val popupMenu = PopupMenu(this, binding.addExpenseFab)
         popupMenu.menuInflater.inflate(R.menu.menu_add_expense, popupMenu.menu)
@@ -83,7 +149,11 @@ class ExpenseListActivity : AppCompatActivity() {
         popupMenu.setOnMenuItemClickListener {
             return@setOnMenuItemClickListener when (it.itemId) {
                 R.id.menu_from_camera -> {
-                    startActivity(makeAddExpenseActivityIntent(false))
+                    if (!checkCameraPermission()) {
+                        askCameraPermission()
+                    } else {
+                        startCameraActivity()
+                    }
                     true
                 }
 
