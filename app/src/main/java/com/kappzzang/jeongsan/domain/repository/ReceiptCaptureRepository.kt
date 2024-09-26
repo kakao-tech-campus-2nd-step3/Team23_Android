@@ -1,7 +1,8 @@
 package com.kappzzang.jeongsan.domain.repository
 
+import com.kappzzang.jeongsan.domain.model.OcrResultResponse
 import java.io.File
 
 interface ReceiptCaptureRepository {
-    fun getImageCacheFile(): File
+    suspend fun getOcrImage(encodedReceiptImage: String): OcrResultResponse
 }
