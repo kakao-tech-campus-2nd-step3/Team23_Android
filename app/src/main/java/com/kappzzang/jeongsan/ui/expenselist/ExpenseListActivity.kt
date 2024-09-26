@@ -22,6 +22,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.kappzzang.jeongsan.R
 import com.kappzzang.jeongsan.databinding.ActivityExpenseListBinding
 import com.kappzzang.jeongsan.ui.addexpense.AddExpenseActivity
+import com.kappzzang.jeongsan.ui.camera.ReceiptCameraActivity
 import com.kappzzang.jeongsan.ui.inviteinfo.InviteInfoActivity
 import com.kappzzang.jeongsan.ui.sendmessage.SendMessageActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -137,7 +138,8 @@ class ExpenseListActivity : AppCompatActivity() {
     }
 
     private fun startCameraActivity() {
-        startActivity(makeAddExpenseActivityIntent(false))
+        startActivity(Intent(this, ReceiptCameraActivity::class.java))
+        //startActivity(makeAddExpenseActivityIntent(false))
     }
 
     private fun setOnAddExpenseFabClickedListener() {

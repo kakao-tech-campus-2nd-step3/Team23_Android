@@ -5,7 +5,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.camera"
+
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="true" />
 
     <application
@@ -19,6 +21,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Jeongsan"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.camera.ReceiptCameraActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.HistoryActivity"
             android:exported="false" />
@@ -40,16 +45,14 @@
             android:exported="false" />
         <activity
             android:name=".ui.main.MainActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false"></activity>
         <activity
-            android:windowSoftInputMode="adjustNothing"
             android:name=".ui.addexpense.AddExpenseActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".ui.expensedetail.ExpenseDetailActivity"
             android:exported="true" />
-
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="true">
