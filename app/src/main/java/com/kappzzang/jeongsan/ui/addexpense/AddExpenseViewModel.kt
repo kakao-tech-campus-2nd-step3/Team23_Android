@@ -1,6 +1,6 @@
 package com.kappzzang.jeongsan.ui.addexpense
 
-import android.net.Uri
+import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.domain.model.ReceiptDetailItem
@@ -45,11 +45,11 @@ class AddExpenseViewModel @Inject constructor(
         )
     }
 
-    private val _expenseImageUri = MutableStateFlow<Uri?>(null)
+    private val _expenseImageBitmap = MutableStateFlow<Bitmap?>(null)
     private val _manualMode = MutableStateFlow(true)
     private val _uploadedImage = MutableStateFlow(false)
 
-    val expenseImageUri: StateFlow<Uri?> = _expenseImageUri.asStateFlow()
+    val expenseImageBitmap: StateFlow<Bitmap?> = _expenseImageBitmap.asStateFlow()
     val manualMode: StateFlow<Boolean> = _manualMode.asStateFlow()
     val uploadedImage: StateFlow<Boolean> = _uploadedImage.asStateFlow()
     val expenseItemList: StateFlow<List<ExpenseItemInput>> = _expenseItemList.asStateFlow()
@@ -142,9 +142,9 @@ class AddExpenseViewModel @Inject constructor(
         return true
     }
 
-    fun setExpenseImageUri(uri: Uri) {
+    fun setExpenseImageBitmap(bitmap: Bitmap) {
         viewModelScope.launch(Dispatchers.Main) {
-            _expenseImageUri.emit(uri)
+            _expenseImageBitmap.emit(bitmap)
         }
     }
 

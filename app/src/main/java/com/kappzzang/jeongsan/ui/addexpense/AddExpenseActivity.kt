@@ -2,9 +2,12 @@ package com.kappzzang.jeongsan.ui.addexpense
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.drawable.Drawable
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -64,24 +67,19 @@ class AddExpenseActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.expenseImageUri.collect {
-                    updateImageView(it)
+                viewModel.expenseImageBitmap.collect {
+                    updateExpenseImage(it)
                 }
             }
         }
     }
 
-    private fun updateImageView(imageUri: Uri?) {
-        if (imageUri == null) {
+    private fun updateExpenseImage(imageBitmap: Bitmap?) {
+        if (imageBitmap == null) {
             return
         }
 
-        binding.addexpenseImageImageview.setImageDrawable(
-            Drawable.createFromStream(
-                contentResolver.openInputStream(imageUri),
-                null
-            )
-        )
+        binding.addexpenseImageImageview.setImageBitmap(imageBitmap)
 
         if (!checkIfReceiptMode()) {
             binding.addexpenseImageImageview.isVisible = true
@@ -117,10 +115,18 @@ class AddExpenseActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 result.data?.data?.let { uri ->
-                    viewModel.setExpenseImageUri(uri)
+                    val bitmap = convertImageUriToBitmap(uri)
+                    viewModel.setExpenseImageBitmap(bitmap)
                 }
             }
         }
+
+    private fun convertImageUriToBitmap(uri: Uri): Bitmap = if (Build.VERSION.SDK_INT >= 28) {
+        val source = ImageDecoder.createSource(contentResolver, uri)
+        ImageDecoder.decodeBitmap(source)
+    } else {
+        MediaStore.Images.Media.getBitmap(contentResolver, uri)
+    }
 
     private fun openGalleryForImage() {
         val intent = Intent(Intent.ACTION_PICK).apply { type = "image/*" }
