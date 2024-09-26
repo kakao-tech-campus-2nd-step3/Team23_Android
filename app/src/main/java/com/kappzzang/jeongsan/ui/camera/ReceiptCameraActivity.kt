@@ -1,5 +1,6 @@
 package com.kappzzang.jeongsan.ui.camera
 
+import android.content.Intent
 import android.graphics.drawable.AnimatedVectorDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -23,10 +24,14 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.kappzzang.jeongsan.R
 import com.kappzzang.jeongsan.databinding.ActivityReceiptCameraBinding
+import com.kappzzang.jeongsan.domain.model.OcrResultResponse
+import com.kappzzang.jeongsan.ui.expenselist.ExpenseListActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.io.File
 
+@AndroidEntryPoint
 class ReceiptCameraActivity : AppCompatActivity() {
     private val binding: ActivityReceiptCameraBinding by lazy {
         ActivityReceiptCameraBinding.inflate(layoutInflater)
@@ -104,6 +109,53 @@ class ReceiptCameraActivity : AppCompatActivity() {
         }
     }
 
+    private fun getOcrResultIntent(response: OcrResultResponse): Intent{
+        return Intent(applicationContext, ExpenseListActivity::class.java).apply {
+            putExtra(OCR_RESULT ,response)
+        }
+    }
+
+    private fun collectReceiptPictureState(state: ReceiptCameraViewModel.ReceiptPictureState){
+        when (state) {
+            ReceiptCameraViewModel.ReceiptPictureState.NOT_TAKEN -> {
+                startCamera()
+            }
+
+            ReceiptCameraViewModel.ReceiptPictureState.READY_TO_SEND -> {
+                viewModel.serverResponse?.let {
+                    setResult(RESULT_OK, getOcrResultIntent(it))
+                }
+            }
+
+            ReceiptCameraViewModel.ReceiptPictureState.SENDING_TO_SERVER -> {
+                (binding.receiptCameraLoadingCircles.drawable as? AnimatedVectorDrawable)?.start()
+            }
+
+            ReceiptCameraViewModel.ReceiptPictureState.RECEIVE_SERVER_RESPONSE -> {
+                Toast.makeText(this@ReceiptCameraActivity, "완료!", Toast.LENGTH_SHORT)
+                    .show()
+
+                viewModel.serverResponse?.let {
+                    setResult(RESULT_OK, getOcrResultIntent(it))
+                }
+
+                finish()
+            }
+
+            ReceiptCameraViewModel.ReceiptPictureState.ERROR -> {
+                Toast.makeText(
+                    this@ReceiptCameraActivity,
+                    viewModel.serverErrorMessage,
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                viewModel.serverResponse?.let {
+                    setResult(RESULT_CANCELED, getOcrResultIntent(it))
+                }
+            }
+        }
+    }
+
     private fun collectCameraPictureData() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -126,18 +178,8 @@ class ReceiptCameraActivity : AppCompatActivity() {
         }
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.receiptPictureState.collect { state ->
-                    when (state) {
-                        ReceiptCameraViewModel.ReceiptPictureState.NOT_TAKEN -> {
-                        }
-
-                        ReceiptCameraViewModel.ReceiptPictureState.READY_TO_SEND -> {
-                            (binding.receiptCameraLoadingCircles.drawable as? AnimatedVectorDrawable)?.start()
-                        }
-
-                        ReceiptCameraViewModel.ReceiptPictureState.SENDING_TO_SERVER -> TODO()
-                        ReceiptCameraViewModel.ReceiptPictureState.RECEIVE_SERVER_RESPONSE -> TODO()
-                    }
+                viewModel.receiptPictureState.collect {
+                    collectReceiptPictureState(state = it)
                 }
             }
         }
@@ -153,6 +195,9 @@ class ReceiptCameraActivity : AppCompatActivity() {
         collectCameraPictureData()
 
         setContentView(binding.root)
-        startCamera()
+    }
+
+    companion object {
+        const val OCR_RESULT = "ocr_result"
     }
 }

@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class ReceiptCaptureFakeDatasource @Inject constructor(){
     suspend fun sendToOcrServerAndGetResult(encodedImage: String): OcrResultEntity {
-        delay(1000)
+        delay(2000)
 
         val result = OcrResultEntity(
             title = "Test Success Result",

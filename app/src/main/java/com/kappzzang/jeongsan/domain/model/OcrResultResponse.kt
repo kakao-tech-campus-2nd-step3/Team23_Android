@@ -1,8 +1,11 @@
 package com.kappzzang.jeongsan.domain.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import java.util.Date
 
-sealed class OcrResultResponse {
+@Parcelize
+sealed class OcrResultResponse : Parcelable {
     data class OcrSuccess(
         val name: String,
         val paymentTime: Date,

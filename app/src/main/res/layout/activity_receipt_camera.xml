@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:text="@string/receipt_camera_sending_picture"
             android:textAlignment="center"
-            android:visibility="@{(viewModel.receiptPictureState != viewModel.ReceiptPictureState.NOT_TAKEN)?View.VISIBLE:View.GONE}"
+            android:visibility="@{(viewModel.receiptPictureState == viewModel.ReceiptPictureState.SENDING_TO_SERVER)?View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toTopOf="@id/receipt_camera_loading_circles"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_margin="15dp"
@@ -91,7 +91,7 @@
             android:layout_marginBottom="16dp"
             android:gravity="center"
             android:src="@drawable/dot_animation"
-            android:visibility="@{(viewModel.receiptPictureState != viewModel.ReceiptPictureState.NOT_TAKEN)?View.VISIBLE:View.GONE}"
+            android:visibility="@{(viewModel.receiptPictureState == viewModel.ReceiptPictureState.SENDING_TO_SERVER)?View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />

@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -21,6 +22,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.kappzzang.jeongsan.R
 import com.kappzzang.jeongsan.databinding.ActivityExpenseListBinding
+import com.kappzzang.jeongsan.domain.model.OcrResultResponse
 import com.kappzzang.jeongsan.ui.addexpense.AddExpenseActivity
 import com.kappzzang.jeongsan.ui.camera.ReceiptCameraActivity
 import com.kappzzang.jeongsan.ui.inviteinfo.InviteInfoActivity
@@ -33,6 +35,7 @@ class ExpenseListActivity : AppCompatActivity() {
     private val viewModel: ExpenseListViewModel by viewModels()
     private lateinit var binding: ActivityExpenseListBinding
     private lateinit var navController: NavController
+    private lateinit var activityReceiptCameraLauncher: ActivityResultLauncher<Intent>
 
     private val requestCameraPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission(),
@@ -77,6 +80,28 @@ class ExpenseListActivity : AppCompatActivity() {
         binding.bottomnavigationview.setupWithNavController(navController)
 
         setOnAddExpenseFabClickedListener()
+
+
+        activityReceiptCameraLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            {
+                val resultIntent: Intent? = it.data
+                val data = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    resultIntent?.getParcelableExtra(
+                        ReceiptCameraActivity.OCR_RESULT,
+                        OcrResultResponse::class.java
+                    )
+                } else {
+                    resultIntent?.getParcelableExtra(ReceiptCameraActivity.OCR_RESULT)
+                }
+                if (it.resultCode == RESULT_OK) {
+                    Toast.makeText(this, "Succeed!", Toast.LENGTH_SHORT).show()
+                } else {
+                    (data as? OcrResultResponse.OcrFailed)?.message?.let {
+                        Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
 
         // TODO: 임시 연결용 코드
         binding.requestExpenseFab.setOnClickListener {
@@ -138,8 +163,8 @@ class ExpenseListActivity : AppCompatActivity() {
     }
 
     private fun startCameraActivity() {
-        startActivity(Intent(this, ReceiptCameraActivity::class.java))
-        //startActivity(makeAddExpenseActivityIntent(false))
+        val intent = Intent(applicationContext, ReceiptCameraActivity::class.java)
+        activityReceiptCameraLauncher.launch(intent)
     }
 
     private fun setOnAddExpenseFabClickedListener() {

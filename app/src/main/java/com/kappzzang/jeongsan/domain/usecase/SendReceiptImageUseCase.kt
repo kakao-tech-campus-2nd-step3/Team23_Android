@@ -1,7 +1,6 @@
 package com.kappzzang.jeongsan.domain.usecase
 
 import android.graphics.Bitmap
-import com.kappzzang.jeongsan.domain.model.ExpenseDetailItem
 import com.kappzzang.jeongsan.domain.model.OcrResultResponse
 import com.kappzzang.jeongsan.domain.repository.ReceiptCaptureRepository
 import com.kappzzang.jeongsan.util.Base64BitmapEncoder
