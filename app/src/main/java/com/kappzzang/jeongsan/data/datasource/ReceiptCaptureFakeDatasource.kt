@@ -2,13 +2,10 @@ package com.kappzzang.jeongsan.data.datasource
 
 import com.kappzzang.jeongsan.data.entity.OcrResultEntity
 import com.kappzzang.jeongsan.data.entity.OcrResultItem
-import com.kappzzang.jeongsan.domain.model.ExpenseDetailItem
-import com.kappzzang.jeongsan.domain.model.OcrResultResponse
-import kotlinx.coroutines.delay
-import java.util.Date
 import javax.inject.Inject
+import kotlinx.coroutines.delay
 
-class ReceiptCaptureFakeDatasource @Inject constructor(){
+class ReceiptCaptureFakeDatasource @Inject constructor() {
     suspend fun sendToOcrServerAndGetResult(encodedImage: String): OcrResultEntity {
         delay(2000)
 

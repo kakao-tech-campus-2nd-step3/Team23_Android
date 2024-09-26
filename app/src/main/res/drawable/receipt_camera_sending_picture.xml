@@ -13,7 +13,7 @@
         android:translateY="0">
         <path
             android:name="v1"
-            android:fillColor="#000000"
+            android:fillColor="#885053"
             android:pathData="
             M64,132 A10,10 0 1,1 0,132
             M0,132  A10,10 0 1,1 64,132" />
@@ -29,7 +29,7 @@
         android:translateX="84">
         <path
             android:name="v2"
-            android:fillColor="#000000"
+            android:fillColor="#FE5F55"
             android:pathData="
             M64,132 A10,10 0 1,1 0,132
             M0,132  A10,10 0 1,1 64,132" />
@@ -46,7 +46,7 @@
         android:translateX="168">
         <path
             android:name="v3"
-            android:fillColor="#000000"
+            android:fillColor="#94C9A9"
             android:pathData="
             M64,132 A10,10 0 1,1 0,132
             M0,132  A10,10 0 1,1 64,132" />
@@ -62,7 +62,7 @@
         android:translateX="252">
         <path
             android:name="v4"
-            android:fillColor="#000000"
+            android:fillColor="@color/blue500"
             android:pathData="
             M64,132 A10,10 0 1,1 0,132
             M0,132  A10,10 0 1,1 64,132" />

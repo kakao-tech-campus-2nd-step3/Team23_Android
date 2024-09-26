@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import java.io.ByteArrayOutputStream
 import java.util.Base64
 
-
 object Base64BitmapEncoder {
     fun convertBitmapToBase64String(bitmap: Bitmap): String {
         val byteArrayOutputStream = ByteArrayOutputStream()

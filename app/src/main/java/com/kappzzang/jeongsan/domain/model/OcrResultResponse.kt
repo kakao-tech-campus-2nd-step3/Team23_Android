@@ -1,8 +1,8 @@
 package com.kappzzang.jeongsan.domain.model
 
 import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 import java.util.Date
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 sealed class OcrResultResponse : Parcelable {
@@ -12,8 +12,5 @@ sealed class OcrResultResponse : Parcelable {
         val detailItems: List<ExpenseDetailItem>
     ) : OcrResultResponse()
 
-    data class OcrFailed(
-        val message: String,
-        val code: Int
-    ) : OcrResultResponse()
+    data class OcrFailed(val message: String, val code: Int) : OcrResultResponse()
 }

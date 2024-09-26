@@ -6,21 +6,29 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.domain.model.OcrResultResponse
 import com.kappzzang.jeongsan.domain.usecase.SendReceiptImageUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.io.IOException
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.io.IOException
-import javax.inject.Inject
 
 @HiltViewModel
-class ReceiptCameraViewModel @Inject constructor(private val application: Application, private val sendReceiptImageUseCase: SendReceiptImageUseCase) : AndroidViewModel(application) {
-    enum class ReceiptPictureState { NOT_TAKEN, READY_TO_SEND, SENDING_TO_SERVER, RECEIVE_SERVER_RESPONSE, ERROR }
+class ReceiptCameraViewModel @Inject constructor(
+    private val application: Application,
+    private val sendReceiptImageUseCase: SendReceiptImageUseCase
+) : AndroidViewModel(application) {
+    enum class ReceiptPictureState {
+        NOT_TAKEN,
+        READY_TO_SEND,
+        SENDING_TO_SERVER,
+        RECEIVE_SERVER_RESPONSE,
+        ERROR
+    }
 
     private val _receiptPictureState = MutableStateFlow(ReceiptPictureState.NOT_TAKEN)
     private val _pictureData = MutableStateFlow<Uri>(Uri.EMPTY)
@@ -32,8 +40,8 @@ class ReceiptCameraViewModel @Inject constructor(private val application: Applic
     var serverErrorMessage: String? = null
         private set
 
-    private fun sendPictureToServer(pictureUri: Uri){
-        val bitmap:Bitmap
+    private fun sendPictureToServer(pictureUri: Uri) {
+        val bitmap: Bitmap
         try {
             bitmap = ImageDecoder.decodeBitmap(
                 ImageDecoder.createSource(
@@ -41,8 +49,7 @@ class ReceiptCameraViewModel @Inject constructor(private val application: Applic
                     pictureUri
                 )
             )
-        }
-        catch (e: IOException){
+        } catch (e: IOException) {
             _receiptPictureState.value = ReceiptPictureState.ERROR
             serverErrorMessage = e.message
             Log.e("KSC", e.message.toString())
@@ -54,7 +61,7 @@ class ReceiptCameraViewModel @Inject constructor(private val application: Applic
         viewModelScope.launch(Dispatchers.IO) {
             val response = sendReceiptImageUseCase(bitmap)
 
-            when(response){
+            when (response) {
                 is OcrResultResponse.OcrFailed -> {
                     Log.e("KSC", response.message)
                     serverErrorMessage = response.message
@@ -68,7 +75,7 @@ class ReceiptCameraViewModel @Inject constructor(private val application: Applic
         }
     }
 
-    fun setPictureData(pictureUri: Uri){
+    fun setPictureData(pictureUri: Uri) {
         _pictureData.value = pictureUri
         _receiptPictureState.value = ReceiptPictureState.READY_TO_SEND
         sendPictureToServer(pictureUri)

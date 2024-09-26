@@ -71,7 +71,7 @@ abstract class RepositoryModule {
 
 @Module
 @InstallIn(ViewModelComponent::class)
-abstract class ViewModelRepositoryModule{
+abstract class ViewModelRepositoryModule {
     @Binds
     @ViewModelScoped
     abstract fun bindReceiptCaptureRepository(
