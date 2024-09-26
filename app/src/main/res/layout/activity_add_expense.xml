@@ -63,8 +63,7 @@
                 android:id="@+id/addexpense_image_imageview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="@{viewModel.uploadedImage?View.VISIBLE:View.GONE}"
-                android:src="@{viewModel.expenseImageUri}" />
+                android:visibility="@{viewModel.uploadedImage?View.VISIBLE:View.GONE}" />
 
             <ImageView
                 android:id="@+id/addexpense_image_plus_imageview"

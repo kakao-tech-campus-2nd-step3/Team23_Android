@@ -9,6 +9,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.domain.model.OcrResultResponse
 import com.kappzzang.jeongsan.domain.usecase.AnalyzeReceiptImageUseCase
+import com.kappzzang.jeongsan.util.Base64BitmapEncoder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.IOException
 import javax.inject.Inject
@@ -43,12 +44,7 @@ class ReceiptCameraViewModel @Inject constructor(
     private fun sendPictureToServer(pictureUri: Uri) {
         val bitmap: Bitmap
         try {
-            bitmap = ImageDecoder.decodeBitmap(
-                ImageDecoder.createSource(
-                    application.contentResolver,
-                    pictureUri
-                )
-            )
+            bitmap = Base64BitmapEncoder.convertUriToBitmap(pictureUri, application)
         } catch (e: IOException) {
             _receiptPictureState.value = ReceiptPictureState.ERROR
             serverErrorMessage = e.message
@@ -67,6 +63,7 @@ class ReceiptCameraViewModel @Inject constructor(
                     serverErrorMessage = response.message
                     _receiptPictureState.value = ReceiptPictureState.ERROR
                 }
+
                 is OcrResultResponse.OcrSuccess -> {
                     serverResponse = response
                     _receiptPictureState.value = ReceiptPictureState.RECEIVE_SERVER_RESPONSE

@@ -1,10 +1,10 @@
 package com.kappzzang.jeongsan.ui.addexpense
 
+import android.app.Activity
 import android.content.Intent
-import android.graphics.drawable.Drawable
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kappzzang.jeongsan.databinding.ActivityAddExpenseBinding
 import com.kappzzang.jeongsan.domain.model.OcrResultResponse
 import com.kappzzang.jeongsan.ui.expensedetail.ExpenseDetailActivity
+import com.kappzzang.jeongsan.util.Base64BitmapEncoder
 import dagger.hilt.android.AndroidEntryPoint
 import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
 import kotlinx.coroutines.flow.StateFlow
@@ -85,28 +86,6 @@ class AddExpenseActivity : AppCompatActivity() {
             binding.addexpenseImagePlusImageview.isVisible = false
             binding.addexpenseImagePlusDescriptionTextview.isVisible = false
         }
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.expenseImageUri.collect {
-                    updateImageView(it)
-                }
-            }
-        }
-    }
-
-    // TODO: Glide로 대체
-    private fun updateImageView(imageUri: Uri?) {
-        if (imageUri == null) {
-            return
-        }
-
-        binding.addexpenseImageImageview.setImageDrawable(
-            Drawable.createFromStream(
-                contentResolver.openInputStream(imageUri),
-                null
-            )
-        )
     }
 
     private fun checkIfReceiptMode(): Boolean {
@@ -136,18 +115,11 @@ class AddExpenseActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 result.data?.data?.let { uri ->
-                    val bitmap = convertImageUriToBitmap(uri)
+                    val bitmap = Base64BitmapEncoder.convertUriToBitmap(uri, this)
                     viewModel.setExpenseImageBitmap(bitmap)
                 }
             }
         }
-
-    private fun convertImageUriToBitmap(uri: Uri): Bitmap = if (Build.VERSION.SDK_INT >= 28) {
-        val source = ImageDecoder.createSource(contentResolver, uri)
-        ImageDecoder.decodeBitmap(source)
-    } else {
-        MediaStore.Images.Media.getBitmap(contentResolver, uri)
-    }
 
     private fun openGalleryForImage() {
         val intent = Intent(Intent.ACTION_PICK).apply { type = "image/*" }
@@ -169,7 +141,9 @@ class AddExpenseActivity : AppCompatActivity() {
         val data = intentData as? OcrResultResponse.OcrSuccess ?: return
         val image = intentImage ?: return
 
-        viewModel.setInitialReceiptData(image, data)
+        val bitmap = Base64BitmapEncoder.convertUriToBitmap(image, this)
+
+        viewModel.setInitialReceiptData(bitmap, data)
     }
 
     companion object {

@@ -49,9 +49,11 @@ class AddExpenseViewModel @Inject constructor(
         )
     }
 
+    private val _expenseImageBitmap = MutableStateFlow<Bitmap?>(null)
     private val _manualMode = MutableStateFlow(true)
     private val _uploadedImage = MutableStateFlow(false)
 
+    val expenseImageBitmap: StateFlow<Bitmap?> = _expenseImageBitmap.asStateFlow()
     val manualMode: StateFlow<Boolean> = _manualMode.asStateFlow()
     val uploadedImage: StateFlow<Boolean> = _uploadedImage.asStateFlow()
     val expenseItemList: StateFlow<List<ExpenseItemInput>> = _expenseItemList.asStateFlow()
@@ -64,9 +66,9 @@ class AddExpenseViewModel @Inject constructor(
         }
     }
 
-    fun setInitialReceiptData(imageUri: Uri, ocrResult: OcrResultResponse.OcrSuccess) {
+    fun setInitialReceiptData(bitmap: Bitmap, ocrResult: OcrResultResponse.OcrSuccess) {
         viewModelScope.launch(Dispatchers.Main) {
-            _expenseImageUri.emit(imageUri)
+            _expenseImageBitmap.emit(bitmap)
             expenseName.emit(ocrResult.name)
             _expenseItemList.emit(
                 ocrResult.detailItems.map {
