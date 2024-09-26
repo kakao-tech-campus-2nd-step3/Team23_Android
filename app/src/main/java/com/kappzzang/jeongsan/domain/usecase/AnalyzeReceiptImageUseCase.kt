@@ -12,6 +12,6 @@ class AnalyzeReceiptImageUseCase @Inject constructor(
     suspend operator fun invoke(imageBitmap: Bitmap): OcrResultResponse {
         val encoded = Base64BitmapEncoder.convertBitmapToBase64String(imageBitmap)
 
-        return receiptCaptureRepository.getOcrImage(encoded)
+        return receiptCaptureRepository.getAnalyzedReceiptImage(encoded)
     }
 }

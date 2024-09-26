@@ -10,7 +10,7 @@ class ReceiptCaptureRepositoryImpl @Inject constructor(
     private val dataSource: ReceiptCaptureFakeDatasource
 ) : ReceiptCaptureRepository {
 
-    override suspend fun getOcrImage(encodedReceiptImage: String): OcrResultResponse {
+    override suspend fun getAnalyzedReceiptImage(encodedReceiptImage: String): OcrResultResponse {
         val result = dataSource.sendToOcrServerAndGetResult(encodedReceiptImage)
 
         return OcrResultEntityMapper.mapOcrResultEntityToModel(result)
