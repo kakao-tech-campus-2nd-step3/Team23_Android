@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kappzzang.jeongsan.databinding.ActivityExpenseDetailBinding
 import com.kappzzang.jeongsan.domain.model.ExpenseDetailItem
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.StateFlow
 
 @BindingAdapter("app:detail_items")
@@ -27,6 +28,7 @@ fun attachList(view: AutoCompleteTextView, position: Int) {
     view.setText(view.adapter.getItem(position).toString(), false)
 }
 
+@AndroidEntryPoint
 class ExpenseDetailActivity : AppCompatActivity() {
     private val binding: ActivityExpenseDetailBinding by lazy {
         ActivityExpenseDetailBinding.inflate(
@@ -45,24 +47,25 @@ class ExpenseDetailActivity : AppCompatActivity() {
 
         // TODO: 임시 연결용 코드
         binding.expenseDetailSubmitButton.setOnClickListener {
+            viewModel.saveExpenseDetail()
             finish()
         }
     }
 
     private fun initiateRecyclerView() {
-        binding.expenseDetailItemListRecyclerview.adapter =
-            ExpenseDetailItemListAdapter(
-                this,
-                object : ExpenseDetailCallback {
-                    override fun onCheckedChange(enable: Boolean, index: Int) {
-                        viewModel.updateItemCheck(enable, index)
-                    }
-
-                    override fun onSelectedQuantityChanged(quantity: Int, index: Int) {
-                        viewModel.updateSelectedQuantity(quantity, index)
-                    }
+        val expenseDetailAdapter = ExpenseDetailItemListAdapter(
+            this,
+            object : ExpenseDetailCallback {
+                override fun onCheckedChange(enable: Boolean, index: Int) {
+                    viewModel.updateItemCheck(enable, index)
                 }
-            )
+
+                override fun onSelectedQuantityChanged(quantity: Int, index: Int) {
+                    viewModel.updateSelectedQuantity(quantity, index)
+                }
+            }
+        )
+        binding.expenseDetailItemListRecyclerview.adapter = expenseDetailAdapter
         binding.expenseDetailItemListRecyclerview.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }

@@ -1,11 +1,15 @@
 package com.kappzzang.jeongsan.di
 
+import com.kappzzang.jeongsan.data.repositoryimpl.ExpenseDetailRepositoryImpl
 import com.kappzzang.jeongsan.data.repositoryimpl.ExpenseListFakeRepositoryImpl
+import com.kappzzang.jeongsan.data.repositoryimpl.ExpenseRepositoryImpl
 import com.kappzzang.jeongsan.data.repositoryimpl.GroupInfoRepositoryImpl
 import com.kappzzang.jeongsan.data.repositoryimpl.MemberRepositoryImpl
 import com.kappzzang.jeongsan.data.repositoryimpl.ReceiptRepositoryImpl
 import com.kappzzang.jeongsan.data.repositoryimpl.UserInfoRepositoryImpl
+import com.kappzzang.jeongsan.domain.repository.ExpenseDetailRepository
 import com.kappzzang.jeongsan.domain.repository.ExpenseListRepository
+import com.kappzzang.jeongsan.domain.repository.ExpenseRepository
 import com.kappzzang.jeongsan.domain.repository.GroupInfoRepository
 import com.kappzzang.jeongsan.domain.repository.MemberRepository
 import com.kappzzang.jeongsan.domain.repository.ReceiptRepository
@@ -41,6 +45,18 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindMemberRepository(memberRepositoryImpl: MemberRepositoryImpl): MemberRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindExpenseDetailRepository(
+        expenseDetailRepositoryImpl: ExpenseDetailRepositoryImpl
+    ): ExpenseDetailRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindExpenseRepository(
+        expenseRepositoryImpl: ExpenseRepositoryImpl
+    ): ExpenseRepository
 
     @Binds
     @Singleton

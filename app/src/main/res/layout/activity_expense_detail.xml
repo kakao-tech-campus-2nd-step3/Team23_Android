@@ -62,7 +62,8 @@
                 android:id="@+id/expense_detail_image_imageview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:srcCompat="@drawable/addexpense_receipt_test" />
+                expenseImageUrl="@{viewModel.expense.expenseImageUrl}"
+                />
         </androidx.cardview.widget.CardView>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -88,7 +89,7 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:fontFamily="sans-serif-medium"
-                android:text="@{viewModel.expenseName}"
+                android:text="@{viewModel.expense.name}"
                 android:textAlignment="center"
                 android:textSize="24sp"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -146,7 +147,7 @@
                 android:id="@+id/expense_detail_item_list_recyclerview"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:detail_items="@{viewModel.expenseItemList}"
+                app:detail_items="@{viewModel.expenseDetailList}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
