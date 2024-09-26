@@ -66,6 +66,15 @@ class ReceiptCameraActivity : AppCompatActivity() {
                 val cameraController = camera.cameraControl
                 cameraController.setZoomRatio(1F)
             } catch (e: Exception) {
+                Toast.makeText(
+                    applicationContext,
+                    e.message,
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                val intent = Intent(applicationContext, ExpenseListActivity::class.java)
+                setResult(RESULT_CANCELED, intent)
+                finish()
             }
 
             preview.setSurfaceProvider(binding.receiptCameraViewFinder.surfaceProvider)
@@ -141,6 +150,8 @@ class ReceiptCameraActivity : AppCompatActivity() {
                 viewModel.serverResponse?.let {
                     setResult(RESULT_CANCELED, getOcrResultIntent(it))
                 }
+
+                finish()
             }
         }
     }
