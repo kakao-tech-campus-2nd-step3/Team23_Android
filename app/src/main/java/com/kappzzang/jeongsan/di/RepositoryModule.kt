@@ -3,10 +3,12 @@ package com.kappzzang.jeongsan.di
 import com.kappzzang.jeongsan.data.repositoryimpl.ExpenseListFakeRepositoryImpl
 import com.kappzzang.jeongsan.data.repositoryimpl.GroupInfoRepositoryImpl
 import com.kappzzang.jeongsan.data.repositoryimpl.MemberRepositoryImpl
+import com.kappzzang.jeongsan.data.repositoryimpl.ReceiptRepositoryImpl
 import com.kappzzang.jeongsan.data.repositoryimpl.UserInfoRepositoryImpl
 import com.kappzzang.jeongsan.domain.repository.ExpenseListRepository
 import com.kappzzang.jeongsan.domain.repository.GroupInfoRepository
 import com.kappzzang.jeongsan.domain.repository.MemberRepository
+import com.kappzzang.jeongsan.domain.repository.ReceiptRepository
 import com.kappzzang.jeongsan.domain.repository.UserInfoRepository
 import dagger.Binds
 import dagger.Module
@@ -39,4 +41,10 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindMemberRepository(memberRepositoryImpl: MemberRepositoryImpl): MemberRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindReceiptRepository(
+        receiptRepositoryImpl: ReceiptRepositoryImpl
+    ): ReceiptRepository
 }
