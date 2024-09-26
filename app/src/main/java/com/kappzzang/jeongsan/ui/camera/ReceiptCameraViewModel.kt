@@ -8,7 +8,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.domain.model.OcrResultResponse
-import com.kappzzang.jeongsan.domain.usecase.SendReceiptImageUseCase
+import com.kappzzang.jeongsan.domain.usecase.AnalyzeReceiptImageUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.IOException
 import javax.inject.Inject
@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class ReceiptCameraViewModel @Inject constructor(
     private val application: Application,
-    private val sendReceiptImageUseCase: SendReceiptImageUseCase
+    private val analyzeReceiptImageUseCase: AnalyzeReceiptImageUseCase
 ) : AndroidViewModel(application) {
     enum class ReceiptPictureState {
         NOT_TAKEN,
@@ -59,7 +59,7 @@ class ReceiptCameraViewModel @Inject constructor(
         _receiptPictureState.value = ReceiptPictureState.SENDING_TO_SERVER
 
         viewModelScope.launch(Dispatchers.IO) {
-            val response = sendReceiptImageUseCase(bitmap)
+            val response = analyzeReceiptImageUseCase(bitmap)
 
             when (response) {
                 is OcrResultResponse.OcrFailed -> {

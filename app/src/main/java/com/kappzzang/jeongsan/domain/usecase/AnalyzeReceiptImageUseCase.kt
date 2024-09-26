@@ -6,7 +6,7 @@ import com.kappzzang.jeongsan.domain.repository.ReceiptCaptureRepository
 import com.kappzzang.jeongsan.util.Base64BitmapEncoder
 import javax.inject.Inject
 
-class SendReceiptImageUseCase @Inject constructor(
+class AnalyzeReceiptImageUseCase @Inject constructor(
     private val receiptCaptureRepository: ReceiptCaptureRepository
 ) {
     suspend operator fun invoke(imageBitmap: Bitmap): OcrResultResponse {
