@@ -20,8 +20,8 @@ import com.kappzzang.jeongsan.databinding.ActivityAddExpenseBinding
 import com.kappzzang.jeongsan.domain.model.OcrResultResponse
 import com.kappzzang.jeongsan.ui.expensedetail.ExpenseDetailActivity
 import com.kappzzang.jeongsan.util.Base64BitmapEncoder
-import dagger.hilt.android.AndroidEntryPoint
 import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 

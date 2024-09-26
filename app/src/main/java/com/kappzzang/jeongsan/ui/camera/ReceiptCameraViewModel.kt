@@ -2,7 +2,6 @@ package com.kappzzang.jeongsan.ui.camera
 
 import android.app.Application
 import android.graphics.Bitmap
-import android.graphics.ImageDecoder
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel

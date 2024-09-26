@@ -2,16 +2,15 @@ package com.kappzzang.jeongsan.ui.addexpense
 
 import android.graphics.Bitmap
 import android.util.Base64
-import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kappzzang.jeongsan.domain.model.OcrResultResponse
 import com.kappzzang.jeongsan.domain.model.ReceiptDetailItem
 import com.kappzzang.jeongsan.domain.model.ReceiptItem
 import com.kappzzang.jeongsan.domain.usecase.UploadExpenseUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
-import com.kappzzang.jeongsan.domain.model.OcrResultResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
