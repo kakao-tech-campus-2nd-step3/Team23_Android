@@ -85,7 +85,7 @@ class ExpenseListActivity : AppCompatActivity() {
         }
     }
 
-    private fun initiateNavigation(){
+    private fun initiateNavigation() {
         val navHostFragment = supportFragmentManager.findFragmentById(
             binding.expenseListFragmentcontainerview.id
         ) as NavHostFragment
@@ -140,7 +140,8 @@ class ExpenseListActivity : AppCompatActivity() {
     private fun createReceiptCameraLauncher(): ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             val resultIntent: Intent? = it.data
-            val data = resultIntent?.getParcelableData<OcrResultResponse>(ReceiptCameraActivity.OCR_RESULT)
+            val data =
+                resultIntent?.getParcelableData<OcrResultResponse>(ReceiptCameraActivity.OCR_RESULT)
             val image = resultIntent?.getParcelableData<Uri>(ReceiptCameraActivity.OCR_RESULT_IMAGE)
 
             if (it.resultCode == RESULT_OK) {
@@ -162,7 +163,7 @@ class ExpenseListActivity : AppCompatActivity() {
                 this,
                 android.Manifest.permission.CAMERA
             ) ==
-                    PackageManager.PERMISSION_GRANTED
+                PackageManager.PERMISSION_GRANTED
         } else {
             true
         }
