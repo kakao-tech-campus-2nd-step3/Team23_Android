@@ -78,6 +78,7 @@ class ExpenseListActivity : AppCompatActivity() {
 
         val popupMenu = PopupMenu(this, binding.addExpenseFab)
         popupMenu.menuInflater.inflate(R.menu.menu_add_expense, popupMenu.menu)
+        popupMenu.setForceShowIcon(true)
 
         popupMenu.setOnMenuItemClickListener {
             return@setOnMenuItemClickListener when (it.itemId) {
