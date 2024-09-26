@@ -2,6 +2,11 @@ package com.kappzzang.jeongsan.ui.addexpense
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kappzzang.jeongsan.domain.model.ReceiptDetailItem
+import com.kappzzang.jeongsan.domain.model.ReceiptItem
+import com.kappzzang.jeongsan.domain.usecase.UploadExpenseUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,7 +32,10 @@ private fun createDemoList(): List<ExpenseItemInput> = listOf(
     createDemoItem(4)
 )
 
-class AddExpenseViewModel : ViewModel() {
+@HiltViewModel
+class AddExpenseViewModel @Inject constructor(
+    private val uploadExpenseUseCase: UploadExpenseUseCase
+) : ViewModel() {
     private val _expenseItemList by lazy {
         MutableStateFlow(
             listOf(
@@ -69,6 +77,66 @@ class AddExpenseViewModel : ViewModel() {
 
     private suspend fun createEmptyList() {
         _expenseItemList.emit(listOf<ExpenseItemInput>())
+    }
+
+    fun addNewExpense() {
+        viewModelScope.launch(Dispatchers.Main) {
+            _expenseItemList.emit(
+                _expenseItemList.value + ExpenseItemInput(null, null, null)
+            )
+        }
+    }
+
+    fun removeExpense(removeItemPosition: Int) {
+        viewModelScope.launch(Dispatchers.Main) {
+            _expenseItemList.emit(
+                _expenseItemList.value.filterIndexed { index, _ -> index != removeItemPosition }
+            )
+        }
+    }
+
+    fun uploadExpense(): Boolean {
+        if (!checkItemValid()) {
+            return false
+        }
+
+        val receiptItem = ReceiptItem(
+            title = expenseName.value,
+            categoryColor = "#FF0000", // TODO: 카테고리 색을 넣도록 UI 수정 필요
+            imageBase64 = "Base64 Image", // TODO: 이미지 업로드 후 Base64로 변경
+            expenseDetailItemList = _expenseItemList.value.subList(
+                0,
+                _expenseItemList.value.size - 1
+            ).map {
+                ReceiptDetailItem(
+                    itemName = it.itemName!!,
+                    itemPrice = it.itemPrice!!,
+                    itemQuantity = it.itemQuantity!!
+                )
+            }
+        )
+
+        viewModelScope.launch(Dispatchers.IO) {
+            uploadExpenseUseCase(receiptItem)
+        }
+
+        return true
+    }
+
+    private fun checkItemValid(): Boolean {
+        // 빈 리스트인 경우
+        if (_expenseItemList.value.size == 1) {
+            return false
+        }
+
+        // 마지막 아이템을 제외한 아이템은 하나라도 null이면 안됨
+        _expenseItemList.value.subList(0, _expenseItemList.value.size - 1).forEach {
+            if (it.itemName == null || it.itemPrice == null || it.itemQuantity == null) {
+                return false
+            }
+        }
+
+        return true
     }
 
     companion object {
