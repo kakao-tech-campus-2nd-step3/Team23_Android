@@ -2,6 +2,7 @@ package com.kappzzang.jeongsan.ui.addexpense
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.BindingAdapter
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kappzzang.jeongsan.databinding.ActivityAddExpenseBinding
 import com.kappzzang.jeongsan.ui.expensedetail.ExpenseDetailActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.StateFlow
 
 @BindingAdapter("app:items")
@@ -18,6 +20,7 @@ fun attachList(recyclerView: RecyclerView, items: StateFlow<List<ExpenseItemInpu
     }
 }
 
+@AndroidEntryPoint
 class AddExpenseActivity : AppCompatActivity() {
     private val viewModel: AddExpenseViewModel by viewModels()
     private val binding: ActivityAddExpenseBinding by lazy {
@@ -40,8 +43,14 @@ class AddExpenseActivity : AppCompatActivity() {
 
         // TODO: 임시 연결용 코드
         binding.addexpenseSubmitButton.setOnClickListener {
-            startActivity(Intent(this, ExpenseDetailActivity::class.java))
-            finish()
+            if (viewModel.uploadExpense()) {
+                startActivity(Intent(this, ExpenseDetailActivity::class.java))
+                finish()
+                return@setOnClickListener
+            }
+
+            // TODO: 값이 완전히 채워지지 않은 경우
+            Toast.makeText(this, "지출 내역을 완성해주세요!", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -62,7 +71,7 @@ class AddExpenseActivity : AppCompatActivity() {
 
     private fun initiateRecyclerView() {
         with(binding.addexpenseItemListRecyclerview) {
-            adapter = ExpenseItemListAdapter()
+            adapter = ExpenseItemListAdapter(viewModel::addNewExpense, viewModel::removeExpense)
             layoutManager =
                 LinearLayoutManager(this@AddExpenseActivity, LinearLayoutManager.VERTICAL, false)
         }
