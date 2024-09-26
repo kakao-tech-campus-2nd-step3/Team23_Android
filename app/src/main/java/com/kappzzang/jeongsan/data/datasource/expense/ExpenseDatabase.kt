@@ -23,6 +23,7 @@ private fun makeFakeItemWithState(expenseState: ExpenseState, id: Int): ExpenseE
     return ExpenseEntity(
         name = nameList[adjustedIndex % nameList.size],
         totalPrice = 1200 * adjustedIndex,
+        image = "",
         categoryColor = colorList[adjustedIndex % nameList.size],
         categoryName = categoryNameList[adjustedIndex % nameList.size],
         expenseState = expenseState.ordinal,

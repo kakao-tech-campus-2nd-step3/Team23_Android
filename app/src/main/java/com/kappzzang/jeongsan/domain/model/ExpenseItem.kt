@@ -9,7 +9,26 @@ data class ExpenseItem(
     val name: String,
     val payer: MemberItem,
     val price: Int,
+    val expenseImageUrl: String,
     val date: Date,
     val state: ExpenseState,
     val categoryColor: String
-)
+) {
+    companion object {
+        val EMPTY = ExpenseItem(
+            "",
+            "",
+            MemberItem(
+                "",
+                "",
+                "",
+                false
+            ),
+            0,
+            "",
+            Date(),
+            ExpenseState.NOT_CONFIRMED,
+            ""
+        )
+    }
+}

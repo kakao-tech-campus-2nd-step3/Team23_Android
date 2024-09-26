@@ -12,6 +12,7 @@ object ExpenseEntityMapper {
         name = entity.name,
         categoryColor = entity.categoryColor,
         price = entity.totalPrice,
+        expenseImageUrl = entity.image,
         date = Timestamp.valueOf(entity.createdTime),
         payer = MemberItem("", "", "", false),
         state = ExpenseState.entries[entity.expenseState]
