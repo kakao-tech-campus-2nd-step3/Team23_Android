@@ -1,12 +1,14 @@
 package com.kappzzang.jeongsan.ui.addexpense
 
 import android.graphics.Bitmap
+import android.util.Base64
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.domain.model.ReceiptDetailItem
 import com.kappzzang.jeongsan.domain.model.ReceiptItem
 import com.kappzzang.jeongsan.domain.usecase.UploadExpenseUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -106,7 +108,7 @@ class AddExpenseViewModel @Inject constructor(
         val receiptItem = ReceiptItem(
             title = expenseName.value,
             categoryColor = "#FF0000", // TODO: 카테고리 색을 넣도록 UI 수정 필요
-            imageBase64 = "Base64 Image", // TODO: 이미지 업로드 후 Base64로 변경
+            imageBase64 = convertBitmapToBase64(_expenseImageBitmap.value),
             expenseDetailItemList = _expenseItemList.value.subList(
                 0,
                 _expenseItemList.value.size - 1
@@ -124,6 +126,17 @@ class AddExpenseViewModel @Inject constructor(
         }
 
         return true
+    }
+
+    private fun convertBitmapToBase64(bitmap: Bitmap?): String? {
+        if (bitmap == null) {
+            return null
+        }
+
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+        val byteArray = byteArrayOutputStream.toByteArray()
+        return Base64.encodeToString(byteArray, Base64.DEFAULT)
     }
 
     private fun checkItemValid(): Boolean {
