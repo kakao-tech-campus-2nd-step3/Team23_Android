@@ -5,12 +5,14 @@ import com.kappzzang.jeongsan.data.repositoryimpl.ExpenseListFakeRepositoryImpl
 import com.kappzzang.jeongsan.data.repositoryimpl.ExpenseRepositoryImpl
 import com.kappzzang.jeongsan.data.repositoryimpl.GroupInfoRepositoryImpl
 import com.kappzzang.jeongsan.data.repositoryimpl.MemberRepositoryImpl
+import com.kappzzang.jeongsan.data.repositoryimpl.ReceiptRepositoryImpl
 import com.kappzzang.jeongsan.data.repositoryimpl.UserInfoRepositoryImpl
 import com.kappzzang.jeongsan.domain.repository.ExpenseDetailRepository
 import com.kappzzang.jeongsan.domain.repository.ExpenseListRepository
 import com.kappzzang.jeongsan.domain.repository.ExpenseRepository
 import com.kappzzang.jeongsan.domain.repository.GroupInfoRepository
 import com.kappzzang.jeongsan.domain.repository.MemberRepository
+import com.kappzzang.jeongsan.domain.repository.ReceiptRepository
 import com.kappzzang.jeongsan.domain.repository.UserInfoRepository
 import dagger.Binds
 import dagger.Module
@@ -55,4 +57,10 @@ abstract class RepositoryModule {
     abstract fun bindExpenseRepository(
         expenseRepositoryImpl: ExpenseRepositoryImpl
     ): ExpenseRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindReceiptRepository(
+        receiptRepositoryImpl: ReceiptRepositoryImpl
+    ): ReceiptRepository
 }
