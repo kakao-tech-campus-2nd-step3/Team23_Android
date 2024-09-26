@@ -21,6 +21,7 @@ import com.kappzzang.jeongsan.databinding.ActivityAddExpenseBinding
 import com.kappzzang.jeongsan.domain.model.OcrResultResponse
 import com.kappzzang.jeongsan.ui.expensedetail.ExpenseDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
+import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
@@ -89,20 +90,24 @@ class AddExpenseActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.expenseImageUri.collect {
-                    if (it == null) {
-                        return@collect
-                    }
-
-                    // TODO: Glide로 대체
-                    binding.addexpenseImageImageview.setImageDrawable(
-                        Drawable.createFromStream(
-                            contentResolver.openInputStream(it),
-                            null
-                        )
-                    )
+                    updateImageView(it)
                 }
             }
         }
+    }
+
+    // TODO: Glide로 대체
+    private fun updateImageView(imageUri: Uri?) {
+        if (imageUri == null) {
+            return
+        }
+
+        binding.addexpenseImageImageview.setImageDrawable(
+            Drawable.createFromStream(
+                contentResolver.openInputStream(imageUri),
+                null
+            )
+        )
     }
 
     private fun checkIfReceiptMode(): Boolean {
@@ -159,23 +164,8 @@ class AddExpenseActivity : AppCompatActivity() {
     }
 
     private fun getExpenseData() {
-        val intentData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent?.getParcelableExtra(
-                EXPENSE_DATA,
-                OcrResultResponse::class.java
-            )
-        } else {
-            intent?.getParcelableExtra(EXPENSE_DATA)
-        }
-
-        val intentImage = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent?.getParcelableExtra(
-                EXPENSE_IMAGE,
-                Uri::class.java
-            )
-        } else {
-            intent?.getParcelableExtra(EXPENSE_IMAGE)
-        }
+        val intentData = intent?.getParcelableData<OcrResultResponse>(EXPENSE_DATA)
+        val intentImage = intent?.getParcelableData<Uri>(EXPENSE_IMAGE)
 
         val data = intentData as? OcrResultResponse.OcrSuccess ?: return
         val image = intentImage ?: return

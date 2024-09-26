@@ -27,13 +27,19 @@ import com.kappzzang.jeongsan.ui.addexpense.AddExpenseActivity
 import com.kappzzang.jeongsan.ui.camera.ReceiptCameraActivity
 import com.kappzzang.jeongsan.ui.inviteinfo.InviteInfoActivity
 import com.kappzzang.jeongsan.ui.sendmessage.SendMessageActivity
+import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ExpenseListActivity : AppCompatActivity() {
     private val viewModel: ExpenseListViewModel by viewModels()
-    private lateinit var binding: ActivityExpenseListBinding
+    private val binding: ActivityExpenseListBinding by lazy {
+        val mBinding = ActivityExpenseListBinding.inflate(layoutInflater)
+        mBinding.viewModel = viewModel
+        mBinding.lifecycleOwner = this
+        mBinding
+    }
     private lateinit var navController: NavController
     private lateinit var activityReceiptCameraLauncher: ActivityResultLauncher<Intent>
 
@@ -53,7 +59,6 @@ class ExpenseListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityExpenseListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         viewModel.updateGroupId(intent.extras?.getString("groupId").toString())
@@ -68,17 +73,8 @@ class ExpenseListActivity : AppCompatActivity() {
             }
         }
 
-        val navHostFragment = supportFragmentManager.findFragmentById(
-            binding.expenseListFragmentcontainerview.id
-        ) as NavHostFragment
-        navController = navHostFragment.navController
-
+        initiateNavigation()
         setOnUpperMenuClickedListener()
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = this
-
-        binding.bottomnavigationview.setupWithNavController(navController)
-
         setOnAddExpenseFabClickedListener()
 
         activityReceiptCameraLauncher = createReceiptCameraLauncher()
@@ -86,6 +82,42 @@ class ExpenseListActivity : AppCompatActivity() {
         // TODO: 임시 연결용 코드
         binding.requestExpenseFab.setOnClickListener {
             startActivity(Intent(this, SendMessageActivity::class.java))
+        }
+    }
+
+    private fun initiateNavigation(){
+        val navHostFragment = supportFragmentManager.findFragmentById(
+            binding.expenseListFragmentcontainerview.id
+        ) as NavHostFragment
+        navController = navHostFragment.navController
+
+        binding.bottomnavigationview.setupWithNavController(navController)
+    }
+
+    private fun setOnUpperMenuClickedListener() {
+        binding.dropdownButtonImageview.setOnClickListener { view ->
+            val popupMenu = PopupMenu(this, view)
+            popupMenu.menuInflater.inflate(R.menu.menu_group_setting, popupMenu.menu)
+
+            popupMenu.setOnMenuItemClickListener { menuItem ->
+                return@setOnMenuItemClickListener when (menuItem.itemId) {
+                    R.id.menu_invite_status -> {
+                        startActivity(Intent(this, InviteInfoActivity::class.java))
+                        true
+                    }
+
+                    R.id.menu_end_group -> {
+                        finish()
+                        true
+                    }
+
+                    else -> {
+                        false
+                    }
+                }
+            }
+
+            popupMenu.show()
         }
     }
 
@@ -108,23 +140,8 @@ class ExpenseListActivity : AppCompatActivity() {
     private fun createReceiptCameraLauncher(): ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             val resultIntent: Intent? = it.data
-            val data = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                resultIntent?.getParcelableExtra(
-                    ReceiptCameraActivity.OCR_RESULT,
-                    OcrResultResponse::class.java
-                )
-            } else {
-                resultIntent?.getParcelableExtra(ReceiptCameraActivity.OCR_RESULT)
-            }
-
-            val image = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                resultIntent?.getParcelableExtra(
-                    ReceiptCameraActivity.OCR_RESULT_IMAGE,
-                    Uri::class.java
-                )
-            } else {
-                resultIntent?.getParcelableExtra(ReceiptCameraActivity.OCR_RESULT_IMAGE)
-            }
+            val data = resultIntent?.getParcelableData<OcrResultResponse>(ReceiptCameraActivity.OCR_RESULT)
+            val image = resultIntent?.getParcelableData<Uri>(ReceiptCameraActivity.OCR_RESULT_IMAGE)
 
             if (it.resultCode == RESULT_OK) {
                 if (data !is OcrResultResponse.OcrSuccess || image == null
@@ -145,7 +162,7 @@ class ExpenseListActivity : AppCompatActivity() {
                 this,
                 android.Manifest.permission.CAMERA
             ) ==
-                PackageManager.PERMISSION_GRANTED
+                    PackageManager.PERMISSION_GRANTED
         } else {
             true
         }
@@ -153,14 +170,14 @@ class ExpenseListActivity : AppCompatActivity() {
     private fun askCameraPermission() {
         if (shouldShowRequestPermissionRationale(android.Manifest.permission.CAMERA)) {
             // 권한 요청 이유를 설명하는 UI를 표시
-            showNotificationPermissionDialog()
+            showCameraPermissionDialog()
         } else {
             // Directly ask for the permission
             requestCameraPermissionLauncher.launch(android.Manifest.permission.CAMERA)
         }
     }
 
-    private fun showNotificationPermissionDialog() {
+    private fun showCameraPermissionDialog() {
         AlertDialog.Builder(this).apply {
             setTitle(getString(R.string.dialog_title_ask_camera))
             setMessage(
@@ -198,11 +215,6 @@ class ExpenseListActivity : AppCompatActivity() {
         return intent
     }
 
-    private fun startCameraActivity() {
-        val intent = Intent(applicationContext, ReceiptCameraActivity::class.java)
-        activityReceiptCameraLauncher.launch(intent)
-    }
-
     private fun setOnAddExpenseFabClickedListener() {
         val popupMenu = PopupMenu(this, binding.addExpenseFab)
         popupMenu.menuInflater.inflate(R.menu.menu_add_expense, popupMenu.menu)
@@ -233,31 +245,9 @@ class ExpenseListActivity : AppCompatActivity() {
         }
     }
 
-    private fun setOnUpperMenuClickedListener() {
-        binding.dropdownButtonImageview.setOnClickListener { view ->
-            val popupMenu = PopupMenu(this, view)
-            popupMenu.menuInflater.inflate(R.menu.menu_group_setting, popupMenu.menu)
-
-            popupMenu.setOnMenuItemClickListener { menuItem ->
-                return@setOnMenuItemClickListener when (menuItem.itemId) {
-                    R.id.menu_invite_status -> {
-                        startActivity(Intent(this, InviteInfoActivity::class.java))
-                        true
-                    }
-
-                    R.id.menu_end_group -> {
-                        finish()
-                        true
-                    }
-
-                    else -> {
-                        false
-                    }
-                }
-            }
-
-            popupMenu.show()
-        }
+    private fun startCameraActivity() {
+        val intent = Intent(applicationContext, ReceiptCameraActivity::class.java)
+        activityReceiptCameraLauncher.launch(intent)
     }
 
     // TODO: 선택한 지출 확인용 임시 코드

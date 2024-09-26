@@ -43,6 +43,117 @@ class ReceiptCameraActivity : AppCompatActivity() {
         )
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
+
+        setShutterButtonListener()
+        collectCameraPictureData()
+
+        setContentView(binding.root)
+    }
+
+    private fun setShutterButtonListener() {
+        binding.receiptCameraCaptureButton.setOnClickListener {
+            photoFile.delete()
+            takePicture()
+        }
+    }
+
+    private fun takePicture() {
+        val mImageCapture = imageCapture ?: return
+        val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
+
+        mImageCapture.takePicture(
+            outputOptions,
+            ContextCompat.getMainExecutor(this),
+            object : ImageCapture.OnImageSavedCallback {
+                override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                    outputFileResults.savedUri?.let { uri ->
+                        viewModel.setPictureData(uri)
+                    }
+                }
+
+                override fun onError(exception: ImageCaptureException) {
+                    Toast.makeText(
+                        applicationContext,
+                        resources.getString(R.string.receipt_camera_failed),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        )
+    }
+
+    private fun collectCameraPictureData() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.pictureData.collect {
+                    if (it == Uri.EMPTY) {
+                        return@collect
+                    }
+
+                    Glide.with(this@ReceiptCameraActivity)
+                        .load(it)
+                        .apply(
+                            RequestOptions()
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .skipMemoryCache(true)
+                                .centerInside()
+                        )
+                        .into(binding.receiptCameraImageImageview)
+                }
+            }
+        }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.receiptPictureState.collect {
+                    collectReceiptPictureState(state = it)
+                }
+            }
+        }
+    }
+
+    private fun collectReceiptPictureState(state: ReceiptCameraViewModel.ReceiptPictureState) {
+        when (state) {
+            ReceiptCameraViewModel.ReceiptPictureState.NOT_TAKEN -> {
+                startCamera()
+            }
+
+            ReceiptCameraViewModel.ReceiptPictureState.READY_TO_SEND -> {
+                // 현재 사용하지 않는 상태
+            }
+
+            ReceiptCameraViewModel.ReceiptPictureState.SENDING_TO_SERVER -> {
+                (binding.receiptCameraLoadingCircles.drawable as? AnimatedVectorDrawable)?.start()
+            }
+
+            ReceiptCameraViewModel.ReceiptPictureState.RECEIVE_SERVER_RESPONSE -> {
+                viewModel.serverResponse?.let {
+                    setResult(RESULT_OK, getOcrResultIntent(it))
+                }
+
+                finish()
+            }
+
+            ReceiptCameraViewModel.ReceiptPictureState.ERROR -> {
+                Toast.makeText(
+                    this@ReceiptCameraActivity,
+                    viewModel.serverErrorMessage,
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                viewModel.serverResponse?.let {
+                    setResult(RESULT_CANCELED, getOcrResultIntent(it))
+                }
+
+                finish()
+            }
+        }
+    }
+
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
@@ -81,37 +192,6 @@ class ReceiptCameraActivity : AppCompatActivity() {
         }, ContextCompat.getMainExecutor(this))
     }
 
-    private fun takePicture() {
-        val mImageCapture = imageCapture ?: return
-        val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
-
-        mImageCapture.takePicture(
-            outputOptions,
-            ContextCompat.getMainExecutor(this),
-            object : ImageCapture.OnImageSavedCallback {
-                override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                    outputFileResults.savedUri?.let { uri ->
-                        viewModel.setPictureData(uri)
-                    }
-                }
-
-                override fun onError(exception: ImageCaptureException) {
-                    Toast.makeText(
-                        applicationContext,
-                        resources.getString(R.string.receipt_camera_failed),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-        )
-    }
-
-    private fun setShutterButtonListener() {
-        binding.receiptCameraCaptureButton.setOnClickListener {
-            photoFile.delete()
-            takePicture()
-        }
-    }
 
     private fun getOcrResultIntent(response: OcrResultResponse): Intent =
         Intent(applicationContext, ExpenseListActivity::class.java).apply {
@@ -119,83 +199,6 @@ class ReceiptCameraActivity : AppCompatActivity() {
             putExtra(OCR_RESULT_IMAGE, viewModel.pictureData.value)
         }
 
-    private fun collectReceiptPictureState(state: ReceiptCameraViewModel.ReceiptPictureState) {
-        when (state) {
-            ReceiptCameraViewModel.ReceiptPictureState.NOT_TAKEN -> {
-                startCamera()
-            }
-
-            ReceiptCameraViewModel.ReceiptPictureState.READY_TO_SEND -> {
-            }
-
-            ReceiptCameraViewModel.ReceiptPictureState.SENDING_TO_SERVER -> {
-                (binding.receiptCameraLoadingCircles.drawable as? AnimatedVectorDrawable)?.start()
-            }
-
-            ReceiptCameraViewModel.ReceiptPictureState.RECEIVE_SERVER_RESPONSE -> {
-                viewModel.serverResponse?.let {
-                    setResult(RESULT_OK, getOcrResultIntent(it))
-                }
-
-                finish()
-            }
-
-            ReceiptCameraViewModel.ReceiptPictureState.ERROR -> {
-                Toast.makeText(
-                    this@ReceiptCameraActivity,
-                    viewModel.serverErrorMessage,
-                    Toast.LENGTH_SHORT
-                ).show()
-
-                viewModel.serverResponse?.let {
-                    setResult(RESULT_CANCELED, getOcrResultIntent(it))
-                }
-
-                finish()
-            }
-        }
-    }
-
-    private fun collectCameraPictureData() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.pictureData.collect {
-                    if (it == Uri.EMPTY) {
-                        return@collect
-                    }
-
-                    Glide.with(this@ReceiptCameraActivity)
-                        .load(it)
-                        .apply(
-                            RequestOptions()
-                                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                .skipMemoryCache(true)
-                                .centerInside()
-                        )
-                        .into(binding.receiptCameraImageImageview)
-                }
-            }
-        }
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.receiptPictureState.collect {
-                    collectReceiptPictureState(state = it)
-                }
-            }
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = this
-
-        setShutterButtonListener()
-        collectCameraPictureData()
-
-        setContentView(binding.root)
-    }
 
     companion object {
         const val OCR_RESULT = "ocr_result"
