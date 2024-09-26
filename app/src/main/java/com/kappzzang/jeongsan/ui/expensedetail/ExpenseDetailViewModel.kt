@@ -5,13 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.domain.model.ExpenseDetailItem
 import com.kappzzang.jeongsan.domain.model.ExpenseItem
-import com.kappzzang.jeongsan.domain.model.ExpenseState
-import com.kappzzang.jeongsan.domain.model.MemberItem
 import com.kappzzang.jeongsan.domain.usecase.EditExpenseDetailUseCase
 import com.kappzzang.jeongsan.domain.usecase.GetExpenseDetailUseCase
 import com.kappzzang.jeongsan.domain.usecase.GetExpenseUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.util.Date
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,7 +23,7 @@ class ExpenseDetailViewModel @Inject constructor(
     private val editExpenseDetailUseCase: EditExpenseDetailUseCase
 ) : ViewModel() {
     private val _expenseDetailList = MutableStateFlow(listOf<ExpenseDetailItem>())
-    private val _expense = MutableStateFlow(getBlankExpense())
+    private val _expense = MutableStateFlow(ExpenseItem.EMPTY)
 
     val expenseDetailList: StateFlow<List<ExpenseDetailItem>> = _expenseDetailList.asStateFlow()
     val expense: StateFlow<ExpenseItem> = _expense.asStateFlow()
@@ -55,22 +52,6 @@ class ExpenseDetailViewModel @Inject constructor(
             _expenseDetailList.value = getExpenseDetailUseCase.invoke()
         }
     }
-
-    private fun getBlankExpense() = ExpenseItem(
-        "",
-        "",
-        MemberItem(
-            "",
-            "",
-            "",
-            false
-        ),
-        0,
-        "",
-        Date(),
-        ExpenseState.NOT_CONFIRMED,
-        ""
-    )
 
     private fun getItemWithEnabled(item: ExpenseDetailItem, enabled: Boolean): ExpenseDetailItem {
         if (enabled) {
