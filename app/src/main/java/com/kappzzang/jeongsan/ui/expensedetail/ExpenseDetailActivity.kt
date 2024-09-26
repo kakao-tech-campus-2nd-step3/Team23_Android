@@ -47,6 +47,7 @@ class ExpenseDetailActivity : AppCompatActivity() {
 
         // TODO: 임시 연결용 코드
         binding.expenseDetailSubmitButton.setOnClickListener {
+            viewModel.saveExpenseDetail()
             finish()
         }
     }

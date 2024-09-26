@@ -1,5 +1,6 @@
 package com.kappzzang.jeongsan.data.repositoryimpl
 
+import android.util.Log
 import com.kappzzang.jeongsan.domain.model.ExpenseDetailItem
 import com.kappzzang.jeongsan.domain.repository.ExpenseDetailRepository
 import javax.inject.Inject
@@ -35,4 +36,9 @@ class ExpenseDetailRepositoryImpl @Inject constructor() : ExpenseDetailRepositor
             0
         )
     )
+
+    override suspend fun saveExpenseDetail(edited: List<ExpenseDetailItem>) {
+        // 저장하기
+        Log.d("Jeongsan", edited.toString())
+    }
 }

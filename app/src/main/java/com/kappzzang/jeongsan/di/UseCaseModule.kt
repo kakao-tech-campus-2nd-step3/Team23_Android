@@ -5,6 +5,7 @@ import com.kappzzang.jeongsan.domain.repository.ExpenseRepository
 import com.kappzzang.jeongsan.domain.repository.GroupInfoRepository
 import com.kappzzang.jeongsan.domain.repository.MemberRepository
 import com.kappzzang.jeongsan.domain.repository.UserInfoRepository
+import com.kappzzang.jeongsan.domain.usecase.EditExpenseDetailUseCase
 import com.kappzzang.jeongsan.domain.usecase.GetDoneGroupUseCase
 import com.kappzzang.jeongsan.domain.usecase.GetExpenseDetailUseCase
 import com.kappzzang.jeongsan.domain.usecase.GetExpenseUseCase
@@ -43,4 +44,8 @@ object UseCaseModule {
     @Provides
     fun provideGetExpenseUseCase(expenseRepository: ExpenseRepository) =
         GetExpenseUseCase(expenseRepository)
+
+    @Provides
+    fun provideEditExpenseDetailUseCase(expenseDetailRepository: ExpenseDetailRepository) =
+        EditExpenseDetailUseCase(expenseDetailRepository)
 }
