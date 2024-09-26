@@ -37,7 +37,7 @@
             android:background="@drawable/round_rect"
             android:backgroundTint="#66000000"
             android:padding="20dp"
-            android:text="영수증 전체가 보이도록 사진을 찍어주세요"
+            android:text="@string/receipt_camera_tooltip"
             android:textColor="@color/white"
             android:visibility="@{(viewModel.receiptPictureState == viewModel.ReceiptPictureState.NOT_TAKEN)?View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -87,9 +87,9 @@ class AddExpenseActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.expenseImageUri.collect{
-                    if(it == null){
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.expenseImageUri.collect {
+                    if (it == null) {
                         return@collect
                     }
 

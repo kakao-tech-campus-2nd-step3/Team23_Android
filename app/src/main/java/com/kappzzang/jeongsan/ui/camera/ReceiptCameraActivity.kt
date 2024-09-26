@@ -1,15 +1,10 @@
 package com.kappzzang.jeongsan.ui.camera
 
-import android.animation.ValueAnimator
 import android.content.Intent
 import android.graphics.drawable.AnimatedVectorDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import android.view.animation.AccelerateInterpolator
-import android.view.animation.DecelerateInterpolator
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
@@ -17,11 +12,7 @@ import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -33,9 +24,8 @@ import com.kappzzang.jeongsan.databinding.ActivityReceiptCameraBinding
 import com.kappzzang.jeongsan.domain.model.OcrResultResponse
 import com.kappzzang.jeongsan.ui.expenselist.ExpenseListActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import java.io.File
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ReceiptCameraActivity : AppCompatActivity() {
@@ -76,7 +66,6 @@ class ReceiptCameraActivity : AppCompatActivity() {
                 val cameraController = camera.cameraControl
                 cameraController.setZoomRatio(1F)
             } catch (e: Exception) {
-
             }
 
             preview.setSurfaceProvider(binding.receiptCameraViewFinder.surfaceProvider)
@@ -115,14 +104,13 @@ class ReceiptCameraActivity : AppCompatActivity() {
         }
     }
 
-    private fun getOcrResultIntent(response: OcrResultResponse): Intent{
-        return Intent(applicationContext, ExpenseListActivity::class.java).apply {
-            putExtra(OCR_RESULT ,response)
+    private fun getOcrResultIntent(response: OcrResultResponse): Intent =
+        Intent(applicationContext, ExpenseListActivity::class.java).apply {
+            putExtra(OCR_RESULT, response)
             putExtra(OCR_RESULT_IMAGE, viewModel.pictureData.value)
         }
-    }
 
-    private fun collectReceiptPictureState(state: ReceiptCameraViewModel.ReceiptPictureState){
+    private fun collectReceiptPictureState(state: ReceiptCameraViewModel.ReceiptPictureState) {
         when (state) {
             ReceiptCameraViewModel.ReceiptPictureState.NOT_TAKEN -> {
                 startCamera()
@@ -136,7 +124,6 @@ class ReceiptCameraActivity : AppCompatActivity() {
             }
 
             ReceiptCameraViewModel.ReceiptPictureState.RECEIVE_SERVER_RESPONSE -> {
-
                 viewModel.serverResponse?.let {
                     setResult(RESULT_OK, getOcrResultIntent(it))
                 }
@@ -175,7 +162,6 @@ class ReceiptCameraActivity : AppCompatActivity() {
                                 .centerInside()
                         )
                         .into(binding.receiptCameraImageImageview)
-
                 }
             }
         }

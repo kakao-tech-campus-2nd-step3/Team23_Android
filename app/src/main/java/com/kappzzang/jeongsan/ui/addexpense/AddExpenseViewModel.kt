@@ -68,9 +68,11 @@ class AddExpenseViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.Main) {
             _expenseImageUri.emit(imageUri)
             expenseName.emit(ocrResult.name)
-            _expenseItemList.emit(ocrResult.detailItems.map {
-                ExpenseItemInput(it.itemName, it.itemPrice, it.itemQuantity)
-            } + _expenseItemList.value)
+            _expenseItemList.emit(
+                ocrResult.detailItems.map {
+                    ExpenseItemInput(it.itemName, it.itemPrice, it.itemQuantity)
+                } + _expenseItemList.value
+            )
         }
     }
 
