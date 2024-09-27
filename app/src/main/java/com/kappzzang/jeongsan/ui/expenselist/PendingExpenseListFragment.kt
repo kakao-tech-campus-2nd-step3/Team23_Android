@@ -5,18 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.databinding.FragmentPendingExpenseListBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PendingExpenseListFragment : Fragment() {
-
+    private val viewModel: ExpenseListViewModel by activityViewModels()
     private lateinit var binding: FragmentPendingExpenseListBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentPendingExpenseListBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -24,14 +27,13 @@ class PendingExpenseListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // UI 확인을 위한 임시 코드
-        binding.myTotalExpenseTextview.text = "100,000원"
-        binding.pendingExpenseListRecyclerview.adapter =
-            ExpenseListAdapter(createDemoExpenseItemList())
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = activity
+        binding.pendingExpenseListRecyclerview.adapter = ExpenseListAdapter {
+            viewModel.clickExpenseItem(it)
+        }
         binding.pendingExpenseListRecyclerview.layoutManager = LinearLayoutManager(this.context)
-    }
 
-    private fun createDemoExpenseItemList(): List<ExpenseViewItem> = (1..9).map { i ->
-        ExpenseViewItem("송금 대기 내역 $i", "$i,000원", "2024.09.0$i", "#00FF00")
+        viewModel.clickPendSendingMenuButton()
     }
 }

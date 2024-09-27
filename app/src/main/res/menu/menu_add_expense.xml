@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_from_camera"
+        android:title="@string/expenselist_add_expense_from_camera"
+        android:icon="@drawable/baseline_add_a_photo_24"
+        />
+    <item android:id="@+id/menu_manually"
+        android:title="@string/expenselist_add_expense_manually"
+        android:icon="@drawable/baseline_edit_document_24"
+        />
+
+</menu>

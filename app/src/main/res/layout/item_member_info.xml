@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <include
+        android:id="@+id/member_layout"
         layout="@layout/item_member"/>
     <TextView
         android:id="@+id/invite_info_textview"

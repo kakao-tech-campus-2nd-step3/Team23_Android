@@ -63,10 +63,10 @@
                 android:id="@+id/addexpense_image_imageview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="@{viewModel.uploadedImage?View.VISIBLE:View.GONE}"
-                app:srcCompat="@drawable/addexpense_receipt_test" />
+                android:visibility="@{viewModel.uploadedImage?View.VISIBLE:View.GONE}" />
 
             <ImageView
+                android:id="@+id/addexpense_image_plus_imageview"
                 android:layout_width="72dp"
                 android:layout_height="72dp"
                 android:layout_gravity="center"
@@ -75,6 +75,7 @@
                 app:tint="#6E6E6E" />
 
             <TextView
+                android:id="@+id/addexpense_image_plus_description_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|bottom"
