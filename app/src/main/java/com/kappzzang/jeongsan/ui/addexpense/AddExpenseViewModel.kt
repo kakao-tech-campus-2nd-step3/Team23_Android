@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.util.Base64
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kappzzang.jeongsan.domain.model.OcrResultResponse
 import com.kappzzang.jeongsan.domain.model.ReceiptDetailItem
 import com.kappzzang.jeongsan.domain.model.ReceiptItem
 import com.kappzzang.jeongsan.domain.usecase.UploadExpenseUseCase
@@ -64,8 +65,16 @@ class AddExpenseViewModel @Inject constructor(
         }
     }
 
-    fun setInitialReceiptData() {
-        // TODO: 영수증 모델 받아서 UI 정보 업데이트
+    fun setInitialReceiptData(bitmap: Bitmap, ocrResult: OcrResultResponse.OcrSuccess) {
+        viewModelScope.launch(Dispatchers.Main) {
+            _expenseImageBitmap.emit(bitmap)
+            expenseName.emit(ocrResult.name)
+            _expenseItemList.emit(
+                ocrResult.detailItems.map {
+                    ExpenseItemInput(it.itemName, it.itemPrice, it.itemQuantity)
+                } + _expenseItemList.value
+            )
+        }
     }
 
     fun initiateDemoData() {
