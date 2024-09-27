@@ -1,18 +1,23 @@
 package com.kappzzang.jeongsan.ui.inviteinfo
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.kappzzang.jeongsan.R
 import com.kappzzang.jeongsan.databinding.ActivityInviteInfoBinding
-import com.kappzzang.jeongsan.ui.Member
-import com.kappzzang.jeongsan.ui.MemberAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class InviteInfoActivity : AppCompatActivity() {
+
+    private val viewModel: InviteInfoViewModel by viewModels()
+    lateinit var binding: ActivityInviteInfoBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityInviteInfoBinding.inflate(layoutInflater)
+        binding = ActivityInviteInfoBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setRecyclerView()
 
         val dm = applicationContext.resources.displayMetrics
         val width = (dm.widthPixels * 0.9).toInt()
@@ -26,24 +31,24 @@ class InviteInfoActivity : AppCompatActivity() {
         binding.closeImageview.setOnClickListener {
             finish()
         }
-
-        val members = mutableListOf<Member>()
-        for (i in 0..10) {
-            members.add(
-                Member("Member$i")
-            )
-        }
-
-        binding.memberContentRecyclerview.adapter =
-            MemberAdapter(
-                members.toList(),
-                layoutInflater,
-                R.layout.item_member_info
-            )
-        binding.memberContentRecyclerview.layoutManager = LinearLayoutManager(
-            this,
-            LinearLayoutManager.VERTICAL,
-            false
-        )
     }
+
+    private fun setRecyclerView() {
+        binding.memberContentRecyclerview.apply {
+            val adapter = MemberInfoAdapter()
+            this.adapter = adapter
+            layoutManager = LinearLayoutManager(
+                this@InviteInfoActivity,
+                LinearLayoutManager.VERTICAL,
+                false
+            )
+            viewModel.inviteInfo.observe(this@InviteInfoActivity) {
+                adapter.submitList(it)
+            }
+            viewModel.getInviteInfo()
+        }
+    }
+
+    // 추후 setRecyclerView함수에서 그룹원 조회를 위해 intent에서 Id를 받아오는 함수
+    private fun getGroupId(): String? = intent.getStringExtra("groupId")
 }

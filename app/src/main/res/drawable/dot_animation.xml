@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/receipt_camera_sending_picture">
+    <target
+        android:animation="@animator/dot_morph_first"
+        android:name="firstDot"/>
+    <target
+        android:animation="@animator/dot_morph_second"
+        android:name="secondDot"/>
+    <target
+        android:animation="@animator/dot_morph_third"
+        android:name="thirdDot"/>
+    <target
+        android:animation="@animator/dot_morph_fourth"
+        android:name="fourthDot"/>
+
+</animated-vector>
