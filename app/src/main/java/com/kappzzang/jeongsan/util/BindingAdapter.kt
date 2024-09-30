@@ -8,8 +8,8 @@ import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.kappzzang.jeongsan.ui.expenselist.ExpenseListAdapter
-import com.kappzzang.jeongsan.ui.expenselist.ExpenseListViewUIData
+import com.kappzzang.jeongsan.expenselist.ExpenseListAdapter
+import com.kappzzang.jeongsan.expenselist.ExpenseListViewUIData
 import kotlinx.coroutines.flow.StateFlow
 
 object BindingAdapter {
@@ -70,9 +70,9 @@ object BindingAdapter {
 
     @BindingAdapter("expenseItems")
     @JvmStatic
-    fun attachExpenseList(recyclerView: RecyclerView, items: StateFlow<ExpenseListViewUIData>?) {
+    fun attachExpenseList(recyclerView: RecyclerView, items: StateFlow<com.kappzzang.jeongsan.expenselist.ExpenseListViewUIData>?) {
         items?.let {
-            (recyclerView.adapter as? ExpenseListAdapter)?.submitList(it.value.expenseItems)
+            (recyclerView.adapter as? com.kappzzang.jeongsan.expenselist.ExpenseListAdapter)?.submitList(it.value.expenseItems)
         }
     }
 }

@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/expense_list_fragment"
-        android:name="com.kappzzang.jeongsan.ui.expenselist.ExpenseListFragment"
+        android:name="com.kappzzang.jeongsan.expenselist.ExpenseListFragment"
         android:label="@string/all_expense"
         tools:layout="@layout/fragment_expense_list" />
 
     <fragment
         android:id="@+id/pending_expense_list_fragment"
-        android:name="com.kappzzang.jeongsan.ui.expenselist.PendingExpenseListFragment"
+        android:name="com.kappzzang.jeongsan.expenselist.PendingExpenseListFragment"
         android:label="@string/all_pending"
         tools:layout="@layout/fragment_pending_expense_list" />
 
     <fragment
         android:id="@+id/complete_expense_list_fragment"
-        android:name="com.kappzzang.jeongsan.ui.expenselist.CompleteExpenseListFragment"
+        android:name="com.kappzzang.jeongsan.expenselist.CompleteExpenseListFragment"
         android:label="@string/all_complete"
         tools:layout="@layout/fragment_complete_expense_list" />
 
