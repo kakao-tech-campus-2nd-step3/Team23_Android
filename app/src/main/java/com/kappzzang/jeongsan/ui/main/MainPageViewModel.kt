@@ -2,9 +2,9 @@ package com.kappzzang.jeongsan.ui.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kappzzang.jeongsan.domain.usecase.GetDoneGroupUseCase
-import com.kappzzang.jeongsan.domain.usecase.GetProgressingGroupUseCase
-import com.kappzzang.jeongsan.domain.usecase.GetUserInfoUseCase
+import com.kappzzang.jeongsan.usecase.GetDoneGroupUseCase
+import com.kappzzang.jeongsan.usecase.GetProgressingGroupUseCase
+import com.kappzzang.jeongsan.usecase.GetUserInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -15,9 +15,9 @@ import kotlinx.coroutines.withContext
 
 @HiltViewModel
 class MainPageViewModel @Inject constructor(
-    private val getProgressingGroupUseCase: GetProgressingGroupUseCase,
-    private val getDoneGroupUseCase: GetDoneGroupUseCase,
-    private val getUserInfoUseCase: GetUserInfoUseCase
+    private val getProgressingGroupUseCase: com.kappzzang.jeongsan.usecase.GetProgressingGroupUseCase,
+    private val getDoneGroupUseCase: com.kappzzang.jeongsan.usecase.GetDoneGroupUseCase,
+    private val getUserInfoUseCase: com.kappzzang.jeongsan.usecase.GetUserInfoUseCase
 ) : ViewModel() {
 
     private val _userName = MutableStateFlow("")

@@ -4,18 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kappzzang.jeongsan.domain.model.MemberItem
-import com.kappzzang.jeongsan.domain.usecase.GetInviteInfoUseCase
+import com.kappzzang.jeongsan.model.MemberItem
+import com.kappzzang.jeongsan.usecase.GetInviteInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class InviteInfoViewModel @Inject constructor(
-    private val getInviteInfoUseCase: GetInviteInfoUseCase
+    private val getInviteInfoUseCase: com.kappzzang.jeongsan.usecase.GetInviteInfoUseCase
 ) : ViewModel() {
-    private val _inviteInfo = MutableLiveData<List<MemberItem>>()
-    val inviteInfo: LiveData<List<MemberItem>>
+    private val _inviteInfo = MutableLiveData<List<com.kappzzang.jeongsan.model.MemberItem>>()
+    val inviteInfo: LiveData<List<com.kappzzang.jeongsan.model.MemberItem>>
         get() = _inviteInfo
 
     init {

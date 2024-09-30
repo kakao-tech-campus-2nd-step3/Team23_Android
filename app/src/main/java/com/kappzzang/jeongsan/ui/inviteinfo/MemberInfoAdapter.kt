@@ -5,10 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kappzzang.jeongsan.databinding.ItemMemberInfoBinding
-import com.kappzzang.jeongsan.domain.model.MemberItem
+import com.kappzzang.jeongsan.model.MemberItem
 
 class MemberInfoAdapter :
-    ListAdapter<MemberItem, MemberInfoAdapter.ViewHolder>(MemberInfoDiffUtil()) {
+    ListAdapter<com.kappzzang.jeongsan.model.MemberItem, MemberInfoAdapter.ViewHolder>(MemberInfoDiffUtil()) {
     class ViewHolder(private val binding: ItemMemberInfoBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val name = binding.memberLayout.profileNameTextview

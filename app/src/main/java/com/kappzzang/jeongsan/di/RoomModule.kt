@@ -2,10 +2,10 @@ package com.kappzzang.jeongsan.di
 
 import android.content.Context
 import androidx.room.Room
-import com.kappzzang.jeongsan.data.datasource.MemberContract
-import com.kappzzang.jeongsan.data.datasource.MemberDatabase
-import com.kappzzang.jeongsan.data.datasource.expense.ExpenseDatabase
-import com.kappzzang.jeongsan.data.datasource.group.GroupDatabase
+import com.kappzzang.jeongsan.datasource.member.MemberContract
+import com.kappzzang.jeongsan.datasource.member.MemberDatabase
+import com.kappzzang.jeongsan.datasource.expense.ExpenseDatabase
+import com.kappzzang.jeongsan.datasource.group.GroupDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,20 +20,20 @@ object RoomModule {
     // TODO: Dummy 데이터를 넣기 위해 getInstance 함수를 사용함
     @Provides
     @Singleton
-    fun provideGroupDatabase(@ApplicationContext context: Context): GroupDatabase =
-        GroupDatabase.getInstance(context)
+    fun provideGroupDatabase(@ApplicationContext context: Context): com.kappzzang.jeongsan.datasource.group.GroupDatabase =
+        com.kappzzang.jeongsan.datasource.group.GroupDatabase.getInstance(context)
 
     @Provides
     @Singleton
-    fun provideExpenseDatabase(@ApplicationContext context: Context): ExpenseDatabase =
-        ExpenseDatabase.getInstance(context)
+    fun provideExpenseDatabase(@ApplicationContext context: Context): com.kappzzang.jeongsan.datasource.expense.ExpenseDatabase =
+        com.kappzzang.jeongsan.datasource.expense.ExpenseDatabase.getInstance(context)
 
     @Provides
     @Singleton
-    fun provideMemberDatabase(@ApplicationContext context: Context): MemberDatabase =
+    fun provideMemberDatabase(@ApplicationContext context: Context): com.kappzzang.jeongsan.datasource.member.MemberDatabase =
         Room.databaseBuilder(
             context,
-            MemberDatabase::class.java,
-            MemberContract.DATABASE_NAME
+            com.kappzzang.jeongsan.datasource.member.MemberDatabase::class.java,
+            com.kappzzang.jeongsan.datasource.member.MemberContract.DATABASE_NAME
         ).build()
 }

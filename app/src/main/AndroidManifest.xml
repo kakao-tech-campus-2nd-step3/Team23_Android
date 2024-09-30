@@ -54,7 +54,7 @@
             android:name=".ui.expensedetail.ExpenseDetailActivity"
             android:exported="true" />
         <activity
-            android:name=".ui.login.LoginActivity"
+            android:name="com.kappzzaang.jeongsan.ui.login.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

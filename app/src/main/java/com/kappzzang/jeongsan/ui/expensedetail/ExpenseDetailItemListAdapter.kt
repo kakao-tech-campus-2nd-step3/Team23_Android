@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kappzzang.jeongsan.R
 import com.kappzzang.jeongsan.databinding.ItemExpenseDetailItemBinding
-import com.kappzzang.jeongsan.domain.model.ExpenseDetailItem
+import com.kappzzang.jeongsan.model.ExpenseDetailItem
 
 interface ExpenseDetailItemCallback {
     fun onCheckedChange(view: CompoundButton, enable: Boolean)
@@ -28,23 +28,23 @@ interface ExpenseDetailCallback {
 class ExpenseDetailItemListAdapter(
     private val context: Context,
     private val callback: ExpenseDetailCallback
-) : ListAdapter<ExpenseDetailItem, ExpenseDetailItemListAdapter.ExpenseDetailItemViewHolder>(
+) : ListAdapter<com.kappzzang.jeongsan.model.ExpenseDetailItem, ExpenseDetailItemListAdapter.ExpenseDetailItemViewHolder>(
     object :
-        DiffUtil.ItemCallback<ExpenseDetailItem>() {
+        DiffUtil.ItemCallback<com.kappzzang.jeongsan.model.ExpenseDetailItem>() {
         override fun areItemsTheSame(
-            oldItem: ExpenseDetailItem,
-            newItem: ExpenseDetailItem
+            oldItem: com.kappzzang.jeongsan.model.ExpenseDetailItem,
+            newItem: com.kappzzang.jeongsan.model.ExpenseDetailItem
         ): Boolean = oldItem.id == newItem.id
 
         override fun areContentsTheSame(
-            oldItem: ExpenseDetailItem,
-            newItem: ExpenseDetailItem
+            oldItem: com.kappzzang.jeongsan.model.ExpenseDetailItem,
+            newItem: com.kappzzang.jeongsan.model.ExpenseDetailItem
         ): Boolean = oldItem == newItem
     }
 ) {
     class ExpenseDetailItemViewHolder(private val binding: ItemExpenseDetailItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: ExpenseDetailItem) {
+        fun bind(item: com.kappzzang.jeongsan.model.ExpenseDetailItem) {
             binding.item = item
             binding.isPlaceholder =
                 (this.bindingAdapterPosition + 1 == this.bindingAdapter?.itemCount)

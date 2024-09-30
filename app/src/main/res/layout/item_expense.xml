@@ -6,7 +6,7 @@
     <data>
         <variable
             name="expenseItem"
-            type="com.kappzzang.jeongsan.domain.model.ExpenseItem" />
+            type="com.kappzzang.jeongsan.model.ExpenseItem" />
         <variable
             name="expenseDate"
             type="String" />

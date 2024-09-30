@@ -4,10 +4,10 @@ import android.graphics.Bitmap
 import android.util.Base64
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kappzzang.jeongsan.domain.model.OcrResultResponse
-import com.kappzzang.jeongsan.domain.model.ReceiptDetailItem
-import com.kappzzang.jeongsan.domain.model.ReceiptItem
-import com.kappzzang.jeongsan.domain.usecase.UploadExpenseUseCase
+import com.kappzzang.jeongsan.model.OcrResultResponse
+import com.kappzzang.jeongsan.model.ReceiptDetailItem
+import com.kappzzang.jeongsan.model.ReceiptItem
+import com.kappzzang.jeongsan.usecase.UploadExpenseUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
@@ -38,7 +38,7 @@ private fun createDemoList(): List<ExpenseItemInput> = listOf(
 
 @HiltViewModel
 class AddExpenseViewModel @Inject constructor(
-    private val uploadExpenseUseCase: UploadExpenseUseCase
+    private val uploadExpenseUseCase: com.kappzzang.jeongsan.usecase.UploadExpenseUseCase
 ) : ViewModel() {
     private val _expenseItemList by lazy {
         MutableStateFlow(
@@ -65,7 +65,7 @@ class AddExpenseViewModel @Inject constructor(
         }
     }
 
-    fun setInitialReceiptData(bitmap: Bitmap, ocrResult: OcrResultResponse.OcrSuccess) {
+    fun setInitialReceiptData(bitmap: Bitmap, ocrResult: com.kappzzang.jeongsan.model.OcrResultResponse.OcrSuccess) {
         viewModelScope.launch(Dispatchers.Main) {
             _expenseImageBitmap.emit(bitmap)
             expenseName.emit(ocrResult.name)
@@ -114,7 +114,7 @@ class AddExpenseViewModel @Inject constructor(
             return false
         }
 
-        val receiptItem = ReceiptItem(
+        val receiptItem = com.kappzzang.jeongsan.model.ReceiptItem(
             title = expenseName.value,
             categoryColor = "#FF0000", // TODO: 카테고리 색을 넣도록 UI 수정 필요
             imageBase64 = convertBitmapToBase64(_expenseImageBitmap.value),
@@ -122,7 +122,7 @@ class AddExpenseViewModel @Inject constructor(
                 0,
                 _expenseItemList.value.size - 1
             ).map {
-                ReceiptDetailItem(
+                com.kappzzang.jeongsan.model.ReceiptDetailItem(
                     itemName = it.itemName!!,
                     itemPrice = it.itemPrice!!,
                     itemQuantity = it.itemQuantity!!

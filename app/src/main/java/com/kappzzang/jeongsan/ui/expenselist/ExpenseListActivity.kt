@@ -22,12 +22,12 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.kappzzang.jeongsan.R
 import com.kappzzang.jeongsan.databinding.ActivityExpenseListBinding
-import com.kappzzang.jeongsan.domain.model.OcrResultResponse
+import com.kappzzang.jeongsan.model.OcrResultResponse
 import com.kappzzang.jeongsan.ui.addexpense.AddExpenseActivity
 import com.kappzzang.jeongsan.ui.camera.ReceiptCameraActivity
 import com.kappzzang.jeongsan.ui.inviteinfo.InviteInfoActivity
 import com.kappzzang.jeongsan.ui.sendmessage.SendMessageActivity
-import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
+import com.example.androidutil.IntentHelper.getParcelableData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -127,7 +127,7 @@ class ExpenseListActivity : AppCompatActivity() {
     }
 
     private fun startAddExpenseActivity(
-        ocrResult: OcrResultResponse.OcrSuccess,
+        ocrResult: com.kappzzang.jeongsan.model.OcrResultResponse.OcrSuccess,
         receiptImage: Uri
     ) {
         val intent = makeAddExpenseActivityIntent(false)
@@ -141,17 +141,17 @@ class ExpenseListActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             val resultIntent: Intent? = it.data
             val data =
-                resultIntent?.getParcelableData<OcrResultResponse>(ReceiptCameraActivity.OCR_RESULT)
+                resultIntent?.getParcelableData<com.kappzzang.jeongsan.model.OcrResultResponse>(ReceiptCameraActivity.OCR_RESULT)
             val image = resultIntent?.getParcelableData<Uri>(ReceiptCameraActivity.OCR_RESULT_IMAGE)
 
             if (it.resultCode == RESULT_OK) {
-                if (data !is OcrResultResponse.OcrSuccess || image == null
+                if (data !is com.kappzzang.jeongsan.model.OcrResultResponse.OcrSuccess || image == null
                 ) {
                     return@registerForActivityResult
                 }
                 startAddExpenseActivity(data, image)
             } else {
-                (data as? OcrResultResponse.OcrFailed)?.message?.let { message ->
+                (data as? com.kappzzang.jeongsan.model.OcrResultResponse.OcrFailed)?.message?.let { message ->
                     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
                 }
             }

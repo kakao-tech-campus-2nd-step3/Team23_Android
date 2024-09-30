@@ -21,7 +21,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.kappzzang.jeongsan.R
 import com.kappzzang.jeongsan.databinding.ActivityReceiptCameraBinding
-import com.kappzzang.jeongsan.domain.model.OcrResultResponse
+import com.kappzzang.jeongsan.model.OcrResultResponse
 import com.kappzzang.jeongsan.ui.expenselist.ExpenseListActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
@@ -192,7 +192,7 @@ class ReceiptCameraActivity : AppCompatActivity() {
         }, ContextCompat.getMainExecutor(this))
     }
 
-    private fun getOcrResultIntent(response: OcrResultResponse): Intent =
+    private fun getOcrResultIntent(response: com.kappzzang.jeongsan.model.OcrResultResponse): Intent =
         Intent(applicationContext, ExpenseListActivity::class.java).apply {
             putExtra(OCR_RESULT, response)
             putExtra(OCR_RESULT_IMAGE, viewModel.pictureData.value)

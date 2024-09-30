@@ -3,11 +3,11 @@ package com.kappzzang.jeongsan.ui.expensedetail
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kappzzang.jeongsan.domain.model.ExpenseDetailItem
-import com.kappzzang.jeongsan.domain.model.ExpenseItem
-import com.kappzzang.jeongsan.domain.usecase.EditExpenseDetailUseCase
-import com.kappzzang.jeongsan.domain.usecase.GetExpenseDetailUseCase
-import com.kappzzang.jeongsan.domain.usecase.GetExpenseUseCase
+import com.kappzzang.jeongsan.model.ExpenseDetailItem
+import com.kappzzang.jeongsan.model.ExpenseItem
+import com.kappzzang.jeongsan.usecase.EditExpenseDetailUseCase
+import com.kappzzang.jeongsan.usecase.GetExpenseDetailUseCase
+import com.kappzzang.jeongsan.usecase.GetExpenseUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -18,15 +18,15 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class ExpenseDetailViewModel @Inject constructor(
-    private val getExpenseDetailUseCase: GetExpenseDetailUseCase,
-    private val getExpenseUseCase: GetExpenseUseCase,
-    private val editExpenseDetailUseCase: EditExpenseDetailUseCase
+    private val getExpenseDetailUseCase: com.kappzzang.jeongsan.usecase.GetExpenseDetailUseCase,
+    private val getExpenseUseCase: com.kappzzang.jeongsan.usecase.GetExpenseUseCase,
+    private val editExpenseDetailUseCase: com.kappzzang.jeongsan.usecase.EditExpenseDetailUseCase
 ) : ViewModel() {
-    private val _expenseDetailList = MutableStateFlow(listOf<ExpenseDetailItem>())
-    private val _expense = MutableStateFlow(ExpenseItem.EMPTY)
+    private val _expenseDetailList = MutableStateFlow(listOf<com.kappzzang.jeongsan.model.ExpenseDetailItem>())
+    private val _expense = MutableStateFlow(com.kappzzang.jeongsan.model.ExpenseItem.EMPTY)
 
-    val expenseDetailList: StateFlow<List<ExpenseDetailItem>> = _expenseDetailList.asStateFlow()
-    val expense: StateFlow<ExpenseItem> = _expense.asStateFlow()
+    val expenseDetailList: StateFlow<List<com.kappzzang.jeongsan.model.ExpenseDetailItem>> = _expenseDetailList.asStateFlow()
+    val expense: StateFlow<com.kappzzang.jeongsan.model.ExpenseItem> = _expense.asStateFlow()
 
     init {
         initExpense()
@@ -53,12 +53,12 @@ class ExpenseDetailViewModel @Inject constructor(
         }
     }
 
-    private fun getItemWithEnabled(item: ExpenseDetailItem, enabled: Boolean): ExpenseDetailItem {
+    private fun getItemWithEnabled(item: com.kappzzang.jeongsan.model.ExpenseDetailItem, enabled: Boolean): com.kappzzang.jeongsan.model.ExpenseDetailItem {
         if (enabled) {
             return if (item.selectedQuantity > 0) {
                 item
             } else {
-                ExpenseDetailItem(
+                com.kappzzang.jeongsan.model.ExpenseDetailItem(
                     id = item.id,
                     itemName = item.itemName,
                     itemQuantity = item.itemQuantity,
@@ -70,7 +70,7 @@ class ExpenseDetailViewModel @Inject constructor(
             return if (item.selectedQuantity == 0) {
                 item
             } else {
-                ExpenseDetailItem(
+                com.kappzzang.jeongsan.model.ExpenseDetailItem(
                     id = item.id,
                     itemName = item.itemName,
                     itemQuantity = item.itemQuantity,
@@ -81,8 +81,8 @@ class ExpenseDetailViewModel @Inject constructor(
         }
     }
 
-    private fun getItemWithQuantity(item: ExpenseDetailItem, quantity: Int): ExpenseDetailItem =
-        ExpenseDetailItem(
+    private fun getItemWithQuantity(item: com.kappzzang.jeongsan.model.ExpenseDetailItem, quantity: Int): com.kappzzang.jeongsan.model.ExpenseDetailItem =
+        com.kappzzang.jeongsan.model.ExpenseDetailItem(
             id = item.id,
             itemName = item.itemName,
             itemQuantity = item.itemQuantity,
