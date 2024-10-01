@@ -8,6 +8,10 @@ plugins {
     id("com.android.library") version "8.3.1" apply false
 }
 
+subprojects {
+    group = "com.kappzzang.jeongsan"
+}
+
 allprojects {
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
 }

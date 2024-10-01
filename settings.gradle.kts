@@ -19,7 +19,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "jeongsan"
+
 include(":app")
 include(":data:group")
 include(":data:expense")
@@ -38,3 +38,4 @@ include(":ui:login")
 include(":ui:main")
 include(":common:util")
 include(":common:androidutil")
+include(":common:resource")

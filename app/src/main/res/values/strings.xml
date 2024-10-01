@@ -1,9 +1,7 @@
 <resources>
     <string name="app_name">Jeongsan</string>
 
-    <string name="all_expense">정산 중</string>
-    <string name="all_pending">송금 대기</string>
-    <string name="all_complete">송금 완료</string>
+
 
     <!-- 메인 페이지 -->
     <string name="main_user_name_suffix">님</string>
