@@ -7,10 +7,6 @@ plugins {
     id("com.google.dagger.hilt.android")
 }
 
-ktlint {
-    version.set("1.3.1")
-}
-
 android {
     namespace = "com.kappzzang.jeongsan"
     compileSdk = 34

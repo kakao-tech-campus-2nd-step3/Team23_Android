@@ -42,10 +42,6 @@ subprojects {
         implementation("androidx.core:core-ktx:1.13.1")
     }
 
-    ktlint {
-        version.set("1.3.1")
-    }
-
     android {
         compileSdk = 34
 

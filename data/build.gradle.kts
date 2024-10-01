@@ -34,10 +34,6 @@ subprojects {
         plugin("com.google.dagger.hilt.android")
     }
 
-    ktlint {
-        version.set("1.3.1")
-    }
-
     dependencies {
         implementation("com.google.dagger:hilt-android:2.48.1")
         kapt("com.google.dagger:hilt-compiler:2.48.1")

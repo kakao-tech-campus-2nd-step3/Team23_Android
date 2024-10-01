@@ -57,10 +57,6 @@ subprojects {
         kapt("com.google.dagger:hilt-compiler:2.48.1")
     }
 
-    ktlint {
-        version.set("1.3.1")
-    }
-
     android {
         compileSdk = 34
 
