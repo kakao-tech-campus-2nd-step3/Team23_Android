@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.kappzzang.jeongsan.ui.addexpense.AddExpenseViewModel" />
+            type="com.kappzzang.jeongsan.addexpense.AddExpenseViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

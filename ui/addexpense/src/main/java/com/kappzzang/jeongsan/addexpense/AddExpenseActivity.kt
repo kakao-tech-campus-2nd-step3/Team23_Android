@@ -16,11 +16,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.kappzzang.jeongsan.databinding.ActivityAddExpenseBinding
-import com.kappzzang.jeongsan.model.OcrResultResponse
-import com.kappzzang.jeongsan.ui.expensedetail.ExpenseDetailActivity
-import com.example.androidutil.Base64BitmapEncoder
-import com.example.androidutil.IntentHelper.getParcelableData
+import com.kappzzang.jeongsan.addexpense.databinding.ActivityAddExpenseBinding
+import com.kappzzang.jeongsan.expensedetail.ExpenseDetailActivity
+import com.kappzzang.jeongsan.util.Base64BitmapEncoder
+import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -115,7 +114,7 @@ class AddExpenseActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 result.data?.data?.let { uri ->
-                    val bitmap = com.example.androidutil.Base64BitmapEncoder.convertUriToBitmap(uri, this)
+                    val bitmap = Base64BitmapEncoder.convertUriToBitmap(uri, this)
                     viewModel.setExpenseImageBitmap(bitmap)
                 }
             }
@@ -143,7 +142,7 @@ class AddExpenseActivity : AppCompatActivity() {
         val data = intentData as? com.kappzzang.jeongsan.model.OcrResultResponse.OcrSuccess ?: return
         val image = intentImage ?: return
 
-        val bitmap = com.example.androidutil.Base64BitmapEncoder.convertUriToBitmap(image, this)
+        val bitmap = Base64BitmapEncoder.convertUriToBitmap(image, this)
 
         viewModel.setInitialReceiptData(bitmap, data)
     }

@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jlleitschuh.gradle.ktlint")
     id("kotlin-kapt")
+    id("com.google.dagger.hilt.android") apply false
 }
 
 android {
@@ -31,15 +32,15 @@ subprojects {
         plugin("org.jetbrains.kotlin.android")
         plugin("org.jlleitschuh.gradle.ktlint")
         plugin("kotlin-kapt")
+        plugin("com.google.dagger.hilt.android")
     }
 
     dependencies {
+        implementation(project(":common:util"))
+
         implementation("com.google.dagger:hilt-android:2.48.1")
         kapt("com.google.dagger:hilt-compiler:2.48.1")
         implementation("androidx.core:core-ktx:1.13.1")
-
-        project(":common:util")
-
     }
 
     android {

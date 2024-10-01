@@ -9,11 +9,11 @@
 
         <variable
             name="viewHolder"
-            type="com.kappzzang.jeongsan.ui.addexpense.ExpenseItemListAdapter.ExpenseItemViewHolder" />
+            type="com.kappzzang.jeongsan.addexpense.ExpenseItemListAdapter.ExpenseItemViewHolder" />
 
         <variable
             name="item"
-            type="com.kappzzang.jeongsan.ui.addexpense.ExpenseItemInput" />
+            type="com.kappzzang.jeongsan.addexpense.ExpenseItemInput" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

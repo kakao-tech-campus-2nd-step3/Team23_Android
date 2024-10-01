@@ -4,10 +4,6 @@ import android.graphics.Bitmap
 import android.util.Base64
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kappzzang.jeongsan.model.OcrResultResponse
-import com.kappzzang.jeongsan.model.ReceiptDetailItem
-import com.kappzzang.jeongsan.model.ReceiptItem
-import com.kappzzang.jeongsan.usecase.UploadExpenseUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
