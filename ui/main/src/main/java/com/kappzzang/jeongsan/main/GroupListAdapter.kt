@@ -27,7 +27,11 @@ class GroupListAdapter : ListAdapter<GroupViewItem, RecyclerView.ViewHolder>(dif
         init {
             // TODO: 이후 Jetpack Navigation을 사용하여 화면 전환
             binding.root.setOnClickListener {
-                val intent = Intent(binding.root.context, com.kappzzang.jeongsan.expenselist.ExpenseListActivity::class.java)
+                val intent =
+                    Intent(
+                        binding.root.context,
+                        com.kappzzang.jeongsan.expenselist.ExpenseListActivity::class.java
+                    )
                 currentList[bindingAdapterPosition].let { currentViewItem ->
                     if (currentViewItem is GroupViewItem.Group) {
                         intent.putExtra("groupId", currentViewItem.groupItem.id)

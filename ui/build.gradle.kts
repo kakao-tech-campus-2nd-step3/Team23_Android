@@ -24,7 +24,6 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-
 }
 
 subprojects {
@@ -54,9 +53,12 @@ subprojects {
         implementation("androidx.activity:activity:1.9.2")
         implementation("androidx.activity:activity-ktx:1.9.0")
 
-
         implementation("com.google.dagger:hilt-android:2.48.1")
         kapt("com.google.dagger:hilt-compiler:2.48.1")
+    }
+
+    ktlint {
+        version.set("1.3.1")
     }
 
     android {
@@ -92,5 +94,4 @@ subprojects {
             buildConfig = true
         }
     }
-
 }

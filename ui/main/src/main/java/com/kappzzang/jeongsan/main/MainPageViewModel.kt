@@ -15,9 +15,9 @@ import kotlinx.coroutines.withContext
 
 @HiltViewModel
 class MainPageViewModel @Inject constructor(
-    private val getProgressingGroupUseCase: com.kappzzang.jeongsan.usecase.GetProgressingGroupUseCase,
-    private val getDoneGroupUseCase: com.kappzzang.jeongsan.usecase.GetDoneGroupUseCase,
-    private val getUserInfoUseCase: com.kappzzang.jeongsan.usecase.GetUserInfoUseCase
+    private val getProgressingGroupUseCase: GetProgressingGroupUseCase,
+    private val getDoneGroupUseCase: GetDoneGroupUseCase,
+    private val getUserInfoUseCase: GetUserInfoUseCase
 ) : ViewModel() {
 
     private val _userName = MutableStateFlow("")

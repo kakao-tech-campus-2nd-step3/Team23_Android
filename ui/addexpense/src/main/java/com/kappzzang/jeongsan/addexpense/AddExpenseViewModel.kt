@@ -34,7 +34,7 @@ private fun createDemoList(): List<ExpenseItemInput> = listOf(
 
 @HiltViewModel
 class AddExpenseViewModel @Inject constructor(
-    private val uploadExpenseUseCase: com.kappzzang.jeongsan.usecase.UploadExpenseUseCase
+    private val uploadExpenseUseCase: usecase.UploadExpenseUseCase
 ) : ViewModel() {
     private val _expenseItemList by lazy {
         MutableStateFlow(
@@ -61,7 +61,7 @@ class AddExpenseViewModel @Inject constructor(
         }
     }
 
-    fun setInitialReceiptData(bitmap: Bitmap, ocrResult: com.kappzzang.jeongsan.model.OcrResultResponse.OcrSuccess) {
+    fun setInitialReceiptData(bitmap: Bitmap, ocrResult: model.OcrResultResponse.OcrSuccess) {
         viewModelScope.launch(Dispatchers.Main) {
             _expenseImageBitmap.emit(bitmap)
             expenseName.emit(ocrResult.name)
@@ -110,7 +110,7 @@ class AddExpenseViewModel @Inject constructor(
             return false
         }
 
-        val receiptItem = com.kappzzang.jeongsan.model.ReceiptItem(
+        val receiptItem = ReceiptItem(
             title = expenseName.value,
             categoryColor = "#FF0000", // TODO: 카테고리 색을 넣도록 UI 수정 필요
             imageBase64 = convertBitmapToBase64(_expenseImageBitmap.value),
@@ -118,7 +118,7 @@ class AddExpenseViewModel @Inject constructor(
                 0,
                 _expenseItemList.value.size - 1
             ).map {
-                com.kappzzang.jeongsan.model.ReceiptDetailItem(
+                ReceiptDetailItem(
                     itemName = it.itemName!!,
                     itemPrice = it.itemPrice!!,
                     itemQuantity = it.itemQuantity!!

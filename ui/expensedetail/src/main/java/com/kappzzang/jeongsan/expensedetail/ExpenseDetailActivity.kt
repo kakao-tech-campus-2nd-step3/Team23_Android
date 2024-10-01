@@ -13,7 +13,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.StateFlow
 
 @BindingAdapter("app:detail_items")
-fun attachList(recyclerView: RecyclerView, items: StateFlow<List<com.kappzzang.jeongsan.model.ExpenseDetailItem>>?) {
+fun attachList(
+    recyclerView: RecyclerView,
+    items: StateFlow<List<com.kappzzang.jeongsan.model.ExpenseDetailItem>>?
+) {
     items?.let {
         (recyclerView.adapter as? ExpenseDetailItemListAdapter)?.submitList(it.value)
     }

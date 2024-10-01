@@ -191,7 +191,7 @@ class ReceiptCameraActivity : AppCompatActivity() {
         }, ContextCompat.getMainExecutor(this))
     }
 
-    private fun getOcrResultIntent(response: com.kappzzang.jeongsan.model.OcrResultResponse): Intent =
+    private fun getOcrResultIntent(response: OcrResultResponse): Intent =
         Intent(applicationContext, ExpenseListActivity::class.java).apply {
             putExtra(OCR_RESULT, response)
             putExtra(OCR_RESULT_IMAGE, viewModel.pictureData.value)

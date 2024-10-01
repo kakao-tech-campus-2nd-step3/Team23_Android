@@ -19,7 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-
 include(":app")
 include(":data:group")
 include(":data:expense")

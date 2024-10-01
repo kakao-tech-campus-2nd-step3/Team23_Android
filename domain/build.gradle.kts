@@ -23,7 +23,6 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-
 }
 
 subprojects {
@@ -41,6 +40,10 @@ subprojects {
         implementation("com.google.dagger:hilt-android:2.48.1")
         kapt("com.google.dagger:hilt-compiler:2.48.1")
         implementation("androidx.core:core-ktx:1.13.1")
+    }
+
+    ktlint {
+        version.set("1.3.1")
     }
 
     android {

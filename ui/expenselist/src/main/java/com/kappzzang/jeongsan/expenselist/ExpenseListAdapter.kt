@@ -14,11 +14,15 @@ class ExpenseListAdapter(private val onExpenseItemClickListener: (expenseId: Str
     ListAdapter<com.kappzzang.jeongsan.model.ExpenseItem, ExpenseListAdapter.MyViewHolder>(
         object :
             DiffUtil.ItemCallback<com.kappzzang.jeongsan.model.ExpenseItem>() {
-            override fun areItemsTheSame(oldItem: com.kappzzang.jeongsan.model.ExpenseItem, newItem: com.kappzzang.jeongsan.model.ExpenseItem): Boolean =
-                oldItem.id == newItem.id
+            override fun areItemsTheSame(
+                oldItem: com.kappzzang.jeongsan.model.ExpenseItem,
+                newItem: com.kappzzang.jeongsan.model.ExpenseItem
+            ): Boolean = oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: com.kappzzang.jeongsan.model.ExpenseItem, newItem: com.kappzzang.jeongsan.model.ExpenseItem): Boolean =
-                oldItem == newItem
+            override fun areContentsTheSame(
+                oldItem: com.kappzzang.jeongsan.model.ExpenseItem,
+                newItem: com.kappzzang.jeongsan.model.ExpenseItem
+            ): Boolean = oldItem == newItem
         }
     ) {
 

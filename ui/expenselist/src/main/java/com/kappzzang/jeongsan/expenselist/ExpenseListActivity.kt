@@ -20,12 +20,12 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.kappzzang.jeongsan.databinding.ActivityExpenseListBinding
-import com.kappzzang.jeongsan.model.OcrResultResponse
+import com.example.androidutil.IntentHelper.getParcelableData
 import com.kappzzang.jeongsan.addexpense.AddExpenseActivity
 import com.kappzzang.jeongsan.camera.ReceiptCameraActivity
+import com.kappzzang.jeongsan.databinding.ActivityExpenseListBinding
+import com.kappzzang.jeongsan.model.OcrResultResponse
 import com.kappzzang.jeongsan.ui.sendmessage.SendMessageActivity
-import com.example.androidutil.IntentHelper.getParcelableData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -100,7 +100,12 @@ class ExpenseListActivity : AppCompatActivity() {
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 return@setOnMenuItemClickListener when (menuItem.itemId) {
                     R.id.menu_invite_status -> {
-                        startActivity(Intent(this, com.kappzzang.jeongsan.expenselist.inviteinfo.InviteInfoActivity::class.java))
+                        startActivity(
+                            Intent(
+                                this,
+                                InviteInfoActivity::class.java
+                            )
+                        )
                         true
                     }
 
@@ -125,12 +130,18 @@ class ExpenseListActivity : AppCompatActivity() {
     }
 
     private fun startAddExpenseActivity(
-        ocrResult: com.kappzzang.jeongsan.model.OcrResultResponse.OcrSuccess,
+        ocrResult: model.OcrResultResponse.OcrSuccess,
         receiptImage: Uri
     ) {
         val intent = makeAddExpenseActivityIntent(false)
-        intent.putExtra(com.kappzzang.jeongsan.addexpense.AddExpenseActivity.EXPENSE_DATA, ocrResult)
-        intent.putExtra(com.kappzzang.jeongsan.addexpense.AddExpenseActivity.EXPENSE_IMAGE, receiptImage)
+        intent.putExtra(
+            AddExpenseActivity.EXPENSE_DATA,
+            ocrResult
+        )
+        intent.putExtra(
+            AddExpenseActivity.EXPENSE_IMAGE,
+            receiptImage
+        )
 
         startActivity(intent)
     }
@@ -139,32 +150,38 @@ class ExpenseListActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             val resultIntent: Intent? = it.data
             val data =
-                resultIntent?.getParcelableData<com.kappzzang.jeongsan.model.OcrResultResponse>(com.kappzzang.jeongsan.camera.ReceiptCameraActivity.OCR_RESULT)
-            val image = resultIntent?.getParcelableData<Uri>(com.kappzzang.jeongsan.camera.ReceiptCameraActivity.OCR_RESULT_IMAGE)
+                resultIntent?.getParcelableData<model.OcrResultResponse>(
+                    ReceiptCameraActivity.OCR_RESULT
+                )
+            val image = resultIntent?.getParcelableData<Uri>(
+                ReceiptCameraActivity.OCR_RESULT_IMAGE
+            )
 
             if (it.resultCode == RESULT_OK) {
-                if (data !is com.kappzzang.jeongsan.model.OcrResultResponse.OcrSuccess || image == null
+                if (data !is model.OcrResultResponse.OcrSuccess ||
+                    image == null
                 ) {
                     return@registerForActivityResult
                 }
                 startAddExpenseActivity(data, image)
             } else {
-                (data as? com.kappzzang.jeongsan.model.OcrResultResponse.OcrFailed)?.message?.let { message ->
+                (data as? model.OcrResultResponse.OcrFailed)?.message?.let { message ->
                     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
                 }
             }
         }
 
-    private fun checkCameraPermission(): Boolean =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            ContextCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.CAMERA
-            ) ==
-                PackageManager.PERMISSION_GRANTED
-        } else {
-            true
-        }
+    private fun checkCameraPermission(): Boolean = if (Build.VERSION.SDK_INT >=
+        Build.VERSION_CODES.TIRAMISU
+    ) {
+        ContextCompat.checkSelfPermission(
+            this,
+            android.Manifest.permission.CAMERA
+        ) ==
+            PackageManager.PERMISSION_GRANTED
+    } else {
+        true
+    }
 
     private fun askCameraPermission() {
         if (shouldShowRequestPermissionRationale(android.Manifest.permission.CAMERA)) {
@@ -199,15 +216,15 @@ class ExpenseListActivity : AppCompatActivity() {
     private fun makeAddExpenseActivityIntent(isManual: Boolean): Intent {
         val intent = Intent(
             this,
-            com.kappzzang.jeongsan.addexpense.AddExpenseActivity::class.java
+            AddExpenseActivity::class.java
         )
 
         intent.putExtra(
-            com.kappzzang.jeongsan.addexpense.AddExpenseActivity.INTENT_EXPENSE_MODE,
+            AddExpenseActivity.INTENT_EXPENSE_MODE,
             if (isManual) {
-                com.kappzzang.jeongsan.addexpense.AddExpenseActivity.EXPENSE_MODE_MANUAL
+                AddExpenseActivity.EXPENSE_MODE_MANUAL
             } else {
-                com.kappzzang.jeongsan.addexpense.AddExpenseActivity.EXPENSE_MODE_RECEIPT
+                AddExpenseActivity.EXPENSE_MODE_RECEIPT
             }
         )
 
@@ -245,7 +262,11 @@ class ExpenseListActivity : AppCompatActivity() {
     }
 
     private fun startCameraActivity() {
-        val intent = Intent(applicationContext, com.kappzzang.jeongsan.camera.ReceiptCameraActivity::class.java)
+        val intent =
+            Intent(
+                applicationContext,
+                ReceiptCameraActivity::class.java
+            )
         activityReceiptCameraLauncher.launch(intent)
     }
 

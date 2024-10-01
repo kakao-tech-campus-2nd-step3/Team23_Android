@@ -22,14 +22,16 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class ExpenseListViewModel @Inject constructor(
-    private val getCurrentGroupInfoUseCase: com.kappzzang.jeongsan.usecase.GetCurrentGroupInfoUseCase,
+    private val getCurrentGroupInfoUseCase:
+    com.kappzzang.jeongsan.usecase.GetCurrentGroupInfoUseCase,
     private val getExpenseListUseCase: com.kappzzang.jeongsan.usecase.GetExpenseListUseCase
 ) : ViewModel() {
 
     private var expenseListFetchingJob: Job? = null
     private var groupId: String = ""
 
-    private val expenseList = MutableStateFlow(com.kappzzang.jeongsan.model.ExpenseListResponse.emptyList())
+    private val expenseList =
+        MutableStateFlow(com.kappzzang.jeongsan.model.ExpenseListResponse.emptyList())
     private val groupName = MutableStateFlow("")
 
     private val _selectedExpense = MutableStateFlow("")
@@ -84,7 +86,10 @@ class ExpenseListViewModel @Inject constructor(
         cancelPreviousJob()
         expenseListFetchingJob = viewModelScope.launch(Dispatchers.IO) {
             getExpenseListUseCase(groupId, com.kappzzang.jeongsan.model.ExpenseState.CONFIRMED).zip(
-                getExpenseListUseCase(groupId, com.kappzzang.jeongsan.model.ExpenseState.NOT_CONFIRMED)
+                getExpenseListUseCase(
+                    groupId,
+                    com.kappzzang.jeongsan.model.ExpenseState.NOT_CONFIRMED
+                )
             ) { confirmed, notConfirmed ->
                 com.kappzzang.jeongsan.model.ExpenseListResponse(
                     expenseList = confirmed.expenseList.toMutableList() + notConfirmed.expenseList,

@@ -8,7 +8,7 @@ import com.kappzzang.jeongsan.databinding.ItemMemberInfoBinding
 import com.kappzzang.jeongsan.model.MemberItem
 
 class MemberInfoAdapter :
-    ListAdapter<com.kappzzang.jeongsan.model.MemberItem, MemberInfoAdapter.ViewHolder>(
+    ListAdapter<model.MemberItem, MemberInfoAdapter.ViewHolder>(
         MemberInfoDiffUtil()
     ) {
     class ViewHolder(private val binding: ItemMemberInfoBinding) :

@@ -8,5 +8,8 @@ class GetExpenseListUseCase @Inject constructor(private val repository: ExpenseL
     operator fun invoke(
         groupId: String,
         queryExpenseState: com.kappzzang.jeongsan.model.ExpenseState
-    ): Flow<com.kappzzang.jeongsan.model.ExpenseListResponse> = repository.getExpenseList(groupId, queryExpenseState)
+    ): Flow<com.kappzzang.jeongsan.model.ExpenseListResponse> = repository.getExpenseList(
+        groupId,
+        queryExpenseState
+    )
 }

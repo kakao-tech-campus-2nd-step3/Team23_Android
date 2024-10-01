@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kappzzang.jeongsan.databinding.ItemExpenseDetailItemBinding
+import com.kappzzang.jeongsan.expensedetail.databinding.ItemExpenseDetailItemBinding
 import com.kappzzang.jeongsan.model.ExpenseDetailItem
 
 interface ExpenseDetailItemCallback {
@@ -27,7 +28,7 @@ interface ExpenseDetailCallback {
 class ExpenseDetailItemListAdapter(
     private val context: Context,
     private val callback: ExpenseDetailCallback
-) : ListAdapter<com.kappzzang.jeongsan.model.ExpenseDetailItem, ExpenseDetailItemListAdapter.ExpenseDetailItemViewHolder>(
+) : ListAdapter<model.ExpenseDetailItem, ExpenseDetailItemListAdapter.ExpenseDetailItemViewHolder>(
     object :
         DiffUtil.ItemCallback<com.kappzzang.jeongsan.model.ExpenseDetailItem>() {
         override fun areItemsTheSame(

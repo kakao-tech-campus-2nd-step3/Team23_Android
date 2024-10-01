@@ -23,7 +23,6 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-
 }
 
 subprojects {
@@ -33,6 +32,10 @@ subprojects {
         plugin("org.jlleitschuh.gradle.ktlint")
         plugin("kotlin-kapt")
         plugin("com.google.dagger.hilt.android")
+    }
+
+    ktlint {
+        version.set("1.3.1")
     }
 
     dependencies {

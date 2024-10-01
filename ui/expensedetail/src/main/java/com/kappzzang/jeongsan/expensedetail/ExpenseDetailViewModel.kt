@@ -18,14 +18,15 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class ExpenseDetailViewModel @Inject constructor(
-    private val getExpenseDetailUseCase: com.kappzzang.jeongsan.usecase.GetExpenseDetailUseCase,
-    private val getExpenseUseCase: com.kappzzang.jeongsan.usecase.GetExpenseUseCase,
-    private val editExpenseDetailUseCase: com.kappzzang.jeongsan.usecase.EditExpenseDetailUseCase
+    private val getExpenseDetailUseCase: GetExpenseDetailUseCase,
+    private val getExpenseUseCase: GetExpenseUseCase,
+    private val editExpenseDetailUseCase: EditExpenseDetailUseCase
 ) : ViewModel() {
-    private val _expenseDetailList = MutableStateFlow(listOf<com.kappzzang.jeongsan.model.ExpenseDetailItem>())
+    private val _expenseDetailList =
+        MutableStateFlow(listOf<com.kappzzang.jeongsan.model.ExpenseDetailItem>())
     private val _expense = MutableStateFlow(com.kappzzang.jeongsan.model.ExpenseItem.EMPTY)
 
-    val expenseDetailList: StateFlow<List<com.kappzzang.jeongsan.model.ExpenseDetailItem>> = _expenseDetailList.asStateFlow()
+    val expenseDetailList: StateFlow<List<ExpenseDetailItem>> = _expenseDetailList.asStateFlow()
     val expense: StateFlow<com.kappzzang.jeongsan.model.ExpenseItem> = _expense.asStateFlow()
 
     init {
@@ -53,7 +54,10 @@ class ExpenseDetailViewModel @Inject constructor(
         }
     }
 
-    private fun getItemWithEnabled(item: com.kappzzang.jeongsan.model.ExpenseDetailItem, enabled: Boolean): com.kappzzang.jeongsan.model.ExpenseDetailItem {
+    private fun getItemWithEnabled(
+        item: com.kappzzang.jeongsan.model.ExpenseDetailItem,
+        enabled: Boolean
+    ): com.kappzzang.jeongsan.model.ExpenseDetailItem {
         if (enabled) {
             return if (item.selectedQuantity > 0) {
                 item
@@ -81,7 +85,10 @@ class ExpenseDetailViewModel @Inject constructor(
         }
     }
 
-    private fun getItemWithQuantity(item: com.kappzzang.jeongsan.model.ExpenseDetailItem, quantity: Int): com.kappzzang.jeongsan.model.ExpenseDetailItem =
+    private fun getItemWithQuantity(
+        item: com.kappzzang.jeongsan.model.ExpenseDetailItem,
+        quantity: Int
+    ): com.kappzzang.jeongsan.model.ExpenseDetailItem =
         com.kappzzang.jeongsan.model.ExpenseDetailItem(
             id = item.id,
             itemName = item.itemName,

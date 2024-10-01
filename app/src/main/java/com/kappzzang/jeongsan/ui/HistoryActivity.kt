@@ -14,10 +14,20 @@ class HistoryActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.tempInviteInfoButton.setOnClickListener {
-            startActivity(Intent(this, com.kappzzang.jeongsan.expenselist.inviteinfo.InviteInfoActivity::class.java))
+            startActivity(
+                Intent(
+                    this,
+                    InviteInfoActivity::class.java
+                )
+            )
         }
         binding.tempSendMessageButton.setOnClickListener {
-            startActivity(Intent(this, com.kappzzang.jeongsan.expenselist.sendmessage.SendMessageActivity::class.java))
+            startActivity(
+                Intent(
+                    this,
+                    SendMessageActivity::class.java
+                )
+            )
         }
     }
 }

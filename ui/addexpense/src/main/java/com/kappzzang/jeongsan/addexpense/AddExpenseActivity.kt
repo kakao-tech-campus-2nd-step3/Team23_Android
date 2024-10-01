@@ -134,12 +134,13 @@ class AddExpenseActivity : AppCompatActivity() {
     }
 
     private fun getExpenseData() {
-        val intentData = intent?.getParcelableData<com.kappzzang.jeongsan.model.OcrResultResponse>(
+        val intentData = intent?.getParcelableData<OcrResultResponse>(
             EXPENSE_DATA
         )
         val intentImage = intent?.getParcelableData<Uri>(EXPENSE_IMAGE)
 
-        val data = intentData as? com.kappzzang.jeongsan.model.OcrResultResponse.OcrSuccess ?: return
+        val data =
+            intentData as? com.kappzzang.jeongsan.model.OcrResultResponse.OcrSuccess ?: return
         val image = intentImage ?: return
 
         val bitmap = Base64BitmapEncoder.convertUriToBitmap(image, this)

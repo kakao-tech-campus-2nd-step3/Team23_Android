@@ -1,13 +1,5 @@
 package com.kappzzang.jeongsan.di
 
-import com.kappzzang.jeongsan.repositoryimpl.ExpenseDetailRepositoryImpl
-import com.kappzzang.jeongsan.repositoryimpl.ExpenseListFakeRepositoryImpl
-import com.kappzzang.jeongsan.repositoryimpl.ExpenseRepositoryImpl
-import com.kappzzang.jeongsan.repositoryimpl.GroupInfoRepositoryImpl
-import com.kappzzang.jeongsan.repositoryimpl.MemberRepositoryImpl
-import com.kappzzang.jeongsan.repositoryimpl.ReceiptCaptureRepositoryImpl
-import com.kappzzang.jeongsan.repositoryimpl.ReceiptRepositoryImpl
-import com.kappzzang.jeongsan.repositoryimpl.UserInfoRepositoryImpl
 import com.kappzzang.jeongsan.repository.ExpenseDetailRepository
 import com.kappzzang.jeongsan.repository.ExpenseListRepository
 import com.kappzzang.jeongsan.repository.ExpenseRepository
@@ -16,6 +8,14 @@ import com.kappzzang.jeongsan.repository.MemberRepository
 import com.kappzzang.jeongsan.repository.ReceiptCaptureRepository
 import com.kappzzang.jeongsan.repository.ReceiptRepository
 import com.kappzzang.jeongsan.repository.UserInfoRepository
+import com.kappzzang.jeongsan.repositoryimpl.ExpenseDetailRepositoryImpl
+import com.kappzzang.jeongsan.repositoryimpl.ExpenseListFakeRepositoryImpl
+import com.kappzzang.jeongsan.repositoryimpl.ExpenseRepositoryImpl
+import com.kappzzang.jeongsan.repositoryimpl.GroupInfoRepositoryImpl
+import com.kappzzang.jeongsan.repositoryimpl.MemberRepositoryImpl
+import com.kappzzang.jeongsan.repositoryimpl.ReceiptCaptureRepositoryImpl
+import com.kappzzang.jeongsan.repositoryimpl.ReceiptRepositoryImpl
+import com.kappzzang.jeongsan.repositoryimpl.UserInfoRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -48,12 +48,15 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindMemberRepository(memberRepositoryImpl: com.kappzzang.jeongsan.repositoryimpl.MemberRepositoryImpl): com.kappzzang.jeongsan.repository.MemberRepository
+    abstract fun bindMemberRepository(
+        memberRepositoryImpl: com.kappzzang.jeongsan.repositoryimpl.MemberRepositoryImpl
+    ): com.kappzzang.jeongsan.repository.MemberRepository
 
     @Binds
     @Singleton
     abstract fun bindExpenseDetailRepository(
-        expenseDetailRepositoryImpl: com.kappzzang.jeongsan.repositoryimpl.ExpenseDetailRepositoryImpl
+        expenseDetailRepositoryImpl:
+        com.kappzzang.jeongsan.repositoryimpl.ExpenseDetailRepositoryImpl
     ): com.kappzzang.jeongsan.repository.ExpenseDetailRepository
 
     @Binds

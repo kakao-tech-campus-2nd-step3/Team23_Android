@@ -16,7 +16,12 @@ class SendMessageActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.sendMessageButton.setOnClickListener {
-            startActivity(Intent(this, com.kappzzang.jeongsan.expenselist.sendcomplete.SendCompleteActivity::class.java))
+            startActivity(
+                Intent(
+                    this,
+                    com.kappzzang.jeongsan.expenselist.sendcomplete.SendCompleteActivity::class.java
+                )
+            )
         }
 
         val members = mutableListOf<Member>()

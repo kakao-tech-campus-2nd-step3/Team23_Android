@@ -2,8 +2,8 @@ package com.kappzzang.jeongsan.datasource
 
 import com.kappzzang.jeongsan.datasource.expense.ExpenseDatabase
 import com.kappzzang.jeongsan.domain.model.ExpenseListResponse
-import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.domain.model.ReceiptItem
+import com.kappzzang.jeongsan.model.ExpenseState
 import java.sql.Timestamp
 import javax.inject.Inject
 import kotlinx.coroutines.delay
@@ -12,19 +12,21 @@ import kotlinx.coroutines.flow.flow
 
 class ExpenseListFakeDatasource @Inject constructor(private val expenseDatabase: ExpenseDatabase) {
 
-    fun getExpenseData(expenseState: com.kappzzang.jeongsan.model.ExpenseState): Flow<ExpenseListResponse> = flow {
+    fun getExpenseData(
+        expenseState: com.kappzzang.jeongsan.model.ExpenseState
+    ): Flow<ExpenseListResponse> = flow {
         delay(1000)
         val result =
             when (expenseState) {
-                com.kappzzang.jeongsan.model.ExpenseState.CONFIRMED -> expenseDatabase.expenseDao().getConfirmedExpense()
+                ExpenseState.CONFIRMED -> expenseDatabase.expenseDao().getConfirmedExpense()
 
-                com.kappzzang.jeongsan.model.ExpenseState.NOT_CONFIRMED -> expenseDatabase.expenseDao().getNotConfirmedExpense()
+                ExpenseState.NOT_CONFIRMED -> expenseDatabase.expenseDao().getNotConfirmedExpense()
 
-                com.kappzzang.jeongsan.model.ExpenseState.TRANSFER_PENDING -> expenseDatabase.expenseDao().getPendingExpense()
+                ExpenseState.TRANSFER_PENDING -> expenseDatabase.expenseDao().getPendingExpense()
 
-                com.kappzzang.jeongsan.model.ExpenseState.TRANSFERED -> expenseDatabase.expenseDao().getTransferredExpense()
+                ExpenseState.TRANSFERED -> expenseDatabase.expenseDao().getTransferredExpense()
             }.map {
-                com.kappzzang.jeongsan.mapper.ExpenseEntityMapper.mapExpenseEntityToModel(it)
+                ExpenseEntityMapper.mapExpenseEntityToModel(it)
             }
         var totalPrice = 0
 
