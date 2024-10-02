@@ -19,5 +19,23 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "jeongsan"
 include(":app")
+include(":data:group")
+include(":data:expense")
+include(":data:ocr")
+include(":data:user")
+include(":domain:group")
+include(":domain:expense")
+include(":domain:user")
+include(":domain:ocr")
+include(":ui:creategroup")
+include(":ui:addexpense")
+include(":ui:camera")
+include(":ui:expensedetail")
+include(":ui:expenselist")
+include(":ui:login")
+include(":ui:main")
+include(":common:util")
+include(":common:androidutil")
+include(":common:resource")
+include(":ui:data")

@@ -1,9 +1,7 @@
 <resources>
     <string name="app_name">Jeongsan</string>
 
-    <string name="all_expense">정산 중</string>
-    <string name="all_pending">송금 대기</string>
-    <string name="all_complete">송금 완료</string>
+
 
     <!-- 메인 페이지 -->
     <string name="main_user_name_suffix">님</string>
@@ -39,19 +37,6 @@
     <string name="menu_invite_status">초대 현황</string>
     <string name="menu_end_group">모임 종료</string>
 
-    <!-- 영수증 추가 -->
-    <string name="add_expense_header">영수증 등록 · 분석</string>
-    <string name="add_expense_description">영수증을 분석했어요.\n잘못 인식된 부분이 있다면 추가/수정해 주세요!</string>
-    <string name="add_expense_header_manual">직접 입력</string>
-    <string name="add_expense_description_manual">직접 결제 내용을 입력해주세요!</string>
-    <string name="add_expense_submit">완료</string>
-    <string name="add_expense_name">매장명</string>
-    <string name="add_expense_add_picture_text">사진 추가</string>
-
-    <string name="item_expense_name">상품명</string>
-    <string name="item_expense_price">단가</string>
-    <string name="item_expense_quantity">수량</string>
-    <string name="item_expense_selected_quantity">선택 수량</string>
 
     <!-- 지출 상세 내역 -->
     <string name="expense_detail_header">지출 상세 내역</string>
