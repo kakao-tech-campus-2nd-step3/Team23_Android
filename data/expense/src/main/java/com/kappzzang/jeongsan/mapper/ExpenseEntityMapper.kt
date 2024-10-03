@@ -1,8 +1,7 @@
 package com.kappzzang.jeongsan.mapper
 
-import com.kappzzang.jeongsan.domain.model.ExpenseItem
-import com.kappzzang.jeongsan.domain.model.ExpenseState
-import com.kappzzang.jeongsan.domain.model.MemberItem
+import com.kappzzang.jeongsan.model.ExpenseItem
+import com.kappzzang.jeongsan.model.ExpenseState
 import java.sql.Timestamp
 
 object ExpenseEntityMapper {
@@ -14,7 +13,8 @@ object ExpenseEntityMapper {
             price = entity.totalPrice,
             expenseImageUrl = entity.image,
             date = Timestamp.valueOf(entity.createdTime),
-            payer = MemberItem("", "", "", false),
+            payerMemberId = "",
+            payerName = "",
             state = ExpenseState.entries[entity.expenseState]
         )
 }
