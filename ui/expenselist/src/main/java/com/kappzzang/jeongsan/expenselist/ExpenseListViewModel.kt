@@ -22,8 +22,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class ExpenseListViewModel @Inject constructor(
-    private val getCurrentGroupInfoUseCase:
-    GetCurrentGroupInfoUseCase,
+    private val getCurrentGroupInfoUseCase: GetCurrentGroupInfoUseCase,
     private val getExpenseListUseCase: GetExpenseListUseCase
 ) : ViewModel() {
 

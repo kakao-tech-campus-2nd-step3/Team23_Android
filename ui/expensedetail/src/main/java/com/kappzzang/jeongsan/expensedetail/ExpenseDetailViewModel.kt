@@ -54,10 +54,7 @@ class ExpenseDetailViewModel @Inject constructor(
         }
     }
 
-    private fun getItemWithEnabled(
-        item: ExpenseDetailItem,
-        enabled: Boolean
-    ): ExpenseDetailItem {
+    private fun getItemWithEnabled(item: ExpenseDetailItem, enabled: Boolean): ExpenseDetailItem {
         if (enabled) {
             return if (item.selectedQuantity > 0) {
                 item
@@ -85,10 +82,7 @@ class ExpenseDetailViewModel @Inject constructor(
         }
     }
 
-    private fun getItemWithQuantity(
-        item: ExpenseDetailItem,
-        quantity: Int
-    ): ExpenseDetailItem =
+    private fun getItemWithQuantity(item: ExpenseDetailItem, quantity: Int): ExpenseDetailItem =
         ExpenseDetailItem(
             id = item.id,
             itemName = item.itemName,

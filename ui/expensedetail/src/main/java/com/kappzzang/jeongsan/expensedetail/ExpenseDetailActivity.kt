@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.expensedetail.databinding.ActivityExpenseDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
 class ExpenseDetailActivity : AppCompatActivity() {
     private val binding: ActivityExpenseDetailBinding by lazy {

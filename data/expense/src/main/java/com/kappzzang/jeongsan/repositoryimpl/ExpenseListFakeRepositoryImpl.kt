@@ -8,10 +8,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-data class ExpenseListCachingKey(
-    val expenseState: ExpenseState,
-    val groupId: String
-)
+data class ExpenseListCachingKey(val expenseState: ExpenseState, val groupId: String)
 
 class ExpenseListFakeRepositoryImpl @Inject constructor(
     private val dataSource: ExpenseListFakeDatasource

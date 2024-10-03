@@ -17,10 +17,7 @@ private val colorList =
     listOf("#87A2FF", "#FFD7C4", "#87A2FF", "#987D9A", "#987D9A", "#BB9AB1", "#BB9AB1")
 private val categoryNameList = listOf("커피", "편의점", "커피", "영화관", "영화관", "식당", "식당")
 
-private fun makeFakeItemWithState(
-    expenseState: ExpenseState,
-    id: Int
-): ExpenseEntity {
+private fun makeFakeItemWithState(expenseState: ExpenseState, id: Int): ExpenseEntity {
     val adjustedIndex =
         (id + 1) * (ExpenseState.entries.indexOf(expenseState) + 1)
 

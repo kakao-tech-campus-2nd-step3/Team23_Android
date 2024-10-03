@@ -23,10 +23,7 @@ object ExpenseDetailBindingAdapter {
 
     @JvmStatic
     @BindingAdapter("app:detail_items")
-    fun attachList(
-        recyclerView: RecyclerView,
-        items: StateFlow<List<ExpenseDetailItem>>?
-    ) {
+    fun attachList(recyclerView: RecyclerView, items: StateFlow<List<ExpenseDetailItem>>?) {
         items?.let {
             (recyclerView.adapter as? ExpenseDetailItemListAdapter)?.submitList(it.value)
         }
