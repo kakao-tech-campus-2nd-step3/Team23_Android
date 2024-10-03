@@ -1,10 +1,10 @@
 package com.kappzzang.jeongsan.repositoryimpl
 
-import com.kappzzang.jeongsan.data.datasource.MemberDatabase
-import com.kappzzang.jeongsan.data.entity.MemberEntity
-import com.kappzzang.jeongsan.data.entity.toVO
-import com.kappzzang.jeongsan.domain.model.MemberItem
-import com.kappzzang.jeongsan.domain.repository.MemberRepository
+import com.kappzzang.jeongsan.datasource.member.MemberDatabase
+import com.kappzzang.jeongsan.entity.MemberEntity
+import com.kappzzang.jeongsan.entity.toVO
+import com.kappzzang.jeongsan.model.MemberItem
+import com.kappzzang.jeongsan.repository.MemberRepository
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
