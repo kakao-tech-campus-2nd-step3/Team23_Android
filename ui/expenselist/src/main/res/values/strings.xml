@@ -10,4 +10,32 @@
     <string name="dialog_deny"> 거절 </string>
     <string name="toast_message_deny"> 카메라 권한 요청을 거절하였습니다.
         서비스의 일부 기능이 제한될 수 있습니다. </string>
+
+    <!-- 지출 목록 페이지 -->
+    <string name="expenselist_total_expense_explain">총 소비 금액 :</string>
+    <string name="expenselist_my_total_expense_explain">내 총 지출 :</string>
+    <string name="expenselist_all_expense">전체</string>
+    <string name="expenselist_unconfirmed_expense">미확인 지출</string>
+    <string name="expenselist_confirmed_expense">확인 지출</string>
+
+    <string name="expenselist_add_expense_from_camera">영수증 촬영</string>
+    <string name="expenselist_add_expense_manually">직접 입력</string>
+
+    <!-- 초대 현황 페이지 -->
+    <string name="invite_info_title">초대 현황</string>
+
+    <string name="item_member_info_status">초대완료</string>
+    <string name="item_member_info_button">재전송</string>
+
+    <!-- 송금 요청 금액 확인 페이지 -->
+    <string name="send_message_title">송금 요청할 금액을 확인해주세요</string>
+    <string name="send_message_menu">받을 금액 상세</string>
+    <string name="send_message_total_price_menu">합계</string>
+    <string name="send_message_total_price_value">100000원</string>
+    <string name="send_message_button">송금 요청하기</string>
+
+    <string name="item_member_expense">10000원</string>
+
+    <!-- 송금 요청 완료 페이지 -->
+    <string name="send_complete_message">송금 요청 완료!!🥳🥳🥳</string>
 </resources>
