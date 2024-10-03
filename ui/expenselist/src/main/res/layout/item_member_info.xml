@@ -26,6 +26,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginVertical="20dp"
+        android:gravity="center"
         android:text="@string/item_member_info_button"
         android:textColor="@color/white"
         android:background="@drawable/all_background_button"

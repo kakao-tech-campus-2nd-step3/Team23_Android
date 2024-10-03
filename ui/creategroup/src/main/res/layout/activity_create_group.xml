@@ -8,7 +8,7 @@
     android:padding="@dimen/all_layout_padding"
     android:clipToPadding="false"
     android:background="@color/background_base"
-    tools:context=".creategroup.CreateGroupActivity">
+    tools:context=".CreateGroupActivity">
     <TextView
         android:id="@+id/page_title_textview"
         android:layout_width="wrap_content"
@@ -117,6 +117,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/member_menu_textview"
             app:layout_constraintBottom_toBottomOf="@id/member_menu_textview"
+            android:gravity="center"
             android:text="@string/create_group_add_button"
             android:textColor="@color/white"
             android:textStyle="bold"
@@ -141,6 +142,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/member_layout"
         android:layout_marginTop="30dp"
+        android:gravity="center"
         android:text="@string/create_group_button"
         android:textStyle="bold"
         android:textSize="@dimen/all_bottom_button_text_size"
