@@ -2,7 +2,6 @@ package com.kappzzang.jeongsan.repositoryimpl
 
 import com.kappzzang.jeongsan.datasource.ExpenseListFakeDatasource
 import com.kappzzang.jeongsan.model.ExpenseListResponse
-import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.repository.ExpenseListRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow

@@ -1,8 +1,9 @@
 package com.kappzzang.jeongsan.datasource
 
 import com.kappzzang.jeongsan.datasource.expense.ExpenseDatabase
-import com.kappzzang.jeongsan.domain.model.ExpenseListResponse
-import com.kappzzang.jeongsan.domain.model.ReceiptItem
+import com.kappzzang.jeongsan.mapper.ExpenseEntityMapper
+import com.kappzzang.jeongsan.model.ExpenseListResponse
+import com.kappzzang.jeongsan.model.ReceiptItem
 import com.kappzzang.jeongsan.model.ExpenseState
 import java.sql.Timestamp
 import javax.inject.Inject
