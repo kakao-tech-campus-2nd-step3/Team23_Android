@@ -24,8 +24,8 @@ import com.kappzzang.jeongsan.addexpense.AddExpenseActivity
 import com.kappzzang.jeongsan.camera.ReceiptCameraActivity
 import com.kappzzang.jeongsan.expenselist.databinding.ActivityExpenseListBinding
 import com.kappzzang.jeongsan.expenselist.inviteinfo.InviteInfoActivity
-import com.kappzzang.jeongsan.model.OcrResultResponse
 import com.kappzzang.jeongsan.expenselist.sendmessage.SendMessageActivity
+import com.kappzzang.jeongsan.model.OcrResultResponse
 import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

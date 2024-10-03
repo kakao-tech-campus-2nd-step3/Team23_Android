@@ -44,7 +44,6 @@ subprojects {
         implementation(project(":common:util"))
         implementation(project(":domain"))
         implementation(project(":domain:group"))
-
     }
 
     android {
