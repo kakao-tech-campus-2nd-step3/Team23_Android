@@ -46,6 +46,7 @@ android {
 }
 
 dependencies {
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
     project(":ui:main")
     project(":ui:login")
     project(":ui:main")
@@ -58,10 +59,10 @@ dependencies {
     project(":domain:group")
     project(":domain:ocr")
     project(":domain:user")
-    project(":data:expense")
-    project(":data:group")
-    project(":data:ocr")
-    project(":data:user")
+    project(":data:data-expense")
+    project(":data:data-group")
+    project(":data:data-ocr")
+    project(":data:data-user")
 
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.7.0")
