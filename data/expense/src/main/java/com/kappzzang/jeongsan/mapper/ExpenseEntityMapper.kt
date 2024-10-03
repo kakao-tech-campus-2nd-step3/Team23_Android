@@ -1,11 +1,12 @@
 package com.kappzzang.jeongsan.mapper
 
+import com.kappzzang.jeongsan.entity.ExpenseEntity
 import com.kappzzang.jeongsan.model.ExpenseItem
 import com.kappzzang.jeongsan.model.ExpenseState
 import java.sql.Timestamp
 
 object ExpenseEntityMapper {
-    fun mapExpenseEntityToModel(entity: com.kappzzang.jeongsan.entity.ExpenseEntity): ExpenseItem =
+    fun mapExpenseEntityToModel(entity: ExpenseEntity): ExpenseItem =
         ExpenseItem(
             id = entity.id.toString(),
             name = entity.name,

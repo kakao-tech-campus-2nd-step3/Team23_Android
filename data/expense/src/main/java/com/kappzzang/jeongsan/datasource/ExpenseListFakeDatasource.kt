@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.flow
 class ExpenseListFakeDatasource @Inject constructor(private val expenseDatabase: ExpenseDatabase) {
 
     fun getExpenseData(
-        expenseState: com.kappzzang.jeongsan.model.ExpenseState
+        expenseState: ExpenseState
     ): Flow<ExpenseListResponse> = flow {
         delay(1000)
         val result =
@@ -49,7 +49,7 @@ class ExpenseListFakeDatasource @Inject constructor(private val expenseDatabase:
             totalPrice = receiptItem.expenseDetailItemList.sumOf { it.itemPrice * it.itemQuantity },
             createdTime = Timestamp(System.currentTimeMillis()).toString(),
             categoryColor = receiptItem.categoryColor,
-            expenseState = com.kappzzang.jeongsan.model.ExpenseState.CONFIRMED.ordinal
+            expenseState = ExpenseState.CONFIRMED.ordinal
         )
 
         expenseDatabase.expenseDao().addExpense(expenseEntity)
