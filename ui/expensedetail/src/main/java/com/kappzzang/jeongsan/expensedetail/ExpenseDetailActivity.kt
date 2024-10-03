@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.kappzzang.jeongsan.databinding.ActivityExpenseDetailBinding
+import com.kappzzang.jeongsan.expensedetail.databinding.ActivityExpenseDetailBinding
 import com.kappzzang.jeongsan.model.ExpenseDetailItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 @BindingAdapter("app:detail_items")
 fun attachList(
     recyclerView: RecyclerView,
-    items: StateFlow<List<com.kappzzang.jeongsan.model.ExpenseDetailItem>>?
+    items: StateFlow<List<ExpenseDetailItem>>?
 ) {
     items?.let {
         (recyclerView.adapter as? ExpenseDetailItemListAdapter)?.submitList(it.value)
