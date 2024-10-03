@@ -1,35 +1,12 @@
 package com.kappzzang.jeongsan.expensedetail
 
 import android.os.Bundle
-import android.widget.AutoCompleteTextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.kappzzang.jeongsan.expensedetail.databinding.ActivityExpenseDetailBinding
-import com.kappzzang.jeongsan.model.ExpenseDetailItem
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.StateFlow
 
-@BindingAdapter("app:detail_items")
-fun attachList(
-    recyclerView: RecyclerView,
-    items: StateFlow<List<ExpenseDetailItem>>?
-) {
-    items?.let {
-        (recyclerView.adapter as? ExpenseDetailItemListAdapter)?.submitList(it.value)
-    }
-}
-
-@BindingAdapter("app:detail_selection")
-fun attachList(view: AutoCompleteTextView, position: Int) {
-    if (position < 0 || position >= view.adapter.count) {
-        view.setText("0", false)
-        return
-    }
-    view.setText(view.adapter.getItem(position).toString(), false)
-}
 
 @AndroidEntryPoint
 class ExpenseDetailActivity : AppCompatActivity() {
