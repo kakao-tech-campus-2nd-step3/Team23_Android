@@ -39,3 +39,4 @@ include(":common:util")
 include(":common:androidutil")
 include(":common:resource")
 include(":ui:data")
+project(":data").children.forEach { module -> module.name = "data-${module.name}"}
