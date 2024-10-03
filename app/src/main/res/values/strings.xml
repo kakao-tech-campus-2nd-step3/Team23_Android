@@ -1,14 +1,6 @@
 <resources>
     <string name="app_name">Jeongsan</string>
 
-
-
-    <!-- 메인 페이지 -->
-    <string name="main_user_name_suffix">님</string>
-    <string name="main_create_group">그룹 만들기</string>
-    <string name="main_progress_group">진행중인 모임</string>
-    <string name="main_done_group">완료된 모임</string>
-
     <!-- 사진 촬영 페이지 -->
     <string name="receipt_camera_failed">사진 촬영에 실패하였습니다.</string>
     <string name="receipt_camera_sending_picture">이미지를 인식 중입니다. \n잠시만 기다려주세요.</string>
@@ -18,23 +10,9 @@
     <string name="menu_invite_status">초대 현황</string>
     <string name="menu_end_group">모임 종료</string>
 
-
     <!-- 지출 상세 내역 -->
     <string name="expense_detail_header">지출 상세 내역</string>
     <string name="expense_detail_description">지출 내용이에요.\n내가 구매한 상품을 선택하세요!</string>
     <string name="expense_detail_submit">선택 완료</string>
-
-    <!-- 모임 생성 페이지 -->
-    <string name="create_group_title">모임 생성</string>
-    <string name="create_group_description">모임에 친구를 추가해 보세요!</string>
-    <string name="create_group_name_menu">이름</string>
-    <string name="create_group_name_value">모임 이름</string>
-    <string name="create_group_category_menu">목적</string>
-    <string name="create_group_member_menu">멤버 추가</string>
-    <string name="create_group_add_button">+ 추가</string>
-    <string name="create_group_button">모임 생성하기</string>
-
-    <!-- 멤버 아이템 -->
-    <string name="item_member_name">멤버 이름</string>
 
 </resources>
