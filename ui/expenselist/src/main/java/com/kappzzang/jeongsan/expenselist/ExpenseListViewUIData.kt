@@ -6,5 +6,5 @@ data class ExpenseListViewUIData(
     val totalPriceText: String,
     val priceToSendText: String,
     val groupNameText: String,
-    val expenseItems: List<model.ExpenseItem>
+    val expenseItems: List<ExpenseItem>
 )

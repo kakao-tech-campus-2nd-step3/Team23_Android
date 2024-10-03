@@ -9,10 +9,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.kappzzang.jeongsan.databinding.ItemMainDoneTitleBinding
-import com.kappzzang.jeongsan.databinding.ItemMainGroupBinding
-import com.kappzzang.jeongsan.databinding.ItemMainProgressTitleBinding
-import com.kappzzang.jeongsan.expenselist.ExpenseListActivity
+import com.kappzzang.jeongsan.main.databinding.ItemMainDoneTitleBinding
+import com.kappzzang.jeongsan.main.databinding.ItemMainGroupBinding
+import com.kappzzang.jeongsan.main.databinding.ItemMainProgressTitleBinding
 
 class GroupListAdapter : ListAdapter<GroupViewItem, RecyclerView.ViewHolder>(diffUtil) {
 

@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.kappzzang.jeongsan.databinding.ActivityInviteInfoBinding
+import com.kappzzang.jeongsan.expenselist.databinding.ActivityInviteInfoBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -4,10 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.kappzzang.jeongsan.R
-import com.kappzzang.jeongsan.databinding.ActivitySendMessageBinding
-import com.kappzzang.jeongsan.ui.Member
-import com.kappzzang.jeongsan.ui.MemberAdapter
+import com.kappzzang.jeongsan.expenselist.R
+import com.kappzzang.jeongsan.expenselist.databinding.ActivitySendMessageBinding
+import com.kappzzang.jeongsan.creategroup.Member
+import com.kappzzang.jeongsan.creategroup.MemberAdapter
 
 class SendMessageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
