@@ -3,7 +3,7 @@ package com.kappzzang.jeongsan.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.kappzzang.jeongsan.domain.model.MemberItem
+import com.kappzzang.jeongsan.model.MemberItem
 
 @Entity(tableName = com.kappzzang.jeongsan.datasource.member.MemberContract.MemberEntry.TABLE_NAME)
 class MemberEntity(

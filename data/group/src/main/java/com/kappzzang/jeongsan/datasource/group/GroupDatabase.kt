@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.kappzzang.jeongsan.data.entity.GroupEntity
+import com.kappzzang.jeongsan.entity.GroupEntity
 import java.util.concurrent.Executors
 import kotlinx.coroutines.runBlocking
 

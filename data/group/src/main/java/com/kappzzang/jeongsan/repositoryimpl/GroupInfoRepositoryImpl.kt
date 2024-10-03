@@ -1,9 +1,9 @@
 package com.kappzzang.jeongsan.repositoryimpl
 
-import com.kappzzang.jeongsan.data.datasource.group.GroupDatabase
-import com.kappzzang.jeongsan.data.entity.GroupEntity
-import com.kappzzang.jeongsan.domain.model.GroupItem
-import com.kappzzang.jeongsan.domain.repository.GroupInfoRepository
+import com.kappzzang.jeongsan.datasource.group.GroupDatabase
+import com.kappzzang.jeongsan.entity.GroupEntity
+import com.kappzzang.jeongsan.model.GroupItem
+import com.kappzzang.jeongsan.repository.GroupInfoRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

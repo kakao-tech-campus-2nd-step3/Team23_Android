@@ -5,7 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.kappzzang.jeongsan.data.entity.MemberEntity
+import com.kappzzang.jeongsan.entity.MemberEntity
 
 @Dao
 interface MemberDao {
