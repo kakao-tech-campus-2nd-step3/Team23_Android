@@ -4,11 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.kappzzang.jeongsan.databinding.ItemMemberInfoBinding
+import com.kappzzang.jeongsan.expenselist.databinding.ItemMemberInfoBinding
 import com.kappzzang.jeongsan.model.MemberItem
 
 class MemberInfoAdapter :
-    ListAdapter<model.MemberItem, MemberInfoAdapter.ViewHolder>(
+    ListAdapter<MemberItem, MemberInfoAdapter.ViewHolder>(
         MemberInfoDiffUtil()
     ) {
     class ViewHolder(private val binding: ItemMemberInfoBinding) :
