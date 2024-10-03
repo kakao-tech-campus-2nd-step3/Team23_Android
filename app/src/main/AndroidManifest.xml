@@ -25,28 +25,6 @@
             android:name=".camera.ReceiptCameraActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.HistoryActivity"
-            android:exported="false" />
-        <activity
-            android:name=".expenselist.sendcomplete.SendCompleteActivity"
-            android:exported="false" />
-        <activity
-            android:name=".creategroup.CreateGroupActivity"
-            android:exported="false" />
-        <activity
-            android:name=".expenselist.inviteinfo.InviteInfoActivity"
-            android:exported="false"
-            android:theme="@style/invite_info_theme" />
-        <activity
-            android:name=".expenselist.sendmessage.SendMessageActivity"
-            android:exported="false" />
-        <activity
-            android:name=".expenselist.ExpenseListActivity"
-            android:exported="false" />
-        <activity
-            android:name=".main.MainActivity"
-            android:exported="false"></activity>
-        <activity
             android:name=".addexpense.AddExpenseActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustNothing" />
