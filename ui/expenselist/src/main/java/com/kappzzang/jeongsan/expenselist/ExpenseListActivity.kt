@@ -20,12 +20,11 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.example.androidutil.IntentHelper.getParcelableData
-import com.kappzzang.jeongsan.addexpense.AddExpenseActivity
-import com.kappzzang.jeongsan.camera.ReceiptCameraActivity
-import com.kappzzang.jeongsan.databinding.ActivityExpenseListBinding
+import com.kappzzang.jeongsan.expenselist.databinding.ActivityExpenseListBinding
+import com.kappzzang.jeongsan.expenselist.inviteinfo.InviteInfoActivity
+import com.kappzzang.jeongsan.expenselist.sendmessage.SendMessageActivity
 import com.kappzzang.jeongsan.model.OcrResultResponse
-import com.kappzzang.jeongsan.ui.sendmessage.SendMessageActivity
+import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -130,7 +129,7 @@ class ExpenseListActivity : AppCompatActivity() {
     }
 
     private fun startAddExpenseActivity(
-        ocrResult: model.OcrResultResponse.OcrSuccess,
+        ocrResult: OcrResultResponse.OcrSuccess,
         receiptImage: Uri
     ) {
         val intent = makeAddExpenseActivityIntent(false)
@@ -150,7 +149,7 @@ class ExpenseListActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             val resultIntent: Intent? = it.data
             val data =
-                resultIntent?.getParcelableData<model.OcrResultResponse>(
+                resultIntent?.getParcelableData<OcrResultResponse>(
                     ReceiptCameraActivity.OCR_RESULT
                 )
             val image = resultIntent?.getParcelableData<Uri>(
@@ -158,14 +157,14 @@ class ExpenseListActivity : AppCompatActivity() {
             )
 
             if (it.resultCode == RESULT_OK) {
-                if (data !is model.OcrResultResponse.OcrSuccess ||
+                if (data !is OcrResultResponse.OcrSuccess ||
                     image == null
                 ) {
                     return@registerForActivityResult
                 }
                 startAddExpenseActivity(data, image)
             } else {
-                (data as? model.OcrResultResponse.OcrFailed)?.message?.let { message ->
+                (data as? OcrResultResponse.OcrFailed)?.message?.let { message ->
                     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
                 }
             }

@@ -5,8 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.kappzzang.jeongsan.databinding.ItemExpenseBinding
-import com.kappzzang.jeongsan.model.ExpenseItem
+import com.kappzzang.jeongsan.expenselist.databinding.ItemExpenseBinding
 import java.text.SimpleDateFormat
 import java.util.Locale
 

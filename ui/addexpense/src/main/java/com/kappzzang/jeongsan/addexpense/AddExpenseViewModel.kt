@@ -4,6 +4,10 @@ import android.graphics.Bitmap
 import android.util.Base64
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kappzzang.jeongsan.model.OcrResultResponse
+import com.kappzzang.jeongsan.model.ReceiptDetailItem
+import com.kappzzang.jeongsan.model.ReceiptItem
+import com.kappzzang.jeongsan.usecase.UploadExpenseUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
@@ -34,7 +38,7 @@ private fun createDemoList(): List<ExpenseItemInput> = listOf(
 
 @HiltViewModel
 class AddExpenseViewModel @Inject constructor(
-    private val uploadExpenseUseCase: usecase.UploadExpenseUseCase
+    private val uploadExpenseUseCase: UploadExpenseUseCase
 ) : ViewModel() {
     private val _expenseItemList by lazy {
         MutableStateFlow(
@@ -61,7 +65,7 @@ class AddExpenseViewModel @Inject constructor(
         }
     }
 
-    fun setInitialReceiptData(bitmap: Bitmap, ocrResult: model.OcrResultResponse.OcrSuccess) {
+    fun setInitialReceiptData(bitmap: Bitmap, ocrResult: OcrResultResponse.OcrSuccess) {
         viewModelScope.launch(Dispatchers.Main) {
             _expenseImageBitmap.emit(bitmap)
             expenseName.emit(ocrResult.name)

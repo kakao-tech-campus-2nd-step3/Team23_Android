@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.kappzzang.jeongsan.databinding.FragmentPendingExpenseListBinding
+import com.kappzzang.jeongsan.expenselist.databinding.FragmentPendingExpenseListBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

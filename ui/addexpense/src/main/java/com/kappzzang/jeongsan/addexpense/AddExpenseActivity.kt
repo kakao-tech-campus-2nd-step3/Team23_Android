@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kappzzang.jeongsan.addexpense.databinding.ActivityAddExpenseBinding
 import com.kappzzang.jeongsan.expensedetail.ExpenseDetailActivity
+import com.kappzzang.jeongsan.model.OcrResultResponse
 import com.kappzzang.jeongsan.util.Base64BitmapEncoder
 import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
 import dagger.hilt.android.AndroidEntryPoint
@@ -140,7 +141,7 @@ class AddExpenseActivity : AppCompatActivity() {
         val intentImage = intent?.getParcelableData<Uri>(EXPENSE_IMAGE)
 
         val data =
-            intentData as? com.kappzzang.jeongsan.model.OcrResultResponse.OcrSuccess ?: return
+            intentData as? OcrResultResponse.OcrSuccess ?: return
         val image = intentImage ?: return
 
         val bitmap = Base64BitmapEncoder.convertUriToBitmap(image, this)

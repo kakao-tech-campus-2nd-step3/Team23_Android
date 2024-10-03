@@ -5,3 +5,6 @@ plugins {
 android {
     namespace = "com.kappzzang.jeongsan.ocr"
 }
+dependencies {
+    implementation(project(":common:androidutil"))
+}

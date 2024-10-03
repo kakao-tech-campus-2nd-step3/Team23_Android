@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/invite_info_padding"
-    tools:context=".expenselist.inviteinfo.InviteInfoActivity">
+    tools:context=".inviteinfo.InviteInfoActivity">
     <TextView
         android:id="@+id/page_title_textview"
         android:layout_width="wrap_content"
