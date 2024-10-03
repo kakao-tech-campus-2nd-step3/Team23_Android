@@ -19,15 +19,6 @@
     <string name="expenselist_add_expense_from_camera">영수증 촬영</string>
     <string name="expenselist_add_expense_manually">직접 입력</string>
 
-    <!-- 권한 요청 다이얼로그 -->
-    <string name="dialog_title_ask_camera"> 카메라 권한 요청 </string>
-    <string name="dialog_body_ask_camera"> 앱의 영수증 인식 기능을 이용하기 위해 카메라 권한이 필요합니다.
-    (앱 설정에서 %s의 카메라 권한을 허용해주세요.)</string>
-    <string name="dialog_allow"> 허용 </string>
-    <string name="dialog_deny"> 거절 </string>
-    <string name="toast_message_deny"> 카메라 권한 요청을 거절하였습니다.
-        서비스의 일부 기능이 제한될 수 있습니다. </string>
-
     <!-- 사진 촬영 페이지 -->
     <string name="receipt_camera_failed">사진 촬영에 실패하였습니다.</string>
     <string name="receipt_camera_sending_picture">이미지를 인식 중입니다. \n잠시만 기다려주세요.</string>
