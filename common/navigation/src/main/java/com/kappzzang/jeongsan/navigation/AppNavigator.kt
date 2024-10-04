@@ -1,17 +1,18 @@
 package com.kappzzang.jeongsan.navigation
 
+import android.content.Context
 import android.content.Intent
 
 interface AppNavigator {
-    fun navigateToMainPage(): Intent
+    fun navigateToMainPage(packageContext: Context): Intent
 
-    fun navigateToCreateGroup(): Intent
+    fun navigateToCreateGroup(packageContext: Context): Intent
 
-    fun navigateToExpenseDetail(): Intent
+    fun navigateToExpenseDetail(packageContext: Context): Intent
 
-    fun navigateToExpenseList(): Intent
+    fun navigateToExpenseList(packageContext: Context): Intent
 
-    fun navigateToCamera(): Intent
+    fun navigateToCamera(packageContext: Context): Intent
 
-    fun navigateToLogin(): Intent
+    fun navigateToLogin(packageContext: Context): Intent
 }
