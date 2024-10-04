@@ -10,7 +10,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 
 @Module
 @InstallIn(ViewModelComponent::class)
-abstract class ViewModelRepositoryModule {
+abstract class ReceiptCaptureRepositoryModule {
     @Binds
     @ViewModelScoped
     abstract fun bindReceiptCaptureRepository(
