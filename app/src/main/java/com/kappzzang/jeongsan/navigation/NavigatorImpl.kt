@@ -2,6 +2,7 @@ package com.kappzzang.jeongsan.navigation
 
 import android.content.Context
 import android.content.Intent
+import com.kappzzang.jeongsan.addexpense.AddExpenseActivity
 import com.kappzzang.jeongsan.camera.ReceiptCameraActivity
 import com.kappzzang.jeongsan.creategroup.CreateGroupActivity
 import com.kappzzang.jeongsan.expensedetail.ExpenseDetailActivity
@@ -25,8 +26,11 @@ class NavigatorImpl @Inject constructor(private val context: Context): AppNaviga
 
     override fun navigateToCamera(packageContext: Context): Intent =
         Intent(packageContext, ReceiptCameraActivity::class.java)
-    
+
     override fun navigateToLogin(packageContext: Context): Intent =
         Intent(packageContext, LoginActivity::class.java)
     }
+
+    override fun navigateToAddExpense(packageContext: Context): Intent =
+        Intent(packageContext, AddExpenseActivity::class.java)
 }

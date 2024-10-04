@@ -15,15 +15,19 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.addexpense.databinding.ActivityAddExpenseBinding
-import com.kappzzang.jeongsan.expensedetail.ExpenseDetailActivity
+import com.kappzzang.jeongsan.intentcontract.AddExpenseContract
 import com.kappzzang.jeongsan.model.OcrResultResponse
+import com.kappzzang.jeongsan.navigation.AppNavigator
 import com.kappzzang.jeongsan.util.Base64BitmapEncoder
 import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class AddExpenseActivity : AppCompatActivity() {
+    @Inject
+    private lateinit var appNavigator: AppNavigator
     private val viewModel: AddExpenseViewModel by viewModels()
     private val binding: ActivityAddExpenseBinding by lazy {
         ActivityAddExpenseBinding.inflate(
@@ -46,7 +50,7 @@ class AddExpenseActivity : AppCompatActivity() {
         // TODO: 임시 연결용 코드
         binding.addexpenseSubmitButton.setOnClickListener {
             if (viewModel.uploadExpense()) {
-                startActivity(Intent(this, ExpenseDetailActivity::class.java))
+                startActivity(appNavigator.navigateToExpenseDetail(this))
                 finish()
                 return@setOnClickListener
             }
@@ -79,9 +83,9 @@ class AddExpenseActivity : AppCompatActivity() {
     }
 
     private fun checkIfReceiptMode(): Boolean {
-        val expenseMode = intent.extras?.getString(INTENT_EXPENSE_MODE)
+        val expenseMode = intent.extras?.getString(AddExpenseContract.INTENT_EXPENSE_MODE)
 
-        return expenseMode == EXPENSE_MODE_RECEIPT
+        return expenseMode == AddExpenseContract.EXPENSE_MODE_RECEIPT
     }
 
     private fun initiateViewModel() {
@@ -126,9 +130,9 @@ class AddExpenseActivity : AppCompatActivity() {
 
     private fun getExpenseData() {
         val intentData = intent?.getParcelableData<OcrResultResponse>(
-            EXPENSE_DATA
+            AddExpenseContract.EXPENSE_DATA
         )
-        val intentImage = intent?.getParcelableData<Uri>(EXPENSE_IMAGE)
+        val intentImage = intent?.getParcelableData<Uri>(AddExpenseContract.EXPENSE_IMAGE)
 
         val data =
             intentData as? OcrResultResponse.OcrSuccess ?: return
@@ -137,14 +141,5 @@ class AddExpenseActivity : AppCompatActivity() {
         val bitmap = Base64BitmapEncoder.convertUriToBitmap(image, this)
 
         viewModel.setInitialReceiptData(bitmap, data)
-    }
-
-    companion object {
-        const val INTENT_EXPENSE_MODE = "expenseMode"
-        const val EXPENSE_MODE_MANUAL = "manual"
-        const val EXPENSE_MODE_RECEIPT = "receipt"
-
-        const val EXPENSE_DATA = "expenseData"
-        const val EXPENSE_IMAGE = "expenseImage"
     }
 }

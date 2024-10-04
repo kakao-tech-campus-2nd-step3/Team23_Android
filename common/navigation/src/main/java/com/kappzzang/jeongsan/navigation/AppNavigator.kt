@@ -15,4 +15,6 @@ interface AppNavigator {
     fun navigateToCamera(packageContext: Context): Intent
 
     fun navigateToLogin(packageContext: Context): Intent
+
+    fun navigateToAddExpense(packageContext: Context): Intent
 }
