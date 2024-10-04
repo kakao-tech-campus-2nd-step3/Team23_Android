@@ -20,13 +20,18 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.kappzzang.jeongsan.camera.databinding.ActivityReceiptCameraBinding
+import com.kappzzang.jeongsan.intentcontract.ReceiptCameraContract
 import com.kappzzang.jeongsan.model.OcrResultResponse
+import com.kappzzang.jeongsan.navigation.AppNavigator
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ReceiptCameraActivity : AppCompatActivity() {
+    @Inject
+    private lateinit var appNavigator: AppNavigator
     private val binding: ActivityReceiptCameraBinding by lazy {
         ActivityReceiptCameraBinding.inflate(layoutInflater)
     }
@@ -181,9 +186,8 @@ class ReceiptCameraActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
 
-                // TODO: Jetpack Navigation으로 변경해야 함
-                // val intent = Intent(applicationContext, ExpenseListActivity::class.java)
-                // setResult(RESULT_CANCELED, intent)
+                val intent = appNavigator.navigateToExpenseList(applicationContext)
+                setResult(RESULT_CANCELED, intent)
                 finish()
             }
 
@@ -191,10 +195,9 @@ class ReceiptCameraActivity : AppCompatActivity() {
         }, ContextCompat.getMainExecutor(this))
     }
 
-    // TODO: Jetpack Navigation으로 변경해야 함(임시로 빈 Intent를 반환하도록 설정함)
-    private fun getOcrResultIntent(response: OcrResultResponse): Intent = Intent()
-//        Intent(applicationContext, ExpenseListActivity::class.java).apply {
-//            putExtra(OCR_RESULT, response)
-//            putExtra(OCR_RESULT_IMAGE, viewModel.pictureData.value)
-//        }
+    private fun getOcrResultIntent(response: OcrResultResponse): Intent =
+        appNavigator.navigateToExpenseList(applicationContext).apply {
+            putExtra(ReceiptCameraContract.OCR_RESULT, response)
+            putExtra(ReceiptCameraContract.OCR_RESULT_IMAGE, viewModel.pictureData.value)
+        }
 }
