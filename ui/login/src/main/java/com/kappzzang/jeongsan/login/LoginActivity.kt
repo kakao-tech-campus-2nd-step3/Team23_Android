@@ -15,7 +15,6 @@ class LoginActivity : AppCompatActivity() {
         val binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         binding.loginByKakaoImagebutton.setOnClickListener {
             // TODO: 카카오 로그인 구현하기
 

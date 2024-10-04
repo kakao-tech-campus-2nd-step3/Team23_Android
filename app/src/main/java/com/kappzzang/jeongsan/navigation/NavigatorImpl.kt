@@ -2,7 +2,7 @@ package com.kappzzang.jeongsan.navigation
 
 import android.content.Intent
 
-class NavigatorImpl: AppNavigator {
+class NavigatorImpl : AppNavigator {
     override fun navigateToMainPage(): Intent {
         TODO("Not yet implemented")
     }
@@ -22,5 +22,4 @@ class NavigatorImpl: AppNavigator {
     override fun navigateToCamera(): Intent {
         TODO("Not yet implemented")
     }
-
 }
