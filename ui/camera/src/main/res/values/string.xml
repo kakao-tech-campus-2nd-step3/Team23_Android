@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 사진 촬영 페이지 -->
+    <string name="receipt_camera_failed">사진 촬영에 실패하였습니다.</string>
+    <string name="receipt_camera_sending_picture">이미지를 인식 중입니다. \n잠시만 기다려주세요.</string>
+    <string name="receipt_camera_tooltip">영수증 전체가 보이도록 사진을 찍어주세요</string>
+</resources>
