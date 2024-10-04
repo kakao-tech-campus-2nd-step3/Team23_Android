@@ -2,6 +2,7 @@ package com.kappzzang.jeongsan.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kappzzang.jeongsan.data.GroupViewItem
 import com.kappzzang.jeongsan.usecase.GetDoneGroupUseCase
 import com.kappzzang.jeongsan.usecase.GetProgressingGroupUseCase
 import com.kappzzang.jeongsan.usecase.GetUserInfoUseCase
@@ -58,7 +59,6 @@ class MainPageViewModel @Inject constructor(
                     resultGroupList.add(GroupViewItem.DoneTitle)
                     resultGroupList.addAll(doneGroupList.map { GroupViewItem.Group(it) })
                 }
-
                 _groupList.value = resultGroupList
             }
         }

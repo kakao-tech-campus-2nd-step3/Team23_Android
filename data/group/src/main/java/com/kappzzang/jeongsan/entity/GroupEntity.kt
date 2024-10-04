@@ -3,6 +3,7 @@ package com.kappzzang.jeongsan.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.kappzzang.jeongsan.datasource.group.GroupContract
 
 @Entity(tableName = GroupContract.GroupEntity.TABLE_NAME)
 class GroupEntity(

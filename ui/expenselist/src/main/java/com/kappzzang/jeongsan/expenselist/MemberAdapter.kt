@@ -1,11 +1,11 @@
-package com.kappzzang.jeongsan.ui
+package com.kappzzang.jeongsan.expenselist
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.kappzzang.jeongsan.R
+import com.kappzzang.jeongsan.data.Member
 
 class MemberAdapter(var memberList: List<Member>, val inflater: LayoutInflater, val layoutId: Int) :
     RecyclerView.Adapter<MemberAdapter.MemberViewHolder>() {

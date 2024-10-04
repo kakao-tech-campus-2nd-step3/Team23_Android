@@ -3,4 +3,6 @@ android {
 }
 
 dependencies {
+    implementation(project(":ui:expenselist"))
+    implementation(project(":ui:data"))
 }

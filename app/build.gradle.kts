@@ -46,6 +46,7 @@ android {
 }
 
 dependencies {
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
     project(":ui:main")
     project(":ui:login")
     project(":ui:main")

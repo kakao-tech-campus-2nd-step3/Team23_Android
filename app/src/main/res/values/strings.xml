@@ -1,25 +1,5 @@
 <resources>
-    <!-- 메인 페이지 -->
-    <string name="main_user_name_suffix">님</string>
-    <string name="main_create_group">그룹 만들기</string>
-    <string name="main_progress_group">진행중인 모임</string>
-    <string name="main_done_group">완료된 모임</string>
-
-
     <!-- 지출 목록 상단 메뉴 -->
     <string name="menu_invite_status">초대 현황</string>
     <string name="menu_end_group">모임 종료</string>
-
-
-    <!-- 모임 생성 페이지 -->
-    <string name="create_group_title">모임 생성</string>
-    <string name="create_group_description">모임에 친구를 추가해 보세요!</string>
-    <string name="create_group_name_menu">이름</string>
-    <string name="create_group_name_value">모임 이름</string>
-    <string name="create_group_category_menu">목적</string>
-    <string name="create_group_member_menu">멤버 추가</string>
-    <string name="create_group_add_button">+ 추가</string>
-    <string name="create_group_button">모임 생성하기</string>
-
-
 </resources>

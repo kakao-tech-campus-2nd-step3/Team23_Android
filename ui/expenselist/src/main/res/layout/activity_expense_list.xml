@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        tools:context=".expenselist.ExpenseListActivity">
+        tools:context=".ExpenseListActivity">
 
         <TextView
             android:id="@+id/group_name_textview"

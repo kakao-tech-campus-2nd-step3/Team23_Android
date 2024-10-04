@@ -10,4 +10,6 @@ dependencies {
     implementation(project(":domain:expense"))
     implementation(project(":domain:ocr"))
     implementation(project(":ui:data"))
+    implementation(project(":ui:addexpense"))
+    implementation(project(":ui:camera"))
 }

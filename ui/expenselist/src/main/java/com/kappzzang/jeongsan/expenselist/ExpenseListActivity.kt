@@ -20,6 +20,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.kappzzang.jeongsan.addexpense.AddExpenseActivity
+import com.kappzzang.jeongsan.camera.ReceiptCameraActivity
 import com.kappzzang.jeongsan.expenselist.databinding.ActivityExpenseListBinding
 import com.kappzzang.jeongsan.expenselist.inviteinfo.InviteInfoActivity
 import com.kappzzang.jeongsan.expenselist.sendmessage.SendMessageActivity
@@ -198,7 +200,7 @@ class ExpenseListActivity : AppCompatActivity() {
             setMessage(
                 String.format(
                     getString(R.string.dialog_body_ask_camera),
-                    getString(com.kappzzang.jeongsan.R.string.app_name)
+                    getString(R.string.app_name)
                 )
             )
             setPositiveButton(getString(R.string.dialog_allow)) { _, _ ->

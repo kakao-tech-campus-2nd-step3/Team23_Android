@@ -8,7 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.kappzzang.jeongsan.creategroup.CreateGroupActivity
-import com.kappzzang.jeongsan.databinding.ActivityMainBinding
+import com.kappzzang.jeongsan.main.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         // TODO: 이후 Jetpack Navigation을 사용하여 화면 전환
         binding.createGroupButton.setOnClickListener {
             startActivity(
-                Intent(this, creategroup.CreateGroupActivity::class.java)
+                Intent(this, CreateGroupActivity::class.java)
             )
         }
     }
