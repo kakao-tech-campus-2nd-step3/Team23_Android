@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.creategroup.databinding.ActivityCreateGroupBinding
 import com.kappzzang.jeongsan.data.Member
+import com.kappzzang.jeongsan.expenselist.MemberAdapter
 
 class CreateGroupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +24,11 @@ class CreateGroupActivity : AppCompatActivity() {
         val category = resources.getStringArray(R.array.group_category)
 
         binding.memberContentRecyclerview.adapter =
-            MemberAdapter(members.toList(), layoutInflater, R.layout.item_member_invite)
+            MemberAdapter(
+                members.toList(),
+                layoutInflater,
+                R.layout.item_member_invite
+            )
         binding.memberContentRecyclerview.layoutManager = LinearLayoutManager(
             this,
             LinearLayoutManager.VERTICAL,

@@ -4,8 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.kappzzang.jeongsan.creategroup.MemberAdapter
 import com.kappzzang.jeongsan.data.Member
+import com.kappzzang.jeongsan.expenselist.MemberAdapter
 import com.kappzzang.jeongsan.expenselist.R
 import com.kappzzang.jeongsan.expenselist.databinding.ActivitySendMessageBinding
 
