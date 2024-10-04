@@ -1,4 +1,4 @@
-package com.kappzzang.jeongsan.expenselist
+package com.kappzzang.jeongsan.creategroup
 
 import android.view.LayoutInflater
 import android.view.View

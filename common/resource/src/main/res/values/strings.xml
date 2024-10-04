@@ -10,4 +10,7 @@
     <string name="item_expense_price">단가</string>
     <string name="item_expense_quantity">수량</string>
     <string name="item_expense_selected_quantity">선택 수량</string>
+
+    <!-- 멤버 아이템 -->
+    <string name="item_member_name">멤버 이름</string>
 </resources>
