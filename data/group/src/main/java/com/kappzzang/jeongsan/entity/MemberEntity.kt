@@ -3,19 +3,20 @@ package com.kappzzang.jeongsan.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.kappzzang.jeongsan.datasource.member.MemberContract
 import com.kappzzang.jeongsan.model.MemberItem
 
-@Entity(tableName = com.kappzzang.jeongsan.datasource.member.MemberContract.MemberEntry.TABLE_NAME)
+@Entity(tableName = MemberContract.MemberEntry.TABLE_NAME)
 class MemberEntity(
     @PrimaryKey val id: String,
     @ColumnInfo(
-        com.kappzzang.jeongsan.datasource.member.MemberContract.MemberEntry.COLUMN_NAME
+        MemberContract.MemberEntry.COLUMN_NAME
     ) val name: String,
     @ColumnInfo(
-        com.kappzzang.jeongsan.datasource.member.MemberContract.MemberEntry.COLUMN_PROFILE_IMAGE_URL
+        MemberContract.MemberEntry.COLUMN_PROFILE_IMAGE_URL
     ) val profileImageUrl: String,
     @ColumnInfo(
-        com.kappzzang.jeongsan.datasource.member.MemberContract.MemberEntry.COLUMN_IS_INVITED
+        MemberContract.MemberEntry.COLUMN_IS_INVITED
     ) val isInvited: Boolean
 )
 
