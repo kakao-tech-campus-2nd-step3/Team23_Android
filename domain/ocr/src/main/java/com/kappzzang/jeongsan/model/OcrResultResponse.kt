@@ -5,10 +5,6 @@ import java.util.Date
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class OcrDetailItem(val itemName: String, val itemPrice: Int, val itemQuantity: Int) :
-    Parcelable
-
-@Parcelize
 sealed class OcrResultResponse : Parcelable {
     data class OcrSuccess(
         val name: String,
