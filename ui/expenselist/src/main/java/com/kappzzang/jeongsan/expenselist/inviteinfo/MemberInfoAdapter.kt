@@ -2,6 +2,7 @@ package com.kappzzang.jeongsan.expenselist.inviteinfo
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kappzzang.jeongsan.expenselist.databinding.ItemMemberInfoBinding
@@ -13,7 +14,8 @@ class MemberInfoAdapter :
     ) {
     class ViewHolder(private val binding: ItemMemberInfoBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        val name = binding.memberLayout.profileNameTextview
+        val name: TextView =
+            binding.memberLayout.findViewById(com.kappzzang.jeongsan.R.id.profile_name_textview)
         val inviteInfo = binding.inviteInfoTextview
     }
 
