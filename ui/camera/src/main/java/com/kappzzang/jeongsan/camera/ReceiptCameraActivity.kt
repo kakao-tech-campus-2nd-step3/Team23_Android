@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class ReceiptCameraActivity : AppCompatActivity() {
     @Inject
-    private lateinit var appNavigator: AppNavigator
+    lateinit var appNavigator: AppNavigator
     private val binding: ActivityReceiptCameraBinding by lazy {
         ActivityReceiptCameraBinding.inflate(layoutInflater)
     }

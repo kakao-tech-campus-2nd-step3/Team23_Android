@@ -10,7 +10,7 @@ import com.kappzzang.jeongsan.data.Member
 class MemberAdapter(var memberList: List<Member>, val inflater: LayoutInflater, val layoutId: Int) :
     RecyclerView.Adapter<MemberAdapter.MemberViewHolder>() {
     inner class MemberViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val name: TextView = itemView.findViewById(R.id.profile_name_textview)
+        val name: TextView = itemView.findViewById(com.kappzzang.jeongsan.R.id.profile_name_textview)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemberViewHolder {

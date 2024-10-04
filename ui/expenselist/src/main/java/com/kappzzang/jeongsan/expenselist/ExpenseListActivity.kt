@@ -36,7 +36,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class ExpenseListActivity : AppCompatActivity() {
     @Inject
-    private lateinit var appNavigator: AppNavigator
+    lateinit var appNavigator: AppNavigator
     private val viewModel: ExpenseListViewModel by viewModels()
     private val binding: ActivityExpenseListBinding by lazy {
         val mBinding = ActivityExpenseListBinding.inflate(layoutInflater)

@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     @Inject
-    private lateinit var appNavigator: AppNavigator
+    lateinit var appNavigator: AppNavigator
 
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainPageViewModel by viewModels()

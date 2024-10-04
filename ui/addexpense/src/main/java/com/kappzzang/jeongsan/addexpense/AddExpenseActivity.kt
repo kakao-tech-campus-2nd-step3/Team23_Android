@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class AddExpenseActivity : AppCompatActivity() {
     @Inject
-    private lateinit var appNavigator: AppNavigator
+    lateinit var appNavigator: AppNavigator
     private val viewModel: AddExpenseViewModel by viewModels()
     private val binding: ActivityAddExpenseBinding by lazy {
         ActivityAddExpenseBinding.inflate(
