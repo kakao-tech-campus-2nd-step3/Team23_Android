@@ -22,9 +22,6 @@
         android:theme="@style/Theme.Jeongsan"
         tools:targetApi="31">
         <activity
-            android:name=".camera.ReceiptCameraActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.HistoryActivity"
             android:exported="false" />
         <activity
