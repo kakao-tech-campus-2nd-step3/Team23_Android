@@ -20,7 +20,7 @@ class LoginActivity : AppCompatActivity() {
         binding.loginByKakaoImagebutton.setOnClickListener {
             // TODO: 카카오 로그인 구현하기
 
-            startActivity(appNavigator.navigateToMainPage())
+            startActivity(appNavigator.navigateToMainPage(this))
         }
     }
 }
