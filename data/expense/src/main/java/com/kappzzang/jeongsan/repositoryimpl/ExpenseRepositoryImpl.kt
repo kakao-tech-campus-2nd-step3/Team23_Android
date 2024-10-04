@@ -10,8 +10,8 @@ class ExpenseRepositoryImpl @Inject constructor() : ExpenseRepository {
     override suspend fun getExpense(id: Long) = ExpenseItem(
         id = "id",
         name = "지출 이름입니당",
-        payerName = "id",
-        payerMemberId = "돈 많은 사람",
+        payerName = "돈 많은 사람",
+        payerMemberId = "id",
         price = 15800,
         // 임시 지출 이미지 주소 (카카오테크 캠퍼스)
         expenseImageUrl = "https://www.kakaotechcampus.com/fileUpDownload/" +
