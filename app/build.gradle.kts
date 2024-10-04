@@ -59,7 +59,6 @@ dependencies {
     implementation(project(":data:data-ocr"))
     implementation(project(":data:data-user"))
     implementation("androidx.room:room-ktx:2.6.1")
-    project(":ui:main")
     project(":ui:login")
     project(":ui:main")
     project(":ui:expenselist")
