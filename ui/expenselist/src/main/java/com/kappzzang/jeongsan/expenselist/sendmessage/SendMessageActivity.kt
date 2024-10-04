@@ -24,10 +24,10 @@ class SendMessageActivity : AppCompatActivity() {
             )
         }
 
-        val members = mutableListOf<com.kappzzang.jeongsan.data.Member>()
+        val members = mutableListOf<Member>()
         for (i in 0..3) {
             members.add(
-                com.kappzzang.jeongsan.data.Member("Member$i")
+                Member("Member$i")
             )
         }
         binding.infoContentRecyclerview.apply {
