@@ -55,6 +55,7 @@ dependencies {
     project(":ui:creategroup")
     project(":ui:camera")
     project(":ui:addexpense")
+    project(":ui:data")
     project(":domain:expense")
     project(":domain:group")
     project(":domain:ocr")

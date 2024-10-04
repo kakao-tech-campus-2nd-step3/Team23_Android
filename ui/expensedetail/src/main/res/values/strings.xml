@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 지출 상세 내역 -->
+    <string name="expense_detail_header">지출 상세 내역</string>
+    <string name="expense_detail_description">지출 내용이에요.\n내가 구매한 상품을 선택하세요!</string>
+    <string name="expense_detail_submit">선택 완료</string>
+</resources>

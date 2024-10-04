@@ -5,10 +5,11 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.kappzzaang.jeongsan.ui.login.LoginActivity"
+    tools:context=".LoginActivity"
     android:padding="@dimen/all_layout_padding"
     android:background="@color/background_base">
 
+    <!-- TODO: 이후 src를 앱 아이콘으로 교체하기 -->
     <ImageView
         android:id="@+id/app_icon_imageview"
         android:layout_width="wrap_content"
@@ -16,7 +17,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/login_by_kakao_imagebutton"
-        android:src="@mipmap/ic_launcher"
         android:layout_marginBottom="50dp"
         />
     <androidx.appcompat.widget.AppCompatImageButton

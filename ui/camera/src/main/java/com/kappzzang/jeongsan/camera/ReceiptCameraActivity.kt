@@ -19,9 +19,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.kappzzang.jeongsan.databinding.ActivityReceiptCameraBinding
+import com.kappzzang.jeongsan.camera.databinding.ActivityReceiptCameraBinding
 import com.kappzzang.jeongsan.model.OcrResultResponse
-import com.kappzzang.jeongsan.ui.expenselist.ExpenseListActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import kotlinx.coroutines.launch
@@ -182,8 +181,9 @@ class ReceiptCameraActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
 
-                val intent = Intent(applicationContext, ExpenseListActivity::class.java)
-                setResult(RESULT_CANCELED, intent)
+                // TODO: Jetpack Navigation으로 변경해야 함
+                // val intent = Intent(applicationContext, ExpenseListActivity::class.java)
+                // setResult(RESULT_CANCELED, intent)
                 finish()
             }
 
@@ -191,11 +191,12 @@ class ReceiptCameraActivity : AppCompatActivity() {
         }, ContextCompat.getMainExecutor(this))
     }
 
-    private fun getOcrResultIntent(response: OcrResultResponse): Intent =
-        Intent(applicationContext, ExpenseListActivity::class.java).apply {
-            putExtra(OCR_RESULT, response)
-            putExtra(OCR_RESULT_IMAGE, viewModel.pictureData.value)
-        }
+    // TODO: Jetpack Navigation으로 변경해야 함(임시로 빈 Intent를 반환하도록 설정함)
+    private fun getOcrResultIntent(response: OcrResultResponse): Intent = Intent()
+//        Intent(applicationContext, ExpenseListActivity::class.java).apply {
+//            putExtra(OCR_RESULT, response)
+//            putExtra(OCR_RESULT_IMAGE, viewModel.pictureData.value)
+//        }
 
     companion object {
         const val OCR_RESULT = "ocr_result"

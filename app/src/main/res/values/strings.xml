@@ -1,18 +1,5 @@
 <resources>
-    <string name="app_name">Jeongsan</string>
-
-    <!-- 사진 촬영 페이지 -->
-    <string name="receipt_camera_failed">사진 촬영에 실패하였습니다.</string>
-    <string name="receipt_camera_sending_picture">이미지를 인식 중입니다. \n잠시만 기다려주세요.</string>
-    <string name="receipt_camera_tooltip">영수증 전체가 보이도록 사진을 찍어주세요</string>
-
     <!-- 지출 목록 상단 메뉴 -->
     <string name="menu_invite_status">초대 현황</string>
     <string name="menu_end_group">모임 종료</string>
-
-    <!-- 지출 상세 내역 -->
-    <string name="expense_detail_header">지출 상세 내역</string>
-    <string name="expense_detail_description">지출 내용이에요.\n내가 구매한 상품을 선택하세요!</string>
-    <string name="expense_detail_submit">선택 완료</string>
-
 </resources>

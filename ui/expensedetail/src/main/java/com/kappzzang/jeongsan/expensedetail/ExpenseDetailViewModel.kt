@@ -23,11 +23,11 @@ class ExpenseDetailViewModel @Inject constructor(
     private val editExpenseDetailUseCase: EditExpenseDetailUseCase
 ) : ViewModel() {
     private val _expenseDetailList =
-        MutableStateFlow(listOf<com.kappzzang.jeongsan.model.ExpenseDetailItem>())
-    private val _expense = MutableStateFlow(com.kappzzang.jeongsan.model.ExpenseItem.EMPTY)
+        MutableStateFlow(listOf<ExpenseDetailItem>())
+    private val _expense = MutableStateFlow(ExpenseItem.EMPTY)
 
     val expenseDetailList: StateFlow<List<ExpenseDetailItem>> = _expenseDetailList.asStateFlow()
-    val expense: StateFlow<com.kappzzang.jeongsan.model.ExpenseItem> = _expense.asStateFlow()
+    val expense: StateFlow<ExpenseItem> = _expense.asStateFlow()
 
     init {
         initExpense()
@@ -54,15 +54,12 @@ class ExpenseDetailViewModel @Inject constructor(
         }
     }
 
-    private fun getItemWithEnabled(
-        item: com.kappzzang.jeongsan.model.ExpenseDetailItem,
-        enabled: Boolean
-    ): com.kappzzang.jeongsan.model.ExpenseDetailItem {
+    private fun getItemWithEnabled(item: ExpenseDetailItem, enabled: Boolean): ExpenseDetailItem {
         if (enabled) {
             return if (item.selectedQuantity > 0) {
                 item
             } else {
-                com.kappzzang.jeongsan.model.ExpenseDetailItem(
+                ExpenseDetailItem(
                     id = item.id,
                     itemName = item.itemName,
                     itemQuantity = item.itemQuantity,
@@ -74,7 +71,7 @@ class ExpenseDetailViewModel @Inject constructor(
             return if (item.selectedQuantity == 0) {
                 item
             } else {
-                com.kappzzang.jeongsan.model.ExpenseDetailItem(
+                ExpenseDetailItem(
                     id = item.id,
                     itemName = item.itemName,
                     itemQuantity = item.itemQuantity,
@@ -85,11 +82,8 @@ class ExpenseDetailViewModel @Inject constructor(
         }
     }
 
-    private fun getItemWithQuantity(
-        item: com.kappzzang.jeongsan.model.ExpenseDetailItem,
-        quantity: Int
-    ): com.kappzzang.jeongsan.model.ExpenseDetailItem =
-        com.kappzzang.jeongsan.model.ExpenseDetailItem(
+    private fun getItemWithQuantity(item: ExpenseDetailItem, quantity: Int): ExpenseDetailItem =
+        ExpenseDetailItem(
             id = item.id,
             itemName = item.itemName,
             itemQuantity = item.itemQuantity,

@@ -14,7 +14,7 @@
 
         <variable
             name="viewHolder"
-            type="com.kappzzang.jeongsan.expensedetail.ExpenseDetailItemListAdapter" />
+            type="com.kappzzang.jeongsan.expensedetail.ExpenseDetailItemListAdapter.ExpenseDetailItemViewHolder" />
 
         <variable
             name="item"
