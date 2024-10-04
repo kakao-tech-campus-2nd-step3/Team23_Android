@@ -1,8 +1,10 @@
 package com.kappzzang.jeongsan.navigation
 
+import android.content.Context
 import android.content.Intent
+import javax.inject.Inject
 
-class NavigatorImpl : AppNavigator {
+class NavigatorImpl @Inject constructor(private val context: Context) : AppNavigator {
     override fun navigateToMainPage(): Intent {
         TODO("Not yet implemented")
     }
@@ -20,6 +22,10 @@ class NavigatorImpl : AppNavigator {
     }
 
     override fun navigateToCamera(): Intent {
+        TODO("Not yet implemented")
+    }
+
+    override fun navigateToLogin(): Intent {
         TODO("Not yet implemented")
     }
 }
