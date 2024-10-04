@@ -1,9 +1,7 @@
 package com.kappzzang.jeongsan.main
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -14,9 +12,8 @@ import com.kappzzang.jeongsan.main.databinding.ItemMainDoneTitleBinding
 import com.kappzzang.jeongsan.main.databinding.ItemMainGroupBinding
 import com.kappzzang.jeongsan.main.databinding.ItemMainProgressTitleBinding
 
-class GroupListAdapter(
-    private val onGroupItemClickListener: (groupId: String) -> Unit
-) : ListAdapter<GroupViewItem, RecyclerView.ViewHolder>(diffUtil) {
+class GroupListAdapter(private val onGroupItemClickListener: (groupId: String) -> Unit) :
+    ListAdapter<GroupViewItem, RecyclerView.ViewHolder>(diffUtil) {
 
     inner class ProgressTitleViewHolder(binding: ItemMainProgressTitleBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -26,9 +23,8 @@ class GroupListAdapter(
 
     inner class GroupViewHolder(
         private val binding: ItemMainGroupBinding,
-        private val onGroupItemClickListener: (groupId: String) -> Unit,
-    ) :
-        RecyclerView.ViewHolder(binding.root) {
+        private val onGroupItemClickListener: (groupId: String) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
                 currentList[bindingAdapterPosition].let { currentViewItem ->

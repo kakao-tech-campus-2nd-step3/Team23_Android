@@ -30,8 +30,8 @@ import com.kappzzang.jeongsan.model.OcrResultResponse
 import com.kappzzang.jeongsan.navigation.AppNavigator
 import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ExpenseListActivity : AppCompatActivity() {
@@ -106,7 +106,6 @@ class ExpenseListActivity : AppCompatActivity() {
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 return@setOnMenuItemClickListener when (menuItem.itemId) {
                     R.id.menu_invite_status -> {
-
                         // TODO: Dialog로 대체
                         startActivity(
                             Intent(
