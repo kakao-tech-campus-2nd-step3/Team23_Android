@@ -38,4 +38,8 @@
 
     <!-- 송금 요청 완료 페이지 -->
     <string name="send_complete_message">송금 요청 완료!!🥳🥳🥳</string>
+
+    <!-- 지출 목록 상단 메뉴 -->
+    <string name="menu_invite_status">초대 현황</string>
+    <string name="menu_end_group">모임 종료</string>
 </resources>
