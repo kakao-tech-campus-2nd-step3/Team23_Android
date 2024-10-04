@@ -1,5 +1,7 @@
 package com.kappzzang.jeongsan.repository
 
+import com.kappzzang.jeongsan.model.UserItem
+
 interface UserInfoRepository {
-    suspend fun getUserInfo(): com.kappzzang.jeongsan.model.UserItem
+    suspend fun getUserInfo(): UserItem
 }
