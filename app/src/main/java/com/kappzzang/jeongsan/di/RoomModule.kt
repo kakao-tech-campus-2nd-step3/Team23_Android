@@ -2,10 +2,10 @@ package com.kappzzang.jeongsan.di
 
 import android.content.Context
 import androidx.room.Room
-import com.kappzzang.jeongsan.data.datasource.MemberContract
-import com.kappzzang.jeongsan.data.datasource.MemberDatabase
-import com.kappzzang.jeongsan.data.datasource.expense.ExpenseDatabase
-import com.kappzzang.jeongsan.data.datasource.group.GroupDatabase
+import com.kappzzang.jeongsan.datasource.expense.ExpenseDatabase
+import com.kappzzang.jeongsan.datasource.group.GroupDatabase
+import com.kappzzang.jeongsan.datasource.member.MemberContract
+import com.kappzzang.jeongsan.datasource.member.MemberDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

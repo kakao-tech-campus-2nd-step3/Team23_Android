@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 메인 페이지 -->
+    <string name="main_user_name_suffix">님</string>
+    <string name="main_create_group">그룹 만들기</string>
+    <string name="main_progress_group">진행중인 모임</string>
+    <string name="main_done_group">완료된 모임</string>
+</resources>

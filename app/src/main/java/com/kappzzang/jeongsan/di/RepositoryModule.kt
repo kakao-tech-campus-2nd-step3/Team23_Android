@@ -1,26 +1,22 @@
 package com.kappzzang.jeongsan.di
 
-import com.kappzzang.jeongsan.data.repositoryimpl.ExpenseDetailRepositoryImpl
-import com.kappzzang.jeongsan.data.repositoryimpl.ExpenseListFakeRepositoryImpl
-import com.kappzzang.jeongsan.data.repositoryimpl.ExpenseRepositoryImpl
-import com.kappzzang.jeongsan.data.repositoryimpl.GroupInfoRepositoryImpl
-import com.kappzzang.jeongsan.data.repositoryimpl.MemberRepositoryImpl
-import com.kappzzang.jeongsan.data.repositoryimpl.ReceiptCaptureRepositoryImpl
-import com.kappzzang.jeongsan.data.repositoryimpl.ReceiptRepositoryImpl
-import com.kappzzang.jeongsan.data.repositoryimpl.UserInfoRepositoryImpl
-import com.kappzzang.jeongsan.domain.repository.ExpenseDetailRepository
-import com.kappzzang.jeongsan.domain.repository.ExpenseListRepository
-import com.kappzzang.jeongsan.domain.repository.ExpenseRepository
-import com.kappzzang.jeongsan.domain.repository.GroupInfoRepository
-import com.kappzzang.jeongsan.domain.repository.MemberRepository
-import com.kappzzang.jeongsan.domain.repository.ReceiptCaptureRepository
-import com.kappzzang.jeongsan.domain.repository.ReceiptRepository
-import com.kappzzang.jeongsan.domain.repository.UserInfoRepository
+import com.kappzzang.jeongsan.repository.ExpenseDetailRepository
+import com.kappzzang.jeongsan.repository.ExpenseListRepository
+import com.kappzzang.jeongsan.repository.ExpenseRepository
+import com.kappzzang.jeongsan.repository.GroupInfoRepository
+import com.kappzzang.jeongsan.repository.MemberRepository
+import com.kappzzang.jeongsan.repository.ReceiptRepository
+import com.kappzzang.jeongsan.repository.UserInfoRepository
+import com.kappzzang.jeongsan.repositoryimpl.ExpenseDetailRepositoryImpl
+import com.kappzzang.jeongsan.repositoryimpl.ExpenseListFakeRepositoryImpl
+import com.kappzzang.jeongsan.repositoryimpl.ExpenseRepositoryImpl
+import com.kappzzang.jeongsan.repositoryimpl.GroupInfoRepositoryImpl
+import com.kappzzang.jeongsan.repositoryimpl.MemberRepositoryImpl
+import com.kappzzang.jeongsan.repositoryimpl.ReceiptRepositoryImpl
+import com.kappzzang.jeongsan.repositoryimpl.UserInfoRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -67,14 +63,4 @@ abstract class RepositoryModule {
     abstract fun bindReceiptRepository(
         receiptRepositoryImpl: ReceiptRepositoryImpl
     ): ReceiptRepository
-}
-
-@Module
-@InstallIn(ViewModelComponent::class)
-abstract class ViewModelRepositoryModule {
-    @Binds
-    @ViewModelScoped
-    abstract fun bindReceiptCaptureRepository(
-        receiptCaptureRepository: ReceiptCaptureRepositoryImpl
-    ): ReceiptCaptureRepository
 }
