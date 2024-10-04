@@ -47,6 +47,9 @@ android {
 
 dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.2")
+    implementation("com.google.android.material:material:1.12.0")
+    implementation("androidx.activity:activity:1.9.2")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     project(":ui:main")
     project(":ui:login")
     project(":ui:main")
@@ -64,10 +67,10 @@ dependencies {
     project(":data:data-group")
     project(":data:data-ocr")
     project(":data:data-user")
-    project(":common:resource")
     project(":common:util")
     project(":common:androidutil")
     implementation(project(":common:navigation"))
+    implementation(project(":common:resource"))
 
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.7.0")

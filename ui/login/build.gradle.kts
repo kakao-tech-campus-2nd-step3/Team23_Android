@@ -3,5 +3,4 @@ android {
 }
 
 dependencies {
-    implementation(project(":app"))
 }

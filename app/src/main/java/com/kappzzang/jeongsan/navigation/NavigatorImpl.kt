@@ -22,4 +22,8 @@ class NavigatorImpl : AppNavigator {
     override fun navigateToCamera(): Intent {
         TODO("Not yet implemented")
     }
+
+    override fun navigateToLogin(): Intent {
+        TODO("Not yet implemented")
+    }
 }
