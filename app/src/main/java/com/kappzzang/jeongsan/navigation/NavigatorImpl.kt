@@ -11,7 +11,7 @@ import com.kappzzang.jeongsan.login.LoginActivity
 import com.kappzzang.jeongsan.main.MainActivity
 import javax.inject.Inject
 
-class NavigatorImpl @Inject constructor(private val context: Context): AppNavigator {
+class NavigatorImpl @Inject constructor(private val context: Context) : AppNavigator {
     override fun navigateToMainPage(packageContext: Context): Intent =
         Intent(packageContext, MainActivity::class.java)
 
