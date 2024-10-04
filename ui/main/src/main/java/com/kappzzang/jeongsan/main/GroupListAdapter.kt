@@ -10,12 +10,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kappzzang.jeongsan.data.GroupViewItem
-import com.kappzzang.jeongsan.expenselist.ExpenseListActivity
 import com.kappzzang.jeongsan.main.databinding.ItemMainDoneTitleBinding
 import com.kappzzang.jeongsan.main.databinding.ItemMainGroupBinding
 import com.kappzzang.jeongsan.main.databinding.ItemMainProgressTitleBinding
 
-class GroupListAdapter : ListAdapter<GroupViewItem, RecyclerView.ViewHolder>(diffUtil) {
+class GroupListAdapter(
+    private val onGroupItemClickListener: (groupId: String) -> Unit
+) : ListAdapter<GroupViewItem, RecyclerView.ViewHolder>(diffUtil) {
 
     inner class ProgressTitleViewHolder(binding: ItemMainProgressTitleBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -23,22 +24,18 @@ class GroupListAdapter : ListAdapter<GroupViewItem, RecyclerView.ViewHolder>(dif
     inner class DoneTitleViewHolder(binding: ItemMainDoneTitleBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    inner class GroupViewHolder(private val binding: ItemMainGroupBinding) :
+    inner class GroupViewHolder(
+        private val binding: ItemMainGroupBinding,
+        private val onGroupItemClickListener: (groupId: String) -> Unit,
+    ) :
         RecyclerView.ViewHolder(binding.root) {
         init {
-            // TODO: 이후 Jetpack Navigation을 사용하여 화면 전환
             binding.root.setOnClickListener {
-                val intent =
-                    Intent(
-                        binding.root.context,
-                        ExpenseListActivity::class.java
-                    )
                 currentList[bindingAdapterPosition].let { currentViewItem ->
                     if (currentViewItem is GroupViewItem.Group) {
-                        intent.putExtra("groupId", currentViewItem.groupItem.id)
+                        onGroupItemClickListener.invoke(currentViewItem.groupItem.id)
                     }
                 }
-                startActivity(binding.root.context, intent, null)
             }
         }
 
@@ -87,7 +84,7 @@ class GroupListAdapter : ListAdapter<GroupViewItem, RecyclerView.ViewHolder>(dif
             ViewType.GROUP -> {
                 val binding =
                     ItemMainGroupBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                GroupViewHolder(binding)
+                GroupViewHolder(binding, onGroupItemClickListener)
             }
 
             else -> throw IllegalArgumentException("Invalid view type")
