@@ -1,7 +1,7 @@
 package com.kappzzang.jeongsan.datasource
 
-import com.kappzzang.jeongsan.data.entity.OcrResultEntity
-import com.kappzzang.jeongsan.data.entity.OcrResultItem
+import com.kappzzang.jeongsan.entity.OcrResultEntity
+import com.kappzzang.jeongsan.entity.OcrResultItem
 import javax.inject.Inject
 import kotlinx.coroutines.delay
 
