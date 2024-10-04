@@ -4,6 +4,11 @@ import android.graphics.Bitmap
 import android.util.Base64
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kappzzang.jeongsan.data.ExpenseItemInput
+import com.kappzzang.jeongsan.model.OcrResultResponse
+import com.kappzzang.jeongsan.model.ReceiptDetailItem
+import com.kappzzang.jeongsan.model.ReceiptItem
+import com.kappzzang.jeongsan.usecase.UploadExpenseUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
@@ -34,7 +39,7 @@ private fun createDemoList(): List<ExpenseItemInput> = listOf(
 
 @HiltViewModel
 class AddExpenseViewModel @Inject constructor(
-    private val uploadExpenseUseCase: usecase.UploadExpenseUseCase
+    private val uploadExpenseUseCase: UploadExpenseUseCase
 ) : ViewModel() {
     private val _expenseItemList by lazy {
         MutableStateFlow(
@@ -51,7 +56,8 @@ class AddExpenseViewModel @Inject constructor(
     val expenseImageBitmap: StateFlow<Bitmap?> = _expenseImageBitmap.asStateFlow()
     val manualMode: StateFlow<Boolean> = _manualMode.asStateFlow()
     val uploadedImage: StateFlow<Boolean> = _uploadedImage.asStateFlow()
-    val expenseItemList: StateFlow<List<ExpenseItemInput>> = _expenseItemList.asStateFlow()
+    val expenseItemList: StateFlow<List<ExpenseItemInput>> =
+        _expenseItemList.asStateFlow()
     val expenseName = MutableStateFlow("Demo")
 
     fun setManualMode(mode: ManualMode) {
@@ -61,13 +67,17 @@ class AddExpenseViewModel @Inject constructor(
         }
     }
 
-    fun setInitialReceiptData(bitmap: Bitmap, ocrResult: model.OcrResultResponse.OcrSuccess) {
+    fun setInitialReceiptData(bitmap: Bitmap, ocrResult: OcrResultResponse.OcrSuccess) {
         viewModelScope.launch(Dispatchers.Main) {
             _expenseImageBitmap.emit(bitmap)
             expenseName.emit(ocrResult.name)
             _expenseItemList.emit(
                 ocrResult.detailItems.map {
-                    ExpenseItemInput(it.itemName, it.itemPrice, it.itemQuantity)
+                    ExpenseItemInput(
+                        it.itemName,
+                        it.itemPrice,
+                        it.itemQuantity
+                    )
                 } + _expenseItemList.value
             )
         }
@@ -86,13 +96,17 @@ class AddExpenseViewModel @Inject constructor(
     }
 
     private suspend fun createEmptyList() {
-        _expenseItemList.emit(listOf<ExpenseItemInput>())
+        _expenseItemList.emit(emptyList())
     }
 
     fun addNewExpense() {
         viewModelScope.launch(Dispatchers.Main) {
             _expenseItemList.emit(
-                _expenseItemList.value + ExpenseItemInput(null, null, null)
+                _expenseItemList.value + ExpenseItemInput(
+                    null,
+                    null,
+                    null
+                )
             )
         }
     }

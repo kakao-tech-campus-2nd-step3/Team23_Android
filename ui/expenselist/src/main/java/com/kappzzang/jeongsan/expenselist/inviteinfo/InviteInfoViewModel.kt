@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class InviteInfoViewModel @Inject constructor(
-    private val getInviteInfoUseCase: usecase.GetInviteInfoUseCase
+    private val getInviteInfoUseCase: GetInviteInfoUseCase
 ) : ViewModel() {
     private val _inviteInfo = MutableLiveData<List<MemberItem>>()
     val inviteInfo: LiveData<List<MemberItem>>

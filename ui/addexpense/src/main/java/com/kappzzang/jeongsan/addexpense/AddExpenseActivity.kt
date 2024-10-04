@@ -10,26 +10,17 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.databinding.BindingAdapter
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.kappzzang.jeongsan.addexpense.databinding.ActivityAddExpenseBinding
 import com.kappzzang.jeongsan.expensedetail.ExpenseDetailActivity
+import com.kappzzang.jeongsan.model.OcrResultResponse
 import com.kappzzang.jeongsan.util.Base64BitmapEncoder
 import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-
-@BindingAdapter("app:items")
-fun attachList(recyclerView: RecyclerView, items: StateFlow<List<ExpenseItemInput>>?) {
-    items?.let {
-        (recyclerView.adapter as? ExpenseItemListAdapter)?.submitList(it.value)
-    }
-}
 
 @AndroidEntryPoint
 class AddExpenseActivity : AppCompatActivity() {
@@ -140,7 +131,7 @@ class AddExpenseActivity : AppCompatActivity() {
         val intentImage = intent?.getParcelableData<Uri>(EXPENSE_IMAGE)
 
         val data =
-            intentData as? com.kappzzang.jeongsan.model.OcrResultResponse.OcrSuccess ?: return
+            intentData as? OcrResultResponse.OcrSuccess ?: return
         val image = intentImage ?: return
 
         val bitmap = Base64BitmapEncoder.convertUriToBitmap(image, this)

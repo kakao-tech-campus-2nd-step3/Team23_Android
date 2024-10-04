@@ -1,7 +1,7 @@
 package com.kappzzang.jeongsan.repositoryimpl
 
-import com.kappzzang.jeongsan.domain.model.ExpenseDetailItem
-import com.kappzzang.jeongsan.domain.repository.ExpenseDetailRepository
+import com.kappzzang.jeongsan.model.ExpenseDetailItem
+import com.kappzzang.jeongsan.repository.ExpenseDetailRepository
 import javax.inject.Inject
 
 class ExpenseDetailRepositoryImpl @Inject constructor() : ExpenseDetailRepository {

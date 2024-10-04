@@ -7,7 +7,8 @@ enum class ExpenseState { CONFIRMED, NOT_CONFIRMED, TRANSFER_PENDING, TRANSFERED
 data class ExpenseItem(
     val id: String,
     val name: String,
-    val payer: MemberItem,
+    val payerName: String,
+    val payerMemberId: String,
     val price: Int,
     val expenseImageUrl: String,
     val date: Date,
@@ -16,19 +17,15 @@ data class ExpenseItem(
 ) {
     companion object {
         val EMPTY = ExpenseItem(
-            "",
-            "",
-            MemberItem(
-                "",
-                "",
-                "",
-                false
-            ),
-            0,
-            "",
-            Date(),
-            ExpenseState.NOT_CONFIRMED,
-            ""
+            id = "",
+            name = "",
+            payerName = "",
+            payerMemberId = "",
+            price = 0,
+            expenseImageUrl = "",
+            date = Date(),
+            state = ExpenseState.NOT_CONFIRMED,
+            categoryColor = ""
         )
     }
 }

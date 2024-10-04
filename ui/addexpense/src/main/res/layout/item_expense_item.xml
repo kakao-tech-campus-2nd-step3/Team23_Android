@@ -13,7 +13,7 @@
 
         <variable
             name="item"
-            type="com.kappzzang.jeongsan.addexpense.ExpenseItemInput" />
+            type="com.kappzzang.jeongsan.data.ExpenseItemInput" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

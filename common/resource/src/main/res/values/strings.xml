@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Jeongsan</string>
+
     <string name="all_expense">정산 중</string>
     <string name="all_pending">송금 대기</string>
     <string name="all_complete">송금 완료</string>
+
+    <string name="item_expense_name">상품명</string>
+    <string name="item_expense_price">단가</string>
+    <string name="item_expense_quantity">수량</string>
+    <string name="item_expense_selected_quantity">선택 수량</string>
 </resources>

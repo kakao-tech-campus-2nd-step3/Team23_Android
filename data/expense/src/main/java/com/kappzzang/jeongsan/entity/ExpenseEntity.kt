@@ -3,7 +3,7 @@ package com.kappzzang.jeongsan.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.kappzzang.jeongsan.data.datasource.expense.ExpenseContract
+import com.kappzzang.jeongsan.datasource.expense.ExpenseContract
 
 @Entity(tableName = ExpenseContract.ExpenseEntity.TABLE_NAME)
 class ExpenseEntity(

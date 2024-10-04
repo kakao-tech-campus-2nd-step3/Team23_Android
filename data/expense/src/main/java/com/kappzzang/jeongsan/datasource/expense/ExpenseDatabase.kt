@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.kappzzang.jeongsan.entity.ExpenseEntity
 import com.kappzzang.jeongsan.model.ExpenseState
 import java.sql.Timestamp
 import java.util.Date
@@ -16,14 +17,11 @@ private val colorList =
     listOf("#87A2FF", "#FFD7C4", "#87A2FF", "#987D9A", "#987D9A", "#BB9AB1", "#BB9AB1")
 private val categoryNameList = listOf("커피", "편의점", "커피", "영화관", "영화관", "식당", "식당")
 
-private fun makeFakeItemWithState(
-    expenseState: com.kappzzang.jeongsan.model.ExpenseState,
-    id: Int
-): com.kappzzang.jeongsan.entity.ExpenseEntity {
+private fun makeFakeItemWithState(expenseState: ExpenseState, id: Int): ExpenseEntity {
     val adjustedIndex =
-        (id + 1) * (com.kappzzang.jeongsan.model.ExpenseState.entries.indexOf(expenseState) + 1)
+        (id + 1) * (ExpenseState.entries.indexOf(expenseState) + 1)
 
-    return com.kappzzang.jeongsan.entity.ExpenseEntity(
+    return ExpenseEntity(
         name = nameList[adjustedIndex % nameList.size],
         totalPrice = 1200 * adjustedIndex,
         image = "",
@@ -36,7 +34,7 @@ private fun makeFakeItemWithState(
     )
 }
 
-@Database(entities = [com.kappzzang.jeongsan.entity.ExpenseEntity::class], version = 1)
+@Database(entities = [ExpenseEntity::class], version = 1)
 abstract class ExpenseDatabase : RoomDatabase() {
 
     abstract fun expenseDao(): ExpenseDao
@@ -51,25 +49,25 @@ abstract class ExpenseDatabase : RoomDatabase() {
 
                     val dummyDataConfirmed = (1..10).map {
                         makeFakeItemWithState(
-                            com.kappzzang.jeongsan.model.ExpenseState.CONFIRMED,
+                            ExpenseState.CONFIRMED,
                             it
                         )
                     }
                     val dummyDatNotConfirmed = (11..15).map {
                         makeFakeItemWithState(
-                            com.kappzzang.jeongsan.model.ExpenseState.NOT_CONFIRMED,
+                            ExpenseState.NOT_CONFIRMED,
                             it
                         )
                     }
                     val dummyDatTransferPending = (16..27).map {
                         makeFakeItemWithState(
-                            com.kappzzang.jeongsan.model.ExpenseState.TRANSFER_PENDING,
+                            ExpenseState.TRANSFER_PENDING,
                             it
                         )
                     }
                     val dummyDatTransferred = (27..30).map {
                         makeFakeItemWithState(
-                            com.kappzzang.jeongsan.model.ExpenseState.TRANSFERED,
+                            ExpenseState.TRANSFERED,
                             it
                         )
                     }

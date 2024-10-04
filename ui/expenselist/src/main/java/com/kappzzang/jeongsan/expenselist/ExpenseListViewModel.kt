@@ -2,6 +2,7 @@ package com.kappzzang.jeongsan.expenselist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kappzzang.jeongsan.data.ExpenseListViewUIData
 import com.kappzzang.jeongsan.model.ExpenseListResponse
 import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.usecase.GetCurrentGroupInfoUseCase
@@ -22,16 +23,15 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class ExpenseListViewModel @Inject constructor(
-    private val getCurrentGroupInfoUseCase:
-    com.kappzzang.jeongsan.usecase.GetCurrentGroupInfoUseCase,
-    private val getExpenseListUseCase: com.kappzzang.jeongsan.usecase.GetExpenseListUseCase
+    private val getCurrentGroupInfoUseCase: GetCurrentGroupInfoUseCase,
+    private val getExpenseListUseCase: GetExpenseListUseCase
 ) : ViewModel() {
 
     private var expenseListFetchingJob: Job? = null
     private var groupId: String = ""
 
     private val expenseList =
-        MutableStateFlow(com.kappzzang.jeongsan.model.ExpenseListResponse.emptyList())
+        MutableStateFlow(ExpenseListResponse.emptyList())
     private val groupName = MutableStateFlow("")
 
     private val _selectedExpense = MutableStateFlow("")
@@ -71,7 +71,7 @@ class ExpenseListViewModel @Inject constructor(
         expenseListFetchingJob?.cancel()
     }
 
-    private fun fetchExpenseList(expenseState: com.kappzzang.jeongsan.model.ExpenseState) {
+    private fun fetchExpenseList(expenseState: ExpenseState) {
         cancelPreviousJob()
         expenseListFetchingJob = viewModelScope.launch(Dispatchers.IO) {
             getExpenseListUseCase(groupId, expenseState)
@@ -85,13 +85,13 @@ class ExpenseListViewModel @Inject constructor(
     private fun fetchCalculatingExpenseList() {
         cancelPreviousJob()
         expenseListFetchingJob = viewModelScope.launch(Dispatchers.IO) {
-            getExpenseListUseCase(groupId, com.kappzzang.jeongsan.model.ExpenseState.CONFIRMED).zip(
+            getExpenseListUseCase(groupId, ExpenseState.CONFIRMED).zip(
                 getExpenseListUseCase(
                     groupId,
-                    com.kappzzang.jeongsan.model.ExpenseState.NOT_CONFIRMED
+                    ExpenseState.NOT_CONFIRMED
                 )
             ) { confirmed, notConfirmed ->
-                com.kappzzang.jeongsan.model.ExpenseListResponse(
+                ExpenseListResponse(
                     expenseList = confirmed.expenseList.toMutableList() + notConfirmed.expenseList,
                     totalPrice = confirmed.totalPrice + notConfirmed.totalPrice,
                     totalExpenseToSend = 0
@@ -113,15 +113,15 @@ class ExpenseListViewModel @Inject constructor(
     }
 
     fun clickPendSendingMenuButton() {
-        fetchExpenseList(com.kappzzang.jeongsan.model.ExpenseState.TRANSFER_PENDING)
+        fetchExpenseList(ExpenseState.TRANSFER_PENDING)
     }
 
     fun clickOnCalculatingMenuButton() {
-        fetchExpenseList(com.kappzzang.jeongsan.model.ExpenseState.NOT_CONFIRMED)
+        fetchExpenseList(ExpenseState.NOT_CONFIRMED)
     }
 
     fun clickSentCompleteMenuButton() {
-        fetchExpenseList(com.kappzzang.jeongsan.model.ExpenseState.TRANSFERED)
+        fetchExpenseList(ExpenseState.TRANSFERED)
     }
 
     fun clickAllExpensesChipButton() {
@@ -129,11 +129,11 @@ class ExpenseListViewModel @Inject constructor(
     }
 
     fun clickOnlyNotConfirmedExpensesChipButton() {
-        fetchExpenseList(com.kappzzang.jeongsan.model.ExpenseState.NOT_CONFIRMED)
+        fetchExpenseList(ExpenseState.NOT_CONFIRMED)
     }
 
     fun clickOnlyConfirmedExpensesChipButton() {
-        fetchExpenseList(com.kappzzang.jeongsan.model.ExpenseState.CONFIRMED)
+        fetchExpenseList(ExpenseState.CONFIRMED)
     }
 
     fun updateGroupId(groupId: String) {

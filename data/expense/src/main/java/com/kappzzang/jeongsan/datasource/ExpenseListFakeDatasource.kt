@@ -1,9 +1,10 @@
 package com.kappzzang.jeongsan.datasource
 
 import com.kappzzang.jeongsan.datasource.expense.ExpenseDatabase
-import com.kappzzang.jeongsan.domain.model.ExpenseListResponse
-import com.kappzzang.jeongsan.domain.model.ReceiptItem
+import com.kappzzang.jeongsan.mapper.ExpenseEntityMapper
+import com.kappzzang.jeongsan.model.ExpenseListResponse
 import com.kappzzang.jeongsan.model.ExpenseState
+import com.kappzzang.jeongsan.model.ReceiptItem
 import java.sql.Timestamp
 import javax.inject.Inject
 import kotlinx.coroutines.delay
@@ -12,9 +13,7 @@ import kotlinx.coroutines.flow.flow
 
 class ExpenseListFakeDatasource @Inject constructor(private val expenseDatabase: ExpenseDatabase) {
 
-    fun getExpenseData(
-        expenseState: com.kappzzang.jeongsan.model.ExpenseState
-    ): Flow<ExpenseListResponse> = flow {
+    fun getExpenseData(expenseState: ExpenseState): Flow<ExpenseListResponse> = flow {
         delay(1000)
         val result =
             when (expenseState) {
@@ -48,7 +47,7 @@ class ExpenseListFakeDatasource @Inject constructor(private val expenseDatabase:
             totalPrice = receiptItem.expenseDetailItemList.sumOf { it.itemPrice * it.itemQuantity },
             createdTime = Timestamp(System.currentTimeMillis()).toString(),
             categoryColor = receiptItem.categoryColor,
-            expenseState = com.kappzzang.jeongsan.model.ExpenseState.CONFIRMED.ordinal
+            expenseState = ExpenseState.CONFIRMED.ordinal
         )
 
         expenseDatabase.expenseDao().addExpense(expenseEntity)

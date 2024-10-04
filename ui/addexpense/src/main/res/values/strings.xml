@@ -8,9 +8,4 @@
     <string name="add_expense_submit">완료</string>
     <string name="add_expense_name">매장명</string>
     <string name="add_expense_add_picture_text">사진 추가</string>
-
-    <string name="item_expense_name">상품명</string>
-    <string name="item_expense_price">단가</string>
-    <string name="item_expense_quantity">수량</string>
-    <string name="item_expense_selected_quantity">선택 수량</string>
 </resources>
