@@ -19,10 +19,6 @@
     <string name="expenselist_add_expense_from_camera">영수증 촬영</string>
     <string name="expenselist_add_expense_manually">직접 입력</string>
 
-    <!-- 지출 목록 상단 메뉴 -->
-    <string name="menu_invite_status">초대 현황</string>
-    <string name="menu_end_group">모임 종료</string>
-
     <!-- 초대 현황 페이지 -->
     <string name="invite_info_title">초대 현황</string>
 
