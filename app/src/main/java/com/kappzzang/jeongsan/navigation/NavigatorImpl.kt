@@ -29,7 +29,6 @@ class NavigatorImpl @Inject constructor(private val context: Context): AppNaviga
 
     override fun navigateToLogin(packageContext: Context): Intent =
         Intent(packageContext, LoginActivity::class.java)
-    }
 
     override fun navigateToAddExpense(packageContext: Context): Intent =
         Intent(packageContext, AddExpenseActivity::class.java)

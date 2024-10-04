@@ -67,6 +67,7 @@ dependencies {
     implementation(project(":data:data-group"))
     implementation(project(":data:data-ocr"))
     implementation(project(":data:data-user"))
+    implementation("androidx.room:room-ktx:2.6.1")
     project(":common:util")
     project(":common:androidutil")
     implementation(project(":common:navigation"))

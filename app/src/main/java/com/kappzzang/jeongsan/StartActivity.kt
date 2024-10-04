@@ -16,7 +16,7 @@ class StartActivity : AppCompatActivity() {
 
         // TODO: 임시로 바로 로그인 페이지로 이동
         // 이후 로그인 정보를 통해 바로 메인 페이지로 보내거나 결정하는 로직
-        appNavigator.navigateToLogin().also {
+        appNavigator.navigateToLogin(this).also {
             startActivity(it)
         }
     }
