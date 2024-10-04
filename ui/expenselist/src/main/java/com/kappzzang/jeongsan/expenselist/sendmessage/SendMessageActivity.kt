@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.kappzzang.jeongsan.creategroup.Member
+import com.kappzzang.jeongsan.data.Member
 import com.kappzzang.jeongsan.creategroup.MemberAdapter
 import com.kappzzang.jeongsan.expenselist.R
 import com.kappzzang.jeongsan.expenselist.databinding.ActivitySendMessageBinding
@@ -24,10 +24,10 @@ class SendMessageActivity : AppCompatActivity() {
             )
         }
 
-        val members = mutableListOf<Member>()
+        val members = mutableListOf<com.kappzzang.jeongsan.data.Member>()
         for (i in 0..3) {
             members.add(
-                Member("Member$i")
+                com.kappzzang.jeongsan.data.Member("Member$i")
             )
         }
         binding.infoContentRecyclerview.apply {

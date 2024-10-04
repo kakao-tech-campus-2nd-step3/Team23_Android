@@ -1,4 +1,4 @@
-package com.kappzzang.jeongsan.main
+package com.kappzzang.jeongsan.data
 
 import com.kappzzang.jeongsan.model.GroupItem
 

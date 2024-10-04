@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.kappzzang.jeongsan.data.GroupViewItem
+import com.kappzzang.jeongsan.expenselist.ExpenseListActivity
 import com.kappzzang.jeongsan.main.databinding.ItemMainDoneTitleBinding
 import com.kappzzang.jeongsan.main.databinding.ItemMainGroupBinding
 import com.kappzzang.jeongsan.main.databinding.ItemMainProgressTitleBinding
@@ -29,7 +31,7 @@ class GroupListAdapter : ListAdapter<GroupViewItem, RecyclerView.ViewHolder>(dif
                 val intent =
                     Intent(
                         binding.root.context,
-                        com.kappzzang.jeongsan.expenselist.ExpenseListActivity::class.java
+                        ExpenseListActivity::class.java
                     )
                 currentList[bindingAdapterPosition].let { currentViewItem ->
                     if (currentViewItem is GroupViewItem.Group) {

@@ -5,6 +5,7 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.creategroup.databinding.ActivityCreateGroupBinding
+import com.kappzzang.jeongsan.data.Member
 
 class CreateGroupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
