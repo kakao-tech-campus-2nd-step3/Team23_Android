@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kappzzang.jeongsan.addexpense.databinding.ItemExpenseItemBinding
+import com.kappzzang.jeongsan.data.ExpenseItemInput
 
 class ExpenseItemListAdapter(
     private val onAddItem: () -> Unit,

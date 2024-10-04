@@ -9,4 +9,5 @@ dependencies {
     implementation(project(":domain:group"))
     implementation(project(":domain:expense"))
     implementation(project(":domain:ocr"))
+    implementation(project(":ui:data"))
 }

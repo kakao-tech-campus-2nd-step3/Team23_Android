@@ -1,4 +1,4 @@
-package com.kappzzang.jeongsan.expenselist
+package com.kappzzang.jeongsan.data
 
 import com.kappzzang.jeongsan.model.ExpenseItem
 

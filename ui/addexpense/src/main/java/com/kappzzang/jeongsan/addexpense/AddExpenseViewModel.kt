@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.util.Base64
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kappzzang.jeongsan.data.ExpenseItemInput
 import com.kappzzang.jeongsan.model.OcrResultResponse
 import com.kappzzang.jeongsan.model.ReceiptDetailItem
 import com.kappzzang.jeongsan.model.ReceiptItem
@@ -17,11 +18,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-private fun createDemoItem(index: Int): ExpenseItemInput = ExpenseItemInput(
-    itemName = "item $index",
-    itemPrice = 100 * index,
-    itemQuantity = index % 4 + 1
-)
+private fun createDemoItem(index: Int): ExpenseItemInput =
+    ExpenseItemInput(
+        itemName = "item $index",
+        itemPrice = 100 * index,
+        itemQuantity = index % 4 + 1
+    )
 
 private fun createDemoList(): List<ExpenseItemInput> = listOf(
     createDemoItem(0),
@@ -55,7 +57,8 @@ class AddExpenseViewModel @Inject constructor(
     val expenseImageBitmap: StateFlow<Bitmap?> = _expenseImageBitmap.asStateFlow()
     val manualMode: StateFlow<Boolean> = _manualMode.asStateFlow()
     val uploadedImage: StateFlow<Boolean> = _uploadedImage.asStateFlow()
-    val expenseItemList: StateFlow<List<ExpenseItemInput>> = _expenseItemList.asStateFlow()
+    val expenseItemList: StateFlow<List<ExpenseItemInput>> =
+        _expenseItemList.asStateFlow()
     val expenseName = MutableStateFlow("Demo")
 
     fun setManualMode(mode: ManualMode) {
@@ -71,7 +74,11 @@ class AddExpenseViewModel @Inject constructor(
             expenseName.emit(ocrResult.name)
             _expenseItemList.emit(
                 ocrResult.detailItems.map {
-                    ExpenseItemInput(it.itemName, it.itemPrice, it.itemQuantity)
+                    ExpenseItemInput(
+                        it.itemName,
+                        it.itemPrice,
+                        it.itemQuantity
+                    )
                 } + _expenseItemList.value
             )
         }
@@ -90,13 +97,17 @@ class AddExpenseViewModel @Inject constructor(
     }
 
     private suspend fun createEmptyList() {
-        _expenseItemList.emit(listOf<ExpenseItemInput>())
+        _expenseItemList.emit(emptyList())
     }
 
     fun addNewExpense() {
         viewModelScope.launch(Dispatchers.Main) {
             _expenseItemList.emit(
-                _expenseItemList.value + ExpenseItemInput(null, null, null)
+                _expenseItemList.value + ExpenseItemInput(
+                    null,
+                    null,
+                    null
+                )
             )
         }
     }
