@@ -7,6 +7,5 @@ import javax.inject.Inject
 class GetDoneGroupUseCase @Inject constructor(
     private val groupInfoRepository: GroupInfoRepository
 ) {
-    suspend operator fun invoke(): List<GroupItem> =
-        groupInfoRepository.getDoneGroupInfo()
+    suspend operator fun invoke(): List<GroupItem> = groupInfoRepository.getDoneGroupInfo()
 }

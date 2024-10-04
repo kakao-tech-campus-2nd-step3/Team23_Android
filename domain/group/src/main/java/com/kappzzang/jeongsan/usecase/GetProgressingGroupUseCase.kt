@@ -7,6 +7,5 @@ import javax.inject.Inject
 class GetProgressingGroupUseCase @Inject constructor(
     private val groupInfoRepository: GroupInfoRepository
 ) {
-    suspend operator fun invoke(): List<GroupItem> =
-        groupInfoRepository.getProgressingGroupInfo()
+    suspend operator fun invoke(): List<GroupItem> = groupInfoRepository.getProgressingGroupInfo()
 }
