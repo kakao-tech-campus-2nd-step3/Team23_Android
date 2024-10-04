@@ -3,7 +3,7 @@
     <application>
         <activity
             android:name=".AddExpenseActivity"
-            android:exported="true"
+            android:exported="false"
             android:windowSoftInputMode="adjustNothing" />
     </application>
 </manifest>

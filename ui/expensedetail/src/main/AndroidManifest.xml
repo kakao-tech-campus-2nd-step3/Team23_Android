@@ -3,6 +3,6 @@
     <application>
         <activity
             android:name=".ExpenseDetailActivity"
-            android:exported="true" />
+            android:exported="false" />
     </application>
 </manifest>
