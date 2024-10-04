@@ -1,7 +1,7 @@
 package com.kappzzang.jeongsan.repositoryimpl
 
-import com.kappzzang.jeongsan.domain.model.UserItem
-import com.kappzzang.jeongsan.domain.repository.UserInfoRepository
+import com.kappzzang.jeongsan.model.UserItem
+import com.kappzzang.jeongsan.repository.UserInfoRepository
 import javax.inject.Inject
 
 class UserInfoRepositoryImpl @Inject constructor() : UserInfoRepository {

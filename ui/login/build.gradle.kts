@@ -1,6 +1,7 @@
 android {
-    namespace = "com.kappzzang.login"
+    namespace = "com.kappzzang.jeongsan.login"
 }
 
 dependencies {
+    implementation(project(":app"))
 }
