@@ -20,18 +20,23 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.kappzzang.jeongsan.addexpense.AddExpenseActivity
-import com.kappzzang.jeongsan.camera.ReceiptCameraActivity
 import com.kappzzang.jeongsan.expenselist.databinding.ActivityExpenseListBinding
 import com.kappzzang.jeongsan.expenselist.inviteinfo.InviteInfoActivity
 import com.kappzzang.jeongsan.expenselist.sendmessage.SendMessageActivity
+import com.kappzzang.jeongsan.intentcontract.AddExpenseContract
+import com.kappzzang.jeongsan.intentcontract.ExpenseListContract
+import com.kappzzang.jeongsan.intentcontract.ReceiptCameraContract
 import com.kappzzang.jeongsan.model.OcrResultResponse
+import com.kappzzang.jeongsan.navigation.AppNavigator
 import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ExpenseListActivity : AppCompatActivity() {
+    @Inject
+    private lateinit var appNavigator: AppNavigator
     private val viewModel: ExpenseListViewModel by viewModels()
     private val binding: ActivityExpenseListBinding by lazy {
         val mBinding = ActivityExpenseListBinding.inflate(layoutInflater)
@@ -60,7 +65,7 @@ class ExpenseListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        viewModel.updateGroupId(intent.extras?.getString("groupId").toString())
+        viewModel.updateGroupId(intent.extras?.getString(ExpenseListContract.GROUP_ID).toString())
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -101,6 +106,8 @@ class ExpenseListActivity : AppCompatActivity() {
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 return@setOnMenuItemClickListener when (menuItem.itemId) {
                     R.id.menu_invite_status -> {
+
+                        // TODO: Dialog로 대체
                         startActivity(
                             Intent(
                                 this,
@@ -136,11 +143,11 @@ class ExpenseListActivity : AppCompatActivity() {
     ) {
         val intent = makeAddExpenseActivityIntent(false)
         intent.putExtra(
-            AddExpenseActivity.EXPENSE_DATA,
+            AddExpenseContract.EXPENSE_DATA,
             ocrResult
         )
         intent.putExtra(
-            AddExpenseActivity.EXPENSE_IMAGE,
+            AddExpenseContract.EXPENSE_IMAGE,
             receiptImage
         )
 
@@ -152,10 +159,10 @@ class ExpenseListActivity : AppCompatActivity() {
             val resultIntent: Intent? = it.data
             val data =
                 resultIntent?.getParcelableData<OcrResultResponse>(
-                    ReceiptCameraActivity.OCR_RESULT
+                    ReceiptCameraContract.OCR_RESULT
                 )
             val image = resultIntent?.getParcelableData<Uri>(
-                ReceiptCameraActivity.OCR_RESULT_IMAGE
+                ReceiptCameraContract.OCR_RESULT_IMAGE
             )
 
             if (it.resultCode == RESULT_OK) {
@@ -200,7 +207,7 @@ class ExpenseListActivity : AppCompatActivity() {
             setMessage(
                 String.format(
                     getString(R.string.dialog_body_ask_camera),
-                    getString(R.string.app_name)
+                    getString(com.kappzzang.jeongsan.R.string.app_name)
                 )
             )
             setPositiveButton(getString(R.string.dialog_allow)) { _, _ ->
@@ -215,17 +222,14 @@ class ExpenseListActivity : AppCompatActivity() {
     }
 
     private fun makeAddExpenseActivityIntent(isManual: Boolean): Intent {
-        val intent = Intent(
-            this,
-            AddExpenseActivity::class.java
-        )
+        val intent = appNavigator.navigateToAddExpense(this)
 
         intent.putExtra(
-            AddExpenseActivity.INTENT_EXPENSE_MODE,
+            AddExpenseContract.INTENT_EXPENSE_MODE,
             if (isManual) {
-                AddExpenseActivity.EXPENSE_MODE_MANUAL
+                AddExpenseContract.EXPENSE_MODE_MANUAL
             } else {
-                AddExpenseActivity.EXPENSE_MODE_RECEIPT
+                AddExpenseContract.EXPENSE_MODE_RECEIPT
             }
         )
 
@@ -263,11 +267,7 @@ class ExpenseListActivity : AppCompatActivity() {
     }
 
     private fun startCameraActivity() {
-        val intent =
-            Intent(
-                applicationContext,
-                ReceiptCameraActivity::class.java
-            )
+        val intent = appNavigator.navigateToCamera(applicationContext)
         activityReceiptCameraLauncher.launch(intent)
     }
 

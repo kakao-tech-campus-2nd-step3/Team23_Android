@@ -8,6 +8,7 @@ import com.kappzzang.jeongsan.data.Member
 import com.kappzzang.jeongsan.expenselist.MemberAdapter
 import com.kappzzang.jeongsan.expenselist.R
 import com.kappzzang.jeongsan.expenselist.databinding.ActivitySendMessageBinding
+import com.kappzzang.jeongsan.expenselist.sendcomplete.SendCompleteActivity
 
 class SendMessageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,11 +16,12 @@ class SendMessageActivity : AppCompatActivity() {
         val binding = ActivitySendMessageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // TODO: Dialog로 대체
         binding.sendMessageButton.setOnClickListener {
             startActivity(
                 Intent(
                     this,
-                    com.kappzzang.jeongsan.expenselist.sendcomplete.SendCompleteActivity::class.java
+                    SendCompleteActivity::class.java
                 )
             )
         }
@@ -31,7 +33,11 @@ class SendMessageActivity : AppCompatActivity() {
             )
         }
         binding.infoContentRecyclerview.apply {
-            adapter = MemberAdapter(members.toList(), layoutInflater, R.layout.item_member)
+            adapter = MemberAdapter(
+                members.toList(),
+                layoutInflater,
+                com.kappzzang.jeongsan.R.layout.item_member
+            )
             layoutManager = LinearLayoutManager(
                 this@SendMessageActivity,
                 LinearLayoutManager.VERTICAL,
