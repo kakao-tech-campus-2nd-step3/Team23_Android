@@ -1,7 +1,7 @@
 package com.kappzzang.jeongsan.datasource
 
+import com.kappzzang.jeongsan.entity.OcrResultDetailItem
 import com.kappzzang.jeongsan.entity.OcrResultEntity
-import com.kappzzang.jeongsan.entity.OcrResultItem
 import javax.inject.Inject
 import kotlinx.coroutines.delay
 
@@ -13,22 +13,22 @@ class ReceiptCaptureFakeDatasource @Inject constructor() {
             title = "Test Success Result",
             paymentTime = "2020-04-16 20:11:00",
             items = listOf(
-                OcrResultItem(
+                OcrResultDetailItem(
                     name = "감자",
                     quantity = 4,
                     unitPrice = 1200
                 ),
-                OcrResultItem(
+                OcrResultDetailItem(
                     name = "토마토",
                     quantity = 1,
                     unitPrice = 1500
                 ),
-                OcrResultItem(
+                OcrResultDetailItem(
                     name = "당근",
                     quantity = 10,
                     unitPrice = 400
                 ),
-                OcrResultItem(
+                OcrResultDetailItem(
                     name = "양배추",
                     quantity = 2,
                     unitPrice = 3000
