@@ -197,9 +197,4 @@ class ReceiptCameraActivity : AppCompatActivity() {
 //            putExtra(OCR_RESULT, response)
 //            putExtra(OCR_RESULT_IMAGE, viewModel.pictureData.value)
 //        }
-
-    companion object {
-        const val OCR_RESULT = "ocr_result"
-        const val OCR_RESULT_IMAGE = "ocr_result_image"
-    }
 }

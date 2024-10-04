@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.androidutil"
+    namespace = "com.kappzzang.jeongsan.navigation"
     compileSdk = 34
 
     defaultConfig {
