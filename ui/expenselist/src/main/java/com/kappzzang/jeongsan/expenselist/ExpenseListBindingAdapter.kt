@@ -7,7 +7,10 @@ import kotlinx.coroutines.flow.StateFlow
 object ExpenseListBindingAdapter {
     @BindingAdapter("expenseItems")
     @JvmStatic
-    fun attachExpenseList(recyclerView: RecyclerView, items: StateFlow<com.kappzzang.jeongsan.data.ExpenseListViewUIData>?) {
+    fun attachExpenseList(
+        recyclerView: RecyclerView,
+        items: StateFlow<com.kappzzang.jeongsan.data.ExpenseListViewUIData>?
+    ) {
         items?.let {
             (recyclerView.adapter as? ExpenseListAdapter)
                 ?.submitList(

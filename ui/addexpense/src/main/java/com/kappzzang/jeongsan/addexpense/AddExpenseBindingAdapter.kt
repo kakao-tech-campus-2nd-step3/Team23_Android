@@ -53,7 +53,10 @@ object AddExpenseBindingAdapter {
 
     @BindingAdapter("app:items")
     @JvmStatic
-    fun attachList(recyclerView: RecyclerView, items: StateFlow<List<com.kappzzang.jeongsan.data.ExpenseItemInput>>?) {
+    fun attachList(
+        recyclerView: RecyclerView,
+        items: StateFlow<List<com.kappzzang.jeongsan.data.ExpenseItemInput>>?
+    ) {
         items?.let {
             (recyclerView.adapter as? ExpenseItemListAdapter)?.submitList(it.value)
         }
