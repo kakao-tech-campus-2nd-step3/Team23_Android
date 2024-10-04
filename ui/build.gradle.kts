@@ -38,6 +38,7 @@ subprojects {
         implementation(project(":common:androidutil"))
         implementation(project(":common:util"))
         implementation(project(":common:resource"))
+        api(project(":common:navigation"))
 
         implementation("androidx.core:core-ktx:1.13.1")
         implementation("androidx.appcompat:appcompat:1.7.0")
