@@ -1,17 +1,11 @@
 # KAPP짱 - 正산
 경북대 23조 안드로이드
+## 멀티 모듈 적용 상태 코드 리뷰 요청
+현재 저희 앱에 멀티 모듈 아키텍처를 적용했는데 구조가 잘 적용되었는지 확인해주시면 감사하겠습니다!
 
-## 💬 3주차 코드리뷰 받고 싶은 부분
-1. 현재 각 페이지가 전부 액티비티 단위로 구현돼 있는데, 지출 조회 같은 일부 페이지는 프래그먼트로 구현하는게 더 나을지 궁금합니다!
-2. 레이아웃 설계에서 구조적으로 비효율적인 부분이나, 개선의 여지가 있는지 궁금합니다!
-
-## 📷 구현 사진 & 영상
-
-https://github.com/user-attachments/assets/919cd33c-aa56-40da-899d-80162629d390
-
-<img src="https://github.com/user-attachments/assets/b3574de4-8eed-4873-b49c-dc0d455a1165" height="600">
-<img src="https://github.com/user-attachments/assets/966daca5-b714-485e-a5c4-3d7709f363b1" height="600">
-<img src="https://github.com/user-attachments/assets/4284a490-c3d7-4864-8a66-08771256eb77" height="600">
-
-<img src="https://github.com/user-attachments/assets/2e1c19b0-1557-4259-ba79-046e88d069c1" height="430">
-<img src="https://github.com/user-attachments/assets/60bb1333-83d0-4edb-b5ff-1180e462f27a" height="430">
+### 질문
+1. 현재 모듈 분리가 기능별로 적절하게 이루어졌는지 확인 부탁드립니다!
+2. 모듈 간의 의존성 설정이 올바른지 피드백 부탁드립니다!
+3. 추가로 아키텍처에서 개선이 필요한 부분이 있다면 조언 부탁드립니다!
+4. 같은 계층의 다른 모듈 간 참조는 지양하라고 들었습니다. 서로 다른 도메인 모듈 간에 하나의 모델을 불가피하게 공유해야할 때 어떻게 처리하는 게 좋을지 궁금합니다.
+5. 현재 Git Action을 이용해 CI를 수행하는데, 수정된 모듈에서만 빌드를 진행하게 할 수 있을지 궁금합니다.

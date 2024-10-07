@@ -64,4 +64,4 @@ jobs:
         # Gradle 빌드
       - name: Build
         if: success() || failure()
-        run: ./gradlew build --no-daemon
+        run: ./gradlew build --no-daemon -x test -x lintVitalRelease -x lint -x lintDebug

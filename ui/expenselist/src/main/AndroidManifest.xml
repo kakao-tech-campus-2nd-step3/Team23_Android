@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application>
+        <activity
+            android:name=".ExpenseListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".inviteinfo.InviteInfoActivity"
+            android:exported="false"
+            android:theme="@style/invite_info_theme" />
+        <activity
+            android:name=".sendmessage.SendMessageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".sendcomplete.SendCompleteActivity"
+            android:exported="false" />
+    </application>
+</manifest>
