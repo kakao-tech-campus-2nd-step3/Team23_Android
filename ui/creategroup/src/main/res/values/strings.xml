@@ -9,4 +9,12 @@
     <string name="create_group_member_menu">멤버 추가</string>
     <string name="create_group_add_button">+ 추가</string>
     <string name="create_group_button">모임 생성하기</string>
+    <string-array name="create_group_category_items">
+        <item>✈️ 여행</item>
+        <item>🍽️ 식사</item>
+        <item>🛒 쇼핑</item>
+        <item>⚽ 스포츠/운동</item>
+        <item>🍻 회식</item>
+        <item>🗂️ 기타</item>
+    </string-array>
 </resources>

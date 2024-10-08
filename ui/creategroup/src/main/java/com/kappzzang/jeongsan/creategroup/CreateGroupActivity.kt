@@ -8,10 +8,14 @@ import com.kappzzang.jeongsan.creategroup.databinding.ActivityCreateGroupBinding
 import com.kappzzang.jeongsan.data.Member
 
 class CreateGroupActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityCreateGroupBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityCreateGroupBinding.inflate(layoutInflater)
+        binding = ActivityCreateGroupBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        initSpinner()
 
         val members = mutableListOf<Member>()
         for (i in 0..10) {
@@ -19,8 +23,6 @@ class CreateGroupActivity : AppCompatActivity() {
                 Member("Member$i")
             )
         }
-
-        val category = resources.getStringArray(R.array.group_category)
 
         binding.memberContentRecyclerview.adapter =
             MemberAdapter(
@@ -35,17 +37,21 @@ class CreateGroupActivity : AppCompatActivity() {
             false
         )
 
-        binding.groupCategoryContentSpinner.apply {
-            adapter = ArrayAdapter(
-                this@CreateGroupActivity,
-                android.R.layout.simple_spinner_dropdown_item,
-                category
-            )
-        }
-
         // TODO: 임시 연결용 코드
         binding.createGroupButton.setOnClickListener {
             finish()
+        }
+    }
+
+    private fun initSpinner() {
+        ArrayAdapter.createFromResource(
+            this@CreateGroupActivity,
+            R.array.create_group_category_items,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.groupCategoryContentSpinner.adapter = adapter
+            binding.groupCategoryContentSpinner.setSelection(adapter.count - 1)
         }
     }
 }
