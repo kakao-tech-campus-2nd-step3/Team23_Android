@@ -6,6 +6,7 @@ android {
     namespace = "com.kappzzang.jeongsan.user"
 }
 dependencies {
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
     implementation("com.kakao.sdk:v2-user:2.20.6")
     implementation(project(":domain:user"))
     implementation(project(":common:androidutil"))

@@ -5,25 +5,19 @@ import com.kappzzang.jeongsan.data.AuthData
 import com.kappzzang.jeongsan.datasource.AuthLocalDataSource
 import com.kappzzang.jeongsan.util.AuthenticationRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 internal class AuthenticationRepositoryImpl
 @Inject constructor(
-    @ApplicationContext private val context: Context,
-    datasource: AuthLocalDataSource
+    private val datasource: AuthLocalDataSource
 ) : AuthenticationRepository {
 
-
-    override suspend fun getAuthData(): AuthData {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getAuthData(): Flow<AuthData> =
+        datasource.getAuthDataFlow()
 
     override suspend fun updateAuthData(newData: AuthData) {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun checkHasAuthData(): Boolean {
-        TODO("Not yet implemented")
+        datasource.updatePreference(newData)
     }
 
     override suspend fun removeAuthData() {
