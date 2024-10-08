@@ -9,10 +9,18 @@ import com.bumptech.glide.Glide
 import com.kappzzang.jeongsan.creategroup.databinding.ItemMemberInviteBinding
 import com.kappzzang.jeongsan.data.MemberUIData
 
-class MemberAdapter() : ListAdapter<MemberUIData, MemberAdapter.MemberViewHolder>(diffUtil) {
+class MemberAdapter(
+    private val onDeleteMember: (Int) -> Unit
+) : ListAdapter<MemberUIData, MemberAdapter.MemberViewHolder>(diffUtil) {
 
     inner class MemberViewHolder(private val binding: ItemMemberInviteBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.deleteButton.setOnClickListener {
+                onDeleteMember(bindingAdapterPosition)
+            }
+        }
 
         fun bind(memberUIData: MemberUIData) {
             binding.profileNameTextview.text = memberUIData.name
