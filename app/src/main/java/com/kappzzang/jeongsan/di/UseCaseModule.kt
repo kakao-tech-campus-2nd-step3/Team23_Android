@@ -14,6 +14,7 @@ import com.kappzzang.jeongsan.usecase.GetInviteInfoUseCase
 import com.kappzzang.jeongsan.usecase.GetProgressingGroupUseCase
 import com.kappzzang.jeongsan.usecase.GetUserInfoUseCase
 import com.kappzzang.jeongsan.usecase.UploadExpenseUseCase
+import com.kappzzang.jeongsan.usecase.UploadGroupInfoUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -54,4 +55,8 @@ object UseCaseModule {
     @Provides
     fun provideUploadExpenseUseCase(receiptRepository: ReceiptRepository) =
         UploadExpenseUseCase(receiptRepository)
+
+    @Provides
+    fun provideUploadGroupInfoUseCase(groupInfoRepository: GroupInfoRepository) =
+        UploadGroupInfoUseCase(groupInfoRepository)
 }
