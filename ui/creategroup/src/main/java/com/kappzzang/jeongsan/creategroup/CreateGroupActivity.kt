@@ -1,14 +1,25 @@
 package com.kappzzang.jeongsan.creategroup
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.creategroup.databinding.ActivityCreateGroupBinding
-import com.kappzzang.jeongsan.data.Member
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class CreateGroupActivity : AppCompatActivity() {
+    private val viewModel: CreateGroupViewModel by viewModels()
     private lateinit var binding: ActivityCreateGroupBinding
+    private lateinit var memberAdapter: MemberAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,26 +27,8 @@ class CreateGroupActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initSpinner()
-
-        val members = mutableListOf<Member>()
-        for (i in 0..10) {
-            members.add(
-                Member("Member$i")
-            )
-        }
-
-        binding.memberContentRecyclerview.adapter =
-            MemberAdapter(
-                members.toList(),
-                layoutInflater,
-                R.layout.item_member_invite
-            )
-
-        binding.memberContentRecyclerview.layoutManager = LinearLayoutManager(
-            this,
-            LinearLayoutManager.VERTICAL,
-            false
-        )
+        initRecyclerView()
+        setGroupNameObserver()
 
         // TODO: 임시 연결용 코드
         binding.createGroupButton.setOnClickListener {
@@ -53,5 +46,49 @@ class CreateGroupActivity : AppCompatActivity() {
             binding.groupCategoryContentSpinner.adapter = adapter
             binding.groupCategoryContentSpinner.setSelection(adapter.count - 1)
         }
+
+        binding.groupCategoryContentSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    val selectedItem = parent.getItemAtPosition(position).toString()
+                    val targetEmoji = selectedItem.substringBefore(' ')
+                    viewModel.updateGroupSubject(targetEmoji)
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    Log.d("CreateGroupActivity", "Nothing selected")
+                }
+            }
+    }
+
+    private fun initRecyclerView() {
+        memberAdapter = MemberAdapter(viewModel::removeMember)
+        binding.memberContentRecyclerview.apply {
+            adapter = memberAdapter
+            layoutManager = LinearLayoutManager(this@CreateGroupActivity)
+        }
+
+        lifecycleScope.launch {
+            viewModel.groupMemberList.collect { memberList ->
+                memberAdapter.submitList(memberList)
+            }
+        }
+    }
+
+    private fun setGroupNameObserver() {
+        binding.groupNameValueEdittext.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                viewModel.updateGroupName(s.toString())
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
     }
 }
