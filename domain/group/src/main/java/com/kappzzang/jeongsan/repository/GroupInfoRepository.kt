@@ -1,5 +1,6 @@
 package com.kappzzang.jeongsan.repository
 
+import com.kappzzang.jeongsan.model.GroupCreateItem
 import com.kappzzang.jeongsan.model.GroupItem
 import kotlinx.coroutines.flow.Flow
 
@@ -14,4 +15,6 @@ interface GroupInfoRepository {
      *  @return 그룹 정보
      */
     fun getGroupInfo(groupId: String): Flow<GroupItem>
+
+    suspend fun uploadGroupInfo(createdGroup: GroupCreateItem)
 }
