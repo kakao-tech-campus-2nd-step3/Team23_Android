@@ -17,4 +17,5 @@
         <item>🍻 회식</item>
         <item>🗂️ 기타</item>
     </string-array>
+    <string name="create_group_empty_info">모임 정보를 모두 완성해주세요!</string>
 </resources>

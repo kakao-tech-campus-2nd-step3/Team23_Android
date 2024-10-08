@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -29,11 +30,8 @@ class CreateGroupActivity : AppCompatActivity() {
         initSpinner()
         initRecyclerView()
         setGroupNameObserver()
-
-        // TODO: 임시 연결용 코드
-        binding.createGroupButton.setOnClickListener {
-            finish()
-        }
+        setPickerButton()
+        setCreateGroupButton()
     }
 
     private fun initSpinner() {
@@ -90,5 +88,23 @@ class CreateGroupActivity : AppCompatActivity() {
 
             override fun afterTextChanged(s: Editable?) {}
         })
+    }
+
+    private fun setPickerButton() {
+        binding.addMemberButton.setOnClickListener {
+            viewModel.pickGroupMember()
+        }
+    }
+
+    private fun setCreateGroupButton() {
+        binding.createGroupButton.setOnClickListener {
+            val isUploadSuccess = viewModel.uploadGroupInfo()
+            if (isUploadSuccess) {
+                finish()
+            }
+            else {
+                Toast.makeText(this, getString(R.string.create_group_empty_info), Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }
