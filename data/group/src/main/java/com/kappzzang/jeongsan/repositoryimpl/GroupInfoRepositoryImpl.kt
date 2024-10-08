@@ -2,6 +2,8 @@ package com.kappzzang.jeongsan.repositoryimpl
 
 import com.kappzzang.jeongsan.datasource.group.GroupDatabase
 import com.kappzzang.jeongsan.entity.GroupEntity
+import com.kappzzang.jeongsan.mapper.GroupEntityMapper
+import com.kappzzang.jeongsan.model.GroupCreateItem
 import com.kappzzang.jeongsan.model.GroupItem
 import com.kappzzang.jeongsan.repository.GroupInfoRepository
 import javax.inject.Inject
@@ -37,5 +39,10 @@ class GroupInfoRepositoryImpl @Inject constructor(private val groupDatabase: Gro
                 } ?: GroupItem("0", "", false, "", emptyList())
             } ?: GroupItem("0", "", false, "", emptyList())
         )
+    }
+
+    override suspend fun uploadGroupInfo(createdGroup: GroupCreateItem) {
+        groupDatabase.groupDao()
+            .addGroup(GroupEntityMapper.mapGroupCreateToGroupEntity(createdGroup))
     }
 }
