@@ -6,8 +6,8 @@ import com.kappzzang.jeongsan.data.MemberUIData
 import com.kappzzang.jeongsan.model.GroupCreateItem
 import com.kappzzang.jeongsan.usecase.UploadGroupInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -73,7 +73,7 @@ class CreateGroupViewModel @Inject constructor(
         return true
     }
 
-    private fun checkGroupInfoValidation(): Boolean {
-        return _groupName.value.isNotEmpty() && _groupSubject.value.isNotEmpty() && _groupMemberList.value.isNotEmpty()
-    }
+    private fun checkGroupInfoValidation(): Boolean = _groupName.value.isNotEmpty() &&
+        _groupSubject.value.isNotEmpty() &&
+        _groupMemberList.value.isNotEmpty()
 }

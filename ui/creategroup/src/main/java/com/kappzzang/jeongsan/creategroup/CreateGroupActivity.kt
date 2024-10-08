@@ -101,9 +101,12 @@ class CreateGroupActivity : AppCompatActivity() {
             val isUploadSuccess = viewModel.uploadGroupInfo()
             if (isUploadSuccess) {
                 finish()
-            }
-            else {
-                Toast.makeText(this, getString(R.string.create_group_empty_info), Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(
+                    this,
+                    getString(R.string.create_group_empty_info),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
