@@ -8,9 +8,12 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 internal class AuthenticationRepositoryImpl
-@Inject constructor(@ApplicationContext private val context: Context,
-    datasource: AuthLocalDataSource) :
-    AuthenticationRepository {
+@Inject constructor(
+    @ApplicationContext private val context: Context,
+    datasource: AuthLocalDataSource
+) : AuthenticationRepository {
+
+
     override suspend fun getAuthData(): AuthData {
         TODO("Not yet implemented")
     }

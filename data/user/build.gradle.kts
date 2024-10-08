@@ -1,6 +1,14 @@
+plugins {
+    kotlin("plugin.serialization") version "1.9.0"
+}
+
 android {
     namespace = "com.kappzzang.jeongsan.user"
 }
 dependencies {
+    implementation("com.kakao.sdk:v2-user:2.20.6")
     implementation(project(":domain:user"))
+    implementation(project(":common:androidutil"))
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
+    implementation(project(":common:retrofit"))
 }
