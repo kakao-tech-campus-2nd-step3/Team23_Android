@@ -4,6 +4,9 @@ import com.kappzzang.jeongsan.data.AuthData
 import com.kappzzang.jeongsan.model.AuthenticationResult
 import com.kappzzang.jeongsan.repository.KakaoAuthenticationRepository
 import com.kappzzang.jeongsan.util.AuthenticationRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class AuthenticateWithKakaoUseCase @Inject constructor(
@@ -16,23 +19,27 @@ class AuthenticateWithKakaoUseCase @Inject constructor(
     private fun checkNeedToRefresh(data: AuthData): Boolean =
         (data.accessTokenExpirationTime - getCurrentTime()) < REFRESH_TIME_WITHIN_MILLISECONDS
 
-    suspend operator fun invoke(): AuthenticationResult {
-        if(!authenticationRepository.checkHasAuthData()){
-            return AuthenticationResult.NoToken
-        }
+    private fun checkIsEmptyAuthData(authData: AuthData): Boolean =
+        authData.kakaoAccessToken == ""
 
-        val authData = authenticationRepository.getAuthData()
-        if(checkNeedToRefresh(authData)){
-            val newData = kakaoAuthenticationRepository.refreshKakaoToken(authData)
-            authenticationRepository.updateAuthData(newData)
+    suspend operator fun invoke(): Flow<AuthenticationResult> {
+        val authDataFlow = authenticationRepository.getAuthData()
 
-            return AuthenticationResult.AuthenticationSuccess(
-                authData = authenticationRepository.getAuthData()
-            )
+        return authDataFlow.map { authData ->
+            if(checkIsEmptyAuthData(authData)){
+                AuthenticationResult.NoToken
+            }
+            else{
+                if(checkNeedToRefresh(authData)){
+                    val newData = kakaoAuthenticationRepository.refreshKakaoToken(authData)
+                    authenticationRepository.updateAuthData(newData)
+                    AuthenticationResult.AuthenticationSuccess(newData)
+                }
+                else{
+                    AuthenticationResult.AuthenticationSuccess(authData)
+                }
+            }
         }
-        return AuthenticationResult.AuthenticationSuccess(
-            authData = authData
-        )
     }
 
     companion object {
