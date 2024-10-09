@@ -6,6 +6,7 @@ import com.kappzzang.jeongsan.repository.ExpenseRepository
 import com.kappzzang.jeongsan.repository.GroupInfoRepository
 import com.kappzzang.jeongsan.repository.MemberRepository
 import com.kappzzang.jeongsan.repository.ReceiptRepository
+import com.kappzzang.jeongsan.repository.TransferRepository
 import com.kappzzang.jeongsan.repository.UserInfoRepository
 import com.kappzzang.jeongsan.repositoryimpl.ExpenseDetailRepositoryImpl
 import com.kappzzang.jeongsan.repositoryimpl.ExpenseListFakeRepositoryImpl
@@ -13,6 +14,7 @@ import com.kappzzang.jeongsan.repositoryimpl.ExpenseRepositoryImpl
 import com.kappzzang.jeongsan.repositoryimpl.GroupInfoRepositoryImpl
 import com.kappzzang.jeongsan.repositoryimpl.MemberRepositoryImpl
 import com.kappzzang.jeongsan.repositoryimpl.ReceiptRepositoryImpl
+import com.kappzzang.jeongsan.repositoryimpl.TransferRepositoryImpl
 import com.kappzzang.jeongsan.repositoryimpl.UserInfoRepositoryImpl
 import dagger.Binds
 import dagger.Module
@@ -63,4 +65,10 @@ abstract class RepositoryModule {
     abstract fun bindReceiptRepository(
         receiptRepositoryImpl: ReceiptRepositoryImpl
     ): ReceiptRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindTransferRepository(
+        transferRepositoryImpl: TransferRepositoryImpl
+    ): TransferRepository
 }
