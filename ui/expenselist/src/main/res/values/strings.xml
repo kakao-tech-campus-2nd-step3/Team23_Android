@@ -31,6 +31,7 @@
     <string name="send_message_total_price_menu">합계</string>
     <string name="send_message_total_price_value">100000원</string>
     <string name="send_message_button">송금 요청하기</string>
+    <string name="send_message_money_unit">원</string>
 
     <string name="item_member_expense">10000원</string>
 

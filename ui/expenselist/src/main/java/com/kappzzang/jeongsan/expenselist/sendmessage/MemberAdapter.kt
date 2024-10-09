@@ -5,8 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.kappzzang.jeongsan.expenselist.R
 import com.kappzzang.jeongsan.expenselist.databinding.ItemMemberExpenseBinding
 import com.kappzzang.jeongsan.model.TransferDetailItem
+import com.kappzzang.jeongsan.util.IntegerFormatter.formatDecimalSeparator
 
 class MemberAdapter : ListAdapter<TransferDetailItem, MemberAdapter.MemberViewHolder>(diffUtil) {
 
@@ -14,6 +17,13 @@ class MemberAdapter : ListAdapter<TransferDetailItem, MemberAdapter.MemberViewHo
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(transferDetailItem: TransferDetailItem) {
+            binding.profileNameTextview.text = transferDetailItem.name
+            binding.expenseTextview.text = transferDetailItem.fee.formatDecimalSeparator()
+                .plus(binding.root.context.getString(R.string.send_message_money_unit))
+            Glide.with(binding.root)
+                .load(transferDetailItem.profileImageUrl)
+                .circleCrop()
+                .into(binding.profileImageImageview)
         }
     }
 
