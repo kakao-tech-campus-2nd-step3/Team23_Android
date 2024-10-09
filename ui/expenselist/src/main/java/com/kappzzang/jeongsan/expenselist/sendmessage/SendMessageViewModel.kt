@@ -35,4 +35,8 @@ class SendMessageViewModel @Inject constructor(
     private fun calculateTotalPrice() {
         _totalPrice.value = _transferInfo.value.sumOf { it.fee }
     }
+
+    fun sendTransferMessage() {
+
+    }
 }

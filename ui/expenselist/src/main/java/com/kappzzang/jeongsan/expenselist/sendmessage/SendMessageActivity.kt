@@ -7,12 +7,17 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.expenselist.R
 import com.kappzzang.jeongsan.expenselist.databinding.ActivitySendMessageBinding
+import com.kappzzang.jeongsan.navigation.AppNavigator
 import com.kappzzang.jeongsan.util.IntegerFormatter.formatDecimalSeparator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SendMessageActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var navigator: AppNavigator
     private val viewModel: SendMessageViewModel by viewModels()
     private lateinit var binding: ActivitySendMessageBinding
     private lateinit var memberAdapter: MemberAdapter
@@ -24,6 +29,7 @@ class SendMessageActivity : AppCompatActivity() {
 
         initRecyclerView()
         setTotalPriceObserver()
+        setSendButton()
     }
 
     private fun initRecyclerView() {
@@ -45,6 +51,13 @@ class SendMessageActivity : AppCompatActivity() {
                     getString(R.string.send_message_money_unit)
                 )
             }
+        }
+    }
+
+    private fun setSendButton() {
+        binding.sendMessageButton.setOnClickListener {
+            viewModel.sendTransferMessage()
+            startActivity(navigator.navigateToSendComplete(this))
         }
     }
 }
