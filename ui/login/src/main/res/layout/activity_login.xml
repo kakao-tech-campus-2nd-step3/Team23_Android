@@ -5,6 +5,7 @@
 
     <data>
         <import type="android.view.View" />
+        <import type="com.kappzzang.jeongsan.login.KakaoLoginStatus"/>
 
         <variable
             name="viewModel"
@@ -41,7 +42,7 @@
             android:padding="0dp"
             android:src="@drawable/kakao_login_large_wide"
             android:adjustViewBounds="true"
-            android:visibility="@{viewModel.kakaoLoginStatus.IDLE ? View.VISIBLE : View.GONE}"
+            android:visibility="@{viewModel.kakaoLoginStatus == KakaoLoginStatus.IDLE ? View.VISIBLE : View.GONE}"
             android:scaleType="fitCenter" />
 
 

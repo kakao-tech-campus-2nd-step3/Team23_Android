@@ -39,8 +39,10 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _loginStatus.emit(LoginStatus.IN_PROGRESS)
             when (val result = authenticateWithKakaoUseCase()) {
-                is AuthenticationResult.NoToken ->
+                is AuthenticationResult.NoToken -> {
                     _loginStatus.emit(LoginStatus.NOT_LOGGED_IN)
+                    _kakaoLoginStatus.emit(KakaoLoginStatus.IDLE)
+                }
 
                 is AuthenticationResult.AuthenticationError -> {
                     handleAuthenticationError(result)
@@ -50,8 +52,10 @@ class LoginViewModel @Inject constructor(
                 is AuthenticationResult.AuthenticationSuccess ->
                     _loginStatus.emit(LoginStatus.LOGIN_COMPLETE)
 
-                is AuthenticationResult.RefreshTokenExpired ->
+                is AuthenticationResult.RefreshTokenExpired -> {
                     _loginStatus.emit(LoginStatus.NOT_LOGGED_IN)
+                    _kakaoLoginStatus.emit(KakaoLoginStatus.IDLE)
+                }
             }
         }
     }
@@ -78,6 +82,7 @@ class LoginViewModel @Inject constructor(
             _kakaoLoginStatus.value = KakaoLoginStatus.FAILED
         }
         else if(token != null){
+            _kakaoLoginStatus.value = KakaoLoginStatus.ON_LOGIN
             authorizeWithKakao(mapOAuthTokenToAuthData(token))
         }
     }
@@ -85,6 +90,7 @@ class LoginViewModel @Inject constructor(
     private fun authorizeWithKakao(authData: AuthData) {
         viewModelScope.launch(Dispatchers.IO) {
             authorizeWithKakaoUseCase(authData)
+            _loginStatus.emit(LoginStatus.LOGIN_COMPLETE)
         }
     }
 }
