@@ -6,11 +6,13 @@ import com.google.gson.annotations.SerializedName
 @Serializable
 data class KakaoRefreshTokenPayloadDTO(
     @SerializedName("grant_type")
-    val grantType: String = "refresh_token",
+    val grantType: String,
     @SerializedName("client_id")
     val clientId: String,
     @SerializedName("refresh_token")
-    val refreshToken: String
+    val refreshToken: String,
+    @SerializedName("client_secret")
+    val clientSecret: String = ""
 )
 
 @Serializable

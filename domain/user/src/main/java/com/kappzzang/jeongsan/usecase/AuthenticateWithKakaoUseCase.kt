@@ -13,6 +13,19 @@ class AuthenticateWithKakaoUseCase @Inject constructor(
     private val authenticationRepository: AuthenticationRepository,
     private val kakaoAuthenticationRepository: KakaoAuthenticationRepository
 ) {
+    private fun updateAccessToken(old: AuthData, new: AuthData): AuthData {
+        return if(new.kakaoRefreshToken.isEmpty()){
+            new.copy(
+                kakaoRefreshToken = old.kakaoRefreshToken,
+                jwt = old.jwt
+            )
+        } else{
+            new.copy(
+                jwt = old.jwt
+            )
+        }
+    }
+
     private fun getCurrentTime(): Long =
         System.currentTimeMillis()
 
@@ -32,8 +45,10 @@ class AuthenticateWithKakaoUseCase @Inject constructor(
             else{
                 if(checkNeedToRefresh(authData)){
                     val newData = kakaoAuthenticationRepository.refreshKakaoToken(authData)
-                    authenticationRepository.updateAuthData(newData)
-                    AuthenticationResult.AuthenticationSuccess(newData)
+                    val updateData = updateAccessToken(authData, newData)
+
+                    authenticationRepository.updateAuthData(updateData)
+                    AuthenticationResult.AuthenticationSuccess(updateData)
                 }
                 else{
                     AuthenticationResult.AuthenticationSuccess(authData)
@@ -43,6 +58,6 @@ class AuthenticateWithKakaoUseCase @Inject constructor(
     }
 
     companion object {
-        private const val REFRESH_TIME_WITHIN_MILLISECONDS = 120_000L
+        private const val REFRESH_TIME_WITHIN_MILLISECONDS = 600_000L
     }
 }

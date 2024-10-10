@@ -61,8 +61,12 @@ class LoginViewModel @Inject constructor(
                         _loginStatus.emit(LoginStatus.FAILED)
                     }
 
-                    is AuthenticationResult.AuthenticationSuccess ->
+                    is AuthenticationResult.AuthenticationSuccess -> {
                         _loginStatus.emit(LoginStatus.LOGIN_COMPLETE)
+
+                        //TODO: 디버그 용, 추후 꼭 삭제할 것
+                        printAuthDataDebugInfo(status.authData)
+                    }
 
                     is AuthenticationResult.RefreshTokenExpired -> {
                         _loginStatus.emit(LoginStatus.NOT_LOGGED_IN)
@@ -73,6 +77,14 @@ class LoginViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun printAuthDataDebugInfo(authData:AuthData) {
+        Log.d("KSC", "Access Token: ${authData.kakaoAccessToken}")
+        Log.d("KSC", "Refresh Token: ${authData.kakaoRefreshToken}")
+        Log.d("KSC", "Expiration Time: ${authData.accessTokenExpirationTime}")
+        Log.d("KSC", "Current Time: ${System.currentTimeMillis()}")
+
     }
 
     private fun handleAuthenticationError(errorBody: AuthenticationResult.AuthenticationError) {
