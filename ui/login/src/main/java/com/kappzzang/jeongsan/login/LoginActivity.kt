@@ -23,4 +23,8 @@ class LoginActivity : AppCompatActivity() {
             startActivity(appNavigator.navigateToMainPage(this))
         }
     }
+
+    private fun loginWithKakao() {
+
+    }
 }
