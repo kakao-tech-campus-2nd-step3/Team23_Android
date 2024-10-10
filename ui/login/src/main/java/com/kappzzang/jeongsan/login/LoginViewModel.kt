@@ -35,7 +35,7 @@ class LoginViewModel @Inject constructor(
     val loginStatus = _loginStatus.asStateFlow()
     val kakaoLoginStatus = _kakaoLoginStatus.asStateFlow()
 
-    private fun login() {
+    fun login() {
         viewModelScope.launch(Dispatchers.IO) {
             _loginStatus.emit(LoginStatus.IN_PROGRESS)
             when (val result = authenticateWithKakaoUseCase()) {
