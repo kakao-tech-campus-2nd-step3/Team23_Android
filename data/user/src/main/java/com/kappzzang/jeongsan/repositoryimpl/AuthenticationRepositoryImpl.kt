@@ -8,7 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-internal class AuthenticationRepositoryImpl
+class AuthenticationRepositoryImpl
 @Inject constructor(
     private val datasource: AuthLocalDataSource
 ) : AuthenticationRepository {

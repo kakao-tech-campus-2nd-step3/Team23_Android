@@ -76,10 +76,12 @@ dependencies {
     implementation(project(":data:data-ocr"))
     implementation(project(":data:data-user"))
     implementation("androidx.room:room-ktx:2.6.1")
+    implementation(project(":common:androidutil"))
     project(":common:util")
     project(":common:androidutil")
     implementation(project(":common:navigation"))
     implementation(project(":common:resource"))
+    implementation(project(":common:retrofit"))
 
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.7.0")
