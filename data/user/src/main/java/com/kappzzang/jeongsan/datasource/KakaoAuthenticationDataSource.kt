@@ -1,19 +1,19 @@
 package com.kappzzang.jeongsan.datasource
 
-import android.util.Log
 import com.kappzzang.jeongsan.api.KakaoAuthRetrofitService
 import com.kappzzang.jeongsan.entity.KakaoRefreshTokenPayloadDTO
 import com.kappzzang.jeongsan.entity.KakaoRefreshTokenResponseDTO
-import com.kappzzang.jeongsan.retrofit.RetrofitModule
 import com.kappzzang.jeongsan.user.BuildConfig
-import retrofit2.Response
 import javax.inject.Inject
+import retrofit2.Response
 
 class KakaoAuthenticationDataSource @Inject constructor(
     private val kakaoApi: KakaoAuthRetrofitService
 ) {
 
-    suspend fun refreshKakaoToken(kakaoRefreshToken: String): Response<KakaoRefreshTokenResponseDTO> {
+    suspend fun refreshKakaoToken(
+        kakaoRefreshToken: String
+    ): Response<KakaoRefreshTokenResponseDTO> {
         val response =
             kakaoApi.refreshToken(
                 AUTH_RETROFIT_CONTENT_TYPE,

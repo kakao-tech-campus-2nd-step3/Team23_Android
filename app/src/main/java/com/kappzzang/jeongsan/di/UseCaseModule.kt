@@ -1,6 +1,5 @@
 package com.kappzzang.jeongsan.di
 
-import com.kappzzang.jeongsan.data.AuthData
 import com.kappzzang.jeongsan.repository.ExpenseDetailRepository
 import com.kappzzang.jeongsan.repository.ExpenseRepository
 import com.kappzzang.jeongsan.repository.GroupInfoRepository
@@ -72,6 +71,5 @@ object UseCaseModule {
         AuthorizeWithKakaoUseCase(authenticationRepository)
 
     @Provides
-    fun registerWithKakaoUseCase() =
-        RegisterWithKakaoUseCase()
+    fun registerWithKakaoUseCase() = RegisterWithKakaoUseCase()
 }

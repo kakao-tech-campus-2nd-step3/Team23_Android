@@ -5,7 +5,6 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.kappzzang.jeongsan.JeongsanApplication.Companion.DATASTORE_NAME
-import com.kappzzang.jeongsan.datasource.group.GroupDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,7 +16,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object DatastoreModule {
     private val Context.dataStore: DataStore<Preferences>
-            by preferencesDataStore(name = DATASTORE_NAME)
+        by preferencesDataStore(name = DATASTORE_NAME)
 
     @Provides
     @Singleton

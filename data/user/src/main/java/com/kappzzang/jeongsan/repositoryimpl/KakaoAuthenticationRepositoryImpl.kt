@@ -7,12 +7,13 @@ import com.kappzzang.jeongsan.mapper.KakaoOAuthTokenAuthDataMapper.mapRefreshDto
 import com.kappzzang.jeongsan.repository.KakaoAuthenticationRepository
 import javax.inject.Inject
 
-class KakaoAuthenticationRepositoryImpl @Inject constructor(private val dataSource: KakaoAuthenticationDataSource) :
-    KakaoAuthenticationRepository {
+class KakaoAuthenticationRepositoryImpl @Inject constructor(
+    private val dataSource: KakaoAuthenticationDataSource
+) : KakaoAuthenticationRepository {
     override suspend fun refreshKakaoToken(authData: AuthData): AuthData {
         val response = dataSource.refreshKakaoToken(authData.kakaoRefreshToken)
 
-        if(!response.isSuccessful){
+        if (!response.isSuccessful) {
             Log.e("KSC", "Refresh Failed")
             Log.e("KSC", "message: ${response.errorBody()?.string()}")
         }

@@ -1,13 +1,8 @@
 package com.kappzzang.jeongsan
 
 import android.app.Application
-import android.content.Context
 import android.util.Log
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import com.kakao.sdk.common.KakaoSdk
-import com.kakao.sdk.common.util.Utility
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
@@ -27,6 +22,4 @@ class JeongsanApplication : Application() {
     companion object {
         const val DATASTORE_NAME = "JeongsanDatastore"
     }
-
-
 }

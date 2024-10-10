@@ -15,7 +15,4 @@ enum class KakaoAuthorizeScope(val value: String) {
     }
 }
 
-
-data class KakaoAuthorizeScopes(
-    val scopes: List<KakaoAuthorizeScope>
-)
+data class KakaoAuthorizeScopes(val scopes: List<KakaoAuthorizeScope>)

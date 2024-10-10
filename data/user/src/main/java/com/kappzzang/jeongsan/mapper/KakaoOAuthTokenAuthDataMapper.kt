@@ -1,7 +1,6 @@
 package com.kappzzang.jeongsan.mapper
 
 import com.kappzzang.jeongsan.data.AuthData
-import com.kappzzang.jeongsan.entity.KakaoRefreshTokenPayloadDTO
 import com.kappzzang.jeongsan.entity.KakaoRefreshTokenResponseDTO
 
 object KakaoOAuthTokenAuthDataMapper {
@@ -18,19 +17,25 @@ object KakaoOAuthTokenAuthDataMapper {
                 kakaoRefreshToken = refreshTokenResponseDTO.refreshToken ?: "",
                 kakaoAccessToken = refreshTokenResponseDTO.accessToken,
                 jwt = "",
-                accessTokenExpirationTime = getExpirationTime(refreshTokenResponseDTO.accessTokenExpiresInSeconds)
+                accessTokenExpirationTime = getExpirationTime(
+                    refreshTokenResponseDTO.accessTokenExpiresInSeconds
+                )
             )
         } else {
             result = if (refreshTokenResponseDTO.refreshToken != null) {
                 originalAuthData.copy(
                     kakaoAccessToken = refreshTokenResponseDTO.accessToken,
                     kakaoRefreshToken = refreshTokenResponseDTO.refreshToken,
-                    accessTokenExpirationTime = getExpirationTime(refreshTokenResponseDTO.accessTokenExpiresInSeconds)
+                    accessTokenExpirationTime = getExpirationTime(
+                        refreshTokenResponseDTO.accessTokenExpiresInSeconds
+                    )
                 )
             } else {
                 originalAuthData.copy(
                     kakaoAccessToken = refreshTokenResponseDTO.accessToken,
-                    accessTokenExpirationTime = getExpirationTime(refreshTokenResponseDTO.accessTokenExpiresInSeconds)
+                    accessTokenExpirationTime = getExpirationTime(
+                        refreshTokenResponseDTO.accessTokenExpiresInSeconds
+                    )
                 )
             }
         }

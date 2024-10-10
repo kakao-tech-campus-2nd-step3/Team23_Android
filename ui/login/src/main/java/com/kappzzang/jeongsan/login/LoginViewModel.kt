@@ -16,13 +16,13 @@ import com.kappzzang.jeongsan.usecase.AuthenticateWithKakaoUseCase
 import com.kappzzang.jeongsan.usecase.AuthorizeWithKakaoUseCase
 import com.kappzzang.jeongsan.usecase.RegisterWithKakaoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 enum class LoginStatus { TRY_AUTOLOGIN, NOT_LOGGED_IN, IN_PROGRESS, FAILED, LOGIN_COMPLETE }
 enum class KakaoLoginStatus { NOT_AVAILABLE, IDLE, ON_LOGIN, FAILED }
@@ -64,7 +64,7 @@ class LoginViewModel @Inject constructor(
                     is AuthenticationResult.AuthenticationSuccess -> {
                         _loginStatus.emit(LoginStatus.LOGIN_COMPLETE)
 
-                        //TODO: 디버그 용, 추후 꼭 삭제할 것
+                        // TODO: 디버그 용, 추후 꼭 삭제할 것
                         printAuthDataDebugInfo(status.authData)
                     }
 
@@ -79,12 +79,11 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun printAuthDataDebugInfo(authData:AuthData) {
+    private fun printAuthDataDebugInfo(authData: AuthData) {
         Log.d("KSC", "Access Token: ${authData.kakaoAccessToken}")
         Log.d("KSC", "Refresh Token: ${authData.kakaoRefreshToken}")
         Log.d("KSC", "Expiration Time: ${authData.accessTokenExpirationTime}")
         Log.d("KSC", "Current Time: ${System.currentTimeMillis()}")
-
     }
 
     private fun handleAuthenticationError(errorBody: AuthenticationResult.AuthenticationError) {
@@ -105,15 +104,14 @@ class LoginViewModel @Inject constructor(
                 _kakaoLoginStatus.value = KakaoLoginStatus.IDLE
                 Log.e("KSC", "로그인 취소")
                 return
-            } 
-            if (error is AuthError && error.reason == AuthErrorCause.AccessDenied){
+            }
+            if (error is AuthError && error.reason == AuthErrorCause.AccessDenied) {
                 _kakaoLoginStatus.value = KakaoLoginStatus.IDLE
-                Log.e("KSC", "유저 로그인 거부")   
+                Log.e("KSC", "유저 로그인 거부")
                 return
             }
             _kakaoLoginStatus.value = KakaoLoginStatus.FAILED
             Log.e("KSC", "로그인 실패")
-
         } else if (token != null) {
             _kakaoLoginStatus.value = KakaoLoginStatus.ON_LOGIN
             authorizeWithKakao(mapOAuthTokenToAuthData(token))

@@ -12,6 +12,7 @@ import retrofit2.Retrofit
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {
     @Provides
-    fun provideKakaoAuthRetrofitService (@RetrofitModule.KakaoAuthRetrofit kakaoAuthRetrofit: Retrofit): KakaoAuthRetrofitService =
-        kakaoAuthRetrofit.create(KakaoAuthRetrofitService::class.java)
+    fun provideKakaoAuthRetrofitService(
+        @RetrofitModule.KakaoAuthRetrofit kakaoAuthRetrofit: Retrofit
+    ): KakaoAuthRetrofitService = kakaoAuthRetrofit.create(KakaoAuthRetrofitService::class.java)
 }

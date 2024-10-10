@@ -8,14 +8,12 @@ import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.kappzzang.jeongsan.data.AuthData
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-class AuthLocalDataSource @Inject constructor(
-    private val dataStore: DataStore<Preferences>
-) {
+class AuthLocalDataSource @Inject constructor(private val dataStore: DataStore<Preferences>) {
 
     fun getAuthDataFlow(): Flow<AuthData> = dataStore.data.catch { exception ->
         if (exception is IOException) {
@@ -37,10 +35,9 @@ class AuthLocalDataSource @Inject constructor(
             preferences[ACCESS_TOKEN] = data.kakaoAccessToken
             preferences[REFRESH_TOKEN] = data.kakaoRefreshToken
             preferences[ACCESS_EXPIRATION] = data.accessTokenExpirationTime
-            data.jwt?.let{ preferences[JWT] = it }
+            data.jwt?.let { preferences[JWT] = it }
         }
     }
-
 
     companion object {
         val ACCESS_TOKEN = stringPreferencesKey("kakao_access_token")

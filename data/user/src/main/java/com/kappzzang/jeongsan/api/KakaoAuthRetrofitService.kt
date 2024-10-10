@@ -16,6 +16,6 @@ interface KakaoAuthRetrofitService {
         @Query("grant_type") grantType: String,
         @Query("client_id") clientId: String,
         @Query("refresh_token") refreshToken: String,
-        @Query("client_secret") clientSecret: String,
+        @Query("client_secret") clientSecret: String
     ): Response<KakaoRefreshTokenResponseDTO>
 }

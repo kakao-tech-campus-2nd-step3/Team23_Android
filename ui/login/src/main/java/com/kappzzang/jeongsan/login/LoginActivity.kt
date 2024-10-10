@@ -12,15 +12,15 @@ import com.kakao.sdk.user.UserApiClient
 import com.kappzzang.jeongsan.login.databinding.ActivityLoginBinding
 import com.kappzzang.jeongsan.navigation.AppNavigator
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
     @Inject
     lateinit var appNavigator: AppNavigator
 
-    private val viewModel:LoginViewModel by viewModels()
+    private val viewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,11 +40,11 @@ class LoginActivity : AppCompatActivity() {
         viewModel.login()
     }
 
-    private fun startCollectingKakaoLoginState(){
+    private fun startCollectingKakaoLoginState() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.loginStatus.collect{
-                    if(it == LoginStatus.LOGIN_COMPLETE){
+                viewModel.loginStatus.collect {
+                    if (it == LoginStatus.LOGIN_COMPLETE) {
                         navigateToMainPage()
                         finish()
                     }
@@ -53,12 +53,12 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun navigateToMainPage(){
+    private fun navigateToMainPage() {
         startActivity(appNavigator.navigateToMainPage(this))
     }
 
     private fun loginWithKakao() {
-        if(!UserApiClient.instance.isKakaoTalkLoginAvailable(this)){
+        if (!UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
             Toast.makeText(this, R.string.login_kakao_talk_not_available, Toast.LENGTH_SHORT).show()
             return
         }
@@ -69,9 +69,8 @@ class LoginActivity : AppCompatActivity() {
                 viewModel.onKakaoAuthorizationComplete(token, error)
                 Log.d("KSC", "카카오톡으로 로그인 성공 ${token?.accessToken}")
             }
-        }
-        catch(e: Exception){
-            Log.e("KSC", e.message?:"")
+        } catch (e: Exception) {
+            Log.e("KSC", e.message ?: "")
         }
     }
 }

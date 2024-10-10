@@ -1,7 +1,7 @@
 package com.kappzzang.jeongsan.entity
 
-import kotlinx.serialization.Serializable
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
 @Serializable
 data class KakaoRefreshTokenPayloadDTO(
