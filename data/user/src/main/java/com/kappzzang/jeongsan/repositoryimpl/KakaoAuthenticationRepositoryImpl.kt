@@ -2,8 +2,9 @@ package com.kappzzang.jeongsan.repositoryimpl
 
 import com.kappzzang.jeongsan.data.AuthData
 import com.kappzzang.jeongsan.repository.KakaoAuthenticationRepository
+import javax.inject.Inject
 
-internal class KakaoAuthenticationRepositoryImpl: KakaoAuthenticationRepository {
+class KakaoAuthenticationRepositoryImpl @Inject constructor(): KakaoAuthenticationRepository {
     override suspend fun refreshKakaoToken(authData: AuthData): AuthData {
         TODO("Not yet implemented")
     }

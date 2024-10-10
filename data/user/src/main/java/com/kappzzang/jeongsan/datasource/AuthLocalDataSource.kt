@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-internal class AuthLocalDataSource @Inject constructor(
+class AuthLocalDataSource @Inject constructor(
     private val dataStore: DataStore<Preferences>
 ) {
 

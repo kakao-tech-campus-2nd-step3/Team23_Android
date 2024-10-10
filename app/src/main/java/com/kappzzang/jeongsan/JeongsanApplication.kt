@@ -11,8 +11,6 @@ import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
 class JeongsanApplication : Application() {
-    val Context.dataStore: DataStore<Preferences>
-            by preferencesDataStore(name = DATASTORE_NAME)
     override fun onCreate() {
         super.onCreate()
 
