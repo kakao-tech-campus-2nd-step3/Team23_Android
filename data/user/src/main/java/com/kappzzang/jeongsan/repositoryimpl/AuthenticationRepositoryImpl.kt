@@ -13,7 +13,7 @@ class AuthenticationRepositoryImpl
     private val datasource: AuthLocalDataSource
 ) : AuthenticationRepository {
 
-    override suspend fun getAuthData(): Flow<AuthData> =
+    override fun getAuthData(): Flow<AuthData> =
         datasource.getAuthDataFlow()
 
     override suspend fun updateAuthData(newData: AuthData) {

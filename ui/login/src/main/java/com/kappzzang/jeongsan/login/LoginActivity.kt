@@ -1,6 +1,7 @@
 package com.kappzzang.jeongsan.login
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -45,6 +46,7 @@ class LoginActivity : AppCompatActivity() {
                 viewModel.loginStatus.collect{
                     if(it == LoginStatus.LOGIN_COMPLETE){
                         navigateToMainPage()
+                        finish()
                     }
                 }
             }
@@ -60,8 +62,16 @@ class LoginActivity : AppCompatActivity() {
             Toast.makeText(this, R.string.login_kakao_talk_not_available, Toast.LENGTH_SHORT).show()
             return
         }
-        UserApiClient.instance.loginWithKakaoAccount(this) { token, error ->
-            viewModel.onKakaoAuthorizationComplete(token, error)
+        Log.d("KSC", "로그인 중...")
+
+        try {
+            UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
+                viewModel.onKakaoAuthorizationComplete(token, error)
+                Log.d("KSC", "카카오톡으로 로그인 성공 ${token?.accessToken}")
+            }
+        }
+        catch(e: Exception){
+            Log.e("KSC", e.message?:"")
         }
     }
 }

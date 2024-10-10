@@ -10,4 +10,6 @@ sealed class AuthenticationResult {
     data class AuthenticationError(val message: String) : AuthenticationResult()
 
     data object RefreshTokenExpired : AuthenticationResult()
+
+    data object NotLoaded : AuthenticationResult()
 }

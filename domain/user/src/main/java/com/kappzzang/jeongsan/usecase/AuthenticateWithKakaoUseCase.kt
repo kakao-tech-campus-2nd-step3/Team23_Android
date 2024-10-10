@@ -22,7 +22,7 @@ class AuthenticateWithKakaoUseCase @Inject constructor(
     private fun checkIsEmptyAuthData(authData: AuthData): Boolean =
         authData.kakaoAccessToken == ""
 
-    suspend operator fun invoke(): Flow<AuthenticationResult> {
+    operator fun invoke(): Flow<AuthenticationResult> {
         val authDataFlow = authenticationRepository.getAuthData()
 
         return authDataFlow.map { authData ->
