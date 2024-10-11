@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -26,6 +28,7 @@ android {
 }
 
 subprojects {
+    fun getApiKey(key: String): String = gradleLocalProperties(rootDir, providers).getProperty(key)
     apply {
         plugin("com.android.library")
         plugin("org.jetbrains.kotlin.android")
@@ -53,6 +56,10 @@ subprojects {
             minSdk = 26
 
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+            buildConfigField("String", "KAKAO_REST_API_KEY", getApiKey("KAKAO_REST_API_KEY"))
+            buildConfigField("String", "KAKAO_API_KEY", getApiKey("KAKAO_API_KEY"))
+            buildConfigField("String", "KEYSTORE_NAME", getApiKey("KEYSTORE_NAME"))
         }
 
         compileOptions {
@@ -61,6 +68,9 @@ subprojects {
         }
         kotlinOptions {
             jvmTarget = "17"
+        }
+        buildFeatures {
+            buildConfig = true
         }
     }
 }
