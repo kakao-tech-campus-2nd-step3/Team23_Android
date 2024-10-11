@@ -44,10 +44,6 @@ class CreateGroupViewModel @Inject constructor(
         }
     }
 
-    fun pickGroupMember() {
-        // TODO: 카카오 피커를 통해 그룹 멤버 추가
-    }
-
     fun removeMember(removedMemberPosition: Int) {
         viewModelScope.launch {
             _groupMemberList.emit(

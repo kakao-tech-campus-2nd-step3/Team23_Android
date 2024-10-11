@@ -12,7 +12,13 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.kakao.sdk.friend.client.PickerClient
+import com.kakao.sdk.friend.model.OpenPickerFriendRequestParams
+import com.kakao.sdk.friend.model.PickerOrientation
+import com.kakao.sdk.friend.model.SelectedUsers
+import com.kakao.sdk.friend.model.ViewAppearance
 import com.kappzzang.jeongsan.creategroup.databinding.ActivityCreateGroupBinding
+import com.kappzzang.jeongsan.data.MemberUIData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -51,7 +57,7 @@ class CreateGroupActivity : AppCompatActivity() {
                     parent: AdapterView<*>,
                     view: View?,
                     position: Int,
-                    id: Long
+                    id: Long,
                 ) {
                     val selectedItem = parent.getItemAtPosition(position).toString()
                     val targetEmoji = selectedItem.substringBefore(' ')
@@ -92,7 +98,7 @@ class CreateGroupActivity : AppCompatActivity() {
 
     private fun setPickerButton() {
         binding.addMemberButton.setOnClickListener {
-            viewModel.pickGroupMember()
+            pickGroupMember()
         }
     }
 
@@ -109,5 +115,45 @@ class CreateGroupActivity : AppCompatActivity() {
                 ).show()
             }
         }
+    }
+
+    private fun pickGroupMember() {
+        PickerClient.instance.selectFriendsPopup(
+            context = this,
+            params = openPickerFriendRequestParams
+        ) { selectedUsers, error ->
+            if (error != null) {
+                Log.e(TAG, "친구 선택 실패", error)
+            } else {
+                Log.d(TAG, "친구 선택 성공 $selectedUsers")
+                viewModel.updateGroupMemberList(mapSelectedUsersToMemberUIData(selectedUsers))
+            }
+        }
+    }
+
+    private fun mapSelectedUsersToMemberUIData(selectedUsers: SelectedUsers?) =
+        selectedUsers?.users?.map { user ->
+            MemberUIData(
+                uuid = user.uuid,
+                name = user.profileNickname ?: UNKNOWN_NICKNAME,
+                profileImageUrl = user.profileThumbnailImage ?: DEFAULT_THUMBNAIL_URL
+            )
+        } ?: emptyList()
+
+    companion object {
+        private const val TAG = "CreateGroupActivity"
+        private const val UNKNOWN_NICKNAME = "알 수 없음"
+        private const val DEFAULT_THUMBNAIL_URL = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+        private val openPickerFriendRequestParams = OpenPickerFriendRequestParams(
+            title = "멀티 피커", // 피커 이름
+            viewAppearance = ViewAppearance.AUTO, // 피커 화면 모드
+            orientation = PickerOrientation.AUTO, // 피커 화면 방향
+            enableSearch = true, // 검색 기능 사용 여부
+            enableIndex = true, // 인덱스뷰 사용 여부
+            showFavorite = true, // 즐겨찾기 친구 표시 여부
+            showPickedFriend = true, // 선택한 친구 표시 여부, 멀티 피커에만 사용 가능
+            maxPickableCount = 100, // 선택 가능한 최대 대상 수
+            minPickableCount = 1 // 선택 가능한 최소 대상 수
+        )
     }
 }
