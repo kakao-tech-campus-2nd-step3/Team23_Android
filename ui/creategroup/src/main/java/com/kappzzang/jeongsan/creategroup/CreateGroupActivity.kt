@@ -57,7 +57,7 @@ class CreateGroupActivity : AppCompatActivity() {
                     parent: AdapterView<*>,
                     view: View?,
                     position: Int,
-                    id: Long,
+                    id: Long
                 ) {
                     val selectedItem = parent.getItemAtPosition(position).toString()
                     val targetEmoji = selectedItem.substringBefore(' ')
@@ -143,7 +143,8 @@ class CreateGroupActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "CreateGroupActivity"
         private const val UNKNOWN_NICKNAME = "알 수 없음"
-        private const val DEFAULT_THUMBNAIL_URL = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+        private const val DEFAULT_THUMBNAIL_URL =
+            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
         private val openPickerFriendRequestParams = OpenPickerFriendRequestParams(
             title = "멀티 피커", // 피커 이름
             viewAppearance = ViewAppearance.AUTO, // 피커 화면 모드
