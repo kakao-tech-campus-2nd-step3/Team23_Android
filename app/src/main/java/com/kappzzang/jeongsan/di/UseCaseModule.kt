@@ -21,6 +21,7 @@ import com.kappzzang.jeongsan.usecase.GetUserInfoUseCase
 import com.kappzzang.jeongsan.usecase.RegisterWithKakaoUseCase
 import com.kappzzang.jeongsan.usecase.SendTransferMessageUseCase
 import com.kappzzang.jeongsan.usecase.UploadExpenseUseCase
+import com.kappzzang.jeongsan.usecase.UploadGroupInfoUseCase
 import com.kappzzang.jeongsan.util.AuthenticationRepository
 import dagger.Module
 import dagger.Provides
@@ -77,6 +78,9 @@ object UseCaseModule {
     fun registerWithKakaoUseCase() = RegisterWithKakaoUseCase()
 
     @Provides
+    fun provideUploadGroupInfoUseCase(groupInfoRepository: GroupInfoRepository) =
+        UploadGroupInfoUseCase(groupInfoRepository)
+
     fun provideGetTransferInfoUseCase(transferRepository: TransferRepository) =
         GetTransferInfoUseCase(transferRepository)
 
