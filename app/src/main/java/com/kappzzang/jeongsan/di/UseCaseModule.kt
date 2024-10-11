@@ -83,6 +83,6 @@ object UseCaseModule {
     @Provides
     fun provideSendTransferMessageUseCase(
         userInfoRepository: UserInfoRepository,
-        transferRepository: TransferRepository,
+        transferRepository: TransferRepository
     ) = SendTransferMessageUseCase(userInfoRepository, transferRepository)
 }

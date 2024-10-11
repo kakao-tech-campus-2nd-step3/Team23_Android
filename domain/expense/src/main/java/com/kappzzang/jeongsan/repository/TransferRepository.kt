@@ -8,6 +8,6 @@ interface TransferRepository {
     suspend fun sendTransferMessage(
         transferInfoList: List<TransferDetailItem>,
         transferLink: String,
-        payeeName: String,
+        payeeName: String
     ): Boolean
 }

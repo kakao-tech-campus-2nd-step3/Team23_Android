@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class SendMessageViewModel @Inject constructor(
     private val getTransferInfoUseCase: GetTransferInfoUseCase,
-    private val sendTransferMessageUseCase: SendTransferMessageUseCase,
+    private val sendTransferMessageUseCase: SendTransferMessageUseCase
 ) : ViewModel() {
 
     private val _transferInfo = MutableStateFlow<List<TransferDetailItem>>(emptyList())

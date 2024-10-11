@@ -23,7 +23,11 @@ class SendTransferMessageUseCase @Inject constructor(
             return false
         }
 
-        return transferRepository.sendTransferMessage(transferInfoList, transferLink, requestUser.name)
+        return transferRepository.sendTransferMessage(
+            transferInfoList,
+            transferLink,
+            requestUser.name
+        )
     }
 
     companion object {
