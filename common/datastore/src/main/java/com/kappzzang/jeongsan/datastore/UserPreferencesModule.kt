@@ -11,9 +11,6 @@ val Context.datastore: DataStore<Preferences> by preferencesDataStore(
 
 @Module
 class UserPreferencesModule {
-    @Binds
-
-
     companion object {
         const val PREFERENCE_NAME = "JeongsanPreference"
     }
