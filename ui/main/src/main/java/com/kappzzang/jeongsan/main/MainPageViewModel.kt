@@ -43,7 +43,7 @@ class MainPageViewModel @Inject constructor(
         }
     }
 
-    private fun loadGroupList() {
+    fun loadGroupList() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val resultGroupList = mutableListOf<GroupViewItem>()
