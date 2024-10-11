@@ -31,6 +31,10 @@
     <string name="send_message_total_price_menu">합계</string>
     <string name="send_message_total_price_value">100000원</string>
     <string name="send_message_button">송금 요청하기</string>
+    <string name="send_message_money_unit">원</string>
+
+    <!-- 송금 요청 오류 메시지 -->
+    <string name="send_message_error">"송금 요청에 실패하였습니다.\n다시 시도해주세요"</string>
 
     <string name="item_member_expense">10000원</string>
 
