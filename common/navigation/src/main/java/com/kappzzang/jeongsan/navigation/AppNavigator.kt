@@ -17,4 +17,6 @@ interface AppNavigator {
     fun navigateToLogin(packageContext: Context): Intent
 
     fun navigateToAddExpense(packageContext: Context): Intent
+
+    fun navigateToSendComplete(packageContext: Context): Intent
 }

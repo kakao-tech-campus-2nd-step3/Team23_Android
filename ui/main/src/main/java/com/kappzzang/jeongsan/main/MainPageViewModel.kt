@@ -38,8 +38,8 @@ class MainPageViewModel @Inject constructor(
     private fun loadUserInfo() {
         viewModelScope.launch {
             val userInfo = getUserInfoUseCase()
-            _userName.value = userInfo.name
-            _userProfileUrl.value = userInfo.profileUrl
+            _userName.value = userInfo?.name ?: "알 수 없음"
+            _userProfileUrl.value = userInfo?.profileUrl ?: ""
         }
     }
 

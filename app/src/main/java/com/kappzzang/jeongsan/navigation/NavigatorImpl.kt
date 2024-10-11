@@ -7,6 +7,7 @@ import com.kappzzang.jeongsan.camera.ReceiptCameraActivity
 import com.kappzzang.jeongsan.creategroup.CreateGroupActivity
 import com.kappzzang.jeongsan.expensedetail.ExpenseDetailActivity
 import com.kappzzang.jeongsan.expenselist.ExpenseListActivity
+import com.kappzzang.jeongsan.expenselist.sendcomplete.SendCompleteActivity
 import com.kappzzang.jeongsan.login.LoginActivity
 import com.kappzzang.jeongsan.main.MainActivity
 import javax.inject.Inject
@@ -32,4 +33,7 @@ class NavigatorImpl @Inject constructor() : AppNavigator {
 
     override fun navigateToAddExpense(packageContext: Context): Intent =
         Intent(packageContext, AddExpenseActivity::class.java)
+
+    override fun navigateToSendComplete(packageContext: Context): Intent =
+        Intent(packageContext, SendCompleteActivity::class.java)
 }
