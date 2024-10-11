@@ -1,6 +1,8 @@
 package com.kappzzang.jeongsan.creategroup
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
@@ -8,9 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kakao.sdk.friend.client.PickerClient
 import com.kakao.sdk.friend.model.OpenPickerFriendRequestParams
@@ -31,12 +31,11 @@ class CreateGroupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateGroupBinding.inflate(layoutInflater)
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = this
         setContentView(binding.root)
 
         initSpinner()
         initRecyclerView()
+        setGroupNameObserver()
         setPickerButton()
         setCreateGroupButton()
     }
@@ -79,12 +78,22 @@ class CreateGroupActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.groupMemberList.collect { memberList ->
-                    memberAdapter.submitList(memberList)
-                }
+            viewModel.groupMemberList.collect { memberList ->
+                memberAdapter.submitList(memberList)
             }
         }
+    }
+
+    private fun setGroupNameObserver() {
+        binding.groupNameValueEdittext.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                viewModel.updateGroupName(s.toString())
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
     }
 
     private fun setPickerButton() {
@@ -97,8 +106,6 @@ class CreateGroupActivity : AppCompatActivity() {
         binding.createGroupButton.setOnClickListener {
             val isUploadSuccess = viewModel.uploadGroupInfo()
             if (isUploadSuccess) {
-                // TODO: 그룹 생성 성공 시 그룹아이디를 서버에서 전달 받아 해당 그룹에 대한 초대 메시지 전송하도록 수정
-                viewModel.sendInviteMessageAll("idFromServer")
                 finish()
             } else {
                 Toast.makeText(
