@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.model.TransferDetailItem
 import com.kappzzang.jeongsan.usecase.GetTransferInfoUseCase
+import com.kappzzang.jeongsan.usecase.SendTransferMessageUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +13,8 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class SendMessageViewModel @Inject constructor(
-    private val getTransferInfoUseCase: GetTransferInfoUseCase
+    private val getTransferInfoUseCase: GetTransferInfoUseCase,
+    private val sendTransferMessageUseCase: SendTransferMessageUseCase,
 ) : ViewModel() {
 
     private val _transferInfo = MutableStateFlow<List<TransferDetailItem>>(emptyList())
@@ -36,7 +38,5 @@ class SendMessageViewModel @Inject constructor(
         _totalPrice.value = _transferInfo.value.sumOf { it.fee }
     }
 
-    fun sendTransferMessage() {
-
-    }
+    suspend fun sendTransferMessage(): Boolean = sendTransferMessageUseCase(_transferInfo.value)
 }

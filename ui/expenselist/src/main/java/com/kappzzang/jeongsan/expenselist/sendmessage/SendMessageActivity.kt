@@ -1,6 +1,7 @@
 package com.kappzzang.jeongsan.expenselist.sendmessage
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -56,8 +57,17 @@ class SendMessageActivity : AppCompatActivity() {
 
     private fun setSendButton() {
         binding.sendMessageButton.setOnClickListener {
-            viewModel.sendTransferMessage()
-            startActivity(navigator.navigateToSendComplete(this))
+            lifecycleScope.launch {
+                if (viewModel.sendTransferMessage()) {
+                    startActivity(navigator.navigateToSendComplete(this@SendMessageActivity))
+                } else {
+                    Toast.makeText(
+                        this@SendMessageActivity,
+                        getString(R.string.send_message_error),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
         }
     }
 }
