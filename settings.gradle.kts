@@ -8,6 +8,7 @@ pluginManagement {
             }
         }
         mavenCentral()
+
         gradlePluginPortal()
     }
 }
@@ -16,6 +17,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url = java.net.URI("https://devrepo.kakao.com/nexus/content/groups/public/") }
     }
 }
 
@@ -42,3 +44,4 @@ include(":ui:data")
 
 project(":data").children.forEach { module -> module.name = "data-${module.name}" }
 include(":common:navigation")
+include(":common:retrofit")
