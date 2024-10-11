@@ -88,8 +88,8 @@ class LoginViewModel @Inject constructor(
         jwt = null
     )
 
-    fun onKakaoAuthorizationFailure(error: Throwable?) {
-        error?.let {
+    fun onKakaoAuthorizationComplete(token: OAuthToken?, error: Throwable?) {
+        if (error != null) {
             if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
                 _kakaoLoginStatus.value = KakaoLoginStatus.IDLE
                 Log.e("KSC", "로그인 취소")
@@ -102,11 +102,7 @@ class LoginViewModel @Inject constructor(
             }
             _kakaoLoginStatus.value = KakaoLoginStatus.FAILED
             Log.e("KSC", "로그인 실패")
-        }
-    }
-
-    fun onKakaoAuthorizationSuccess(token: OAuthToken?) {
-        token?.let {
+        } else if (token != null) {
             _kakaoLoginStatus.value = KakaoLoginStatus.ON_LOGIN
             authorizeWithKakao(mapOAuthTokenToAuthData(token))
             Log.d("KSC", "로그인 완료")

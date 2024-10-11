@@ -1,16 +1,13 @@
 package com.kappzzang.jeongsan.login
 
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.kakao.sdk.auth.model.OAuthToken
-import com.kakao.sdk.common.model.ClientError
-import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.kappzzang.jeongsan.login.databinding.ActivityLoginBinding
 import com.kappzzang.jeongsan.navigation.AppNavigator
@@ -37,7 +34,7 @@ class LoginActivity : AppCompatActivity() {
         binding.loginByKakaoImagebutton.setOnClickListener {
             loginWithKakao()
         }
-        Log.d(TAG, intent?.data?.toString().toString())
+
         startCollectingKakaoLoginState()
 
         viewModel.login()
@@ -57,47 +54,23 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun navigateToMainPage() {
-        startActivity(
-            appNavigator.navigateToMainPage(this).also {
-                intent?.data?.let { uri ->
-                    it.data = Uri.parse(uri.toString())
-                }
-            }
-        )
+        startActivity(appNavigator.navigateToMainPage(this))
     }
 
     private fun loginWithKakao() {
-        val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
-            if (error != null) {
-                Log.e(TAG, "카카오계정으로 로그인 실패", error)
-                viewModel.onKakaoAuthorizationFailure(error)
-            } else if (token != null) {
-                Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
-                viewModel.onKakaoAuthorizationSuccess(token)
-            }
+        if (!UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
+            Toast.makeText(this, R.string.login_kakao_talk_not_available, Toast.LENGTH_SHORT).show()
+            return
         }
+        Log.d("KSC", "로그인 중...")
 
-        if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
+        try {
             UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
-                if (error != null) {
-                    Log.e(TAG, "카카오톡으로 로그인 실패", error)
-                    // 사용자가 취소한 것이면 카카오 계정 로그인을 시도하지 않음
-                    if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
-                        viewModel.onKakaoAuthorizationFailure(error)
-                        return@loginWithKakaoTalk
-                    }
-                    UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
-                } else if (token != null) {
-                    Log.i(TAG, "카카오톡 로그인 성공 ${token.accessToken}")
-                    viewModel.onKakaoAuthorizationSuccess(token)
-                }
+                viewModel.onKakaoAuthorizationComplete(token, error)
+                Log.d("KSC", "카카오톡으로 로그인 성공 ${token?.accessToken}")
             }
-        } else {
-            UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
+        } catch (e: Exception) {
+            Log.e("KSC", e.message ?: "")
         }
-    }
-
-    companion object {
-        private const val TAG = "LOGIN_ACTIVITY"
     }
 }

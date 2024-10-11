@@ -1,6 +1,6 @@
 package com.kappzzang.jeongsan.retrofit
 
-import com.kappzzang.jeongsan.build_config.BuildConfig
+import com.kappzzang.jeongsan.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
