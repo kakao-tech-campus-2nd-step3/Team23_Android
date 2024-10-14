@@ -1,28 +1,55 @@
 package com.kappzzang.jeongsan.creategroup
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.kappzzang.jeongsan.data.Member
+import com.bumptech.glide.Glide
+import com.kappzzang.jeongsan.creategroup.databinding.ItemMemberInviteBinding
+import com.kappzzang.jeongsan.data.MemberUIData
 
-class MemberAdapter(var memberList: List<Member>, val inflater: LayoutInflater, val layoutId: Int) :
-    RecyclerView.Adapter<MemberAdapter.MemberViewHolder>() {
-    inner class MemberViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val name: TextView = itemView.findViewById(
-            com.kappzzang.jeongsan.R.id.profile_name_textview
+class MemberAdapter(private val onDeleteMember: (Int) -> Unit) :
+    ListAdapter<MemberUIData, MemberAdapter.MemberViewHolder>(diffUtil) {
+
+    inner class MemberViewHolder(private val binding: ItemMemberInviteBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.deleteButton.setOnClickListener {
+                onDeleteMember(bindingAdapterPosition)
+            }
+        }
+
+        fun bind(memberUIData: MemberUIData) {
+            binding.profileNameTextview.text = memberUIData.name
+            Glide.with(binding.root)
+                .load(memberUIData.profileImageUrl)
+                .circleCrop()
+                .into(binding.profileImageImageview)
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemberViewHolder =
+        MemberViewHolder(
+            ItemMemberInviteBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
         )
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemberViewHolder {
-        val view = inflater.inflate(layoutId, parent, false)
-        return MemberViewHolder(view)
-    }
 
     override fun onBindViewHolder(holder: MemberViewHolder, position: Int) {
-        holder.name.text = memberList[position].name
+        holder.bind(getItem(position))
     }
 
-    override fun getItemCount(): Int = memberList.size
+    companion object {
+        val diffUtil = object : DiffUtil.ItemCallback<MemberUIData>() {
+            override fun areItemsTheSame(oldItem: MemberUIData, newItem: MemberUIData): Boolean =
+                oldItem.uuid == newItem.uuid
+
+            override fun areContentsTheSame(oldItem: MemberUIData, newItem: MemberUIData): Boolean =
+                oldItem == newItem
+        }
+    }
 }

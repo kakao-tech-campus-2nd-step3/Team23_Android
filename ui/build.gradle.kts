@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -7,6 +9,8 @@ plugins {
 }
 
 android {
+    fun getApiKey(key: String): String = gradleLocalProperties(rootDir, providers).getProperty(key)
+
     namespace = "com.kappzzang.jeongsan"
     compileSdk = 34
 
@@ -15,6 +19,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+        resValue("string", "KAKAO_API_KEY", getApiKey("KAKAO_API_KEY"))
     }
 
     compileOptions {
@@ -92,6 +97,7 @@ subprojects {
             dataBinding = true
             viewBinding = true
             buildConfig = true
+            resValues = true
         }
     }
 }

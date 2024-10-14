@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
     id("com.android.application") version "8.3.1" apply false
@@ -13,6 +15,8 @@ subprojects {
 
 allprojects {
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
+
+    fun getApiKey(key: String): String = gradleLocalProperties(rootDir, providers).getProperty(key)
 
     ktlint {
         version.set("1.3.1")

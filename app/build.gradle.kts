@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -8,6 +10,7 @@ plugins {
 }
 
 android {
+    fun getApiKey(key: String): String = gradleLocalProperties(rootDir, providers).getProperty(key)
     namespace = "com.kappzzang.jeongsan"
     compileSdk = 34
 
@@ -19,6 +22,10 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "KAKAO_REST_API_KEY", getApiKey("KAKAO_REST_API_KEY"))
+        buildConfigField("String", "KAKAO_API_KEY", getApiKey("KAKAO_API_KEY"))
+        resValue("string", "KAKAO_API_KEY_MANIFEST", getApiKey("KAKAO_API_KEY_MANIFEST"))
     }
 
     buildTypes {
@@ -46,10 +53,12 @@ android {
 }
 
 dependencies {
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.activity:activity:1.9.2")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("com.kakao.sdk:v2-cert:2.20.6")
     implementation(project(":ui:main"))
     implementation(project(":ui:login"))
     implementation(project(":ui:main"))
@@ -68,10 +77,12 @@ dependencies {
     implementation(project(":data:data-ocr"))
     implementation(project(":data:data-user"))
     implementation("androidx.room:room-ktx:2.6.1")
+    implementation(project(":common:androidutil"))
     project(":common:util")
     project(":common:androidutil")
     implementation(project(":common:navigation"))
     implementation(project(":common:resource"))
+    implementation(project(":common:retrofit"))
 
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.7.0")
