@@ -6,34 +6,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/invite_info_padding"
-    tools:context=".inviteinfo.InviteInfoActivity">
+    tools:context=".inviteinfo.InviteInfoDialogFragment">
+
     <TextView
         android:id="@+id/page_title_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/close_imageview"
         android:text="@string/invite_info_title"
         android:textSize="@dimen/all_header_text_size"
         android:textStyle="bold"
-        />
+        app:layout_constraintBottom_toBottomOf="@id/close_imageview"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:id="@+id/close_imageview"
         android:layout_width="@dimen/invite_info_close_width"
         android:layout_height="@dimen/invite_info_close_width"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:src="@drawable/all_close"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/member_content_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/close_imageview"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginTop="20dp"
-        tools:listitem="@layout/item_member_info"
-        />
+        tools:listitem="@layout/item_member_info" />
 </androidx.constraintlayout.widget.ConstraintLayout>
