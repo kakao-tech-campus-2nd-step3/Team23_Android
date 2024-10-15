@@ -45,14 +45,14 @@
     <dimen name="expense_list_fragment_title_top_margin"> 24sp </dimen>
 
     <!-- 초대 현황 페이지 -->
-    <dimen name="invite_info_close_width"> 50dp </dimen>
+    <dimen name="invite_info_close_width"> 40dp </dimen>
 
     <!-- 모임 생성 페이지 -->
     <dimen name="create_group_menu_text_size"> 20sp </dimen>
     <dimen name="create_group_add_button_width"> 60dp </dimen>
 
     <!-- 초대 현황 페이지 -->
-    <dimen name="invite_info_padding"> 10dp </dimen>
+    <dimen name="invite_info_padding"> 20dp </dimen>
 
     <!-- 로그인 페이지 -->
     <dimen name="login_kakao_button_width"> 300dp </dimen>

@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/invite_info_dialog_background"
     android:padding="@dimen/invite_info_padding"
     tools:context=".inviteinfo.InviteInfoDialogFragment">
 
