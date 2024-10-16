@@ -21,7 +21,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.kappzzang.jeongsan.expenselist.databinding.ActivityExpenseListBinding
-import com.kappzzang.jeongsan.expenselist.inviteinfo.InviteInfoActivity
+import com.kappzzang.jeongsan.expenselist.inviteinfo.InviteInfoDialogFragment
 import com.kappzzang.jeongsan.expenselist.sendmessage.SendMessageActivity
 import com.kappzzang.jeongsan.intentcontract.AddExpenseContract
 import com.kappzzang.jeongsan.intentcontract.ExpenseListContract
@@ -46,6 +46,7 @@ class ExpenseListActivity : AppCompatActivity() {
     }
     private lateinit var navController: NavController
     private lateinit var activityReceiptCameraLauncher: ActivityResultLauncher<Intent>
+    private val inviteInfoDialogFragment = InviteInfoDialogFragment()
 
     private val requestCameraPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -106,13 +107,8 @@ class ExpenseListActivity : AppCompatActivity() {
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 return@setOnMenuItemClickListener when (menuItem.itemId) {
                     R.id.menu_invite_status -> {
-                        // TODO: Dialog로 대체
-                        startActivity(
-                            Intent(
-                                this,
-                                InviteInfoActivity::class.java
-                            )
-                        )
+                        inviteInfoDialogFragment.show(supportFragmentManager, "inviteInfoDialog")
+
                         true
                     }
 
