@@ -61,6 +61,26 @@ jobs:
           profile: Nexus 6
           script: echo "Generated AVD snapshot for caching."
 
+      - name: Setup Secret Keys
+        run: |
+          echo "KAKAO_REST_API_KEY=\"$KAKAO_REST_API_KEY\"" >> local.properties
+          echo "KAKAO_API_KEY=\"$KAKAO_API_KEY\"" >> local.properties
+          echo "KAKAO_API_KEY_MANIFEST=\"$KAKAO_API_KEY_MANIFEST\"" >> local.properties
+          echo "KAKAO_API_URL=\"$KAKAO_API_URL\"" >> local.properties
+          echo "KAKAO_AUTH_URL=\"$KAKAO_AUTH_URL\"" >> local.properties
+          echo "SERVICE_URL=\"$SERVICE_URL\"" >> local.properties
+          echo "KEYSTORE_NAME=\"$KEYSTORE_NAME\"" >> local.properties
+        shell: bash
+        env:
+          KAKAO_REST_API_KEY: ${{secrets.KAKAO_REST_API_KEY}}
+          KAKAO_API_KEY: ${{secrets.KAKAO_API_KEY}}
+          KAKAO_API_KEY_MANIFEST: ${{secrets.KAKAO_API_KEY_MANIFEST}}
+          KAKAO_API_URL: ${{secrets.KAKAO_API_URL}}
+          KAKAO_AUTH_URL: ${{secrets.KAKAO_AUTH_URL}}
+          SERVICE_URL: ${{secrets.SERVICE_URL}}
+          KEYSTORE_NAME: ${{secrets.KEYSTORE_NAME}}
+
+
         # Gradle 빌드
       - name: Build
         if: success() || failure()
