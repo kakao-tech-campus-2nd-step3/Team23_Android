@@ -44,31 +44,7 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindExpensePageRepository(
-        expenseListRepository: ExpenseListFakeRepositoryImpl
-    ): ExpenseListRepository
-
-    @Binds
-    @Singleton
     abstract fun bindMemberRepository(memberRepositoryImpl: MemberRepositoryImpl): MemberRepository
-
-    @Binds
-    @Singleton
-    abstract fun bindExpenseDetailRepository(
-        expenseDetailRepositoryImpl: ExpenseDetailRepositoryImpl
-    ): ExpenseDetailRepository
-
-    @Binds
-    @Singleton
-    abstract fun bindExpenseRepository(
-        expenseRepositoryImpl: ExpenseRepositoryImpl
-    ): ExpenseRepository
-
-    @Binds
-    @Singleton
-    abstract fun bindReceiptRepository(
-        receiptRepositoryImpl: ReceiptRepositoryImpl
-    ): ReceiptRepository
 
     @Binds
     @Singleton
@@ -81,10 +57,4 @@ abstract class RepositoryModule {
     abstract fun bindAuthenticationRepository(
         authenticationRepositoryImpl: AuthenticationRepositoryImpl
     ): AuthenticationRepository
-
-    @Binds
-    @Singleton
-    abstract fun bindTransferRepository(
-        transferRepositoryImpl: TransferRepositoryImpl
-    ): TransferRepository
 }

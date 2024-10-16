@@ -49,22 +49,6 @@ object UseCaseModule {
         GetInviteInfoUseCase(memberRepository)
 
     @Provides
-    fun provideGetExpenseDetailUseCase(expenseDetailRepository: ExpenseDetailRepository) =
-        GetExpenseDetailUseCase(expenseDetailRepository)
-
-    @Provides
-    fun provideGetExpenseUseCase(expenseRepository: ExpenseRepository) =
-        GetExpenseUseCase(expenseRepository)
-
-    @Provides
-    fun provideEditExpenseDetailUseCase(expenseDetailRepository: ExpenseDetailRepository) =
-        EditExpenseDetailUseCase(expenseDetailRepository)
-
-    @Provides
-    fun provideUploadExpenseUseCase(receiptRepository: ReceiptRepository) =
-        UploadExpenseUseCase(receiptRepository)
-
-    @Provides
     fun provideAuthenticateWithKakaoUseCase(
         authenticationRepository: AuthenticationRepository,
         kakaoAuthenticationRepository: KakaoAuthenticationRepository

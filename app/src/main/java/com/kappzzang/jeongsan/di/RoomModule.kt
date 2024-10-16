@@ -25,11 +25,6 @@ object RoomModule {
 
     @Provides
     @Singleton
-    fun provideExpenseDatabase(@ApplicationContext context: Context): ExpenseDatabase =
-        ExpenseDatabase.getInstance(context)
-
-    @Provides
-    @Singleton
     fun provideMemberDatabase(@ApplicationContext context: Context): MemberDatabase =
         Room.databaseBuilder(
             context,
