@@ -190,7 +190,6 @@ class ReceiptCameraActivity : AppCompatActivity() {
                 setResult(RESULT_CANCELED, intent)
                 finish()
             }
-
         }, ContextCompat.getMainExecutor(this))
     }
 

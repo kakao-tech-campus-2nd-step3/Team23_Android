@@ -2,7 +2,6 @@ package com.kappzzang.jeongsan.di
 
 import android.content.Context
 import androidx.room.Room
-import com.kappzzang.jeongsan.datasource.expense.ExpenseDatabase
 import com.kappzzang.jeongsan.datasource.group.GroupDatabase
 import com.kappzzang.jeongsan.datasource.member.MemberContract
 import com.kappzzang.jeongsan.datasource.member.MemberDatabase
