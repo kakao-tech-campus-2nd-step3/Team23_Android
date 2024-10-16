@@ -42,7 +42,7 @@ jobs:
           echo "$LOCAL_PROPERTIES" >> local.properties
         shell: bash
         env:
-          LOCAL_PROPERTIES: ${{ secrets.PROPERTIES }
+          LOCAL_PROPERTIES: ${{ secrets.PROPERTIES }}
 
         # Gradle 스크립트 실행을 위한 권한 설정
       - name: Grant Execute Permission for Gradlew
