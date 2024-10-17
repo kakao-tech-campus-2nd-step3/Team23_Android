@@ -4,6 +4,7 @@ import com.kappzzang.jeongsan.repository.ExpenseDetailRepository
 import com.kappzzang.jeongsan.repository.ExpenseListRepository
 import com.kappzzang.jeongsan.repository.ExpenseRepository
 import com.kappzzang.jeongsan.repository.GroupInfoRepository
+import com.kappzzang.jeongsan.repository.InviteRepository
 import com.kappzzang.jeongsan.repository.KakaoAuthenticationRepository
 import com.kappzzang.jeongsan.repository.MemberRepository
 import com.kappzzang.jeongsan.repository.ReceiptRepository
@@ -14,6 +15,7 @@ import com.kappzzang.jeongsan.repositoryimpl.ExpenseDetailRepositoryImpl
 import com.kappzzang.jeongsan.repositoryimpl.ExpenseListFakeRepositoryImpl
 import com.kappzzang.jeongsan.repositoryimpl.ExpenseRepositoryImpl
 import com.kappzzang.jeongsan.repositoryimpl.GroupInfoRepositoryImpl
+import com.kappzzang.jeongsan.repositoryimpl.InviteRepositoryImpl
 import com.kappzzang.jeongsan.repositoryimpl.KakaoAuthenticationRepositoryImpl
 import com.kappzzang.jeongsan.repositoryimpl.MemberRepositoryImpl
 import com.kappzzang.jeongsan.repositoryimpl.ReceiptRepositoryImpl
@@ -87,4 +89,10 @@ abstract class RepositoryModule {
     abstract fun bindTransferRepository(
         transferRepositoryImpl: TransferRepositoryImpl
     ): TransferRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindInviteRepository(
+        inviteRepositoryImpl: InviteRepositoryImpl
+    ): InviteRepository
 }
