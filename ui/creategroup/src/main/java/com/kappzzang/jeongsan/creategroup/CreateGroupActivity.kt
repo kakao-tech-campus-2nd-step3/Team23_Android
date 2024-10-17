@@ -10,7 +10,9 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kakao.sdk.friend.client.PickerClient
 import com.kakao.sdk.friend.model.OpenPickerFriendRequestParams
@@ -78,8 +80,10 @@ class CreateGroupActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-            viewModel.groupMemberList.collect { memberList ->
-                memberAdapter.submitList(memberList)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.groupMemberList.collect { memberList ->
+                    memberAdapter.submitList(memberList)
+                }
             }
         }
     }
