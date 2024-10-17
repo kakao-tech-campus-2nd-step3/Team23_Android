@@ -49,6 +49,7 @@ subprojects {
         implementation(project(":domain:group"))
 
         // Test Dependencies
+        testImplementation("org.assertj:assertj-core:3.25.3")
         testImplementation("androidx.room:room-testing:2.6.1")
         testImplementation("junit:junit:4.13.2")
         testImplementation("io.mockk:mockk-android:1.13.11")
