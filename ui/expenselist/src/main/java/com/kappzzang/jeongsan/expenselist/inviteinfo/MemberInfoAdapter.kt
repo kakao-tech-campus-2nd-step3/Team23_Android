@@ -8,12 +8,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kappzzang.jeongsan.expenselist.databinding.ItemMemberInfoBinding
 import com.kappzzang.jeongsan.model.MemberItem
 
-class MemberInfoAdapter :
+class MemberInfoAdapter (
+    private val sendMessageClickListener: (String) -> Unit
+):
     ListAdapter<MemberItem, MemberInfoAdapter.ViewHolder>(
         MemberInfoDiffUtil()
     ) {
-    class ViewHolder(private val binding: ItemMemberInfoBinding) :
+    inner class ViewHolder(private val binding: ItemMemberInfoBinding) :
         RecyclerView.ViewHolder(binding.root) {
+            fun bind(id: String) {
+                binding.sendInviteButton.setOnClickListener {
+                    sendMessageClickListener(id)
+                }
+            }
         val name: TextView =
             binding.memberLayout.findViewById(com.kappzzang.jeongsan.R.id.profile_name_textview)
         val inviteInfo = binding.inviteInfoTextview
@@ -30,6 +37,7 @@ class MemberInfoAdapter :
         holder.name.text = currItem.name
         holder.inviteInfo.text =
             if (!currItem.isInvited) {
+                holder.bind(currItem.id)
                 "초대 중"
             } else {
                 "초대 완료"
