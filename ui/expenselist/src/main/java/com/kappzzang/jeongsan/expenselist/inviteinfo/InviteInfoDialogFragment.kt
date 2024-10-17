@@ -46,7 +46,7 @@ class InviteInfoDialogFragment : DialogFragment() {
     }
 
     private fun initRecyclerView() {
-        memberAdapter = MemberInfoAdapter()
+        memberAdapter = MemberInfoAdapter(viewModel.sendMessageClickListener)
         binding.memberContentRecyclerview.apply {
             adapter = memberAdapter
             layoutManager = LinearLayoutManager(context)
