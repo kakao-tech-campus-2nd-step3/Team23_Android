@@ -1,8 +1,6 @@
 package com.kappzzang.jeongsan.creategroup
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
@@ -10,7 +8,9 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kakao.sdk.friend.client.PickerClient
 import com.kakao.sdk.friend.model.OpenPickerFriendRequestParams
@@ -31,11 +31,12 @@ class CreateGroupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateGroupBinding.inflate(layoutInflater)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
         setContentView(binding.root)
 
         initSpinner()
         initRecyclerView()
-        setGroupNameObserver()
         setPickerButton()
         setCreateGroupButton()
     }
@@ -78,22 +79,12 @@ class CreateGroupActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-            viewModel.groupMemberList.collect { memberList ->
-                memberAdapter.submitList(memberList)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.groupMemberList.collect { memberList ->
+                    memberAdapter.submitList(memberList)
+                }
             }
         }
-    }
-
-    private fun setGroupNameObserver() {
-        binding.groupNameValueEdittext.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.updateGroupName(s.toString())
-            }
-
-            override fun afterTextChanged(s: Editable?) {}
-        })
     }
 
     private fun setPickerButton() {
