@@ -1,6 +1,8 @@
 package com.kappzzang.jeongsan.model
 
-import java.util.Date
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 enum class ExpenseState { CONFIRMED, NOT_CONFIRMED, TRANSFER_PENDING, TRANSFERED }
 
@@ -11,7 +13,7 @@ data class ExpenseItem(
     val payerMemberId: String,
     val price: Int,
     val expenseImageUrl: String,
-    val date: Date,
+    val date: LocalDateTime,
     val state: ExpenseState,
     val categoryColor: String
 ) {
@@ -23,7 +25,7 @@ data class ExpenseItem(
             payerMemberId = "",
             price = 0,
             expenseImageUrl = "",
-            date = Date(),
+            date = LocalDateTime.now(),
             state = ExpenseState.NOT_CONFIRMED,
             categoryColor = ""
         )
