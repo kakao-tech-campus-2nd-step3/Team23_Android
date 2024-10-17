@@ -1,8 +1,6 @@
 package com.kappzzang.jeongsan.creategroup
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
@@ -33,11 +31,12 @@ class CreateGroupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateGroupBinding.inflate(layoutInflater)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
         setContentView(binding.root)
 
         initSpinner()
         initRecyclerView()
-        setGroupNameObserver()
         setPickerButton()
         setCreateGroupButton()
     }
@@ -86,18 +85,6 @@ class CreateGroupActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    private fun setGroupNameObserver() {
-        binding.groupNameValueEdittext.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.updateGroupName(s.toString())
-            }
-
-            override fun afterTextChanged(s: Editable?) {}
-        })
     }
 
     private fun setPickerButton() {
