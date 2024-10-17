@@ -1,7 +1,9 @@
 package com.kappzzang.jeongsan.main
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
@@ -33,6 +35,7 @@ class MainActivity : AppCompatActivity() {
         setGroupListRecyclerView()
         setCreateGroupButton()
         observeViewModel()
+        checkIsInvited()
     }
 
     private fun setGroupListRecyclerView() {
@@ -74,8 +77,35 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun checkIsInvited() {
+        if (intent?.data != null) {
+            showJoinGroupDialog(intent.data.toString())
+        }
+    }
+
+    private fun showJoinGroupDialog(groupId: String) {
+        // 그룹 아이디를 통해 그룹명 획득
+
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.main_wain_join))
+        // 가입 하기
+        builder.setPositiveButton(getString(R.string.main_positive_response)) { dialog, which ->
+
+        }
+        // 거절하기
+        builder.setNegativeButton(getString(R.string.main_negative_response)) { dialog, which ->
+
+        }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
     override fun onResume() {
         super.onResume()
         viewModel.loadGroupList()
+    }
+
+    companion object {
+        private const val TAG = "MAIN_ACTIVITY"
     }
 }

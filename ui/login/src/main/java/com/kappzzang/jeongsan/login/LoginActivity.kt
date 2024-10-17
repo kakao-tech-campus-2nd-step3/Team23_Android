@@ -1,5 +1,6 @@
 package com.kappzzang.jeongsan.login
 
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -61,7 +62,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun navigateToMainPage() {
-        startActivity(appNavigator.navigateToMainPage(this))
+        startActivity(appNavigator.navigateToMainPage(this).also {
+            intent?.data?.let { uri ->
+                it.data = Uri.parse(uri.toString())
+            }
+        })
     }
 
     private fun loginWithKakao() {
