@@ -190,8 +190,6 @@ class ReceiptCameraActivity : AppCompatActivity() {
                 setResult(RESULT_CANCELED, intent)
                 finish()
             }
-
-            preview.setSurfaceProvider(binding.receiptCameraViewFinder.surfaceProvider)
         }, ContextCompat.getMainExecutor(this))
     }
 
