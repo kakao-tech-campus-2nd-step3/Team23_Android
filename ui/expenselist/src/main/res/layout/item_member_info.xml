@@ -29,6 +29,5 @@
         android:gravity="center"
         android:text="@string/item_member_info_button"
         android:textColor="@color/white"
-        android:background="@drawable/all_background_button"
-        />
+        android:background="@drawable/all_background_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>
