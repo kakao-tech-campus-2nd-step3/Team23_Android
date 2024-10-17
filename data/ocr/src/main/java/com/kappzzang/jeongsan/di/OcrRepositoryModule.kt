@@ -5,14 +5,15 @@ import com.kappzzang.jeongsan.repositoryimpl.ReceiptCaptureRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.android.scopes.ViewModelScoped
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
-@InstallIn(ViewModelComponent::class)
-abstract class ReceiptCaptureRepositoryModule {
+@InstallIn(SingletonComponent::class)
+abstract class OcrRepositoryModule {
+
     @Binds
-    @ViewModelScoped
+    @Singleton
     abstract fun bindReceiptCaptureRepository(
         receiptCaptureRepository: ReceiptCaptureRepositoryImpl
     ): ReceiptCaptureRepository
