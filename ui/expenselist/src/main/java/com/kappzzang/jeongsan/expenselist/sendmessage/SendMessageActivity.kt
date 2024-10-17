@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.expenselist.R
 import com.kappzzang.jeongsan.expenselist.databinding.ActivitySendMessageBinding
@@ -41,16 +43,20 @@ class SendMessageActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-            viewModel.transferInfo.collect { memberAdapter.submitList(it) }
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.transferInfo.collect { memberAdapter.submitList(it) }
+            }
         }
     }
 
     private fun setTotalPriceObserver() {
         lifecycleScope.launch {
-            viewModel.totalPrice.collect { price ->
-                binding.totalPriceContentTextview.text = price.formatDecimalSeparator().plus(
-                    getString(R.string.send_message_money_unit)
-                )
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.totalPrice.collect { price ->
+                    binding.totalPriceContentTextview.text = price.formatDecimalSeparator().plus(
+                        getString(R.string.send_message_money_unit)
+                    )
+                }
             }
         }
     }

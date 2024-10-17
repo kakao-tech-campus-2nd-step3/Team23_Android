@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.expenselist.databinding.FragmentInviteInfoDialogBinding
 import kotlinx.coroutines.launch
@@ -53,8 +55,10 @@ class InviteInfoDialogFragment : DialogFragment() {
         }
 
         lifecycleScope.launch {
-            viewModel.inviteInfo.collect { inviteInfo ->
-                memberAdapter.submitList(inviteInfo)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.inviteInfo.collect { inviteInfo ->
+                    memberAdapter.submitList(inviteInfo)
+                }
             }
         }
     }
