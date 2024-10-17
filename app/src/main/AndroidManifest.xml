@@ -21,23 +21,28 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Jeongsan"
         tools:targetApi="31">
-        <activity
-            android:name=".TransferLinkLaunchActivity"
-            android:exported="true">
+<!--        <activity-->
+<!--            android:name=".TransferLinkLaunchActivity"-->
+<!--            android:exported="true">-->
 
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.VIEW" />-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--                <category android:name="android.intent.category.BROWSABLE" />-->
+
+<!--                &lt;!&ndash; "kakao${YOUR_NATIVE_APP_KEY}://kakaolink" 형식의 앱 실행 스킴을 설정하는데 사용 &ndash;&gt;-->
+<!--                <data android:host="kakaolink"-->
+<!--                    android:scheme="@string/KAKAO_API_KEY_MANIFEST" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
+        <activity
+            android:name=".StartActivity"
+            android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                <action android:name="android.intent.action.MAIN" />
 
-                <!-- "kakao${YOUR_NATIVE_APP_KEY}://kakaolink" 형식의 앱 실행 스킴을 설정하는데 사용 -->
-                <data android:host="kakaolink"
-                    android:scheme="@string/KAKAO_API_KEY_MANIFEST" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".InviteLinkLaunchActivity"
-            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -62,15 +67,15 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".StartActivity"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+<!--        <activity-->
+<!--            android:name=".StartActivity"-->
+<!--            android:exported="true" >-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
     </application>
 
 </manifest>
