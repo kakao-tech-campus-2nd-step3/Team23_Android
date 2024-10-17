@@ -23,9 +23,10 @@ class StartActivity : AppCompatActivity() {
     }
     private fun handleIntentData(intent: Intent?) {
         val transferLink = intent?.data?.getQueryParameter("transfer_link")
-        val inviteLink = intent?.data?.getQueryParameter("invite_link")
+        val inviteGroup = intent?.data?.getQueryParameter("invite_group_id")
 
         when {
+            // 송금 링크를 클릭해서 옴
             transferLink != null -> {
                 val transferLinkIntent = Intent(Intent.ACTION_VIEW)
                 transferLinkIntent.data = Uri.parse(transferLink)
@@ -33,15 +34,16 @@ class StartActivity : AppCompatActivity() {
                 startActivity(transferLinkIntent)
                 finish()
             }
-            inviteLink != null -> {
-                val inviteLinkIntent = Intent(Intent.ACTION_VIEW)
-                inviteLinkIntent.data = Uri.parse(inviteLink)
-                Log.d(TAG, inviteLink)
+            // 초대링크를 클릭해서 옴
+            inviteGroup != null -> {
+                Log.d(TAG, inviteGroup)
                 appNavigator.navigateToLogin(this).also {
+                    it.data = Uri.parse(inviteGroup)
                     startActivity(it)
                     finish()
                 }
             }
+            // 그냥 옴
             else -> {
                 appNavigator.navigateToLogin(this).also {
                     startActivity(it)
@@ -52,6 +54,6 @@ class StartActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val TAG = "StartActivity"
+        private const val TAG = "START_ACTIVITY"
     }
 }

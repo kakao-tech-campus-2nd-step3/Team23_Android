@@ -19,9 +19,7 @@ class InviteInfoViewModel @Inject constructor(
 
     private val _inviteInfo = MutableStateFlow<List<MemberItem>>(emptyList())
     val inviteInfo: StateFlow<List<MemberItem>> = _inviteInfo
-    val sendMessageClickListener: (String) -> Unit = {
-        sendInviteMessage(it)
-    }
+
     init {
         // 더미 데이터 삽입 & 적용
         viewModelScope.launch {
@@ -30,7 +28,8 @@ class InviteInfoViewModel @Inject constructor(
         }
     }
 
-    fun sendInviteMessage(id: String) = viewModelScope.launch {
-        sendInviteMessageUseCase.invoke(id)
+    fun sendInviteMessage(groupId: String, groupName: String, memberId: String) =
+        viewModelScope.launch {
+            sendInviteMessageUseCase.invoke(groupId, groupName, memberId)
     }
 }

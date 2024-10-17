@@ -6,12 +6,11 @@ import javax.inject.Inject
 class SendInviteMessageUseCase @Inject constructor(
     private val inviteRepository: InviteRepository
 ) {
-    suspend operator fun invoke(id: String): Boolean {
-        val inviteLink = inviteRepository.getInviteLink()
+    suspend operator fun invoke(groupId: String, groupName: String, memberId: String): Boolean {
         return inviteRepository.sendInviteMessage(
-            listOf(id),
-            inviteLink,
-            "모임 이름"
+            groupId,
+            groupName,
+            memberId
         )
     }
 }

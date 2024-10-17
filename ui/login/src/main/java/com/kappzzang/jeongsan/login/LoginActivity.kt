@@ -24,7 +24,6 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
-    private val TAG = "LOGIN_ACTIVITY"
     @Inject
     lateinit var appNavigator: AppNavigator
 
@@ -42,7 +41,7 @@ class LoginActivity : AppCompatActivity() {
         binding.loginByKakaoImagebutton.setOnClickListener {
             loginWithKakao()
         }
-
+        Log.d(TAG, intent?.data?.toString().toString())
         startCollectingKakaoLoginState()
 
         viewModel.login()
@@ -94,5 +93,8 @@ class LoginActivity : AppCompatActivity() {
         } else {
             UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
         }
+    }
+    companion object {
+        private const val TAG = "LOGIN_ACTIVITY"
     }
 }

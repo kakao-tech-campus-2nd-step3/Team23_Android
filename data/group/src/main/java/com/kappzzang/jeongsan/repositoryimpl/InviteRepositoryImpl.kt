@@ -8,18 +8,18 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 class InviteRepositoryImpl @Inject constructor() : InviteRepository {
-    // TODO: 추후 친구에게 보내기로 수정
 
+    // TODO: 추후 친구에게 보내기로 수정
     override suspend fun sendInviteMessage(
-        idList: List<String>,
-        inviteLink: String,
-        groupName: String
+        groupId: String,
+        groupName: String,
+        memberId: String
     ): Boolean {
         return suspendCoroutine { continuation ->
             TalkApiClient.instance.sendCustomMemo(
                 templateId = INVITE_MESSAGE_TEMPLATE_ID,
                 templateArgs = mapOf(
-                    "link" to inviteLink,
+                    "group_id" to groupId,
                     "group_name" to groupName
                 )
             ) { error ->
@@ -32,11 +32,6 @@ class InviteRepositoryImpl @Inject constructor() : InviteRepository {
                 }
             }
         }
-    }
-
-    override fun getInviteLink(): String {
-        // TODO: 임시 링크 반환
-        return "https://www.google.com"
     }
 
     companion object {
