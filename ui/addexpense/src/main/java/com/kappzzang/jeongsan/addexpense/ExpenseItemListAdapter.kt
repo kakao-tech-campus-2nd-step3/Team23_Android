@@ -30,21 +30,19 @@ class ExpenseItemListAdapter(
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.expenseAddRemoveButton.setOnClickListener {
-                val isLastItem = bindingAdapterPosition + 1 == bindingAdapter?.itemCount
-
-                if (isLastItem) {
-                    // TODO: 아이템 추가 시, 버튼의 모습이 올바르게 변하지 않음...
-                    onAddItem()
-                } else {
-                    onRemoveItem(bindingAdapterPosition)
+                currentList[bindingAdapterPosition].let { clickedItem ->
+                    if (clickedItem.isPlaceholder) {
+                        onAddItem()
+                        notifyItemRangeChanged(bindingAdapterPosition, 2)
+                    } else {
+                        onRemoveItem(bindingAdapterPosition)
+                    }
                 }
             }
         }
 
         fun bind(item: ExpenseItemInput) {
             binding.item = item
-            binding.isPlaceholder =
-                (this.bindingAdapterPosition + 1 == this.bindingAdapter?.itemCount)
         }
     }
 

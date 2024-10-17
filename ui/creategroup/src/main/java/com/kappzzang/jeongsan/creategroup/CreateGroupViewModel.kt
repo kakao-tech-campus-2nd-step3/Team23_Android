@@ -17,20 +17,13 @@ class CreateGroupViewModel @Inject constructor(
     private val uploadGroupInfoUseCase: UploadGroupInfoUseCase
 ) : ViewModel() {
 
-    private val _groupName = MutableStateFlow("")
-    val groupName: StateFlow<String> = _groupName
+    val groupName = MutableStateFlow("")
 
     private val _groupSubject = MutableStateFlow("")
     val groupSubject: StateFlow<String> = _groupSubject
 
     private val _groupMemberList = MutableStateFlow<List<MemberUIData>>(emptyList())
     val groupMemberList: StateFlow<List<MemberUIData>> = _groupMemberList
-
-    fun updateGroupName(name: String) {
-        viewModelScope.launch {
-            _groupName.emit(name)
-        }
-    }
 
     fun updateGroupSubject(subject: String) {
         viewModelScope.launch {
@@ -58,7 +51,7 @@ class CreateGroupViewModel @Inject constructor(
         }
 
         val groupInfo = GroupCreateItem(
-            name = _groupName.value,
+            name = groupName.value,
             subject = _groupSubject.value,
             memberIdList = _groupMemberList.value.map { it.uuid }
         )
@@ -69,7 +62,7 @@ class CreateGroupViewModel @Inject constructor(
         return true
     }
 
-    private fun checkGroupInfoValidation(): Boolean = _groupName.value.isNotEmpty() &&
+    private fun checkGroupInfoValidation(): Boolean = groupName.value.isNotEmpty() &&
         _groupSubject.value.isNotEmpty() &&
         _groupMemberList.value.isNotEmpty()
 }

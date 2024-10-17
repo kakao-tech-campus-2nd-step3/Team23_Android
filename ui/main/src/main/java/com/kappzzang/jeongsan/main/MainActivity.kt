@@ -4,7 +4,9 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.kappzzang.jeongsan.intentcontract.ExpenseListContract
@@ -59,17 +61,21 @@ class MainActivity : AppCompatActivity() {
 
     private fun observeViewModel() {
         lifecycleScope.launch {
-            viewModel.groupList.collect { groupList ->
-                groupListAdapter.submitList(groupList)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.groupList.collect { groupList ->
+                    groupListAdapter.submitList(groupList)
+                }
             }
         }
 
         lifecycleScope.launch {
-            viewModel.userProfileUrl.collect { userProfileUrl ->
-                Glide.with(this@MainActivity)
-                    .load(userProfileUrl)
-                    .circleCrop()
-                    .into(binding.profileImageImageview)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.userProfileUrl.collect { userProfileUrl ->
+                    Glide.with(this@MainActivity)
+                        .load(userProfileUrl)
+                        .circleCrop()
+                        .into(binding.profileImageImageview)
+                }
             }
         }
     }
