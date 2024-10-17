@@ -27,10 +27,10 @@ class ExpenseEntityMapperTest {
 
         //then
         assertThat(mapped.date.year).isEqualTo(2000)
-        assertThat(mapped.date.month).isEqualTo(4)
-        assertThat(mapped.date.date).isEqualTo(16)
-        assertThat(mapped.date.hours).isEqualTo(20)
-        assertThat(mapped.date.minutes).isEqualTo(11)
-        assertThat(mapped.date.seconds).isEqualTo(0)
+        assertThat(mapped.date.monthValue).isEqualTo(4)
+        assertThat(mapped.date.dayOfMonth).isEqualTo(16)
+        assertThat(mapped.date.hour).isEqualTo(20)
+        assertThat(mapped.date.minute).isEqualTo(11)
+        assertThat(mapped.date.second).isEqualTo(0)
     }
 }
