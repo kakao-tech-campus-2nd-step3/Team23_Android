@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.flow
 class ExpenseListFakeDatasource @Inject constructor(private val expenseDatabase: ExpenseDatabase) {
 
     fun getExpenseData(expenseState: ExpenseState): Flow<ExpenseListResponse> = flow {
-        delay(1000)
         val result =
             when (expenseState) {
                 ExpenseState.CONFIRMED -> expenseDatabase.expenseDao().getConfirmedExpense()
