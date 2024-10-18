@@ -14,7 +14,7 @@ object DateConverter {
 
         // Date를 서울 타임존의 Instant로 변환
         val instant = Instant.ofEpochMilli(date.time)
-            .atZone(ZoneId.of("Asia/Seoul"))
+            .atZone(ZoneId.systemDefault())
 
         // Instant를 LocalDateTime으로 변환
         return instant.toLocalDateTime()
