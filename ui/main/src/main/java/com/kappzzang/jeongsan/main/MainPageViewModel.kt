@@ -1,5 +1,6 @@
 package com.kappzzang.jeongsan.main
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.data.GroupViewItem
@@ -65,9 +66,17 @@ class MainPageViewModel @Inject constructor(
     }
 
     fun isAlreadyJoined(inviteGroupId: String): Boolean {
+        Log.d(TAG, _groupList.value.size.toString())
         _groupList.value.forEach {
-            if (it is GroupViewItem.Group && it.groupItem.id == inviteGroupId) return true
+            if (it is GroupViewItem.Group && it.groupItem.id == inviteGroupId) {
+                Log.d(TAG, "검사 id: ${it.groupItem.id} 초대 id: $inviteGroupId")
+                return true
+            }
         }
         return false
+    }
+
+    companion object {
+        private const val TAG = "MAIN_PAGE_VIEW_MODEL"
     }
 }

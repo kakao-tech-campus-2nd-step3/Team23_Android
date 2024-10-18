@@ -1,6 +1,8 @@
 package com.kappzzang.jeongsan.main
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -35,7 +37,6 @@ class MainActivity : AppCompatActivity() {
         setGroupListRecyclerView()
         setCreateGroupButton()
         observeViewModel()
-        checkIsInvited()
     }
 
     private fun setGroupListRecyclerView() {
@@ -89,6 +90,7 @@ class MainActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
+            intent.data = null
         }
     }
 
@@ -110,6 +112,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         viewModel.loadGroupList()
+        checkIsInvited()
     }
 
     companion object {
