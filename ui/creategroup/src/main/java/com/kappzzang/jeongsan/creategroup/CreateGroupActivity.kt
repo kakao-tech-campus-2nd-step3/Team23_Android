@@ -106,6 +106,8 @@ class CreateGroupActivity : AppCompatActivity() {
         binding.createGroupButton.setOnClickListener {
             val isUploadSuccess = viewModel.uploadGroupInfo()
             if (isUploadSuccess) {
+                // TODO: 그룹 생성 성공 시 그룹아이디를 서버에서 전달 받아 해당 그룹에 대한 초대 메시지 전송하도록 수정
+                viewModel.sendInviteMessageAll("idFromServer", viewModel.groupName.value)
                 finish()
             } else {
                 Toast.makeText(

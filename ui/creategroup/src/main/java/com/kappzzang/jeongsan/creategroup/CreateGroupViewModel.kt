@@ -4,21 +4,27 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.data.MemberUIData
 import com.kappzzang.jeongsan.model.GroupCreateItem
+import com.kappzzang.jeongsan.usecase.SendInviteMessageUseCase
 import com.kappzzang.jeongsan.usecase.UploadGroupInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class CreateGroupViewModel @Inject constructor(
-    private val uploadGroupInfoUseCase: UploadGroupInfoUseCase
+    private val uploadGroupInfoUseCase: UploadGroupInfoUseCase,
+    private val sendInviteMessageUseCase: SendInviteMessageUseCase
 ) : ViewModel() {
 
     private val _groupName = MutableStateFlow("")
     val groupName: StateFlow<String> = _groupName
+
+    private val _groupId = MutableStateFlow("")
+    val groupId = _groupId.asStateFlow()
 
     private val _groupSubject = MutableStateFlow("")
     val groupSubject: StateFlow<String> = _groupSubject
@@ -68,6 +74,13 @@ class CreateGroupViewModel @Inject constructor(
         }
         return true
     }
+
+    fun sendInviteMessageAll(groupId: String, groupName: String) =
+        _groupMemberList.value.forEach { member ->
+            viewModelScope.launch {
+                sendInviteMessageUseCase.invoke(groupId, groupName, member.uuid)
+            }
+        }
 
     private fun checkGroupInfoValidation(): Boolean = _groupName.value.isNotEmpty() &&
         _groupSubject.value.isNotEmpty() &&
