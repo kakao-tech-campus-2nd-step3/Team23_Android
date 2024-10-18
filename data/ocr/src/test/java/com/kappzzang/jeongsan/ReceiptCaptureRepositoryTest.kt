@@ -11,11 +11,11 @@ import org.junit.Before
 import org.junit.Test
 
 class ReceiptCaptureRepositoryTest {
-    private lateinit var repository:ReceiptCaptureRepository
+    private lateinit var repository: ReceiptCaptureRepository
     private val receiptCaptureFakeDatasource = ReceiptCaptureFakeDatasource()
 
     @Before
-    fun setUp(){
+    fun setUp() {
         repository = ReceiptCaptureRepositoryImpl(
             receiptCaptureFakeDatasource
         )
