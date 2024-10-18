@@ -5,18 +5,27 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.kappzzang.jeongsan.R
 import com.kappzzang.jeongsan.expenselist.databinding.ItemMemberInfoBinding
 import com.kappzzang.jeongsan.model.MemberItem
 
-class MemberInfoAdapter :
+class MemberInfoAdapter(private val sendMessageClickListener: (String) -> Unit) :
     ListAdapter<MemberItem, MemberInfoAdapter.ViewHolder>(
         MemberInfoDiffUtil()
     ) {
-    class ViewHolder(private val binding: ItemMemberInfoBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ItemMemberInfoBinding) :
+        RecyclerView.ViewHolder(
+            binding.root
+        ) {
+        fun bind(id: String) {
+            binding.sendInviteButton.setOnClickListener {
+                sendMessageClickListener(id)
+            }
+        }
         val name: TextView =
-            binding.memberLayout.findViewById(com.kappzzang.jeongsan.R.id.profile_name_textview)
+            binding.memberLayout.findViewById(R.id.profile_name_textview)
         val inviteInfo = binding.inviteInfoTextview
+        val inviteButton = binding.sendInviteButton
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -30,8 +39,11 @@ class MemberInfoAdapter :
         holder.name.text = currItem.name
         holder.inviteInfo.text =
             if (!currItem.isInvited) {
+                holder.bind(currItem.id)
+                holder.inviteButton.isEnabled = true
                 "초대 중"
             } else {
+                holder.inviteButton.isEnabled = false
                 "초대 완료"
             }
     }

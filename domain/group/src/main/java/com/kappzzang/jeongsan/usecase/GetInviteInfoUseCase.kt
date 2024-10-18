@@ -14,7 +14,7 @@ class GetInviteInfoUseCase(private val memberRepository: MemberRepository) {
                     id = "id$i",
                     name = "멤버 이름$i",
                     profileImageURL = "",
-                    isInvited = false
+                    isInvited = i % 2 != 0
                 )
             )
         }
