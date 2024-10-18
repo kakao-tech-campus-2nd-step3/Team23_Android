@@ -7,8 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kappzzang.jeongsan.expenselist.databinding.ItemExpenseBinding
 import com.kappzzang.jeongsan.model.ExpenseItem
-import java.text.SimpleDateFormat
-import java.util.Locale
+import com.kappzzang.jeongsan.util.DateConverter.formatToExpenseDate
 
 class ExpenseListAdapter(private val onExpenseItemClickListener: (expenseId: String) -> Unit) :
     ListAdapter<ExpenseItem, ExpenseListAdapter.MyViewHolder>(
@@ -39,8 +38,7 @@ class ExpenseListAdapter(private val onExpenseItemClickListener: (expenseId: Str
                 )
             )
             binding.expenseItem = expenseItem
-            binding.expenseDate =
-                SimpleDateFormat("MM/dd HH:mm", Locale.KOREAN).format(expenseItem.date)
+            binding.expenseDate = expenseItem.date.formatToExpenseDate()
         }
     }
 

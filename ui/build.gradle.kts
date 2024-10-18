@@ -64,6 +64,26 @@ subprojects {
 
         implementation("com.google.dagger:hilt-android:2.48.1")
         kapt("com.google.dagger:hilt-compiler:2.48.1")
+
+        // Test Dependencies
+        testImplementation("org.assertj:assertj-core:3.25.3")
+        testImplementation("androidx.room:room-testing:2.6.1")
+        testImplementation("junit:junit:4.13.2")
+        testImplementation("io.mockk:mockk-android:1.13.11")
+        testImplementation("io.mockk:mockk-agent:1.13.11")
+
+        testImplementation("androidx.arch.core:core-testing:2.2.0")
+        testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+        kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.48.1")
+
+        // Android Test Dependencies
+        androidTestImplementation("org.assertj:assertj-core:3.25.3")
+        androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+        androidTestImplementation("androidx.test.ext:junit:1.2.1")
+        androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+        androidTestImplementation("androidx.test:rules:1.6.1")
+        androidTestImplementation("androidx.test.espresso:espresso-intents:3.6.1")
+        androidTestImplementation("com.google.dagger:hilt-android-testing:2.48.1")
     }
 
     android {

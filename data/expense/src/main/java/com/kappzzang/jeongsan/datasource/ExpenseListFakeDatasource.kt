@@ -7,14 +7,12 @@ import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.model.ReceiptItem
 import java.sql.Timestamp
 import javax.inject.Inject
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class ExpenseListFakeDatasource @Inject constructor(private val expenseDatabase: ExpenseDatabase) {
 
     fun getExpenseData(expenseState: ExpenseState): Flow<ExpenseListResponse> = flow {
-        delay(1000)
         val result =
             when (expenseState) {
                 ExpenseState.CONFIRMED -> expenseDatabase.expenseDao().getConfirmedExpense()
