@@ -1,8 +1,10 @@
 package com.kappzzang.jeongsan.di
 
 import com.kappzzang.jeongsan.repository.GroupInfoRepository
+import com.kappzzang.jeongsan.repository.InviteRepository
 import com.kappzzang.jeongsan.repository.MemberRepository
 import com.kappzzang.jeongsan.repositoryimpl.GroupInfoRepositoryImpl
+import com.kappzzang.jeongsan.repositoryimpl.InviteRepositoryImpl
 import com.kappzzang.jeongsan.repositoryimpl.MemberRepositoryImpl
 import dagger.Binds
 import dagger.Module
@@ -23,4 +25,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindMemberRepository(memberRepositoryImpl: MemberRepositoryImpl): MemberRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindInviteRepository(inviteRepositoryImpl: InviteRepositoryImpl): InviteRepository
 }

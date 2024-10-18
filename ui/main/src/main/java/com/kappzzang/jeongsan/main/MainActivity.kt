@@ -1,7 +1,9 @@
 package com.kappzzang.jeongsan.main
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
@@ -80,8 +82,44 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun checkIsInvited() {
+        if (intent?.data != null) {
+            val inviteGroupId = intent.data.toString()
+            if (!viewModel.isAlreadyJoined(inviteGroupId)) {
+                showJoinGroupDialog(intent.data.toString())
+            } else {
+                Toast.makeText(
+                    this,
+                    getString(R.string.main_already_joined),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            intent.data = null
+        }
+    }
+
+    private fun showJoinGroupDialog(groupId: String) {
+        // TODO: 그룹 아이디를 통해 그룹명 획득
+
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.main_want_join))
+        // TODO: 가입 하기
+        builder.setPositiveButton(getString(R.string.main_positive_response)) { dialog, which ->
+        }
+        // TODO: 거절하기
+        builder.setNegativeButton(getString(R.string.main_negative_response)) { dialog, which ->
+        }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
     override fun onResume() {
         super.onResume()
         viewModel.loadGroupList()
+        checkIsInvited()
+    }
+
+    companion object {
+        private const val TAG = "MAIN_ACTIVITY"
     }
 }
