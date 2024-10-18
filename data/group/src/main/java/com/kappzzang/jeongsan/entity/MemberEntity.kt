@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.kappzzang.jeongsan.datasource.member.MemberContract
-import com.kappzzang.jeongsan.model.MemberItem
 
 @Entity(tableName = MemberContract.MemberEntry.TABLE_NAME)
 class MemberEntity(
@@ -18,11 +17,4 @@ class MemberEntity(
     @ColumnInfo(
         MemberContract.MemberEntry.COLUMN_IS_INVITED
     ) val isInvited: Boolean
-)
-
-fun MemberEntity.toVO(): MemberItem = MemberItem(
-    id,
-    name,
-    profileImageUrl,
-    isInvited
 )
