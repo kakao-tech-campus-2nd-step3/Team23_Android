@@ -75,12 +75,11 @@ class CreateGroupViewModel @Inject constructor(
         return true
     }
 
-    fun sendInviteMessageAll(groupId: String) =
-        _groupMemberList.value.forEach { member ->
-            viewModelScope.launch {
-                sendInviteMessageUseCase.invoke(groupId, groupName.value, member.uuid)
-            }
+    fun sendInviteMessageAll(groupId: String) = _groupMemberList.value.forEach { member ->
+        viewModelScope.launch {
+            sendInviteMessageUseCase.invoke(groupId, groupName.value, member.uuid)
         }
+    }
 
     private fun checkGroupInfoValidation(): Boolean = groupName.value.isNotEmpty() &&
         _groupSubject.value.isNotEmpty() &&
