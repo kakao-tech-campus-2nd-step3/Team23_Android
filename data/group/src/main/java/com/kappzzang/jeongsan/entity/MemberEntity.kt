@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.kappzzang.jeongsan.datasource.member.MemberContract
-import com.kappzzang.jeongsan.model.MemberItem
 
 @Entity(tableName = MemberContract.MemberEntry.TABLE_NAME)
 class MemberEntity(
