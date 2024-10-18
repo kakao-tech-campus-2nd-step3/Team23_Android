@@ -20,8 +20,8 @@ class CreateGroupViewModel @Inject constructor(
     private val sendInviteMessageUseCase: SendInviteMessageUseCase
 ) : ViewModel() {
 
-    private val _groupName = MutableStateFlow("")
-    val groupName: StateFlow<String> = _groupName
+    val groupName = MutableStateFlow("")
+//    val groupName: StateFlow<String> = _groupName
 
     private val _groupId = MutableStateFlow("")
     val groupId = _groupId.asStateFlow()
@@ -32,11 +32,11 @@ class CreateGroupViewModel @Inject constructor(
     private val _groupMemberList = MutableStateFlow<List<MemberUIData>>(emptyList())
     val groupMemberList: StateFlow<List<MemberUIData>> = _groupMemberList
 
-    fun updateGroupName(name: String) {
-        viewModelScope.launch {
-            _groupName.emit(name)
-        }
-    }
+//    fun updateGroupName(name: String) {
+//        viewModelScope.launch {
+//            groupName.emit(name)
+//        }
+//    }
 
     fun updateGroupSubject(subject: String) {
         viewModelScope.launch {
@@ -64,7 +64,7 @@ class CreateGroupViewModel @Inject constructor(
         }
 
         val groupInfo = GroupCreateItem(
-            name = _groupName.value,
+            name = groupName.value,
             subject = _groupSubject.value,
             memberIdList = _groupMemberList.value.map { it.uuid }
         )
@@ -75,14 +75,14 @@ class CreateGroupViewModel @Inject constructor(
         return true
     }
 
-    fun sendInviteMessageAll(groupId: String, groupName: String) =
+    fun sendInviteMessageAll(groupId: String) =
         _groupMemberList.value.forEach { member ->
             viewModelScope.launch {
-                sendInviteMessageUseCase.invoke(groupId, groupName, member.uuid)
+                sendInviteMessageUseCase.invoke(groupId, groupName.value, member.uuid)
             }
         }
 
-    private fun checkGroupInfoValidation(): Boolean = _groupName.value.isNotEmpty() &&
+    private fun checkGroupInfoValidation(): Boolean = groupName.value.isNotEmpty() &&
         _groupSubject.value.isNotEmpty() &&
         _groupMemberList.value.isNotEmpty()
 }
