@@ -63,4 +63,11 @@ class MainPageViewModel @Inject constructor(
             }
         }
     }
+
+    fun isAlreadyJoined(inviteGroupId: String): Boolean {
+        _groupList.value.forEach {
+            if (it is GroupViewItem.Group && it.groupItem.id == inviteGroupId) return true
+        }
+        return false
+    }
 }

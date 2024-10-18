@@ -5,7 +5,8 @@
     <string name="main_create_group">그룹 만들기</string>
     <string name="main_progress_group">진행중인 모임</string>
     <string name="main_done_group">완료된 모임</string>
-    <string name="main_wain_join">모임에 가입 할까요?</string>
-    <string name="main_positive_response">그럴래요</string>
+    <string name="main_want_join">모임에 가입 할까요?</string>
+    <string name="main_positive_response">할래요</string>
     <string name="main_negative_response">안할래요</string>
+    <string name="main_already_joined">이미 가입한 모임이에요.</string>
 </resources>

@@ -2,6 +2,7 @@ package com.kappzzang.jeongsan.main
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -79,20 +80,24 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkIsInvited() {
         if (intent?.data != null) {
-            showJoinGroupDialog(intent.data.toString())
+            val inviteGroupId = intent.data.toString();
+            if (!viewModel.isAlreadyJoined(inviteGroupId))
+                showJoinGroupDialog(intent.data.toString())
+            else
+                Toast.makeText(this, getString(R.string.main_already_joined), Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun showJoinGroupDialog(groupId: String) {
-        // 그룹 아이디를 통해 그룹명 획득
+        // TODO: 그룹 아이디를 통해 그룹명 획득
 
         val builder = AlertDialog.Builder(this)
-        builder.setTitle(getString(R.string.main_wain_join))
-        // 가입 하기
+        builder.setTitle(getString(R.string.main_want_join))
+        // TODO: 가입 하기
         builder.setPositiveButton(getString(R.string.main_positive_response)) { dialog, which ->
 
         }
-        // 거절하기
+        // TODO: 거절하기
         builder.setNegativeButton(getString(R.string.main_negative_response)) { dialog, which ->
 
         }
