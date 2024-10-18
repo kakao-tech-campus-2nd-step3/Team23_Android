@@ -4,9 +4,9 @@ import com.kappzzang.jeongsan.entity.OcrResultDetailItem
 import com.kappzzang.jeongsan.entity.OcrResultEntity
 import com.kappzzang.jeongsan.mapper.OcrResultEntityMapper
 import com.kappzzang.jeongsan.util.DateConverter.formatToTransferString
+import java.time.LocalDateTime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import java.time.LocalDateTime
 
 class OcrResultEntityMapperTest {
 
@@ -37,7 +37,14 @@ class OcrResultEntityMapperTest {
         val hour = 13
         val minute = 30
         val second = 32
-        val paymentTime = LocalDateTime.of(year, month, date, hour, minute, second) .formatToTransferString()
+        val paymentTime = LocalDateTime.of(
+            year,
+            month,
+            date,
+            hour,
+            minute,
+            second
+        ).formatToTransferString()
 
         val entity = OcrResultEntity(
             items = listOf(),
@@ -65,9 +72,9 @@ class OcrResultEntityMapperTest {
         val names = listOf("name_1", "name_2")
         val quantities = listOf(10, 0)
         val prices = listOf(20000, 500)
-        val items:MutableList<OcrResultDetailItem> = mutableListOf()
+        val items: MutableList<OcrResultDetailItem> = mutableListOf()
 
-        for(i in names.indices){
+        for (i in names.indices) {
             items.add(
                 OcrResultDetailItem(
                     name = names[i],

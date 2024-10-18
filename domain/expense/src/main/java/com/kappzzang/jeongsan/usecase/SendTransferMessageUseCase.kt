@@ -1,6 +1,5 @@
 package com.kappzzang.jeongsan.usecase
 
-import android.util.Log
 import com.kappzzang.jeongsan.model.TransferDetailItem
 import com.kappzzang.jeongsan.repository.TransferRepository
 import com.kappzzang.jeongsan.repository.UserInfoRepository

@@ -6,12 +6,9 @@ import com.kappzzang.jeongsan.repository.TransferRepository
 import com.kappzzang.jeongsan.repository.UserInfoRepository
 import com.kappzzang.jeongsan.usecase.SendTransferMessageUseCase
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
-import io.mockk.unmockkObject
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
@@ -67,28 +64,28 @@ class SendTransferMessageUseCaseTest {
 
         val result: Boolean
 
-        //when
+        // when
         runBlocking {
             result = usecase.invoke(input)
         }
 
-        //then
+        // then
         assertThat(result).isEqualTo(false)
     }
 
     @Test
     fun `이상 없이 실행되면 True를 리턴한다`() {
-        //given
+        // given
         val input = sampleTransferList
 
         val result: Boolean
 
-        //when
+        // when
         runBlocking {
             result = usecase.invoke(input)
         }
 
-        //then
+        // then
         assertThat(result).isEqualTo(true)
     }
 
