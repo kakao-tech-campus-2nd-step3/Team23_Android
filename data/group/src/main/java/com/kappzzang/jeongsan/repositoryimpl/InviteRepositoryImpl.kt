@@ -18,8 +18,8 @@ class InviteRepositoryImpl @Inject constructor() : InviteRepository {
         TalkApiClient.instance.sendCustomMemo(
             templateId = INVITE_MESSAGE_TEMPLATE_ID,
             templateArgs = mapOf(
-                GROUP_ID to groupId,
-                GROUP_NAME to groupName
+                "group_id" to groupId,
+                "group_name" to groupName
             )
         ) { error ->
             if (error != null) {
@@ -34,8 +34,6 @@ class InviteRepositoryImpl @Inject constructor() : InviteRepository {
 
     companion object {
         private const val INVITE_MESSAGE_TEMPLATE_ID = 113229L
-        private const val GROUP_ID = "group_id"
-        private const val GROUP_NAME = "group_name"
         private const val TAG = "InviteRepositoryImpl"
     }
 }
