@@ -21,6 +21,9 @@ object DateConverter {
         return instant.toLocalDateTime()
     }
 
+    fun LocalDateTime.formatToTransferString(): String =
+        this.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.KOREAN))
+
     fun LocalDateTime.formatToExpenseDate(): String =
         this.format(DateTimeFormatter.ofPattern("MM/dd HH:mm", Locale.KOREAN))
 }
