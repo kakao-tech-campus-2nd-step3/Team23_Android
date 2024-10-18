@@ -92,7 +92,5 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindInviteRepository(
-        inviteRepositoryImpl: InviteRepositoryImpl
-    ): InviteRepository
+    abstract fun bindInviteRepository(inviteRepositoryImpl: InviteRepositoryImpl): InviteRepository
 }

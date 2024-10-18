@@ -9,21 +9,21 @@ import com.kappzzang.jeongsan.R
 import com.kappzzang.jeongsan.expenselist.databinding.ItemMemberInfoBinding
 import com.kappzzang.jeongsan.model.MemberItem
 
-class MemberInfoAdapter (
-    private val sendMessageClickListener: (String) -> Unit
-):
+class MemberInfoAdapter(private val sendMessageClickListener: (String) -> Unit) :
     ListAdapter<MemberItem, MemberInfoAdapter.ViewHolder>(
         MemberInfoDiffUtil()
     ) {
     inner class ViewHolder(private val binding: ItemMemberInfoBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-            fun bind(id: String) {
-                binding.sendInviteButton.setOnClickListener {
-                    sendMessageClickListener(id)
-                }
+        RecyclerView.ViewHolder(
+            binding.root
+        ) {
+        fun bind(id: String) {
+            binding.sendInviteButton.setOnClickListener {
+                sendMessageClickListener(id)
             }
+        }
         val name: TextView =
-            binding.memberLayout.findViewById(com.kappzzang.jeongsan.R.id.profile_name_textview)
+            binding.memberLayout.findViewById(R.id.profile_name_textview)
         val inviteInfo = binding.inviteInfoTextview
         val inviteButton = binding.sendInviteButton
     }

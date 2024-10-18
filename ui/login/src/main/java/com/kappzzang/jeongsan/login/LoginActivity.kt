@@ -3,20 +3,15 @@ package com.kappzzang.jeongsan.login
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.kakao.sdk.auth.TalkAuthCodeActivity
 import com.kakao.sdk.auth.model.OAuthToken
-import com.kakao.sdk.common.model.AuthError
-import com.kakao.sdk.common.model.AuthErrorCause
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
-import com.kakao.sdk.user.model.User
 import com.kappzzang.jeongsan.login.databinding.ActivityLoginBinding
 import com.kappzzang.jeongsan.navigation.AppNavigator
 import dagger.hilt.android.AndroidEntryPoint
@@ -62,11 +57,13 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun navigateToMainPage() {
-        startActivity(appNavigator.navigateToMainPage(this).also {
-            intent?.data?.let { uri ->
-                it.data = Uri.parse(uri.toString())
+        startActivity(
+            appNavigator.navigateToMainPage(this).also {
+                intent?.data?.let { uri ->
+                    it.data = Uri.parse(uri.toString())
+                }
             }
-        })
+        )
     }
 
     private fun loginWithKakao() {
@@ -99,6 +96,7 @@ class LoginActivity : AppCompatActivity() {
             UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
         }
     }
+
     companion object {
         private const val TAG = "LOGIN_ACTIVITY"
     }

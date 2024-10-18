@@ -15,7 +15,6 @@ import com.kappzzang.jeongsan.expenselist.ExpenseListViewModel
 import com.kappzzang.jeongsan.expenselist.databinding.FragmentInviteInfoDialogBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import kotlin.math.exp
 
 @AndroidEntryPoint
 class InviteInfoDialogFragment : DialogFragment() {
@@ -40,7 +39,10 @@ class InviteInfoDialogFragment : DialogFragment() {
         setDialogStyle()
         initRecyclerView()
         setCloseButton()
-        Log.d(TAG, "id: ${expenseViewModel.groupId.value}, name: ${expenseViewModel.groupName.value}")
+        Log.d(
+            TAG,
+            "id: ${expenseViewModel.groupId.value}, name: ${expenseViewModel.groupName.value}"
+        )
     }
 
     private fun setDialogStyle() {
