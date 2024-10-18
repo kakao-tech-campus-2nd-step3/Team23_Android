@@ -19,10 +19,3 @@ class MemberEntity(
         MemberContract.MemberEntry.COLUMN_IS_INVITED
     ) val isInvited: Boolean
 )
-
-fun MemberEntity.toVO(): MemberItem = MemberItem(
-    id,
-    name,
-    profileImageUrl,
-    isInvited
-)

@@ -21,8 +21,8 @@
 
     <!-- 초대 현황 페이지 -->
     <string name="invite_info_title">초대 현황</string>
-
-    <string name="item_member_info_status">초대완료</string>
+    <string name="item_member_info_complete">초대 완료</string>
+    <string name="item_member_info_pending">초대 중</string>
     <string name="item_member_info_button">재전송</string>
 
     <!-- 송금 요청 금액 확인 페이지 -->

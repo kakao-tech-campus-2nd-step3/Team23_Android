@@ -6,6 +6,7 @@ import com.kappzzang.jeongsan.model.MemberItem
 import com.kappzzang.jeongsan.usecase.GetInviteInfoUseCase
 import com.kappzzang.jeongsan.usecase.SendInviteMessageUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,7 +23,7 @@ class InviteInfoViewModel @Inject constructor(
 
     init {
         // 더미 데이터 삽입 & 적용
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             getInviteInfoUseCase.insertDummyData()
             _inviteInfo.emit(getInviteInfoUseCase())
         }
