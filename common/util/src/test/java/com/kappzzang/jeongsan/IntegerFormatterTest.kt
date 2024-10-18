@@ -1,3 +1,5 @@
+package com.kappzzang.jeongsan
+
 import com.kappzzang.jeongsan.util.IntegerFormatter.formatDecimalSeparator
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
