@@ -43,46 +43,14 @@ object UseCaseModule {
         GetDoneGroupUseCase(groupInfoRepository)
 
     @Provides
-    fun provideGetUserInfoUseCase(userInfoRepository: UserInfoRepository) =
-        GetUserInfoUseCase(userInfoRepository)
-
-    @Provides
     fun provideGetInviteInfoUseCase(memberRepository: MemberRepository): GetInviteInfoUseCase =
         GetInviteInfoUseCase(memberRepository)
-
-    @Provides
-    fun provideGetExpenseDetailUseCase(expenseDetailRepository: ExpenseDetailRepository) =
-        GetExpenseDetailUseCase(expenseDetailRepository)
-
-    @Provides
-    fun provideGetExpenseUseCase(expenseRepository: ExpenseRepository) =
-        GetExpenseUseCase(expenseRepository)
-
-    @Provides
-    fun provideEditExpenseDetailUseCase(expenseDetailRepository: ExpenseDetailRepository) =
-        EditExpenseDetailUseCase(expenseDetailRepository)
-
-    @Provides
-    fun provideUploadExpenseUseCase(receiptRepository: ReceiptRepository) =
-        UploadExpenseUseCase(receiptRepository)
-
-    @Provides
-    fun provideAuthenticateWithKakaoUseCase(
-        authenticationRepository: AuthenticationRepository,
-        kakaoAuthenticationRepository: KakaoAuthenticationRepository
-    ) = AuthenticateWithKakaoUseCase(authenticationRepository, kakaoAuthenticationRepository)
-
-    @Provides
-    fun provideAuthorizeWithKakaoUseCase(authenticationRepository: AuthenticationRepository) =
-        AuthorizeWithKakaoUseCase(authenticationRepository)
-
-    @Provides
-    fun registerWithKakaoUseCase() = RegisterWithKakaoUseCase()
 
     @Provides
     fun provideUploadGroupInfoUseCase(groupInfoRepository: GroupInfoRepository) =
         UploadGroupInfoUseCase(groupInfoRepository)
 
+    @Provides
     fun provideGetTransferInfoUseCase(transferRepository: TransferRepository) =
         GetTransferInfoUseCase(transferRepository)
 
