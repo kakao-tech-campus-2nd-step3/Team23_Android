@@ -21,6 +21,10 @@ class CreateGroupViewModel @Inject constructor(
 ) : ViewModel() {
 
     val groupName = MutableStateFlow("")
+//    val groupName: StateFlow<String> = _groupName
+
+    private val _groupId = MutableStateFlow("")
+    val groupId = _groupId.asStateFlow()
 
     private val _groupId = MutableStateFlow("")
     val groupId = _groupId.asStateFlow()
@@ -30,6 +34,12 @@ class CreateGroupViewModel @Inject constructor(
 
     private val _groupMemberList = MutableStateFlow<List<MemberUIData>>(emptyList())
     val groupMemberList: StateFlow<List<MemberUIData>> = _groupMemberList
+
+//    fun updateGroupName(name: String) {
+//        viewModelScope.launch {
+//            groupName.emit(name)
+//        }
+//    }
 
     fun updateGroupSubject(subject: String) {
         viewModelScope.launch {
