@@ -67,13 +67,9 @@ class MainPageViewModel @Inject constructor(
 
     fun isAlreadyJoined(inviteGroupId: String): Boolean {
         Log.d(TAG, _groupList.value.size.toString())
-        _groupList.value.forEach {
-            if (it is GroupViewItem.Group && it.groupItem.id == inviteGroupId) {
-                Log.d(TAG, "검사 id: ${it.groupItem.id} 초대 id: $inviteGroupId")
-                return true
-            }
+        return _groupList.value.any {
+            it is GroupViewItem.Group && it.groupItem.id == inviteGroupId
         }
-        return false
     }
 
     companion object {

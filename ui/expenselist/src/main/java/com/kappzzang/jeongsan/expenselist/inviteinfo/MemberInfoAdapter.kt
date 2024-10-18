@@ -41,10 +41,14 @@ class MemberInfoAdapter(private val sendMessageClickListener: (String) -> Unit) 
             if (!currItem.isInvited) {
                 holder.bind(currItem.id)
                 holder.inviteButton.isEnabled = true
-                "초대 중"
+                holder.itemView.context.getString(
+                    com.kappzzang.jeongsan.expenselist.R.string.item_member_info_pending
+                )
             } else {
                 holder.inviteButton.isEnabled = false
-                "초대 완료"
+                holder.itemView.context.getString(
+                    com.kappzzang.jeongsan.expenselist.R.string.item_member_info_complete
+                )
             }
     }
 }
