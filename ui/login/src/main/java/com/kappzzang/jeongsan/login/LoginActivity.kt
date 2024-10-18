@@ -70,10 +70,10 @@ class LoginActivity : AppCompatActivity() {
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {
                 Log.e(TAG, "카카오계정으로 로그인 실패", error)
-                viewModel.onLoginCompleteFailure(error)
+                viewModel.onKakaoAuthorizationFailure(error)
             } else if (token != null) {
                 Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
-                viewModel.onLoginCompleteSuccess(token)
+                viewModel.onKakaoAuthorizationSuccess(token)
             }
         }
 
@@ -83,13 +83,13 @@ class LoginActivity : AppCompatActivity() {
                     Log.e(TAG, "카카오톡으로 로그인 실패", error)
                     // 사용자가 취소한 것이면 카카오 계정 로그인을 시도하지 않음
                     if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
-                        viewModel.onLoginCompleteFailure(error)
+                        viewModel.onKakaoAuthorizationFailure(error)
                         return@loginWithKakaoTalk
                     }
                     UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
                 } else if (token != null) {
                     Log.i(TAG, "카카오톡 로그인 성공 ${token.accessToken}")
-                    viewModel.onLoginCompleteSuccess(token)
+                    viewModel.onKakaoAuthorizationSuccess(token)
                 }
             }
         } else {

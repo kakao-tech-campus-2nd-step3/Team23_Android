@@ -5,6 +5,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.kappzzang.jeongsan.intentcontract.ReceiptCameraContract
+import com.kappzzang.jeongsan.intentcontract.StartContract
 import com.kappzzang.jeongsan.navigation.AppNavigator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -17,13 +19,11 @@ class StartActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "stared")
-        // TODO: 임시로 바로 로그인 페이지로 이동
-        // 이후 로그인 정보를 통해 바로 메인 페이지로 보내거나 결정하는 로직
         handleIntentData(intent)
     }
     private fun handleIntentData(intent: Intent?) {
-        val transferLink = intent?.data?.getQueryParameter("transfer_link")
-        val inviteGroup = intent?.data?.getQueryParameter("invite_group_id")
+        val transferLink = intent?.data?.getQueryParameter(StartContract.TRANSFER_LINK)
+        val inviteGroup = intent?.data?.getQueryParameter(StartContract.INVITE_GROUP_ID)
 
         when {
             // 송금 링크를 클릭해서 옴

@@ -88,7 +88,7 @@ class LoginViewModel @Inject constructor(
         jwt = null
     )
 
-    fun onLoginCompleteFailure(error: Throwable?) {
+    fun onKakaoAuthorizationFailure(error: Throwable?) {
         error?.let {
             if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
                 _kakaoLoginStatus.value = KakaoLoginStatus.IDLE
@@ -105,7 +105,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun onLoginCompleteSuccess(token: OAuthToken?) {
+    fun onKakaoAuthorizationSuccess(token: OAuthToken?) {
         token?.let {
             _kakaoLoginStatus.value = KakaoLoginStatus.ON_LOGIN
             authorizeWithKakao(mapOAuthTokenToAuthData(token))
