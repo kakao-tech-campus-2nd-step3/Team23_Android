@@ -9,7 +9,7 @@ import com.kappzzang.jeongsan.usecase.GetProgressingGroupUseCase
 import com.kappzzang.jeongsan.usecase.GetUserInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -19,8 +19,7 @@ import kotlinx.coroutines.withContext
 class MainPageViewModel @Inject constructor(
     private val getProgressingGroupUseCase: GetProgressingGroupUseCase,
     private val getDoneGroupUseCase: GetDoneGroupUseCase,
-    private val getUserInfoUseCase: GetUserInfoUseCase,
-    private val ioDispatcher: CoroutineDispatcher
+    private val getUserInfoUseCase: GetUserInfoUseCase
 ) : ViewModel() {
 
     private val _userName = MutableStateFlow("")
@@ -37,7 +36,7 @@ class MainPageViewModel @Inject constructor(
         loadGroupList()
     }
 
-    fun loadUserInfo() {
+    private fun loadUserInfo() {
         viewModelScope.launch {
             val userInfo = getUserInfoUseCase()
             _userName.value = userInfo?.name ?: "알 수 없음"
@@ -47,7 +46,7 @@ class MainPageViewModel @Inject constructor(
 
     fun loadGroupList() {
         viewModelScope.launch {
-            withContext(ioDispatcher) {
+            withContext(Dispatchers.IO) {
                 val resultGroupList = mutableListOf<GroupViewItem>()
 
                 val progressingGroupList = getProgressingGroupUseCase()
@@ -68,9 +67,13 @@ class MainPageViewModel @Inject constructor(
 
     fun isAlreadyJoined(inviteGroupId: String): Boolean {
         Log.d(TAG, _groupList.value.size.toString())
-        return _groupList.value.any {
-            it is GroupViewItem.Group && it.groupItem.id == inviteGroupId
+        _groupList.value.forEach {
+            if (it is GroupViewItem.Group && it.groupItem.id == inviteGroupId) {
+                Log.d(TAG, "검사 id: ${it.groupItem.id} 초대 id: $inviteGroupId")
+                return true
+            }
         }
+        return false
     }
 
     companion object {

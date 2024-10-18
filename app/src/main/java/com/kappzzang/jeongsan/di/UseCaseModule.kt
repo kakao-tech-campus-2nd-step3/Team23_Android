@@ -1,6 +1,7 @@
 package com.kappzzang.jeongsan.di
 
 import com.kappzzang.jeongsan.repository.GroupInfoRepository
+import com.kappzzang.jeongsan.repository.InviteRepository
 import com.kappzzang.jeongsan.repository.MemberRepository
 import com.kappzzang.jeongsan.repository.TransferRepository
 import com.kappzzang.jeongsan.repository.UserInfoRepository
@@ -8,6 +9,7 @@ import com.kappzzang.jeongsan.usecase.GetDoneGroupUseCase
 import com.kappzzang.jeongsan.usecase.GetInviteInfoUseCase
 import com.kappzzang.jeongsan.usecase.GetProgressingGroupUseCase
 import com.kappzzang.jeongsan.usecase.GetTransferInfoUseCase
+import com.kappzzang.jeongsan.usecase.SendInviteMessageUseCase
 import com.kappzzang.jeongsan.usecase.SendTransferMessageUseCase
 import com.kappzzang.jeongsan.usecase.UploadGroupInfoUseCase
 import dagger.Module
@@ -44,4 +46,8 @@ object UseCaseModule {
         userInfoRepository: UserInfoRepository,
         transferRepository: TransferRepository
     ) = SendTransferMessageUseCase(userInfoRepository, transferRepository)
+
+    @Provides
+    fun provideSendInviteMessageUseCase(inviteRepository: InviteRepository) =
+        SendInviteMessageUseCase(inviteRepository)
 }
