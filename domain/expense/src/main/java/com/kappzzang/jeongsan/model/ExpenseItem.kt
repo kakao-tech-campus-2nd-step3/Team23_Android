@@ -1,8 +1,6 @@
 package com.kappzzang.jeongsan.model
 
-import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.ZonedDateTime
 
 enum class ExpenseState { CONFIRMED, NOT_CONFIRMED, TRANSFER_PENDING, TRANSFERED }
 

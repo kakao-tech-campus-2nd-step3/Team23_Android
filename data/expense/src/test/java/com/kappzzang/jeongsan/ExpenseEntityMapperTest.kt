@@ -19,13 +19,13 @@ class ExpenseEntityMapperTest {
 
     @Test
     fun `엔티티를 매핑 후 시간 값이 정상적으로 변형된다`() {
-        //given
+        // given
         val entity = getSampleEntity()
 
-        //when
+        // when
         val mapped = ExpenseEntityMapper.mapExpenseEntityToModel(entity)
 
-        //then
+        // then
         assertThat(mapped.date.year).isEqualTo(2000)
         assertThat(mapped.date.monthValue).isEqualTo(4)
         assertThat(mapped.date.dayOfMonth).isEqualTo(16)

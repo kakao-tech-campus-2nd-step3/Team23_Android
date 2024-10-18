@@ -1,8 +1,8 @@
 import com.kappzzang.jeongsan.util.DateConverter
 import com.kappzzang.jeongsan.util.DateConverter.formatToExpenseDate
+import java.time.LocalDateTime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import java.time.LocalDateTime
 
 class DateConverterTest {
 
@@ -46,13 +46,13 @@ class DateConverterTest {
 
     @Test
     fun `SQL TimeStamp에서 LocalDateTime으로의 파싱은 정상적으로 이루어진다`() {
-        //given
+        // given
         val timeStamp = "2020-10-12 13:11:52"
 
-        //when
+        // when
         val dateTime = DateConverter.parseFromString(timeStamp)
 
-        //then
+        // then
         assertThat(dateTime.year).isEqualTo(2020)
         assertThat(dateTime.monthValue).isEqualTo(10)
         assertThat(dateTime.dayOfMonth).isEqualTo(12)
@@ -63,13 +63,13 @@ class DateConverterTest {
 
     @Test
     fun `밀리초가 포함된 형식의 파싱도 오류 없이 이루어진다`() {
-        //given
+        // given
         val timeStamp = "2020-10-12 13:11:52.45"
 
-        //when
+        // when
         val dateTime = DateConverter.parseFromString(timeStamp)
 
-        //then
+        // then
         assertThat(dateTime.year).isEqualTo(2020)
         assertThat(dateTime.monthValue).isEqualTo(10)
         assertThat(dateTime.dayOfMonth).isEqualTo(12)
