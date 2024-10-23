@@ -3,7 +3,7 @@ package com.kappzzang.jeongsan.mapper
 import com.kappzzang.jeongsan.entity.ExpenseEntity
 import com.kappzzang.jeongsan.model.ExpenseItem
 import com.kappzzang.jeongsan.model.ExpenseState
-import java.sql.Timestamp
+import com.kappzzang.jeongsan.util.DateConverter
 
 object ExpenseEntityMapper {
     fun mapExpenseEntityToModel(entity: ExpenseEntity): ExpenseItem = ExpenseItem(
@@ -12,7 +12,7 @@ object ExpenseEntityMapper {
         categoryColor = entity.categoryColor,
         price = entity.totalPrice,
         expenseImageUrl = entity.image,
-        date = Timestamp.valueOf(entity.createdTime),
+        date = DateConverter.parseFromString(entity.createdTime),
         payerMemberId = "",
         payerName = "",
         state = ExpenseState.entries[entity.expenseState]
