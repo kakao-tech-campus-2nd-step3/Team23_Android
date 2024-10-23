@@ -26,9 +26,6 @@ class CreateGroupViewModel @Inject constructor(
     private val _groupId = MutableStateFlow("")
     val groupId = _groupId.asStateFlow()
 
-    private val _groupId = MutableStateFlow("")
-    val groupId = _groupId.asStateFlow()
-
     private val _groupSubject = MutableStateFlow("")
     val groupSubject: StateFlow<String> = _groupSubject
 

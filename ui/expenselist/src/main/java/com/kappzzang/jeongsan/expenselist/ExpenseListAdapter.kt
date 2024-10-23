@@ -5,22 +5,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.kappzzang.jeongsan.data.ExpenseUiItem
-import com.kappzzang.jeongsan.data.ListViewItemPositionInfo
 import com.kappzzang.jeongsan.expenselist.databinding.ItemExpenseBinding
+import com.kappzzang.jeongsan.model.ExpenseItem
 import com.kappzzang.jeongsan.util.DateConverter.formatToExpenseDate
 
 class ExpenseListAdapter(private val onExpenseItemClickListener: (expenseId: String) -> Unit) :
-    ListAdapter<ExpenseUiItem, ExpenseListAdapter.MyViewHolder>(
+    ListAdapter<ExpenseItem, ExpenseListAdapter.MyViewHolder>(
         object :
-            DiffUtil.ItemCallback<ExpenseUiItem>() {
-            override fun areItemsTheSame(oldItem: ExpenseUiItem, newItem: ExpenseUiItem): Boolean =
+            DiffUtil.ItemCallback<ExpenseItem>() {
+            override fun areItemsTheSame(oldItem: ExpenseItem, newItem: ExpenseItem): Boolean =
                 oldItem.id == newItem.id
 
-            override fun areContentsTheSame(
-                oldItem: ExpenseUiItem,
-                newItem: ExpenseUiItem
-            ): Boolean = oldItem == newItem
+            override fun areContentsTheSame(oldItem: ExpenseItem, newItem: ExpenseItem): Boolean =
+                oldItem == newItem
         }
     ) {
 
@@ -34,7 +31,7 @@ class ExpenseListAdapter(private val onExpenseItemClickListener: (expenseId: Str
             }
         }
 
-        fun bind(expenseItem: ExpenseUiItem) {
+        fun bind(expenseItem: ExpenseItem) {
             binding.categoryColorView.setBackgroundColor(
                 android.graphics.Color.parseColor(
                     expenseItem.categoryColor
@@ -42,10 +39,6 @@ class ExpenseListAdapter(private val onExpenseItemClickListener: (expenseId: Str
             )
             binding.expenseItem = expenseItem
             binding.expenseDate = expenseItem.date.formatToExpenseDate()
-            binding.positionInfo = ListViewItemPositionInfo(
-                isFirstItem = this.bindingAdapterPosition == 0,
-                isLastItem = this.bindingAdapter?.itemCount?.minus(1) == this.bindingAdapterPosition
-            )
         }
     }
 
