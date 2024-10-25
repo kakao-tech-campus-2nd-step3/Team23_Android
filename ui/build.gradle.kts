@@ -84,6 +84,7 @@ subprojects {
         androidTestImplementation("androidx.test:rules:1.6.1")
         androidTestImplementation("androidx.test.espresso:espresso-intents:3.6.1")
         androidTestImplementation("com.google.dagger:hilt-android-testing:2.48.1")
+        implementation(project(":build-config"))
     }
 
     android {
@@ -116,7 +117,6 @@ subprojects {
         buildFeatures {
             dataBinding = true
             viewBinding = true
-            buildConfig = true
             resValues = true
         }
     }

@@ -18,10 +18,6 @@ android {
         minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        buildConfigField("String", "KAKAO_API_URL", getApiKey("KAKAO_API_URL"))
-        buildConfigField("String", "SERVICE_URL", getApiKey("SERVICE_URL"))
-        buildConfigField("String", "KAKAO_AUTH_URL", getApiKey("KAKAO_AUTH_URL"))
     }
 
     compileOptions {
@@ -30,10 +26,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = "17"
-    }
-
-    buildFeatures {
-        buildConfig = true
     }
 }
 
@@ -44,4 +36,5 @@ dependencies {
 
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation(project(":build-config"))
 }
