@@ -6,5 +6,5 @@ android {
     namespace = "com.kappzzang.jeongsan.expense"
 }
 dependencies {
-    implementation(project(":domain:user"))
+    implementation(project(":domain:common-user"))
 }
