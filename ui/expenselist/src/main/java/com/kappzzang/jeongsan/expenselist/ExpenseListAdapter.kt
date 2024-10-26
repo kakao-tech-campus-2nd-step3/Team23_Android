@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.kappzzang.jeongsan.data.ListViewItemPositionInfo
 import com.kappzzang.jeongsan.expenselist.databinding.ItemExpenseBinding
 import com.kappzzang.jeongsan.model.ExpenseItem
 import com.kappzzang.jeongsan.util.DateConverter.formatToExpenseDate
@@ -39,6 +40,10 @@ class ExpenseListAdapter(private val onExpenseItemClickListener: (expenseId: Str
             )
             binding.expenseItem = expenseItem
             binding.expenseDate = expenseItem.date.formatToExpenseDate()
+            binding.positionInfo = ListViewItemPositionInfo(
+                isFirstItem = this.bindingAdapterPosition == 0,
+                isLastItem = this.bindingAdapter?.itemCount?.minus(1) == this.bindingAdapterPosition
+            )
         }
     }
 

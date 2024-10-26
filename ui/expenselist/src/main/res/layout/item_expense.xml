@@ -10,16 +10,19 @@
         <variable
             name="expenseDate"
             type="String" />
+        <variable
+            name="positionInfo"
+            type="com.kappzzang.jeongsan.data.ListViewItemPositionInfo" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:elevation="3dp"
+        android:elevation="5dp"
         android:layout_height="80dp"
-        android:layout_marginBottom="3dp"
+        android:layout_marginBottom="1dp"
         android:background="@color/white"
-        clipUpperCorner="@{true}"
-        clipBottomCorner="@{true}">
+        clipUpperCorner="@{positionInfo.firstItem}"
+        clipBottomCorner="@{positionInfo.lastItem}">
 
         <View
             android:id="@+id/category_color_view"
