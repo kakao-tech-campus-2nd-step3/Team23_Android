@@ -25,8 +25,11 @@ class CustomOutlineProvider(
         when (outlineType) {
             ExpenseListItemBoxType.TOP_CORNER ->
                 outline.setRoundRect(
-                    left, top, right,
-                    bottom + cornerRadius.toInt(), cornerRadius
+                    left,
+                    top,
+                    right,
+                    bottom + cornerRadius.toInt(),
+                    cornerRadius
                 )
 
             ExpenseListItemBoxType.BOTTOM_CORNER ->

@@ -23,14 +23,12 @@ object ExpenseListBindingAdapter {
         }
     }
 
-    @BindingAdapter(value= ["clipRadius", "clipUpperCorner", "clipBottomCorner"], requireAll = false)
+    @BindingAdapter(
+        value = ["clipRadius", "clipUpperCorner", "clipBottomCorner"],
+        requireAll = false
+    )
     @JvmStatic
-    fun bindCorners(
-        view: View,
-        radius: Float?,
-        upperCorner: Boolean?,
-        bottomCorner: Boolean?
-    ) {
+    fun bindCorners(view: View, radius: Float?, upperCorner: Boolean?, bottomCorner: Boolean?) {
         val boxType = if (upperCorner == true) {
             if (bottomCorner == true) {
                 ExpenseListItemBoxType.ALL_CORNERS
@@ -51,6 +49,9 @@ object ExpenseListBindingAdapter {
         )
         view.clipToOutline = true
 
-     Log.d("KSC", "type: ${boxType.name}, clipToOutline: ${view.clipToOutline}, radius: ${radius?:-1}")
+        Log.d(
+            "KSC",
+            "type: ${boxType.name}, clipToOutline: ${view.clipToOutline}, radius: ${radius ?: -1}"
+        )
     }
 }

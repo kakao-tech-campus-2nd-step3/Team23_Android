@@ -1,6 +1,5 @@
 package com.kappzzang.jeongsan.expenselist.viewmodel
 
-import androidx.lifecycle.ViewModel
 import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.usecase.GetExpenseListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

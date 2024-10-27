@@ -10,15 +10,14 @@ import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.usecase.GetExpenseListUseCase
 import com.kappzzang.jeongsan.util.IntegerFormatter.formatDecimalSeparator
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 open class ExpenseListPageViewModel @Inject constructor(
@@ -29,7 +28,6 @@ open class ExpenseListPageViewModel @Inject constructor(
     protected val expenseList =
         MutableStateFlow(ExpenseListResponse.emptyList())
     protected val groupId = MutableStateFlow("")
-
 
     private val _uiData by lazy {
         expenseList.map { expenseList ->
@@ -70,16 +68,14 @@ open class ExpenseListPageViewModel @Inject constructor(
         }
     }
 
-    protected open fun fetchDefaultList(groupId: String){
-
+    protected open fun fetchDefaultList(groupId: String) {
     }
 
     fun onFragmentStart(groupId: String) {
-        if(this.groupId.value != groupId) {
+        if (this.groupId.value != groupId) {
             this.groupId.value = groupId
             fetchDefaultList(this.groupId.value)
-        }
-        else{
+        } else {
             return
         }
     }

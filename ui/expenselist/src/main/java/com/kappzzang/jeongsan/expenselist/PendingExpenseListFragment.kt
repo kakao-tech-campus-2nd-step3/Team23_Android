@@ -9,7 +9,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.expenselist.databinding.FragmentPendingExpenseListBinding
-import com.kappzzang.jeongsan.expenselist.viewmodel.CompleteExpenseListPageViewModel
 import com.kappzzang.jeongsan.expenselist.viewmodel.ExpenseListViewModel
 import com.kappzzang.jeongsan.expenselist.viewmodel.PendingExpenseListPageViewModel
 import dagger.hilt.android.AndroidEntryPoint
