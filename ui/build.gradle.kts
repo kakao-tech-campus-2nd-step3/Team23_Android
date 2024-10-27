@@ -9,26 +9,7 @@ plugins {
 }
 
 android {
-    fun getApiKey(key: String): String = gradleLocalProperties(rootDir, providers).getProperty(key)
-
     namespace = "com.kappzzang.jeongsan"
-    compileSdk = 34
-
-    defaultConfig {
-        minSdk = 26
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-        resValue("string", "KAKAO_API_KEY", getApiKey("KAKAO_API_KEY"))
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
 }
 
 subprojects {
@@ -88,15 +69,6 @@ subprojects {
     }
 
     android {
-        compileSdk = 34
-
-        defaultConfig {
-            minSdk = 26
-            targetSdk = 34
-
-            testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        }
-
         buildTypes {
             release {
                 isMinifyEnabled = false
@@ -105,13 +77,6 @@ subprojects {
                     "proguard-rules.pro"
                 )
             }
-        }
-        compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_17
-            targetCompatibility = JavaVersion.VERSION_17
-        }
-        kotlinOptions {
-            jvmTarget = "17"
         }
 
         buildFeatures {

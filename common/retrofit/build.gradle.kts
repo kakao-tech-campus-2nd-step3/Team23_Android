@@ -8,25 +8,8 @@ plugins {
     id("com.google.dagger.hilt.android")
 }
 
-fun getApiKey(key: String): String = gradleLocalProperties(rootDir, providers).getProperty(key)
-
 android {
     namespace = "com.kappzzang.jeongsan"
-    compileSdk = 34
-
-    defaultConfig {
-        minSdk = 26
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
 }
 
 dependencies {
