@@ -1,6 +1,5 @@
 package com.kappzzang.jeongsan.expenselist
 
-import android.util.Log
 import android.view.View
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
