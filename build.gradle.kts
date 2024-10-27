@@ -24,7 +24,7 @@ allprojects {
 
     group = "com.kappzzang.jeongsan"
 
-    afterEvaluate{
+    afterEvaluate {
         project.apply("$rootDir/gradle/common.gradle")
     }
 }
