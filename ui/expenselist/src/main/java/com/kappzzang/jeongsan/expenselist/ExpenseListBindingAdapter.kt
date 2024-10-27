@@ -48,10 +48,5 @@ object ExpenseListBindingAdapter {
             boxType
         )
         view.clipToOutline = true
-
-        Log.d(
-            "KSC",
-            "type: ${boxType.name}, clipToOutline: ${view.clipToOutline}, radius: ${radius ?: -1}"
-        )
     }
 }
