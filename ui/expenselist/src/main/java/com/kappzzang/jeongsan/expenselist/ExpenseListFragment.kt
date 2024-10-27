@@ -29,11 +29,12 @@ class ExpenseListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // UI 확인을 위한 임시 코드
         binding.expenseListRecyclerview.adapter = ExpenseListAdapter {
             viewModel.clickExpenseItem(it)
         }
+
         binding.expenseListRecyclerview.layoutManager = LinearLayoutManager(this.context)
+
         viewModel.clickOnlyNotConfirmedExpensesChipButton()
     }
 }

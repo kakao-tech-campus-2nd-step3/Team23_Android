@@ -5,19 +5,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.kappzzang.jeongsan.data.ExpenseUiItem
 import com.kappzzang.jeongsan.data.ListViewItemPositionInfo
 import com.kappzzang.jeongsan.expenselist.databinding.ItemExpenseBinding
-import com.kappzzang.jeongsan.model.ExpenseItem
 import com.kappzzang.jeongsan.util.DateConverter.formatToExpenseDate
 
 class ExpenseListAdapter(private val onExpenseItemClickListener: (expenseId: String) -> Unit) :
-    ListAdapter<ExpenseItem, ExpenseListAdapter.MyViewHolder>(
+    ListAdapter<ExpenseUiItem, ExpenseListAdapter.MyViewHolder>(
         object :
-            DiffUtil.ItemCallback<ExpenseItem>() {
-            override fun areItemsTheSame(oldItem: ExpenseItem, newItem: ExpenseItem): Boolean =
+            DiffUtil.ItemCallback<ExpenseUiItem>() {
+            override fun areItemsTheSame(oldItem: ExpenseUiItem, newItem: ExpenseUiItem): Boolean =
                 oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: ExpenseItem, newItem: ExpenseItem): Boolean =
+            override fun areContentsTheSame(oldItem: ExpenseUiItem, newItem: ExpenseUiItem): Boolean =
                 oldItem == newItem
         }
     ) {
@@ -32,7 +32,7 @@ class ExpenseListAdapter(private val onExpenseItemClickListener: (expenseId: Str
             }
         }
 
-        fun bind(expenseItem: ExpenseItem) {
+        fun bind(expenseItem: ExpenseUiItem) {
             binding.categoryColorView.setBackgroundColor(
                 android.graphics.Color.parseColor(
                     expenseItem.categoryColor

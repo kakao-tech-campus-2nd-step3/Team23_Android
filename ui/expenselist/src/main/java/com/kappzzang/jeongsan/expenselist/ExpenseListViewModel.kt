@@ -3,13 +3,14 @@ package com.kappzzang.jeongsan.expenselist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.data.ExpenseListViewUIData
+import com.kappzzang.jeongsan.data.ExpenseUiItem
+import com.kappzzang.jeongsan.model.ExpenseItem
 import com.kappzzang.jeongsan.model.ExpenseListResponse
 import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.usecase.GetCurrentGroupInfoUseCase
 import com.kappzzang.jeongsan.usecase.GetExpenseListUseCase
 import com.kappzzang.jeongsan.util.IntegerFormatter.formatDecimalSeparator
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,6 +21,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class ExpenseListViewModel @Inject constructor(
@@ -49,7 +51,7 @@ class ExpenseListViewModel @Inject constructor(
                 totalPriceText = "${totalPrice.formatDecimalSeparator()}원",
                 priceToSendText = "${priceToSend.formatDecimalSeparator()}원",
                 groupNameText = groupName,
-                expenseItems = items
+                expenseItems = mapToExpenseUiItem(sortItemsByTime(items))
             )
         }.stateIn(
             viewModelScope,
@@ -67,6 +69,26 @@ class ExpenseListViewModel @Inject constructor(
     }
 
     val selectedExpense = _selectedExpense.asStateFlow()
+
+    private fun mapToExpenseUiItem(expenseItemList: List<ExpenseItem>): List<ExpenseUiItem> =
+        expenseItemList.mapIndexed { index, item ->
+            ExpenseUiItem(
+                isFirstItem = index == 0,
+                isLastItem = index == expenseItemList.size - 1,
+                id = item.id,
+                name = item.name,
+                date = item.date,
+                payerMemberId = item.payerMemberId,
+                categoryColor = item.categoryColor,
+                payerName = item.payerName,
+                price = "${item.price.formatDecimalSeparator()} $CURRENCY_POSTFIX"
+            )
+        }
+
+    private fun sortItemsByTime(expenseItemList: List<ExpenseItem>): List<ExpenseItem> =
+        expenseItemList.sortedBy {
+            it.date
+        }.reversed()
 
     private fun cancelPreviousJob() {
         if (expenseListFetchingJob?.isCompleted != false) {
@@ -148,5 +170,9 @@ class ExpenseListViewModel @Inject constructor(
 
     fun clickExpenseItem(expenseId: String) {
         _selectedExpense.value = expenseId
+    }
+
+    companion object {
+        const val CURRENCY_POSTFIX = "원"
     }
 }
