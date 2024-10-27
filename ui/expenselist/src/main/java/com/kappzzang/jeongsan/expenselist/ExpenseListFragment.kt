@@ -6,13 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.expenselist.databinding.FragmentExpenseListBinding
+import com.kappzzang.jeongsan.expenselist.viewmodel.ExpenseListOnCalculationPageViewModel
+import com.kappzzang.jeongsan.expenselist.viewmodel.ExpenseListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ExpenseListFragment : Fragment() {
-    private val viewModel: ExpenseListViewModel by activityViewModels()
+    private val activityViewModel: ExpenseListViewModel by activityViewModels()
+    private val viewModel: ExpenseListOnCalculationPageViewModel by viewModels()
     private lateinit var binding: FragmentExpenseListBinding
 
     override fun onCreateView(
@@ -30,11 +34,11 @@ class ExpenseListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.expenseListRecyclerview.adapter = ExpenseListAdapter {
-            viewModel.clickExpenseItem(it)
+            activityViewModel.clickExpenseItem(it)
         }
 
         binding.expenseListRecyclerview.layoutManager = LinearLayoutManager(this.context)
 
-        viewModel.clickOnlyNotConfirmedExpensesChipButton()
+        viewModel.onFragmentStart(activityViewModel.groupId.value)
     }
 }
