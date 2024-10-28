@@ -8,4 +8,5 @@
     <color name="background_base">#FFFBFAFD</color>
     <color name="navigation_inactive">#C5C5C5</color>
     <color name="transparent">#00000000</color>
+    <color name="gray">#FF808080</color>
 </resources>

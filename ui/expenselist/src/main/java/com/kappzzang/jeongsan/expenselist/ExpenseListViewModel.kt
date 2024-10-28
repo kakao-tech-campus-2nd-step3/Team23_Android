@@ -28,18 +28,18 @@ class ExpenseListViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var expenseListFetchingJob: Job? = null
-    private var groupId: String = ""
+    private var _groupId = MutableStateFlow("")
 
     private val expenseList =
         MutableStateFlow(ExpenseListResponse.emptyList())
-    private val groupName = MutableStateFlow("")
+    private val _groupName = MutableStateFlow("")
 
     private val _selectedExpense = MutableStateFlow("")
 
     private val _uiData by lazy {
         combine(
             expenseList,
-            groupName
+            _groupName
         ) { expenseList, groupName ->
             val totalPrice = expenseList.totalPrice
             val priceToSend = expenseList.totalExpenseToSend
@@ -58,6 +58,10 @@ class ExpenseListViewModel @Inject constructor(
         )
     }
 
+    val groupName = _groupName.asStateFlow()
+
+    val groupId = _groupId.asStateFlow()
+
     val uiData by lazy {
         _uiData
     }
@@ -74,7 +78,7 @@ class ExpenseListViewModel @Inject constructor(
     private fun fetchExpenseList(expenseState: ExpenseState) {
         cancelPreviousJob()
         expenseListFetchingJob = viewModelScope.launch(Dispatchers.IO) {
-            getExpenseListUseCase(groupId, expenseState)
+            getExpenseListUseCase(_groupId.value, expenseState)
                 .collect {
                     expenseList.emit(it)
                 }
@@ -85,9 +89,9 @@ class ExpenseListViewModel @Inject constructor(
     private fun fetchCalculatingExpenseList() {
         cancelPreviousJob()
         expenseListFetchingJob = viewModelScope.launch(Dispatchers.IO) {
-            getExpenseListUseCase(groupId, ExpenseState.CONFIRMED).zip(
+            getExpenseListUseCase(_groupId.value, ExpenseState.CONFIRMED).zip(
                 getExpenseListUseCase(
-                    groupId,
+                    _groupId.value,
                     ExpenseState.NOT_CONFIRMED
                 )
             ) { confirmed, notConfirmed ->
@@ -104,10 +108,10 @@ class ExpenseListViewModel @Inject constructor(
 
     private fun fetchGroupInfo() {
         viewModelScope.launch(Dispatchers.IO) {
-            getCurrentGroupInfoUseCase(groupId).map {
+            getCurrentGroupInfoUseCase(_groupId.value).map {
                 it.name
             }.collect {
-                groupName.emit(it)
+                _groupName.emit(it)
             }
         }
     }
@@ -137,7 +141,7 @@ class ExpenseListViewModel @Inject constructor(
     }
 
     fun updateGroupId(groupId: String) {
-        this.groupId = groupId
+        this._groupId.value = groupId
 
         fetchGroupInfo()
     }

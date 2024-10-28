@@ -5,10 +5,6 @@
             android:name=".ExpenseListActivity"
             android:exported="false" />
         <activity
-            android:name=".inviteinfo.InviteInfoActivity"
-            android:exported="false"
-            android:theme="@style/invite_info_theme" />
-        <activity
             android:name=".sendmessage.SendMessageActivity"
             android:exported="false" />
         <activity

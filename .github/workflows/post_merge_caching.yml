@@ -61,6 +61,14 @@ jobs:
           profile: Nexus 6
           script: echo "Generated AVD snapshot for caching."
 
+      - name: Setup Secret Keys
+        run: |
+          echo "$LOCAL_PROPERTIES" >> local.properties
+        shell: bash
+        env:
+          LOCAL_PROPERTIES: ${{ secrets.PROPERTIES }}
+
+
         # Gradle 빌드
       - name: Build
         if: success() || failure()

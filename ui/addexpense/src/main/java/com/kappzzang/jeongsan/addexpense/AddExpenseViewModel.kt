@@ -18,25 +18,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-private fun createDemoItem(index: Int): ExpenseItemInput = ExpenseItemInput(
-    itemName = "item $index",
-    itemPrice = 100 * index,
-    itemQuantity = index % 4 + 1
-)
-
-private fun createDemoList(): List<ExpenseItemInput> = listOf(
-    createDemoItem(0),
-    createDemoItem(1),
-    createDemoItem(2),
-    createDemoItem(3),
-    createDemoItem(4),
-    createDemoItem(0),
-    createDemoItem(1),
-    createDemoItem(2),
-    createDemoItem(3),
-    createDemoItem(4)
-)
-
 @HiltViewModel
 class AddExpenseViewModel @Inject constructor(
     private val uploadExpenseUseCase: UploadExpenseUseCase
@@ -44,7 +25,7 @@ class AddExpenseViewModel @Inject constructor(
     private val _expenseItemList by lazy {
         MutableStateFlow(
             listOf(
-                ExpenseItemInput(null, null, null)
+                ExpenseItemInput(null, null, null, true)
             )
         )
     }
@@ -76,16 +57,11 @@ class AddExpenseViewModel @Inject constructor(
                     ExpenseItemInput(
                         it.itemName,
                         it.itemPrice,
-                        it.itemQuantity
+                        it.itemQuantity,
+                        false
                     )
                 } + _expenseItemList.value
             )
-        }
-    }
-
-    fun initiateDemoData() {
-        viewModelScope.launch(Dispatchers.Main) {
-            insertExpenseItemList(createDemoList())
         }
     }
 
@@ -95,19 +71,12 @@ class AddExpenseViewModel @Inject constructor(
         )
     }
 
-    private suspend fun createEmptyList() {
-        _expenseItemList.emit(emptyList())
-    }
-
     fun addNewExpense() {
         viewModelScope.launch(Dispatchers.Main) {
-            _expenseItemList.emit(
-                _expenseItemList.value + ExpenseItemInput(
-                    null,
-                    null,
-                    null
-                )
-            )
+            val currentExpenseItemList = _expenseItemList.value.toMutableList()
+            currentExpenseItemList[currentExpenseItemList.size - 1].isPlaceholder = false
+            currentExpenseItemList.add(ExpenseItemInput(null, null, null, true))
+            _expenseItemList.emit(currentExpenseItemList)
         }
     }
 
