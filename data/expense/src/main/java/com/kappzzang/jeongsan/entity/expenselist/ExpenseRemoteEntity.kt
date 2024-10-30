@@ -1,0 +1,20 @@
+package com.kappzzang.jeongsan.entity.expenselist
+
+import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class ExpenseRemoteEntity(
+    @SerializedName("expenseId")
+    val id: Long,
+    @SerializedName("title")
+    val title: String,
+    @SerializedName("totalPrice")
+    val totalPrice: Long,
+    @SerializedName("createdAt")
+    val createdAt: String,
+    @SerializedName("state")
+    val state: String,
+    @SerializedName("category")
+    val category: CategoryEntity
+)

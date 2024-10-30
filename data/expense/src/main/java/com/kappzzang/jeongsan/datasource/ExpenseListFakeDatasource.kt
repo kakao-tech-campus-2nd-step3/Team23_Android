@@ -1,6 +1,7 @@
 package com.kappzzang.jeongsan.datasource
 
 import com.kappzzang.jeongsan.datasource.expense.ExpenseDatabase
+import com.kappzzang.jeongsan.entity.expenselist.ExpenseRoomEntity
 import com.kappzzang.jeongsan.mapper.ExpenseEntityMapper
 import com.kappzzang.jeongsan.model.ExpenseListResponse
 import com.kappzzang.jeongsan.model.ExpenseState
@@ -40,7 +41,7 @@ class ExpenseListFakeDatasource @Inject constructor(private val expenseDatabase:
     }
 
     fun addExpense(receiptItem: ReceiptItem): String {
-        val expenseEntity = com.kappzzang.jeongsan.entity.ExpenseEntity(
+        val expenseEntity = ExpenseRoomEntity(
             name = receiptItem.title,
             totalPrice = receiptItem.expenseDetailItemList.sumOf { it.itemPrice * it.itemQuantity },
             createdTime = Timestamp(System.currentTimeMillis()).toString(),

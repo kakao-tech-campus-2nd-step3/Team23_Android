@@ -9,6 +9,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ReceiptRetrofitService {
     @POST("/api/receipts/{teamId}")
@@ -24,4 +25,19 @@ interface ReceiptRetrofitService {
         @Path(value = "expenseId") expenseId: String,
         @Header("accessToken") jwt: String
     ): Response<ExpenseDetailEntity>
+
+    @GET("/api/expenses/{teamId}")
+    suspend fun getExpenseList(
+        @Path(value = "teamId") groupId: String,
+        @Header("accessToken") jwt: String,
+        @Query("state") state: String,
+        @Query("isChecked") checked: Boolean
+    )
+
+    @GET("/api/expenses/{teamId}")
+    suspend fun getExpenseList(
+        @Path(value = "teamId") groupId: String,
+        @Header("accessToken") jwt: String,
+        @Query("state") state: String
+    )
 }
