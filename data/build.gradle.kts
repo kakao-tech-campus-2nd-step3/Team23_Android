@@ -41,5 +41,6 @@ subprojects {
         testImplementation("androidx.arch.core:core-testing:2.2.0")
         testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
         kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.48.1")
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
     }
 }

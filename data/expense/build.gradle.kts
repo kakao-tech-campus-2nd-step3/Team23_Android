@@ -1,3 +1,7 @@
+plugins {
+    kotlin("plugin.serialization") version "1.9.0"
+}
+
 android {
     namespace = "com.kappzzang.jeongsan.expense"
 }
