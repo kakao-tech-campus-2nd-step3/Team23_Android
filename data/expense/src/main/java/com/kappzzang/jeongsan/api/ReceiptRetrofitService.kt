@@ -1,5 +1,6 @@
 package com.kappzzang.jeongsan.api
 
+import com.kappzzang.jeongsan.entity.ExpenseDetailEntity
 import com.kappzzang.jeongsan.entity.ResponseWithExpenseIdDTO
 import com.kappzzang.jeongsan.entity.SaveExpensePayloadDTO
 import retrofit2.Response
@@ -22,5 +23,5 @@ interface ReceiptRetrofitService {
     suspend fun getExpenseDetails(
         @Path(value = "expenseId") expenseId: String,
         @Header("accessToken") jwt: String
-    )
+    ): Response<ExpenseDetailEntity>
 }
