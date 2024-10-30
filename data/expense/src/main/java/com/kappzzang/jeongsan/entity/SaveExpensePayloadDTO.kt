@@ -12,7 +12,7 @@ data class SaveExpensePayloadDTO(
     @SerializedName("category_id")
     val categoryId: Long,
     @SerializedName("image")
-    val image: ImageDTO,
+    val image: ImageEntity,
     @SerializedName("items")
-    val items: List<ExpenseItemDTO>
+    val items: List<ExpenseItemEntity>
 )

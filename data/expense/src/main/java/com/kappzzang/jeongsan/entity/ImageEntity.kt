@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ImageDTO(
+data class ImageEntity(
     @SerializedName("format")
     val format: String,
     @SerializedName("url")
