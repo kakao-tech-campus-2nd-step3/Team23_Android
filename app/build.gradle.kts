@@ -22,10 +22,6 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        buildConfigField("String", "KAKAO_REST_API_KEY", getApiKey("KAKAO_REST_API_KEY"))
-        buildConfigField("String", "KAKAO_API_KEY", getApiKey("KAKAO_API_KEY"))
-        resValue("string", "KAKAO_API_KEY_MANIFEST", getApiKey("KAKAO_API_KEY_MANIFEST"))
     }
 
     buildTypes {
@@ -48,7 +44,6 @@ android {
     buildFeatures {
         dataBinding = true
         viewBinding = true
-        buildConfig = true
     }
 }
 
@@ -88,4 +83,6 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.dagger:hilt-android:2.48.1")
     kapt("com.google.dagger:hilt-compiler:2.48.1")
+
+    implementation(project(":build-config"))
 }
