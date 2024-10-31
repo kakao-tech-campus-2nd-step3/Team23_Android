@@ -1,9 +1,9 @@
 package com.kappzzang.jeongsan.datasource
 
 import com.kappzzang.jeongsan.api.KakaoAuthRetrofitService
+import com.kappzzang.jeongsan.build_config.BuildConfig
 import com.kappzzang.jeongsan.entity.KakaoRefreshTokenPayloadDTO
 import com.kappzzang.jeongsan.entity.KakaoRefreshTokenResponseDTO
-import com.kappzzang.jeongsan.user.BuildConfig
 import javax.inject.Inject
 import retrofit2.Response
 

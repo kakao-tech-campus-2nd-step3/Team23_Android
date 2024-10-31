@@ -3,6 +3,7 @@ package com.kappzzang.jeongsan
 import android.app.Application
 import android.util.Log
 import com.kakao.sdk.common.KakaoSdk
+import com.kappzzang.jeongsan.build_config.BuildConfig
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
