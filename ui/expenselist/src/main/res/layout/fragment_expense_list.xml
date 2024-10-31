@@ -7,13 +7,37 @@
     <data>
         <variable
             name="viewModel"
-            type="com.kappzzang.jeongsan.expenselist.ExpenseListViewModel" />
+            type="com.kappzzang.jeongsan.expenselist.viewmodel.ExpenseListOnCalculationPageViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white">
+
+        <TextView
+            android:id="@+id/total_expense_explain_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/expenselist_total_expense_explain"
+            android:textSize="@dimen/expense_list_subtitle_text_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/my_total_expense_explain_textview"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/parent" />
+
+        <TextView
+            android:id="@+id/total_expense_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:textSize="@dimen/expense_list_subtitle_text_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/total_expense_explain_textview"
+            app:layout_constraintStart_toEndOf="@id/total_expense_explain_textview"
+            app:layout_constraintTop_toTopOf="@id/parent"
+            tools:text="@{viewModel.uiData.totalPriceText}" />
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/expense_chip_group_chipgroup"
@@ -22,10 +46,11 @@
             android:checkableBehavior="single"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/total_expense_explain_textview">
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/all_expense_chip"
+                android:layout_marginTop="12dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
@@ -57,6 +82,8 @@
         </com.google.android.material.chip.ChipGroup>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:padding="5dp"
+            android:clipToPadding="false"
             android:id="@+id/expense_list_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="0dp"

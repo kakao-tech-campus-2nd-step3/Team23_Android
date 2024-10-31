@@ -1,0 +1,15 @@
+package com.kappzzang.jeongsan.data
+
+import java.time.LocalDateTime
+
+data class ExpenseUiItem(
+    val id: String,
+    val name: String,
+    val isFirstItem: Boolean,
+    val isLastItem: Boolean,
+    val payerName: String,
+    val payerMemberId: String,
+    val price: String,
+    val date: LocalDateTime,
+    val categoryColor: String
+)
