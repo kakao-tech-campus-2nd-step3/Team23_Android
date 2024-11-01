@@ -3,7 +3,7 @@ package com.kappzzang.jeongsan.model
 import java.time.LocalDateTime
 
 data class ExpenseItemWithCategory(
-    val item: ExpenseItem,
+    private val item: ExpenseItem,
     val categoryColor: String,
     val date: LocalDateTime
 ) {

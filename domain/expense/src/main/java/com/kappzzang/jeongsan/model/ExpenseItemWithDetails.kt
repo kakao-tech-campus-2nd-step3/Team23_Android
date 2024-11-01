@@ -1,7 +1,7 @@
 package com.kappzzang.jeongsan.model
 
 data class ExpenseItemWithDetails(
-    val item: ExpenseItem,
+    private val item: ExpenseItem,
     val expenseImageUrl: String,
     val expenseDetails: List<ExpenseDetailItem>
 
