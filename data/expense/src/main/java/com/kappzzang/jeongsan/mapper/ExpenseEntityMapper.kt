@@ -1,8 +1,8 @@
 package com.kappzzang.jeongsan.mapper
 
+import com.kappzzang.jeongsan.entity.ExpenseItemEntity
 import com.kappzzang.jeongsan.entity.expensedetail.ExpenseDetailEntity
 import com.kappzzang.jeongsan.entity.expensedetail.ExpenseDetailItemEntity
-import com.kappzzang.jeongsan.entity.ExpenseItemEntity
 import com.kappzzang.jeongsan.entity.expenselist.ExpenseRemoteEntity
 import com.kappzzang.jeongsan.entity.expenselist.ExpenseRoomEntity
 import com.kappzzang.jeongsan.model.ExpenseDetailItem
@@ -20,7 +20,7 @@ object ExpenseEntityMapper {
                 id = entity.id.toString(),
                 name = entity.name,
                 price = entity.totalPrice,
-                state = ExpenseState.entries[entity.expenseState],
+                state = ExpenseState.entries[entity.expenseState]
             ),
             date = DateConverter.parseFromString(entity.createdTime),
             categoryColor = entity.categoryColor
@@ -29,39 +29,35 @@ object ExpenseEntityMapper {
     fun mapExpenseEntityToModel(
         entity: ExpenseRemoteEntity,
         checked: Boolean = false
-    ): ExpenseItemWithCategory =
-        ExpenseItemWithCategory(
-            item = ExpenseItem(
-                id = entity.id.toString(),
-                name = entity.title,
-                price = entity.totalPrice,
-                state = mapExpenseStateToDomainState(entity.state, checked),
-            ),
-            date = DateConverter.parseFromString(entity.createdAt),
-            categoryColor = entity.category.color,
-        )
+    ): ExpenseItemWithCategory = ExpenseItemWithCategory(
+        item = ExpenseItem(
+            id = entity.id.toString(),
+            name = entity.title,
+            price = entity.totalPrice,
+            state = mapExpenseStateToDomainState(entity.state, checked)
+        ),
+        date = DateConverter.parseFromString(entity.createdAt),
+        categoryColor = entity.category.color
+    )
 
     fun mapDetailedExpenseEntityToModel(
         entity: ExpenseDetailEntity,
         expenseId: String,
         state: ExpenseState
-    ): ExpenseItemWithDetails =
-        ExpenseItemWithDetails(
-            item = ExpenseItem(
-                id = expenseId,
-                name = entity.title,
-                price = getSumOfAllDetailItems(entity.detailItems),
-                state = state,
-            ),
-            expenseImageUrl = entity.imageUrl,
-            expenseDetails = entity.detailItems.map {
-                mapExpenseDetailEntityToModel(it)
-            }
-        )
+    ): ExpenseItemWithDetails = ExpenseItemWithDetails(
+        item = ExpenseItem(
+            id = expenseId,
+            name = entity.title,
+            price = getSumOfAllDetailItems(entity.detailItems),
+            state = state
+        ),
+        expenseImageUrl = entity.imageUrl,
+        expenseDetails = entity.detailItems.map {
+            mapExpenseDetailEntityToModel(it)
+        }
+    )
 
-    fun mapExpenseDetailEntityToModel(
-        entity: ExpenseDetailItemEntity
-    ): ExpenseDetailItem =
+    fun mapExpenseDetailEntityToModel(entity: ExpenseDetailItemEntity): ExpenseDetailItem =
         ExpenseDetailItem(
             selectedQuantity = entity.quantityConsumed,
             itemQuantity = entity.quantity,
@@ -70,9 +66,7 @@ object ExpenseEntityMapper {
             itemName = entity.name
         )
 
-    fun mapReceiptDetailItemToExpenseItemEntity(
-        model: ReceiptDetailItem
-    ): ExpenseItemEntity =
+    fun mapReceiptDetailItemToExpenseItemEntity(model: ReceiptDetailItem): ExpenseItemEntity =
         ExpenseItemEntity(
             name = model.itemName,
             quantity = model.itemQuantity,
@@ -83,7 +77,6 @@ object ExpenseEntityMapper {
         detailItems.sumOf {
             it.unitPrice * it.quantity
         }
-
 
     private fun mapExpenseStateToDomainState(state: String, checked: Boolean): ExpenseState {
         val trimmed = state.lowercase().trim()

@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ExpenseDetailEntity(
     @SerializedName("title")
-    val title:String,
+    val title: String,
     @SerializedName("imageUrl")
     val imageUrl: String,
     @SerializedName("items")

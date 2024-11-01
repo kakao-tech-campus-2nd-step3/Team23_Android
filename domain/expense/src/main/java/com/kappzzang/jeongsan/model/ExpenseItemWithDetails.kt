@@ -5,7 +5,7 @@ data class ExpenseItemWithDetails(
     val expenseImageUrl: String,
     val expenseDetails: List<ExpenseDetailItem>
 
-){
+) {
     val id
         get() = item.id
     val name

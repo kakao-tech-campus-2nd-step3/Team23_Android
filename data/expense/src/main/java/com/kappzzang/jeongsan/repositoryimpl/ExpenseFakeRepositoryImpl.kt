@@ -7,10 +7,9 @@ import com.kappzzang.jeongsan.model.ExpenseItemWithDetails
 import com.kappzzang.jeongsan.model.ExpenseListResponse
 import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.repository.ExpenseRepository
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
-
 
 class ExpenseFakeRepositoryImpl @Inject constructor(
     private val dataSource: ExpenseListFakeDatasource
@@ -49,8 +48,7 @@ class ExpenseFakeRepositoryImpl @Inject constructor(
         // 임시 지출 이미지 주소 (카카오테크 캠퍼스)
         expenseImageUrl = "https://www.kakaotechcampus.com/fileUpDownload/" +
             "download.do?p_savefile=gatepage_20230330053504999_1.png&p_realfile=" +
-            "GNB+%EB%A1%9C%EA%B3%A0%28%EB%B3%B4%EB%9D%BC%29.png"
-        ,
+            "GNB+%EB%A1%9C%EA%B3%A0%28%EB%B3%B4%EB%9D%BC%29.png",
         expenseDetails = listOf(
             ExpenseDetailItem("", "1", 200, 1, 0),
             ExpenseDetailItem("", "2", 300, 4, 1)
