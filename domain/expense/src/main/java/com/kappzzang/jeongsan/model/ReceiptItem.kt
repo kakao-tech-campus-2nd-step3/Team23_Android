@@ -7,5 +7,5 @@ data class ReceiptItem(
     val categoryColor: String,
     val imageBase64: String?,
     val expenseDetailItemList: List<ReceiptDetailItem>,
-    val paymentTime: LocalDateTime
+    val paymentTime: LocalDateTime = LocalDateTime.now()
 )
