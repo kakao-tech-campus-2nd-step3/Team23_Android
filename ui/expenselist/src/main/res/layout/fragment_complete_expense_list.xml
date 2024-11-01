@@ -7,13 +7,36 @@
     <data>
         <variable
             name="viewModel"
-            type="com.kappzzang.jeongsan.expenselist.ExpenseListViewModel" />
+            type="com.kappzzang.jeongsan.expenselist.viewmodel.CompleteExpenseListPageViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white">
+
+        <TextView
+            android:id="@+id/total_expense_explain_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/expenselist_total_expense_explain"
+            android:textSize="@dimen/expense_list_subtitle_text_size"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/parent" />
+
+        <TextView
+            android:id="@+id/total_expense_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:textSize="@dimen/expense_list_subtitle_text_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/total_expense_explain_textview"
+            app:layout_constraintStart_toEndOf="@id/total_expense_explain_textview"
+            app:layout_constraintTop_toTopOf="@id/total_expense_explain_textview"
+            tools:text="@{viewModel.uiData.totalPriceText}" />
 
         <TextView
             android:id="@+id/complete_textview"
@@ -23,10 +46,12 @@
             android:layout_marginTop="@dimen/expense_list_fragment_title_top_margin"
             android:text="@string/all_complete"
             android:textSize="@dimen/expense_list_fragment_title"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/total_expense_explain_textview"
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:padding="5dp"
+            android:clipToPadding="false"
             android:id="@+id/complete_expense_list_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="0dp"

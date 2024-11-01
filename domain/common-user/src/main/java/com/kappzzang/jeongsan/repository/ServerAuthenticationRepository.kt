@@ -6,4 +6,6 @@ interface ServerAuthenticationRepository {
     fun registerToServer(authData: AuthData)
 
     fun getJwtFromServer(authData: AuthData): AuthData
+
+    fun getSavedJwt(): String
 }

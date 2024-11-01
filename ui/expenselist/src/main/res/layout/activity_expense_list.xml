@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.kappzzang.jeongsan.expenselist.ExpenseListViewModel" />
+            type="com.kappzzang.jeongsan.expenselist.viewmodel.ExpenseListViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,7 +26,7 @@
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@{viewModel.uiData.groupNameText}" />
+            tools:text="@{viewModel.groupName}" />
 
         <ImageView
             android:id="@+id/dropdown_button_imageview"
@@ -38,29 +38,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/group_name_textview" />
 
-        <TextView
-            android:id="@+id/total_expense_explain_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/expense_list_margin"
-            android:layout_marginTop="12dp"
-            android:text="@string/expenselist_total_expense_explain"
-            android:textSize="@dimen/expense_list_subtitle_text_size"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/group_name_textview" />
-
-        <TextView
-            android:id="@+id/total_expense_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:textSize="@dimen/expense_list_subtitle_text_size"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/total_expense_explain_textview"
-            app:layout_constraintStart_toEndOf="@id/total_expense_explain_textview"
-            app:layout_constraintTop_toTopOf="@id/total_expense_explain_textview"
-            tools:text="@{viewModel.uiData.totalPriceText}" />
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/expense_list_fragmentcontainerview"
@@ -74,7 +51,7 @@
             app:layout_constraintBottom_toTopOf="@id/bottomnavigationview"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/total_expense_explain_textview"
+            app:layout_constraintTop_toBottomOf="@id/group_name_textview"
             app:navGraph="@navigation/expense_list_nav_graph" />
 
         <ImageButton
