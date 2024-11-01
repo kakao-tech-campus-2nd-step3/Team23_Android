@@ -14,8 +14,4 @@ object DispatcherModule {
     @DispatchersAnnotations.IoDispatcher
     @Provides
     fun provideIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
-
-    @DispatchersAnnotations.MainDispatcher
-    @Provides
-    fun provideMainDispatcher(): CoroutineDispatcher = Dispatchers.Main
 }
