@@ -7,8 +7,6 @@ data class ExpenseUiItem(
     val name: String,
     val isFirstItem: Boolean,
     val isLastItem: Boolean,
-    val payerName: String,
-    val payerMemberId: String,
     val price: String,
     val date: LocalDateTime,
     val categoryColor: String

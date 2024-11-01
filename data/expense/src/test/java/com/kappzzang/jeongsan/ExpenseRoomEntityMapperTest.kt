@@ -1,12 +1,12 @@
 package com.kappzzang.jeongsan
 
-import com.kappzzang.jeongsan.entity.ExpenseEntity
+import com.kappzzang.jeongsan.entity.expenselist.ExpenseRoomEntity
 import com.kappzzang.jeongsan.mapper.ExpenseEntityMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
-class ExpenseEntityMapperTest {
-    private fun getSampleEntity() = ExpenseEntity(
+class ExpenseRoomEntityMapperTest {
+    private fun getSampleEntity() = ExpenseRoomEntity(
         id = 100,
         name = "name",
         expenseState = 0,
