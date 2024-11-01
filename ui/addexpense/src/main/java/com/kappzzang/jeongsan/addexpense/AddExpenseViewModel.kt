@@ -12,6 +12,7 @@ import com.kappzzang.jeongsan.usecase.UploadExpenseUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +21,8 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class AddExpenseViewModel @Inject constructor(
-    private val uploadExpenseUseCase: UploadExpenseUseCase
+    private val uploadExpenseUseCase: UploadExpenseUseCase,
+    private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
     private val _expenseItemList by lazy {
         MutableStateFlow(
@@ -109,14 +111,14 @@ class AddExpenseViewModel @Inject constructor(
             }
         )
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(ioDispatcher) {
             uploadExpenseUseCase(receiptItem)
         }
 
         return true
     }
 
-    private fun convertBitmapToBase64(bitmap: Bitmap?): String? {
+    fun convertBitmapToBase64(bitmap: Bitmap?): String? {
         if (bitmap == null) {
             return null
         }
