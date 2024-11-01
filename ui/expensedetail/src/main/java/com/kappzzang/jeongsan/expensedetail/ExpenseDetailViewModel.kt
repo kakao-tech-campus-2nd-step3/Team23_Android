@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.model.ExpenseDetailItem
-import com.kappzzang.jeongsan.model.ExpenseItem
+import com.kappzzang.jeongsan.model.ExpenseItemWithDetails
 import com.kappzzang.jeongsan.usecase.EditExpenseDetailUseCase
 import com.kappzzang.jeongsan.usecase.GetExpenseDetailUseCase
 import com.kappzzang.jeongsan.usecase.GetExpenseUseCase
@@ -24,10 +24,10 @@ class ExpenseDetailViewModel @Inject constructor(
 ) : ViewModel() {
     private val _expenseDetailList =
         MutableStateFlow(listOf<ExpenseDetailItem>())
-    private val _expense = MutableStateFlow(ExpenseItem.EMPTY)
+    private val _expense = MutableStateFlow(ExpenseItemWithDetails.EMPTY)
 
     val expenseDetailList: StateFlow<List<ExpenseDetailItem>> = _expenseDetailList.asStateFlow()
-    val expense: StateFlow<ExpenseItem> = _expense.asStateFlow()
+    val expense: StateFlow<ExpenseItemWithDetails> = _expense.asStateFlow()
 
     init {
         initExpense()

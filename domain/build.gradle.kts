@@ -8,21 +8,6 @@ plugins {
 
 android {
     namespace = "com.kappzzang.jeongsan"
-    compileSdk = 34
-
-    defaultConfig {
-        minSdk = 26
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
 }
 
 subprojects {
@@ -51,23 +36,5 @@ subprojects {
         testImplementation("androidx.arch.core:core-testing:2.2.0")
         testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
         kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.48.1")
-    }
-
-    android {
-        compileSdk = 34
-
-        defaultConfig {
-            minSdk = 26
-
-            testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        }
-
-        compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_17
-            targetCompatibility = JavaVersion.VERSION_17
-        }
-        kotlinOptions {
-            jvmTarget = "17"
-        }
     }
 }
