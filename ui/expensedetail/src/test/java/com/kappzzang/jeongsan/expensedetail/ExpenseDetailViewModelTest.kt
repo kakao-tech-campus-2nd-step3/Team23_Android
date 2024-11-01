@@ -2,19 +2,16 @@ package com.kappzzang.jeongsan.expensedetail
 
 import android.util.Log
 import com.kappzzang.jeongsan.model.ExpenseDetailItem
-import com.kappzzang.jeongsan.model.ExpenseItem
 import com.kappzzang.jeongsan.usecase.EditExpenseDetailUseCase
 import com.kappzzang.jeongsan.usecase.GetExpenseDetailUseCase
 import com.kappzzang.jeongsan.usecase.GetExpenseUseCase
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkAll
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
@@ -24,7 +21,6 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import org.mockito.ArgumentMatchers.any
 
 @ExperimentalCoroutinesApi
 class ExpenseDetailViewModelTest {

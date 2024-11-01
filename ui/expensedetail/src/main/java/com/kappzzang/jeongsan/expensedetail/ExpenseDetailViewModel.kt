@@ -1,7 +1,6 @@
 package com.kappzzang.jeongsan.expensedetail
 
 import android.util.Log
-import androidx.core.view.WindowInsetsAnimationCompat.Callback.DispatchMode
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.model.ExpenseDetailItem
@@ -10,8 +9,8 @@ import com.kappzzang.jeongsan.usecase.EditExpenseDetailUseCase
 import com.kappzzang.jeongsan.usecase.GetExpenseDetailUseCase
 import com.kappzzang.jeongsan.usecase.GetExpenseUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,7 +22,7 @@ class ExpenseDetailViewModel @Inject constructor(
     private val getExpenseDetailUseCase: GetExpenseDetailUseCase,
     private val getExpenseUseCase: GetExpenseUseCase,
     private val editExpenseDetailUseCase: EditExpenseDetailUseCase,
-    private val ioDispatcher: CoroutineDispatcher,
+    private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
     private val _expenseDetailList =
         MutableStateFlow(listOf<ExpenseDetailItem>())

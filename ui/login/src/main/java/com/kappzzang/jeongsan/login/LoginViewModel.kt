@@ -1,7 +1,6 @@
 package com.kappzzang.jeongsan.login
 
 import android.app.Application
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,9 +15,8 @@ import com.kappzzang.jeongsan.usecase.AuthenticateWithKakaoUseCase
 import com.kappzzang.jeongsan.usecase.AuthorizeWithKakaoUseCase
 import com.kappzzang.jeongsan.usecase.RegisterWithKakaoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow

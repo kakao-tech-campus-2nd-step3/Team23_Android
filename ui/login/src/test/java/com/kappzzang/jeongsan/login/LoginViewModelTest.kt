@@ -1,7 +1,6 @@
 package com.kappzzang.jeongsan.login
 
 import android.widget.Toast
-import androidx.test.core.app.ApplicationProvider
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.AuthError
 import com.kakao.sdk.common.model.AuthErrorCause
@@ -18,6 +17,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkAll
+import java.util.Date
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -30,7 +30,6 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import java.util.Date
 
 @ExperimentalCoroutinesApi
 class LoginViewModelTest {
@@ -73,7 +72,7 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun `카카오 인증 실패 - AuthError AccessDenied이면 KakaoLoginStatus는 IDLE로 설정되어야 한다`() = runTest {
+    fun `카카오 인증 실패 - AuthError AccessDenied이면 KakaoLoginStatus는 IDLE로 설정`() = runTest {
         val responseCode = 401 // 예시로 적절한 HTTP 응답 코드를 설정
         val errorResponse = AuthErrorResponse("테스트 Auth 에러", "테스트")
         val error = AuthError(responseCode, AuthErrorCause.AccessDenied, errorResponse)
@@ -83,9 +82,8 @@ class LoginViewModelTest {
         assertEquals(KakaoLoginStatus.IDLE, viewModel.kakaoLoginStatus.value)
     }
 
-
     @Test
-    fun `카카오 인증 실패 - 그 외의 오류가 발생하면 KakaoLoginStatus는 FAILED로 설정되어야 한다`() = runTest {
+    fun `카카오 인증 실패 - 그 외의 오류가 발생하면 KakaoLoginStatus는 FAILED로 설정`() = runTest {
         val error = Throwable("Some other error")
 
         viewModel.onKakaoAuthorizationFailure(error)
@@ -94,19 +92,20 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun `카카오 인증 성공 - 유효한 OAuthToken이 주어지면 KakaoLoginStatus는 ON_LOGIN으로 설정되고 authorizeWithKakao가 호출되어야 한다`() = runTest {
-        val token = mockk<OAuthToken>()
-        every { token.accessToken } returns "valid_token"
-        every { token.refreshToken } returns "valid_refresh_token"
-        every { token.accessTokenExpiresAt } returns Date()
-        coEvery { authorizeWithKakaoUseCase(any()) } returns Unit
+    fun `카카오 인증 성공 - 유효한 OAuthToken이면 KakaoLoginStatus는 ON_LOGIN으로 설정되고 authorizeWithKakao가 호출`() =
+        runTest {
+            val token = mockk<OAuthToken>()
+            every { token.accessToken } returns "valid_token"
+            every { token.refreshToken } returns "valid_refresh_token"
+            every { token.accessTokenExpiresAt } returns Date()
+            coEvery { authorizeWithKakaoUseCase(any()) } returns Unit
 
-        viewModel.onKakaoAuthorizationSuccess(token)
-        advanceUntilIdle()
+            viewModel.onKakaoAuthorizationSuccess(token)
+            advanceUntilIdle()
 
-        coVerify { authorizeWithKakaoUseCase(any()) }
-        assertEquals(KakaoLoginStatus.ON_LOGIN, viewModel.kakaoLoginStatus.value)
-    }
+            coVerify { authorizeWithKakaoUseCase(any()) }
+            assertEquals(KakaoLoginStatus.ON_LOGIN, viewModel.kakaoLoginStatus.value)
+        }
 
     @Test
     fun `login 시 NoToken의 상태 반영`() = runTest {
