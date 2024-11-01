@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-data class ExpenseListCachingKey(val expenseState: ExpenseState, val groupId: String)
 
 class ExpenseFakeRepositoryImpl @Inject constructor(
     private val dataSource: ExpenseListFakeDatasource
