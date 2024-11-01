@@ -1,4 +1,4 @@
-package com.kappzzang.jeongsan.entity
+package com.kappzzang.jeongsan.entity.expensedetail
 
 import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
