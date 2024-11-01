@@ -30,6 +30,8 @@ subprojects {
         implementation(project(":domain"))
         implementation(project(":domain:group"))
         implementation(project(":build-config"))
+        implementation("com.squareup.retrofit2:retrofit:2.11.0")
+        implementation("com.google.code.gson:gson:2.10.1")
 
         // Test Dependencies
         testImplementation("org.assertj:assertj-core:3.25.3")
