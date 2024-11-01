@@ -1,7 +1,7 @@
 package com.kappzzang.jeongsan.mapper
 
-import com.kappzzang.jeongsan.entity.ExpenseDetailEntity
-import com.kappzzang.jeongsan.entity.ExpenseDetailItemEntity
+import com.kappzzang.jeongsan.entity.expensedetail.ExpenseDetailEntity
+import com.kappzzang.jeongsan.entity.expensedetail.ExpenseDetailItemEntity
 import com.kappzzang.jeongsan.entity.ExpenseItemEntity
 import com.kappzzang.jeongsan.entity.expenselist.ExpenseRemoteEntity
 import com.kappzzang.jeongsan.entity.expenselist.ExpenseRoomEntity
