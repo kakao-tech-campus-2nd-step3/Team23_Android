@@ -2,6 +2,7 @@ package com.kappzzang.jeongsan.mapper
 
 import com.kappzzang.jeongsan.entity.ExpenseDetailEntity
 import com.kappzzang.jeongsan.entity.ExpenseDetailItemEntity
+import com.kappzzang.jeongsan.entity.ExpenseItemEntity
 import com.kappzzang.jeongsan.entity.expenselist.ExpenseRemoteEntity
 import com.kappzzang.jeongsan.entity.expenselist.ExpenseRoomEntity
 import com.kappzzang.jeongsan.model.ExpenseDetailItem
@@ -9,6 +10,7 @@ import com.kappzzang.jeongsan.model.ExpenseItem
 import com.kappzzang.jeongsan.model.ExpenseItemWithCategory
 import com.kappzzang.jeongsan.model.ExpenseItemWithDetails
 import com.kappzzang.jeongsan.model.ExpenseState
+import com.kappzzang.jeongsan.model.ReceiptDetailItem
 import com.kappzzang.jeongsan.util.DateConverter
 
 object ExpenseEntityMapper {
@@ -66,6 +68,15 @@ object ExpenseEntityMapper {
             id = entity.id.toString(),
             itemPrice = entity.unitPrice,
             itemName = entity.name
+        )
+
+    fun mapReceiptDetailItemToExpenseItemEntity(
+        model: ReceiptDetailItem
+    ): ExpenseItemEntity =
+        ExpenseItemEntity(
+            name = model.itemName,
+            quantity = model.itemQuantity,
+            unitPrice = model.itemPrice
         )
 
     private fun getSumOfAllDetailItems(detailItems: List<ExpenseDetailItemEntity>): Int =

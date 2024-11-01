@@ -10,5 +10,5 @@ data class ExpenseItemEntity(
     @SerializedName("quantity")
     val quantity: Int,
     @SerializedName("unit_price")
-    val unitPrice: Long
+    val unitPrice: Int
 )

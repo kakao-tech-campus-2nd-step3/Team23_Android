@@ -3,6 +3,7 @@ package com.kappzzang.jeongsan.api
 import com.kappzzang.jeongsan.entity.ExpenseDetailEntity
 import com.kappzzang.jeongsan.entity.ResponseWithExpenseIdDTO
 import com.kappzzang.jeongsan.entity.SaveExpensePayloadDTO
+import com.kappzzang.jeongsan.entity.expenselist.ExpenseListResponseDTO
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -26,18 +27,25 @@ interface ReceiptRetrofitService {
         @Header("accessToken") jwt: String
     ): Response<ExpenseDetailEntity>
 
-    @GET("/api/expenses/{teamId}")
-    suspend fun getExpenseList(
+    @POST("/api/expenses/personal/{teamId}/{expenseId}")
+    suspend fun updateExpenseDetails(
         @Path(value = "teamId") groupId: String,
-        @Header("accessToken") jwt: String,
-        @Query("state") state: String,
-        @Query("isChecked") checked: Boolean
+        @Path(value = "expenseId") expenseId: String,
+        @Header("accessToken") jwt: String
     )
 
     @GET("/api/expenses/{teamId}")
     suspend fun getExpenseList(
         @Path(value = "teamId") groupId: String,
         @Header("accessToken") jwt: String,
+        @Query("state") state: String,
+        @Query("isChecked") checked: Boolean
+    ): Response<ExpenseListResponseDTO>
+
+    @GET("/api/expenses/{teamId}")
+    suspend fun getExpenseList(
+        @Path(value = "teamId") groupId: String,
+        @Header("accessToken") jwt: String,
         @Query("state") state: String
-    )
+    ): Response<ExpenseListResponseDTO>
 }
