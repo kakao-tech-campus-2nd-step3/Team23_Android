@@ -10,7 +10,7 @@ data class ExpenseRemoteEntity(
     @SerializedName("title")
     val title: String,
     @SerializedName("totalPrice")
-    val totalPrice: Long,
+    val totalPrice: Int,
     @SerializedName("createdAt")
     val createdAt: String,
     @SerializedName("state")
