@@ -1,4 +1,4 @@
-package com.kappzzang.jeongsan.expenselist.sendmessage
+package com.kappzzang.jeongsan.sendmessage
 
 import com.kappzzang.jeongsan.model.TransferDetailItem
 import com.kappzzang.jeongsan.usecase.GetTransferInfoUseCase
