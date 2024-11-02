@@ -1,5 +1,6 @@
 package com.kappzzang.jeongsan.expensedetail
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.model.ExpenseDetailItem
@@ -11,8 +12,11 @@ import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -25,18 +29,23 @@ class ExpenseDetailViewModel @Inject constructor(
     private val _expenseDetailList = MutableStateFlow(emptyList<ExpenseDetailItem>())
     val expenseDetailList = _expenseDetailList.asStateFlow()
 
-    private val groupId = MutableStateFlow("")
     private val expenseId = MutableStateFlow("")
     val expense: StateFlow<ExpenseItemWithDetails> = _expense.asStateFlow()
 
     fun saveExpenseDetail() {
         viewModelScope.launch(ioDispatcher) {
+            editExpenseDetailUseCase.invoke(expenseDetailList.value, expenseId.value)
             editExpenseDetailUseCase.invoke(
                 expenseDetailList.value,
                 expenseId.value,
                 groupId = groupId.value
             )
         }
+    }
+
+    fun updateExpenseIdAndInit(id: String) {
+        expenseId.value = id
+        initExpense()
     }
 
     fun setInitialData(expenseId: String, groupId: String) {
@@ -64,6 +73,7 @@ class ExpenseDetailViewModel @Inject constructor(
         } else {
             item.copy(selectedQuantity = 0)
         }
+    }
 
     private fun getItemWithQuantity(item: ExpenseDetailItem, quantity: Int): ExpenseDetailItem =
         ExpenseDetailItem(
