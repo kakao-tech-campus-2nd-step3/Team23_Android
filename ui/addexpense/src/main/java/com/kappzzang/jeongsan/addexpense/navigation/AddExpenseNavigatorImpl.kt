@@ -7,8 +7,9 @@ import com.kappzzang.jeongsan.addexpense.AddExpenseActivity
 import com.kappzzang.jeongsan.intentcontract.AddExpenseContract
 import com.kappzzang.jeongsan.model.OcrResultResponse
 import com.kappzzang.jeongsan.navigation.AddExpenseNavigator
+import javax.inject.Inject
 
-class AddExpenseNavigatorImpl : AddExpenseNavigator {
+class AddExpenseNavigatorImpl @Inject constructor(): AddExpenseNavigator {
     override fun navigateToAddExpenseWithImage(
         packageContext: Context,
         ocrResponse: OcrResultResponse.OcrSuccess,

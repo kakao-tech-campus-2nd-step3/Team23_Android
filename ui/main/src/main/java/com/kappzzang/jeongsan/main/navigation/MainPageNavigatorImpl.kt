@@ -5,9 +5,10 @@ import android.content.Intent
 import android.net.Uri
 import com.kappzzang.jeongsan.main.MainActivity
 import com.kappzzang.jeongsan.navigation.MainPageNavigator
+import javax.inject.Inject
 
 
-class MainPageNavigatorImpl: MainPageNavigator {
+class MainPageNavigatorImpl @Inject constructor(): MainPageNavigator {
     override fun navigateToMainPage(packageContext: Context): Intent =
         Intent(packageContext, MainActivity::class.java)
 

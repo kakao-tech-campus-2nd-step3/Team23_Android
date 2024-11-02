@@ -4,8 +4,9 @@ import android.content.Context
 import android.content.Intent
 import com.kappzzang.jeongsan.expensedetail.ExpenseDetailActivity
 import com.kappzzang.jeongsan.navigation.ExpenseDetailNavigator
+import javax.inject.Inject
 
-class ExpenseDetailNavigatorImpl: ExpenseDetailNavigator {
+class ExpenseDetailNavigatorImpl @Inject constructor(): ExpenseDetailNavigator {
     override fun navigateToExpenseDetail(packageContext: Context): Intent
             = Intent(packageContext, ExpenseDetailActivity::class.java)
 

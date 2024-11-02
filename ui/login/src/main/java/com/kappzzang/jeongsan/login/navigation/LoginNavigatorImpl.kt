@@ -5,8 +5,9 @@ import android.content.Intent
 import android.net.Uri
 import com.kappzzang.jeongsan.login.LoginActivity
 import com.kappzzang.jeongsan.navigation.LoginNavigator
+import javax.inject.Inject
 
-class LoginNavigatorImpl : LoginNavigator {
+class LoginNavigatorImpl @Inject constructor(): LoginNavigator {
     override fun login(packageContext: Context): Intent =
         Intent(packageContext, LoginActivity::class.java)
 
