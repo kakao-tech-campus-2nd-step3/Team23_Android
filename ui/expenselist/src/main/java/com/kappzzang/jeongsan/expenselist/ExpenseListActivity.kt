@@ -24,19 +24,19 @@ import com.kappzzang.jeongsan.expenselist.databinding.ActivityExpenseListBinding
 import com.kappzzang.jeongsan.expenselist.inviteinfo.InviteInfoDialogFragment
 import com.kappzzang.jeongsan.expenselist.sendmessage.SendMessageActivity
 import com.kappzzang.jeongsan.expenselist.viewmodel.ExpenseListViewModel
-import com.kappzzang.jeongsan.intentcontract.AddExpenseContract
 import com.kappzzang.jeongsan.intentcontract.ExpenseListContract
 import com.kappzzang.jeongsan.intentcontract.ReceiptCameraContract
 import com.kappzzang.jeongsan.model.OcrResultResponse
+import com.kappzzang.jeongsan.navigation.AddExpenseNavigator
 import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ExpenseListActivity : AppCompatActivity() {
     @Inject
-    lateinit var appNavigator: AppNavigator
+    lateinit var addExpenseNavigator: AddExpenseNavigator
     private val viewModel: ExpenseListViewModel by viewModels()
     private val binding: ActivityExpenseListBinding by lazy {
         val mBinding = ActivityExpenseListBinding.inflate(layoutInflater)
@@ -127,7 +127,7 @@ class ExpenseListActivity : AppCompatActivity() {
     }
 
     private fun startAddExpenseActivity() {
-        val intent = makeAddExpenseActivityIntent(true)
+        val intent = addExpenseNavigator.navigateToAddExpenseManually(this)
         startActivity(intent)
     }
 
@@ -135,16 +135,8 @@ class ExpenseListActivity : AppCompatActivity() {
         ocrResult: OcrResultResponse.OcrSuccess,
         receiptImage: Uri
     ) {
-        val intent = makeAddExpenseActivityIntent(false)
-        intent.putExtra(
-            AddExpenseContract.EXPENSE_DATA,
-            ocrResult
-        )
-        intent.putExtra(
-            AddExpenseContract.EXPENSE_IMAGE,
-            receiptImage
-        )
-
+        val intent =
+            addExpenseNavigator.navigateToAddExpenseWithImage(this, ocrResult, receiptImage)
         startActivity(intent)
     }
 
@@ -180,7 +172,7 @@ class ExpenseListActivity : AppCompatActivity() {
             this,
             android.Manifest.permission.CAMERA
         ) ==
-            PackageManager.PERMISSION_GRANTED
+                PackageManager.PERMISSION_GRANTED
     } else {
         true
     }
@@ -213,21 +205,6 @@ class ExpenseListActivity : AppCompatActivity() {
             setNegativeButton(getString(R.string.dialog_deny)) { _, _ -> }
             show()
         }
-    }
-
-    private fun makeAddExpenseActivityIntent(isManual: Boolean): Intent {
-        val intent = appNavigator.navigateToAddExpense(this)
-
-        intent.putExtra(
-            AddExpenseContract.INTENT_EXPENSE_MODE,
-            if (isManual) {
-                AddExpenseContract.EXPENSE_MODE_MANUAL
-            } else {
-                AddExpenseContract.EXPENSE_MODE_RECEIPT
-            }
-        )
-
-        return intent
     }
 
     private fun setOnAddExpenseFabClickedListener() {
