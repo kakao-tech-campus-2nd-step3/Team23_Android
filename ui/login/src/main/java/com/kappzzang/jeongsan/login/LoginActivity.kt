@@ -13,7 +13,6 @@ import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.kappzzang.jeongsan.login.databinding.ActivityLoginBinding
-import com.kappzzang.jeongsan.navigation.AppNavigator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.launch

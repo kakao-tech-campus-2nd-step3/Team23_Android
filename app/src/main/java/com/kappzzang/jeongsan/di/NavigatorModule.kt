@@ -1,6 +1,5 @@
 package com.kappzzang.jeongsan.di
 
-import com.kappzzang.jeongsan.navigation.AppNavigator
 import com.kappzzang.jeongsan.navigation.NavigatorImpl
 import dagger.Binds
 import dagger.Module

@@ -10,7 +10,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.expenselist.R
 import com.kappzzang.jeongsan.expenselist.databinding.ActivitySendMessageBinding
-import com.kappzzang.jeongsan.navigation.AppNavigator
 import com.kappzzang.jeongsan.util.IntegerFormatter.formatDecimalSeparator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
