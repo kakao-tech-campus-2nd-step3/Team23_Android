@@ -89,6 +89,7 @@ class AddExpenseActivity : AppCompatActivity() {
     }
 
     private fun initiateViewModel() {
+        getGroupId()
         if (checkIfReceiptMode()) {
             viewModel.setManualMode(AddExpenseViewModel.Companion.ManualMode.RECEIPT)
             getExpenseData()
@@ -125,6 +126,18 @@ class AddExpenseActivity : AppCompatActivity() {
             adapter = ExpenseItemListAdapter(viewModel::addNewExpense, viewModel::removeExpense)
             layoutManager =
                 LinearLayoutManager(this@AddExpenseActivity, LinearLayoutManager.VERTICAL, false)
+        }
+    }
+
+    private fun getGroupId(){
+        val groupId = intent?.getParcelableData<String>(
+            AddExpenseContract.GROUP_ID
+        )
+
+        groupId?.let {
+            viewModel.initGroupId(it)
+        } ?: let {
+            Toast.makeText(this, "그룹 정보를 불러오는 데 실패했습니다.", Toast.LENGTH_LONG).show()
         }
     }
 
