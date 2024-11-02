@@ -7,7 +7,6 @@ import com.kappzzang.jeongsan.model.ExpenseDetailItem
 import com.kappzzang.jeongsan.model.ExpenseItemWithDetails
 import com.kappzzang.jeongsan.usecase.EditExpenseDetailUseCase
 import com.kappzzang.jeongsan.usecase.GetExpenseDetailUseCase
-import com.kappzzang.jeongsan.usecase.GetExpenseUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher

@@ -4,7 +4,7 @@ import com.kappzzang.jeongsan.model.ExpenseDetailItem
 import com.kappzzang.jeongsan.repository.ExpenseDetailRepository
 
 class EditExpenseDetailUseCase(private val expenseDetailRepository: ExpenseDetailRepository) {
-    suspend operator fun invoke(edited: List<ExpenseDetailItem>) {
-        expenseDetailRepository.saveExpenseDetail(edited)
+    suspend operator fun invoke(edited: List<ExpenseDetailItem>, expenseId: String) {
+        expenseDetailRepository.saveExpenseDetail(edited, expenseId)
     }
 }
