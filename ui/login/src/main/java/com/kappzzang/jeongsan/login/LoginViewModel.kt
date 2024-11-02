@@ -1,7 +1,6 @@
 package com.kappzzang.jeongsan.login
 
 import android.app.Application
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,7 +16,7 @@ import com.kappzzang.jeongsan.usecase.AuthorizeWithKakaoUseCase
 import com.kappzzang.jeongsan.usecase.RegisterWithKakaoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,7 +31,8 @@ class LoginViewModel @Inject constructor(
     private val application: Application,
     private val authorizeWithKakaoUseCase: AuthorizeWithKakaoUseCase,
     private val authenticateWithKakaoUseCase: AuthenticateWithKakaoUseCase,
-    private val registerUseCase: RegisterWithKakaoUseCase
+    private val registerUseCase: RegisterWithKakaoUseCase,
+    private val ioDispatcher: CoroutineDispatcher
 ) : AndroidViewModel(application) {
     private val authStatus by lazy {
         authenticateWithKakaoUseCase().stateIn(
@@ -48,7 +48,7 @@ class LoginViewModel @Inject constructor(
     val kakaoLoginStatus = _kakaoLoginStatus.asStateFlow()
 
     fun login() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(ioDispatcher) {
             authStatus.collect { status ->
                 when (status) {
                     is AuthenticationResult.NoToken -> {
@@ -92,16 +92,13 @@ class LoginViewModel @Inject constructor(
         error?.let {
             if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
                 _kakaoLoginStatus.value = KakaoLoginStatus.IDLE
-                Log.e("KSC", "로그인 취소")
                 return
             }
             if (error is AuthError && error.reason == AuthErrorCause.AccessDenied) {
                 _kakaoLoginStatus.value = KakaoLoginStatus.IDLE
-                Log.e("KSC", "유저 로그인 거부")
                 return
             }
             _kakaoLoginStatus.value = KakaoLoginStatus.FAILED
-            Log.e("KSC", "로그인 실패")
         }
     }
 
@@ -109,12 +106,11 @@ class LoginViewModel @Inject constructor(
         token?.let {
             _kakaoLoginStatus.value = KakaoLoginStatus.ON_LOGIN
             authorizeWithKakao(mapOAuthTokenToAuthData(token))
-            Log.d("KSC", "로그인 완료")
         }
     }
 
     private fun authorizeWithKakao(authData: AuthData) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(ioDispatcher) {
             authorizeWithKakaoUseCase(authData)
             _loginStatus.emit(LoginStatus.LOGIN_COMPLETE)
         }
