@@ -10,6 +10,7 @@ import com.kappzzang.jeongsan.usecase.GetExpenseDetailUseCase
 import com.kappzzang.jeongsan.usecase.GetExpenseUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +21,8 @@ import kotlinx.coroutines.launch
 class ExpenseDetailViewModel @Inject constructor(
     private val getExpenseDetailUseCase: GetExpenseDetailUseCase,
     private val getExpenseUseCase: GetExpenseUseCase,
-    private val editExpenseDetailUseCase: EditExpenseDetailUseCase
+    private val editExpenseDetailUseCase: EditExpenseDetailUseCase,
+    private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
     private val _expenseDetailList =
         MutableStateFlow(listOf<ExpenseDetailItem>())
@@ -35,13 +37,13 @@ class ExpenseDetailViewModel @Inject constructor(
     }
 
     fun saveExpenseDetail() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(ioDispatcher) {
             editExpenseDetailUseCase.invoke(_expenseDetailList.value)
         }
     }
 
     private fun initExpense() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(ioDispatcher) {
             // 추후 전달할 Id
             val expenseId = 10L
             _expense.value = getExpenseUseCase.invoke(expenseId)
@@ -49,7 +51,13 @@ class ExpenseDetailViewModel @Inject constructor(
     }
 
     private fun initExpenseDetailList() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(ioDispatcher) {
+            _expenseDetailList.value = getExpenseDetailUseCase.invoke()
+        }
+    }
+
+    fun loadExpenseDetailList() {
+        viewModelScope.launch(ioDispatcher) {
             _expenseDetailList.value = getExpenseDetailUseCase.invoke()
         }
     }

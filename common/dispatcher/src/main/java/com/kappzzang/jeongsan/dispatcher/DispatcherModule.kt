@@ -1,4 +1,4 @@
-package com.kappzzang.jeongsan.di
+package com.kappzzang.jeongsan.dispatcher
 
 import dagger.Module
 import dagger.Provides

@@ -11,4 +11,5 @@ dependencies {
     implementation(project(":domain:expense"))
     implementation(project(":domain:ocr"))
     implementation(project(":ui:data"))
+    implementation(project(":common:dispatcher"))
 }
