@@ -11,5 +11,7 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 abstract class NavigatorModule {
     @Binds
-    abstract fun bindExpenseDetailNavigator(appNavigatorImpl: ExpenseDetailNavigatorImpl): ExpenseDetailNavigator
+    abstract fun bindExpenseDetailNavigator(
+        appNavigatorImpl: ExpenseDetailNavigatorImpl
+    ): ExpenseDetailNavigator
 }

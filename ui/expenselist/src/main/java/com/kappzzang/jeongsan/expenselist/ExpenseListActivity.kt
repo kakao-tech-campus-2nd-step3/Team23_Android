@@ -31,8 +31,8 @@ import com.kappzzang.jeongsan.navigation.CameraNavigator
 import com.kappzzang.jeongsan.navigation.SendMessageNavigator
 import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ExpenseListActivity : AppCompatActivity() {
@@ -185,7 +185,7 @@ class ExpenseListActivity : AppCompatActivity() {
             this,
             android.Manifest.permission.CAMERA
         ) ==
-                PackageManager.PERMISSION_GRANTED
+            PackageManager.PERMISSION_GRANTED
     } else {
         true
     }

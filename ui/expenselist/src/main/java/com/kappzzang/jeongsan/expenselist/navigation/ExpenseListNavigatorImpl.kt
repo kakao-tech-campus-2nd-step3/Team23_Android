@@ -10,7 +10,7 @@ import com.kappzzang.jeongsan.model.OcrResultResponse
 import com.kappzzang.jeongsan.navigation.ExpenseListNavigator
 import javax.inject.Inject
 
-class ExpenseListNavigatorImpl @Inject constructor(): ExpenseListNavigator {
+class ExpenseListNavigatorImpl @Inject constructor() : ExpenseListNavigator {
     override fun navigateToExpenseList(packageContext: Context, groupId: String): Intent {
         val intent = Intent(packageContext, ExpenseListActivity::class.java)
         intent.putExtra(ExpenseListContract.GROUP_ID, groupId)

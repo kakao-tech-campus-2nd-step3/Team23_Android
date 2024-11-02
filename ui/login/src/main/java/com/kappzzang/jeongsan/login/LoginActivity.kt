@@ -15,8 +15,8 @@ import com.kakao.sdk.user.UserApiClient
 import com.kappzzang.jeongsan.login.databinding.ActivityLoginBinding
 import com.kappzzang.jeongsan.navigation.MainPageNavigator
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
@@ -59,9 +59,10 @@ class LoginActivity : AppCompatActivity() {
     private fun navigateToMainPage() {
         val intent = intent?.data?.let {
             appNavigator.navigateToMainPageAndEnterGroup(
-                this, Uri.parse(it.toString())
+                this,
+                Uri.parse(it.toString())
             )
-        }?:let{
+        } ?: let {
             appNavigator.navigateToMainPage(
                 this
             )

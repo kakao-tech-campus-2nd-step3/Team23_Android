@@ -7,7 +7,7 @@ import com.kappzzang.jeongsan.login.LoginActivity
 import com.kappzzang.jeongsan.navigation.LoginNavigator
 import javax.inject.Inject
 
-class LoginNavigatorImpl @Inject constructor(): LoginNavigator {
+class LoginNavigatorImpl @Inject constructor() : LoginNavigator {
     override fun login(packageContext: Context): Intent =
         Intent(packageContext, LoginActivity::class.java)
 
@@ -16,5 +16,4 @@ class LoginNavigatorImpl @Inject constructor(): LoginNavigator {
         intent.data = inviteGroup
         return intent
     }
-
 }

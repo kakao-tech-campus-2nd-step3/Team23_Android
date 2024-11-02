@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.kappzzang.jeongsan.sendmessage.databinding.ItemMemberExpenseBinding
 import com.kappzzang.jeongsan.model.TransferDetailItem
+import com.kappzzang.jeongsan.sendmessage.databinding.ItemMemberExpenseBinding
 import com.kappzzang.jeongsan.util.IntegerFormatter.formatDecimalSeparator
 
 class MemberAdapter : ListAdapter<TransferDetailItem, MemberAdapter.MemberViewHolder>(diffUtil) {

@@ -10,5 +10,9 @@ interface ExpenseListNavigator {
 
     fun getExpenseListCancelResult(packageContext: Context): Intent
 
-    fun getExpenseListWithOcrDataResult(packageContext: Context, result: OcrResultResponse, image: Uri): Intent
+    fun getExpenseListWithOcrDataResult(
+        packageContext: Context,
+        result: OcrResultResponse,
+        image: Uri
+    ): Intent
 }

@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.kappzzang.jeongsan.intentcontract.ExpenseListContract
 import com.kappzzang.jeongsan.main.databinding.ActivityMainBinding
-import com.kappzzang.jeongsan.main.navigation.MainPageNavigatorImpl
 import com.kappzzang.jeongsan.navigation.CreateGroupNavigator
 import com.kappzzang.jeongsan.navigation.ExpenseListNavigator
 import dagger.hilt.android.AndroidEntryPoint

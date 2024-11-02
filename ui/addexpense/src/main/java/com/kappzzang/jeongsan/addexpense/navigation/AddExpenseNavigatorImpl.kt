@@ -9,7 +9,7 @@ import com.kappzzang.jeongsan.model.OcrResultResponse
 import com.kappzzang.jeongsan.navigation.AddExpenseNavigator
 import javax.inject.Inject
 
-class AddExpenseNavigatorImpl @Inject constructor(): AddExpenseNavigator {
+class AddExpenseNavigatorImpl @Inject constructor() : AddExpenseNavigator {
     override fun navigateToAddExpenseWithImage(
         packageContext: Context,
         ocrResponse: OcrResultResponse.OcrSuccess,
@@ -17,13 +17,16 @@ class AddExpenseNavigatorImpl @Inject constructor(): AddExpenseNavigator {
     ): Intent {
         val intent = Intent(packageContext, AddExpenseActivity::class.java)
         intent.putExtra(
-            AddExpenseContract.INTENT_EXPENSE_MODE, AddExpenseContract.EXPENSE_MODE_RECEIPT
+            AddExpenseContract.INTENT_EXPENSE_MODE,
+            AddExpenseContract.EXPENSE_MODE_RECEIPT
         )
         intent.putExtra(
-            AddExpenseContract.EXPENSE_IMAGE, image
+            AddExpenseContract.EXPENSE_IMAGE,
+            image
         )
         intent.putExtra(
-            AddExpenseContract.EXPENSE_DATA, ocrResponse
+            AddExpenseContract.EXPENSE_DATA,
+            ocrResponse
         )
 
         return intent
@@ -32,7 +35,8 @@ class AddExpenseNavigatorImpl @Inject constructor(): AddExpenseNavigator {
     override fun navigateToAddExpenseManually(packageContext: Context): Intent {
         val intent = Intent(packageContext, AddExpenseActivity::class.java)
         intent.putExtra(
-            AddExpenseContract.INTENT_EXPENSE_MODE, AddExpenseContract.EXPENSE_MODE_MANUAL
+            AddExpenseContract.INTENT_EXPENSE_MODE,
+            AddExpenseContract.EXPENSE_MODE_MANUAL
         )
 
         return intent

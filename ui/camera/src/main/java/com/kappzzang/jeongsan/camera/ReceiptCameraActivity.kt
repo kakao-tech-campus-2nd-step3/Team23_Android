@@ -20,7 +20,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.kappzzang.jeongsan.camera.databinding.ActivityReceiptCameraBinding
-import com.kappzzang.jeongsan.intentcontract.ReceiptCameraContract
 import com.kappzzang.jeongsan.model.OcrResultResponse
 import com.kappzzang.jeongsan.navigation.ExpenseListNavigator
 import dagger.hilt.android.AndroidEntryPoint
@@ -149,7 +148,7 @@ class ReceiptCameraActivity : AppCompatActivity() {
                 ).show()
 
                 viewModel.serverResponse?.let {
-                    setResult(RESULT_CANCELED, )
+                    setResult(RESULT_CANCELED)
                     setResult(RESULT_CANCELED, getOcrResultIntent(it))
                 }
 
@@ -195,5 +194,9 @@ class ReceiptCameraActivity : AppCompatActivity() {
     }
 
     private fun getOcrResultIntent(response: OcrResultResponse): Intent =
-        appNavigator.getExpenseListWithOcrDataResult(applicationContext, response, viewModel.pictureData.value)
+        appNavigator.getExpenseListWithOcrDataResult(
+            applicationContext,
+            response,
+            viewModel.pictureData.value
+        )
 }
