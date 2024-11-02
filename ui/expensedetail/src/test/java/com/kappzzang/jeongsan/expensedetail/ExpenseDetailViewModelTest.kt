@@ -53,12 +53,13 @@ class ExpenseDetailViewModelTest {
 
     @Test
     fun `아이템 해제 시 비활성화 처리`() = runTest {
-        coEvery { getExpenseDetailUseCase( any() ) } returns ExpenseItemWithDetails(
+        coEvery { getExpenseDetailUseCase(any()) } returns ExpenseItemWithDetails(
             item = ExpenseItem.EMPTY,
-            expenseImageUrl = ""
-            ,expenseDetails = listOf(
-            ExpenseDetailItem("testId", "testItem", 100, 30, 10)
-        ))
+            expenseImageUrl = "",
+            expenseDetails = listOf(
+                ExpenseDetailItem("testId", "testItem", 100, 30, 10)
+            )
+        )
 
         viewModel.updateExpenseIdAndInit("testId")
         advanceUntilIdle()
@@ -71,12 +72,13 @@ class ExpenseDetailViewModelTest {
 
     @Test
     fun `아이템 개수 변경시 업데이트`() = runTest {
-        coEvery { getExpenseDetailUseCase( any() ) } returns ExpenseItemWithDetails(
+        coEvery { getExpenseDetailUseCase(any()) } returns ExpenseItemWithDetails(
             item = ExpenseItem.EMPTY,
-            expenseImageUrl = ""
-            ,expenseDetails = listOf(
+            expenseImageUrl = "",
+            expenseDetails = listOf(
                 ExpenseDetailItem("testId", "testItem", 100, 30, 10)
-            ))
+            )
+        )
         viewModel.updateExpenseIdAndInit("testId")
         advanceUntilIdle()
 
