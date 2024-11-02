@@ -1,4 +1,4 @@
-package com.kappzzang.jeongsan.expenselist.sendmessage
+package com.kappzzang.jeongsan.sendmessage
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -22,13 +22,13 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.kappzzang.jeongsan.expenselist.databinding.ActivityExpenseListBinding
 import com.kappzzang.jeongsan.expenselist.inviteinfo.InviteInfoDialogFragment
-import com.kappzzang.jeongsan.expenselist.sendmessage.SendMessageActivity
 import com.kappzzang.jeongsan.expenselist.viewmodel.ExpenseListViewModel
 import com.kappzzang.jeongsan.intentcontract.ExpenseListContract
 import com.kappzzang.jeongsan.intentcontract.ReceiptCameraContract
 import com.kappzzang.jeongsan.model.OcrResultResponse
 import com.kappzzang.jeongsan.navigation.AddExpenseNavigator
 import com.kappzzang.jeongsan.navigation.CameraNavigator
+import com.kappzzang.jeongsan.navigation.SendMessageNavigator
 import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -41,6 +41,9 @@ class ExpenseListActivity : AppCompatActivity() {
 
     @Inject
     lateinit var cameraNavigator: CameraNavigator
+
+    @Inject
+    lateinit var sendMessageNavigator: SendMessageNavigator
 
     private val viewModel: ExpenseListViewModel by viewModels()
     private val binding: ActivityExpenseListBinding by lazy {
@@ -90,8 +93,13 @@ class ExpenseListActivity : AppCompatActivity() {
         activityReceiptCameraLauncher = createReceiptCameraLauncher()
 
         binding.requestExpenseFab.setOnClickListener {
-            startActivity(Intent(this, SendMessageActivity::class.java))
+            navigateToSendMessage()
         }
+    }
+
+    private fun navigateToSendMessage() {
+        val intent = sendMessageNavigator.navigateToSendMessage(this)
+        startActivity(intent)
     }
 
     private fun initiateNavigation() {

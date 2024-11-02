@@ -1,4 +1,4 @@
-package com.kappzzang.jeongsan.expenselist.sendmessage
+package com.kappzzang.jeongsan.sendmessage
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,8 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.kappzzang.jeongsan.expenselist.R
-import com.kappzzang.jeongsan.expenselist.databinding.ItemMemberExpenseBinding
+import com.kappzzang.jeongsan.sendmessage.databinding.ItemMemberExpenseBinding
 import com.kappzzang.jeongsan.model.TransferDetailItem
 import com.kappzzang.jeongsan.util.IntegerFormatter.formatDecimalSeparator
 
