@@ -12,17 +12,13 @@ import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class ExpenseDetailViewModel @Inject constructor(
     private val getExpenseDetailUseCase: GetExpenseDetailUseCase,
-    private val getExpenseUseCase: GetExpenseUseCase,
     private val editExpenseDetailUseCase: EditExpenseDetailUseCase,
     private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
@@ -46,25 +42,17 @@ class ExpenseDetailViewModel @Inject constructor(
 
     private fun initExpense() {
         viewModelScope.launch(ioDispatcher) {
-            // 추후 전달할 Id
-            val expenseId = 10L
-            _expense.value = getExpenseUseCase.invoke(expenseId)
+            _expense.value = getExpenseDetailUseCase.invoke(expenseId.value)
+            _expenseDetailList.emit(_expense.value.expenseDetails)
         }
     }
 
-    private fun initExpenseDetailList() {
-        viewModelScope.launch(ioDispatcher) {
-            _expenseDetailList.value = getExpenseDetailUseCase.invoke()
-        }
-    }
-
-    private fun getItemWithEnabled(item: ExpenseDetailItem, enabled: Boolean): ExpenseDetailItem {
-        return if (enabled) {
-            item.copy( selectedQuantity = 1 )
+    private fun getItemWithEnabled(item: ExpenseDetailItem, enabled: Boolean): ExpenseDetailItem =
+        if (enabled) {
+            item.copy(selectedQuantity = 1)
         } else {
-            item.copy( selectedQuantity = 0 )
+            item.copy(selectedQuantity = 0)
         }
-    }
 
     private fun getItemWithQuantity(item: ExpenseDetailItem, quantity: Int): ExpenseDetailItem =
         ExpenseDetailItem(

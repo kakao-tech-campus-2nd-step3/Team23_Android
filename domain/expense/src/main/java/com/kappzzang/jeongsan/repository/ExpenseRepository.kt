@@ -1,6 +1,5 @@
 package com.kappzzang.jeongsan.repository
 
-import com.kappzzang.jeongsan.model.ExpenseItemWithDetails
 import com.kappzzang.jeongsan.model.ExpenseListResponse
 import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.model.ReceiptItem

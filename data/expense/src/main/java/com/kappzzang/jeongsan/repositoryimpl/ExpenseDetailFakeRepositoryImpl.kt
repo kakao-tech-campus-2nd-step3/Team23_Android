@@ -59,7 +59,7 @@ class ExpenseDetailFakeRepositoryImpl @Inject constructor() : ExpenseDetailRepos
 
     companion object {
         const val FAKE_IMAGE_URL = "https://www.kakaotechcampus.com/fileUpDownload/" +
-                "download.do?p_savefile=gatepage_20230330053504999_1.png&p_realfile=" +
-                "GNB+%EB%A1%9C%EA%B3%A0%28%EB%B3%B4%EB%9D%BC%29.png"
+            "download.do?p_savefile=gatepage_20230330053504999_1.png&p_realfile=" +
+            "GNB+%EB%A1%9C%EA%B3%A0%28%EB%B3%B4%EB%9D%BC%29.png"
     }
 }

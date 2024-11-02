@@ -57,14 +57,15 @@ object ExpenseEntityMapper {
         }
     )
 
-    private fun mapExpenseDetailItemEntityToModel(entity: ExpenseDetailItemEntity): ExpenseDetailItem =
-        ExpenseDetailItem(
-            selectedQuantity = entity.quantityConsumed,
-            itemQuantity = entity.quantity,
-            id = entity.id.toString(),
-            itemPrice = entity.unitPrice,
-            itemName = entity.name
-        )
+    private fun mapExpenseDetailItemEntityToModel(
+        entity: ExpenseDetailItemEntity
+    ): ExpenseDetailItem = ExpenseDetailItem(
+        selectedQuantity = entity.quantityConsumed,
+        itemQuantity = entity.quantity,
+        id = entity.id.toString(),
+        itemPrice = entity.unitPrice,
+        itemName = entity.name
+    )
 
     fun mapReceiptDetailItemToExpenseItemEntity(model: ReceiptDetailItem): ExpenseItemEntity =
         ExpenseItemEntity(

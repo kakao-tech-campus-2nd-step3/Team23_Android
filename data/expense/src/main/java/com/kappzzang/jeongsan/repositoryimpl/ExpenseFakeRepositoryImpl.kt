@@ -1,9 +1,6 @@
 package com.kappzzang.jeongsan.repositoryimpl
 
 import com.kappzzang.jeongsan.datasource.ExpenseListFakeDatasource
-import com.kappzzang.jeongsan.model.ExpenseDetailItem
-import com.kappzzang.jeongsan.model.ExpenseItem
-import com.kappzzang.jeongsan.model.ExpenseItemWithDetails
 import com.kappzzang.jeongsan.model.ExpenseListResponse
 import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.model.ReceiptItem
@@ -40,13 +37,11 @@ class ExpenseFakeRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getExpenseListToGetPaid(groupId: String): ExpenseListResponse {
-        return dataSource.getExpenseData(
+    override suspend fun getExpenseListToGetPaid(groupId: String): ExpenseListResponse =
+        dataSource.getExpenseData(
             ExpenseState.TRANSFER_PENDING
         ).last()
-    }
 
-    override suspend fun uploadExpense(receiptItem: ReceiptItem, groupId: String): String {
-        return dataSource.addExpense(receiptItem)
-    }
+    override suspend fun uploadExpense(receiptItem: ReceiptItem, groupId: String): String =
+        dataSource.addExpense(receiptItem)
 }

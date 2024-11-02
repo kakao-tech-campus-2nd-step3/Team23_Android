@@ -12,8 +12,8 @@ import javax.inject.Inject
 
 class ExpenseDetailRepositoryImpl @Inject constructor(
     private val expenseDetailRemoteDatasource: ExpenseDetailRemoteDatasource,
-    private val auth:ServerAuthenticationRepository
-): ExpenseDetailRepository {
+    private val auth: ServerAuthenticationRepository
+) : ExpenseDetailRepository {
     private fun getJwt(): String = auth.getSavedJwt()
 
     override suspend fun getExpenseDetail(expenseId: String): ExpenseItemWithDetails {
@@ -24,7 +24,7 @@ class ExpenseDetailRepositoryImpl @Inject constructor(
             jwt = jwt
         )
 
-        when(response.code()){
+        when (response.code()) {
             201 -> response.body()?.let {
                 return mapResponseToExpenseDetail(
                     it,
@@ -34,23 +34,26 @@ class ExpenseDetailRepositoryImpl @Inject constructor(
             404 -> throw IllegalStateException("존재하지 않는 지출")
             500 -> throw IllegalStateException(response.message())
             else -> {
-                if(response.code()/100 == 2) {
+                if (response.code() / 100 == 2) {
                     response.body()?.let {
                         return mapResponseToExpenseDetail(
                             it,
                             expenseId
                         )
                     } ?: throw IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
-                }
-                else{
+                } else {
                     throw IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
                 }
             }
         }
     }
 
-    private fun mapResponseToExpenseDetail(entity:ExpenseDetailEntity, expenseId: String) =
-        ExpenseEntityMapper.mapDetailedExpenseEntityToModel(entity, expenseId, ExpenseState.NOT_CONFIRMED)
+    private fun mapResponseToExpenseDetail(entity: ExpenseDetailEntity, expenseId: String) =
+        ExpenseEntityMapper.mapDetailedExpenseEntityToModel(
+            entity,
+            expenseId,
+            ExpenseState.NOT_CONFIRMED
+        )
 
     override suspend fun saveExpenseDetail(edited: List<ExpenseDetailItem>, expenseId: String) {
         TODO("Not yet implemented")

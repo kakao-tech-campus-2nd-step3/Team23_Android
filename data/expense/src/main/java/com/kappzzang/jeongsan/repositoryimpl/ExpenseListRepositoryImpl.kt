@@ -8,9 +8,9 @@ import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.model.ReceiptItem
 import com.kappzzang.jeongsan.repository.ExpenseRepository
 import com.kappzzang.jeongsan.repository.ServerAuthenticationRepository
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
 
 data class ExpenseListCachingKey(val expenseState: ExpenseState, val groupId: String)
 
@@ -30,7 +30,7 @@ class ExpenseListRepositoryImpl @Inject constructor(
             return ""
         }
         val response = dataSource.addExpense(receiptItem, jwt, groupId)
-        when(response.code()){
+        when (response.code()) {
             201 -> response.body()?.expenseId?.let {
                 return it
             } ?: throw IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
@@ -39,12 +39,11 @@ class ExpenseListRepositoryImpl @Inject constructor(
             404 -> throw IllegalStateException(response.message())
             500 -> throw IllegalStateException(response.message())
             else -> {
-                if(response.code()/100 == 2) {
+                if (response.code() / 100 == 2) {
                     response.body()?.expenseId?.let {
                         return it
                     } ?: throw IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
-                }
-                else{
+                } else {
                     throw IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
                 }
             }
@@ -86,14 +85,14 @@ class ExpenseListRepositoryImpl @Inject constructor(
         groupId: String,
         expenseState: ExpenseState,
         jwt: String
-    ) : ExpenseListResponse {
+    ): ExpenseListResponse {
         val response = dataSource.getExpenseList(
             expenseState,
             groupId = groupId,
             jwt = jwt
         )
 
-        when(response.code()){
+        when (response.code()) {
             201 -> response.body()?.let {
                 return mapResponseBody(it)
             } ?: throw IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
@@ -101,12 +100,11 @@ class ExpenseListRepositoryImpl @Inject constructor(
             400 -> throw IllegalArgumentException("유효하지 않는 입력 값")
             404 -> throw IllegalStateException("유효하지 않는 teamId")
             else -> {
-                if(response.code()/100 == 2) {
+                if (response.code() / 100 == 2) {
                     response.body()?.let {
                         return mapResponseBody(it)
                     } ?: throw IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
-                }
-                else{
+                } else {
                     throw IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
                 }
             }
