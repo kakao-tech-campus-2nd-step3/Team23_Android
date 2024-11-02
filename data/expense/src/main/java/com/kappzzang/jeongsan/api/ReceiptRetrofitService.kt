@@ -21,13 +21,13 @@ interface ReceiptRetrofitService {
     ): Response<ResponseWithExpenseIdDTO>
 
     @GET("/api/receipts/items/{expenseId}")
-    suspend fun getExpenseDetails(
+    suspend fun getExpenseDetail(
         @Path(value = "expenseId") expenseId: String,
         @Header("accessToken") jwt: String
     ): Response<ExpenseDetailEntity>
 
     @POST("/api/expenses/personal/{teamId}/{expenseId}")
-    suspend fun updateExpenseDetails(
+    suspend fun updateExpenseDetail(
         @Path(value = "teamId") groupId: String,
         @Path(value = "expenseId") expenseId: String,
         @Header("accessToken") jwt: String

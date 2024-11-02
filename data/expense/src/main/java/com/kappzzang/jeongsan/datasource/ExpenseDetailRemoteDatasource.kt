@@ -9,7 +9,7 @@ class ExpenseDetailRemoteDatasource @Inject constructor(
     private val receiptRetrofitService: ReceiptRetrofitService
 ) {
     suspend fun getExpenseDetail(expenseId: String, jwt: String): Response<ExpenseDetailEntity> =
-        receiptRetrofitService.getExpenseDetails(
+        receiptRetrofitService.getExpenseDetail(
             expenseId = expenseId,
             jwt = jwt
         )
