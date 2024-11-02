@@ -28,6 +28,7 @@ import com.kappzzang.jeongsan.intentcontract.ExpenseListContract
 import com.kappzzang.jeongsan.intentcontract.ReceiptCameraContract
 import com.kappzzang.jeongsan.model.OcrResultResponse
 import com.kappzzang.jeongsan.navigation.AddExpenseNavigator
+import com.kappzzang.jeongsan.navigation.CameraNavigator
 import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -37,6 +38,10 @@ import javax.inject.Inject
 class ExpenseListActivity : AppCompatActivity() {
     @Inject
     lateinit var addExpenseNavigator: AddExpenseNavigator
+
+    @Inject
+    lateinit var cameraNavigator: CameraNavigator
+
     private val viewModel: ExpenseListViewModel by viewModels()
     private val binding: ActivityExpenseListBinding by lazy {
         val mBinding = ActivityExpenseListBinding.inflate(layoutInflater)
@@ -238,7 +243,7 @@ class ExpenseListActivity : AppCompatActivity() {
     }
 
     private fun startCameraActivity() {
-        val intent = appNavigator.navigateToCamera(applicationContext)
+        val intent = cameraNavigator.navigateToCamera(applicationContext)
         activityReceiptCameraLauncher.launch(intent)
     }
 
