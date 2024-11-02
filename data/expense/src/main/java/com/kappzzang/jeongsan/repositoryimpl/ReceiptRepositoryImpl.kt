@@ -2,7 +2,6 @@ package com.kappzzang.jeongsan.repositoryimpl
 
 import com.kappzzang.jeongsan.datasource.ExpenseListFakeDatasource
 import com.kappzzang.jeongsan.model.ReceiptItem
-import com.kappzzang.jeongsan.repository.ReceiptRepository
 import javax.inject.Inject
 
 class ReceiptRepositoryImpl @Inject constructor(
