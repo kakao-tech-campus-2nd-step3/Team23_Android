@@ -24,10 +24,6 @@ object ExpenseUseCaseModule {
         GetExpenseDetailUseCase(expenseDetailRepository)
 
     @Provides
-    fun provideGetExpenseUseCase(expenseRepository: ExpenseRepository) =
-        GetExpenseUseCase(expenseRepository)
-
-    @Provides
     fun provideEditExpenseDetailUseCase(expenseDetailRepository: ExpenseDetailRepository) =
         EditExpenseDetailUseCase(expenseDetailRepository)
 

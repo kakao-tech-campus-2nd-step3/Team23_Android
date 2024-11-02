@@ -30,12 +30,6 @@ abstract class ExpenseRepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindReceiptRepository(
-        receiptRepositoryImpl: ReceiptRepositoryImpl
-    ): ReceiptRepository
-
-    @Binds
-    @Singleton
     abstract fun bindTransferRepository(
         transferRepositoryImpl: TransferRepositoryImpl
     ): TransferRepository
