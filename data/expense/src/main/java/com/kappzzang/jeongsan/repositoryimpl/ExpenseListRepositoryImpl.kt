@@ -24,15 +24,6 @@ class ExpenseListRepositoryImpl @Inject constructor(
     private fun getJwt(): String = auth.getSavedJwt()
     private fun isJwtValid(jwt: String): Boolean = (jwt != "")
 
-    private fun mapResponseBody(body: ExpenseListResponseDTO): ExpenseListResponse {
-        val expenses = body.expenseList.map { ExpenseEntityMapper.mapExpenseEntityToModel(it) }
-        return ExpenseListResponse(
-            totalExpenseToSend = body.totalPrice.toInt(),
-            expenseList = expenses,
-            totalPrice = body.totalPrice.toInt()
-        )
-    }
-
     override suspend fun uploadExpense(receiptItem: ReceiptItem, groupId: String): String {
         val jwt = getJwt()
         if (!isJwtValid(jwt)) {
@@ -51,37 +42,6 @@ class ExpenseListRepositoryImpl @Inject constructor(
                 if(response.code()/100 == 2) {
                     response.body()?.expenseId?.let {
                         return it
-                    } ?: throw IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
-                }
-                else{
-                    throw IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
-                }
-            }
-        }
-    }
-
-    private suspend fun getExpenseListResponseFromAPI(
-        groupId: String,
-        expenseState: ExpenseState,
-        jwt: String
-    ) : ExpenseListResponse {
-        val response = dataSource.getExpenseList(
-            expenseState,
-            groupId = groupId,
-            jwt = jwt
-        )
-
-        when(response.code()){
-            201 -> response.body()?.let {
-                return mapResponseBody(it)
-            } ?: throw IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
-
-            400 -> throw IllegalArgumentException("유효하지 않는 입력 값")
-            404 -> throw IllegalStateException("유효하지 않는 teamId")
-            else -> {
-                if(response.code()/100 == 2) {
-                    response.body()?.let {
-                        return mapResponseBody(it)
                     } ?: throw IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
                 }
                 else{
@@ -119,6 +79,46 @@ class ExpenseListRepositoryImpl @Inject constructor(
                 ExpenseListCachingKey(expenseState, groupId),
                 ExpenseListResponse.emptyList()
             )
+        )
+    }
+
+    private suspend fun getExpenseListResponseFromAPI(
+        groupId: String,
+        expenseState: ExpenseState,
+        jwt: String
+    ) : ExpenseListResponse {
+        val response = dataSource.getExpenseList(
+            expenseState,
+            groupId = groupId,
+            jwt = jwt
+        )
+
+        when(response.code()){
+            201 -> response.body()?.let {
+                return mapResponseBody(it)
+            } ?: throw IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
+
+            400 -> throw IllegalArgumentException("유효하지 않는 입력 값")
+            404 -> throw IllegalStateException("유효하지 않는 teamId")
+            else -> {
+                if(response.code()/100 == 2) {
+                    response.body()?.let {
+                        return mapResponseBody(it)
+                    } ?: throw IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
+                }
+                else{
+                    throw IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
+                }
+            }
+        }
+    }
+
+    private fun mapResponseBody(body: ExpenseListResponseDTO): ExpenseListResponse {
+        val expenses = body.expenseList.map { ExpenseEntityMapper.mapExpenseEntityToModel(it) }
+        return ExpenseListResponse(
+            totalExpenseToSend = body.totalPrice.toInt(),
+            expenseList = expenses,
+            totalPrice = body.totalPrice.toInt()
         )
     }
 
