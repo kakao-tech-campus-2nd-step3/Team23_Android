@@ -5,14 +5,12 @@ import com.kappzzang.jeongsan.entity.ImageEntity
 import com.kappzzang.jeongsan.entity.ResponseWithExpenseIdDTO
 import com.kappzzang.jeongsan.entity.SaveExpensePayloadDTO
 import com.kappzzang.jeongsan.entity.expenselist.ExpenseListResponseDTO
-import com.kappzzang.jeongsan.entity.expenselist.ExpenseRoomEntity
 import com.kappzzang.jeongsan.mapper.ExpenseEntityMapper
 import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.model.ReceiptItem
 import com.kappzzang.jeongsan.util.DateConverter.formatToTransferString
-import java.sql.Timestamp
-import javax.inject.Inject
 import retrofit2.Response
+import javax.inject.Inject
 
 class ExpenseListRemoteDatasource @Inject constructor(
     private val receiptRetrofitService: ReceiptRetrofitService
@@ -82,20 +80,6 @@ class ExpenseListRemoteDatasource @Inject constructor(
 
         return result
     }
-
-    fun addExpense(receiptItem: ReceiptItem): String {
-        val expenseEntity = ExpenseRoomEntity(
-            name = receiptItem.title,
-            totalPrice = receiptItem.expenseDetailItemList.sumOf { it.itemPrice * it.itemQuantity },
-            createdTime = Timestamp(System.currentTimeMillis()).toString(),
-            categoryColor = receiptItem.categoryColor,
-            expenseState = ExpenseState.CONFIRMED.ordinal
-        )
-
-        // expenseDatabase.expenseDao().addExpense(expenseEntity)
-        return expenseEntity.id.toString()
-    }
-
     companion object {
         const val IMAGE_FORMAT = "JPG"
         const val CATEGORY_ID = 0L
