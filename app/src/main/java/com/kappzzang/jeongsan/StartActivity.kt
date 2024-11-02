@@ -6,13 +6,14 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.kappzzang.jeongsan.intentcontract.StartContract
+import com.kappzzang.jeongsan.navigation.LoginNavigator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class StartActivity : AppCompatActivity() {
     @Inject
-    lateinit var appNavigator: AppNavigator
+    lateinit var appNavigator: LoginNavigator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,15 +36,14 @@ class StartActivity : AppCompatActivity() {
             // 초대링크를 클릭해서 옴
             inviteGroup != null -> {
                 Log.d(TAG, inviteGroup)
-                appNavigator.navigateToLogin(this).also {
-                    it.data = Uri.parse(inviteGroup)
+                appNavigator.loginAndEnterGroup(this, Uri.parse(inviteGroup)).also {
                     startActivity(it)
                     finish()
                 }
             }
             // 그냥 옴
             else -> {
-                appNavigator.navigateToLogin(this).also {
+                appNavigator.login(this).also {
                     startActivity(it)
                     finish()
                 }
