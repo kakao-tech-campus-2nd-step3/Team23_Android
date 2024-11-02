@@ -76,6 +76,12 @@ class AddExpenseViewModel @Inject constructor(
         this.groupId.value = groupId
     }
 
+    private suspend fun insertExpenseItemList(expenseItemList: List<ExpenseItemInput>) {
+        _expenseItemList.emit(
+            expenseItemList + _expenseItemList.value
+        )
+    }
+
     fun addNewExpense() {
         viewModelScope.launch(Dispatchers.Main) {
             val currentExpenseItemList = _expenseItemList.value.toMutableList()

@@ -129,7 +129,7 @@ class AddExpenseActivity : AppCompatActivity() {
         }
     }
 
-    private fun getGroupId() {
+    private fun getGroupId(){
         val groupId = intent?.getParcelableData<String>(
             AddExpenseContract.GROUP_ID
         )
