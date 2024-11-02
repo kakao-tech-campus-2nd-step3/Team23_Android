@@ -7,7 +7,7 @@ import com.kappzzang.jeongsan.usecase.GetInviteInfoUseCase
 import com.kappzzang.jeongsan.usecase.SendInviteMessageUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -15,7 +15,8 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class InviteInfoViewModel @Inject constructor(
     private val getInviteInfoUseCase: GetInviteInfoUseCase,
-    private val sendInviteMessageUseCase: SendInviteMessageUseCase
+    private val sendInviteMessageUseCase: SendInviteMessageUseCase,
+    private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _inviteInfo = MutableStateFlow<List<MemberItem>>(emptyList())
@@ -23,7 +24,7 @@ class InviteInfoViewModel @Inject constructor(
 
     init {
         // 더미 데이터 삽입 & 적용
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(ioDispatcher) {
             getInviteInfoUseCase.insertDummyData()
             _inviteInfo.emit(getInviteInfoUseCase())
         }
