@@ -185,7 +185,7 @@ class ExpenseListActivity : AppCompatActivity() {
             this,
             android.Manifest.permission.CAMERA
         ) ==
-            PackageManager.PERMISSION_GRANTED
+                PackageManager.PERMISSION_GRANTED
     } else {
         true
     }
