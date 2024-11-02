@@ -60,7 +60,7 @@ class ExpenseDetailActivity : AppCompatActivity() {
         getExpenseId()
     }
 
-    private fun getExpenseId(){
+    private fun getExpenseId() {
         val expenseId = intent?.getParcelableData<String>(
             ExpenseDetailContract.EXPENSE_ID
         )

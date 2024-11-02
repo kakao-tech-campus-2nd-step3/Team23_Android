@@ -73,7 +73,6 @@ class ExpenseDetailViewModel @Inject constructor(
         } else {
             item.copy(selectedQuantity = 0)
         }
-    }
 
     private fun getItemWithQuantity(item: ExpenseDetailItem, quantity: Int): ExpenseDetailItem =
         ExpenseDetailItem(
