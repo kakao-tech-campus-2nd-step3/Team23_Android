@@ -53,11 +53,11 @@ object ExpenseEntityMapper {
         ),
         expenseImageUrl = entity.imageUrl,
         expenseDetails = entity.detailItems.map {
-            mapExpenseDetailEntityToModel(it)
+            mapExpenseDetailItemEntityToModel(it)
         }
     )
 
-    fun mapExpenseDetailEntityToModel(entity: ExpenseDetailItemEntity): ExpenseDetailItem =
+    private fun mapExpenseDetailItemEntityToModel(entity: ExpenseDetailItemEntity): ExpenseDetailItem =
         ExpenseDetailItem(
             selectedQuantity = entity.quantityConsumed,
             itemQuantity = entity.quantity,
