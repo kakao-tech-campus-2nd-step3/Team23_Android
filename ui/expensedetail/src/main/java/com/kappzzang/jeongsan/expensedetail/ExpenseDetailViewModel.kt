@@ -12,8 +12,11 @@ import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -23,22 +26,22 @@ class ExpenseDetailViewModel @Inject constructor(
     private val editExpenseDetailUseCase: EditExpenseDetailUseCase,
     private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
-    private val _expenseDetailList =
-        MutableStateFlow(listOf<ExpenseDetailItem>())
     private val _expense = MutableStateFlow(ExpenseItemWithDetails.EMPTY)
+    private val _expenseDetailList = MutableStateFlow(emptyList<ExpenseDetailItem>())
+    val expenseDetailList = _expenseDetailList.asStateFlow()
 
-    val expenseDetailList: StateFlow<List<ExpenseDetailItem>> = _expenseDetailList.asStateFlow()
+    private val expenseId = MutableStateFlow("")
     val expense: StateFlow<ExpenseItemWithDetails> = _expense.asStateFlow()
-
-    init {
-        initExpense()
-        initExpenseDetailList()
-    }
 
     fun saveExpenseDetail() {
         viewModelScope.launch(ioDispatcher) {
-            editExpenseDetailUseCase.invoke(_expenseDetailList.value)
+            editExpenseDetailUseCase.invoke(expenseDetailList.value, expenseId.value)
         }
+    }
+
+    fun updateExpenseIdAndInit(id: String) {
+        expenseId.value = id
+        initExpense()
     }
 
     private fun initExpense() {
@@ -55,37 +58,11 @@ class ExpenseDetailViewModel @Inject constructor(
         }
     }
 
-    fun loadExpenseDetailList() {
-        viewModelScope.launch(ioDispatcher) {
-            _expenseDetailList.value = getExpenseDetailUseCase.invoke()
-        }
-    }
-
     private fun getItemWithEnabled(item: ExpenseDetailItem, enabled: Boolean): ExpenseDetailItem {
-        if (enabled) {
-            return if (item.selectedQuantity > 0) {
-                item
-            } else {
-                ExpenseDetailItem(
-                    id = item.id,
-                    itemName = item.itemName,
-                    itemQuantity = item.itemQuantity,
-                    itemPrice = item.itemPrice,
-                    selectedQuantity = 1
-                )
-            }
+        return if (enabled) {
+            item.copy( selectedQuantity = 1 )
         } else {
-            return if (item.selectedQuantity == 0) {
-                item
-            } else {
-                ExpenseDetailItem(
-                    id = item.id,
-                    itemName = item.itemName,
-                    itemQuantity = item.itemQuantity,
-                    itemPrice = item.itemPrice,
-                    selectedQuantity = 0
-                )
-            }
+            item.copy( selectedQuantity = 0 )
         }
     }
 
