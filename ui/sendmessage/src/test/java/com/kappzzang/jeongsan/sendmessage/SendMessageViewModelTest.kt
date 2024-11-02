@@ -25,7 +25,7 @@ class SendMessageViewModelTest {
 
     private val mockGetTransferInfoUseCase = mockk<GetTransferInfoUseCase>()
     private val mockSendTransferMessageUseCase = mockk<SendTransferMessageUseCase>()
-    private lateinit var viewModel: com.kappzzang.jeongsan.sendmessage.SendMessageViewModel
+    private lateinit var viewModel: SendMessageViewModel
 
     private val testDispatcher = StandardTestDispatcher(TestCoroutineScheduler())
 
@@ -34,7 +34,7 @@ class SendMessageViewModelTest {
         Dispatchers.setMain(testDispatcher)
         coEvery { mockGetTransferInfoUseCase() } returns emptyList()
         coEvery { mockSendTransferMessageUseCase(any()) } returns true
-        viewModel = com.kappzzang.jeongsan.sendmessage.SendMessageViewModel(
+        viewModel = SendMessageViewModel(
             mockGetTransferInfoUseCase,
             mockSendTransferMessageUseCase
         )
@@ -57,7 +57,7 @@ class SendMessageViewModelTest {
         coEvery { mockGetTransferInfoUseCase() } returns expectedTransferInfo
 
         // when
-        viewModel = com.kappzzang.jeongsan.sendmessage.SendMessageViewModel(
+        viewModel = SendMessageViewModel(
             mockGetTransferInfoUseCase,
             mockSendTransferMessageUseCase
         )

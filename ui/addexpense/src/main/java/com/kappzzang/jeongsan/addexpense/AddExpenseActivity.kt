@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.addexpense.databinding.ActivityAddExpenseBinding
 import com.kappzzang.jeongsan.intentcontract.AddExpenseContract
 import com.kappzzang.jeongsan.model.OcrResultResponse
+import com.kappzzang.jeongsan.navigation.ExpenseDetailNavigator
 import com.kappzzang.jeongsan.util.Base64BitmapEncoder
 import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,7 +27,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class AddExpenseActivity : AppCompatActivity() {
     @Inject
-    lateinit var appNavigator: AppNavigator
+    lateinit var appNavigator: ExpenseDetailNavigator
     private val viewModel: AddExpenseViewModel by viewModels()
     private val binding: ActivityAddExpenseBinding by lazy {
         ActivityAddExpenseBinding.inflate(
