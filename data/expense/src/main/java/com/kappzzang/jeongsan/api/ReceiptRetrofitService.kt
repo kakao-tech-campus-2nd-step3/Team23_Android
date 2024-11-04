@@ -3,6 +3,7 @@ package com.kappzzang.jeongsan.api
 import com.kappzzang.jeongsan.entity.ResponseWithExpenseIdDTO
 import com.kappzzang.jeongsan.entity.SaveExpensePayloadDTO
 import com.kappzzang.jeongsan.entity.expensedetail.ExpenseDetailEntity
+import com.kappzzang.jeongsan.entity.expensedetail.UpdateExpenseDetailPayloadDTO
 import com.kappzzang.jeongsan.entity.expenselist.ExpenseListResponseDTO
 import retrofit2.Response
 import retrofit2.http.Body
@@ -27,8 +28,9 @@ interface ReceiptRetrofitService {
     @POST("/api/expenses/personal/{teamId}/{expenseId}")
     suspend fun updateExpenseDetail(
         @Path(value = "teamId") groupId: String,
-        @Path(value = "expenseId") expenseId: String
-    )
+        @Path(value = "expenseId") expenseId: String,
+        @Body body: UpdateExpenseDetailPayloadDTO
+    ): Response<Unit>
 
     @GET("/api/expenses/{teamId}")
     suspend fun getExpenseList(

@@ -30,7 +30,10 @@ class ExpenseDetailRepositoryImpl @Inject constructor(
             ExpenseState.NOT_CONFIRMED
         )
 
-    override suspend fun saveExpenseDetail(edited: List<ExpenseDetailItem>, expenseId: String): Result<Unit> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun saveExpenseDetail(edited: List<ExpenseDetailItem>, expenseId: String, groupId: String): Result<Unit> =
+        expenseDetailRemoteDatasource.updateExpenseDetail(
+            expenseId = expenseId,
+            groupId = groupId,
+            edited = edited
+        )
 }
