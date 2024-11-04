@@ -63,6 +63,7 @@ dependencies {
     implementation(project(":ui:camera"))
     implementation(project(":ui:addexpense"))
     implementation(project(":ui:data"))
+    implementation(project(":ui:sendmessage"))
     implementation(project(":domain:common-user"))
     implementation(project(":domain:group"))
     implementation(project(":domain:expense"))

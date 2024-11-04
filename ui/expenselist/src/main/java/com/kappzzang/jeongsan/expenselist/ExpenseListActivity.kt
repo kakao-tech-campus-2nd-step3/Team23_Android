@@ -22,13 +22,13 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.kappzzang.jeongsan.expenselist.databinding.ActivityExpenseListBinding
 import com.kappzzang.jeongsan.expenselist.inviteinfo.InviteInfoDialogFragment
-import com.kappzzang.jeongsan.expenselist.sendmessage.SendMessageActivity
 import com.kappzzang.jeongsan.expenselist.viewmodel.ExpenseListViewModel
-import com.kappzzang.jeongsan.intentcontract.AddExpenseContract
 import com.kappzzang.jeongsan.intentcontract.ExpenseListContract
 import com.kappzzang.jeongsan.intentcontract.ReceiptCameraContract
 import com.kappzzang.jeongsan.model.OcrResultResponse
-import com.kappzzang.jeongsan.navigation.AppNavigator
+import com.kappzzang.jeongsan.navigation.AddExpenseNavigator
+import com.kappzzang.jeongsan.navigation.CameraNavigator
+import com.kappzzang.jeongsan.navigation.SendMessageNavigator
 import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -37,7 +37,14 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class ExpenseListActivity : AppCompatActivity() {
     @Inject
-    lateinit var appNavigator: AppNavigator
+    lateinit var addExpenseNavigator: AddExpenseNavigator
+
+    @Inject
+    lateinit var cameraNavigator: CameraNavigator
+
+    @Inject
+    lateinit var sendMessageNavigator: SendMessageNavigator
+
     private val viewModel: ExpenseListViewModel by viewModels()
     private val binding: ActivityExpenseListBinding by lazy {
         val mBinding = ActivityExpenseListBinding.inflate(layoutInflater)
@@ -86,8 +93,13 @@ class ExpenseListActivity : AppCompatActivity() {
         activityReceiptCameraLauncher = createReceiptCameraLauncher()
 
         binding.requestExpenseFab.setOnClickListener {
-            startActivity(Intent(this, SendMessageActivity::class.java))
+            navigateToSendMessage()
         }
+    }
+
+    private fun navigateToSendMessage() {
+        val intent = sendMessageNavigator.navigateToSendMessage(this)
+        startActivity(intent)
     }
 
     private fun initiateNavigation() {
@@ -128,7 +140,7 @@ class ExpenseListActivity : AppCompatActivity() {
     }
 
     private fun startAddExpenseActivity() {
-        val intent = makeAddExpenseActivityIntent(true)
+        val intent = addExpenseNavigator.navigateToAddExpenseManually(this)
         startActivity(intent)
     }
 
@@ -136,16 +148,8 @@ class ExpenseListActivity : AppCompatActivity() {
         ocrResult: OcrResultResponse.OcrSuccess,
         receiptImage: Uri
     ) {
-        val intent = makeAddExpenseActivityIntent(false)
-        intent.putExtra(
-            AddExpenseContract.EXPENSE_DATA,
-            ocrResult
-        )
-        intent.putExtra(
-            AddExpenseContract.EXPENSE_IMAGE,
-            receiptImage
-        )
-
+        val intent =
+            addExpenseNavigator.navigateToAddExpenseWithImage(this, ocrResult, receiptImage)
         startActivity(intent)
     }
 
@@ -216,21 +220,6 @@ class ExpenseListActivity : AppCompatActivity() {
         }
     }
 
-    private fun makeAddExpenseActivityIntent(isManual: Boolean): Intent {
-        val intent = appNavigator.navigateToAddExpense(this)
-
-        intent.putExtra(
-            AddExpenseContract.INTENT_EXPENSE_MODE,
-            if (isManual) {
-                AddExpenseContract.EXPENSE_MODE_MANUAL
-            } else {
-                AddExpenseContract.EXPENSE_MODE_RECEIPT
-            }
-        )
-
-        return intent
-    }
-
     private fun setOnAddExpenseFabClickedListener() {
         val popupMenu = PopupMenu(this, binding.addExpenseFab)
         popupMenu.menuInflater.inflate(R.menu.menu_add_expense, popupMenu.menu)
@@ -262,7 +251,7 @@ class ExpenseListActivity : AppCompatActivity() {
     }
 
     private fun startCameraActivity() {
-        val intent = appNavigator.navigateToCamera(applicationContext)
+        val intent = cameraNavigator.navigateToCamera(applicationContext)
         activityReceiptCameraLauncher.launch(intent)
     }
 

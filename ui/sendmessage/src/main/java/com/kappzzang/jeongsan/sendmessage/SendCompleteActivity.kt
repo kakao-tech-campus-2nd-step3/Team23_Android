@@ -1,8 +1,8 @@
-package com.kappzzang.jeongsan.expenselist.sendcomplete
+package com.kappzzang.jeongsan.sendmessage
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.kappzzang.jeongsan.expenselist.databinding.ActivitySendCompleteBinding
+import com.kappzzang.jeongsan.sendmessage.databinding.ActivitySendCompleteBinding
 import java.util.concurrent.TimeUnit
 import nl.dionsegijn.konfetti.core.Angle
 import nl.dionsegijn.konfetti.core.Party
