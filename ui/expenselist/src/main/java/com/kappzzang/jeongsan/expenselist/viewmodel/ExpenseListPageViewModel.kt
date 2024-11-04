@@ -10,7 +10,6 @@ import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.usecase.GetExpenseListUseCase
 import com.kappzzang.jeongsan.util.IntegerFormatter.formatDecimalSeparator
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +17,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 open class ExpenseListPageViewModel @Inject constructor(
@@ -62,8 +62,13 @@ open class ExpenseListPageViewModel @Inject constructor(
         cancelPreviousJob()
         expenseListFetchingJob = viewModelScope.launch(Dispatchers.IO) {
             getExpenseListUseCase(groupId, expenseState)
-                .collect {
-                    expenseList.emit(it)
+                .collect { result ->
+                    result.onSuccess {
+                        expenseList.emit(it)
+                    }
+                        .onFailure {
+                            //TODO: ExpenseList 조회 실패 시 예외 처리
+                        }
                 }
         }
     }

@@ -19,6 +19,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+enum class ExpenseUploadingProgress {NOT_STARTED, UPLOADING, UPLOAD_SUCCESS, UPLOAD_FAILED}
+
 @HiltViewModel
 class AddExpenseViewModel @Inject constructor(
     private val uploadExpenseUseCase: UploadExpenseUseCase,
@@ -32,11 +34,13 @@ class AddExpenseViewModel @Inject constructor(
         )
     }
 
+    private val _uploadingProgress = MutableStateFlow(ExpenseUploadingProgress.NOT_STARTED)
     private val _expenseImageBitmap = MutableStateFlow<Bitmap?>(null)
     private val _manualMode = MutableStateFlow(true)
     private val _uploadedImage = MutableStateFlow(false)
     private val groupId = MutableStateFlow("")
 
+    val uploadingProgress = _uploadingProgress.asStateFlow()
     val expenseImageBitmap: StateFlow<Bitmap?> = _expenseImageBitmap.asStateFlow()
     val manualMode: StateFlow<Boolean> = _manualMode.asStateFlow()
     val uploadedImage: StateFlow<Boolean> = _uploadedImage.asStateFlow()
@@ -72,12 +76,6 @@ class AddExpenseViewModel @Inject constructor(
         this.groupId.value = groupId
     }
 
-    private suspend fun insertExpenseItemList(expenseItemList: List<ExpenseItemInput>) {
-        _expenseItemList.emit(
-            expenseItemList + _expenseItemList.value
-        )
-    }
-
     fun addNewExpense() {
         viewModelScope.launch(Dispatchers.Main) {
             val currentExpenseItemList = _expenseItemList.value.toMutableList()
@@ -99,6 +97,10 @@ class AddExpenseViewModel @Inject constructor(
         if (!checkItemValid()) {
             return false
         }
+        if (uploadingProgress.value == ExpenseUploadingProgress.UPLOADING)
+            return true
+
+        _uploadingProgress.value = ExpenseUploadingProgress.UPLOADING
 
         val receiptItem = ReceiptItem(
             title = expenseName.value,
@@ -118,6 +120,12 @@ class AddExpenseViewModel @Inject constructor(
 
         viewModelScope.launch(ioDispatcher) {
             uploadExpenseUseCase(receiptItem, groupId.value)
+                .onSuccess {
+                    _uploadingProgress.emit(ExpenseUploadingProgress.UPLOAD_SUCCESS)
+                }
+                .onFailure {
+                    _uploadingProgress.emit(ExpenseUploadingProgress.UPLOAD_FAILED)
+                }
         }
 
         return true

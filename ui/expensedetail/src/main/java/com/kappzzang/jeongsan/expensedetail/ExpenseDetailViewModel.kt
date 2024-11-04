@@ -42,8 +42,14 @@ class ExpenseDetailViewModel @Inject constructor(
 
     private fun initExpense() {
         viewModelScope.launch(ioDispatcher) {
-            _expense.value = getExpenseDetailUseCase.invoke(expenseId.value)
-            _expenseDetailList.emit(_expense.value.expenseDetails)
+            val result = getExpenseDetailUseCase.invoke(expenseId.value)
+            result.onSuccess {
+                _expense.value = it
+                _expenseDetailList.emit(_expense.value.expenseDetails)
+            }
+                .onFailure {
+                    // TODO: Expense Detail 조회 실패 시 예외처리
+                }
         }
     }
 
@@ -63,10 +69,9 @@ class ExpenseDetailViewModel @Inject constructor(
             selectedQuantity = quantity
         )
 
+
     fun updateItemCheck(checked: Boolean, index: Int) {
-        Log.d("Jeongsan", "checked")
-        if (index < 0 || index >= _expenseDetailList.value.count()) {
-            Log.e("Jeongsan", "Invalid index")
+        if (!checkIsItemIndexValid(index)) {
             return
         }
 
@@ -80,9 +85,7 @@ class ExpenseDetailViewModel @Inject constructor(
     }
 
     fun updateSelectedQuantity(quantity: Int, index: Int) {
-        Log.d("Jeongsan", "quantity changed")
-        if (index < 0 || index >= _expenseDetailList.value.count()) {
-            Log.e("Jeongsan", "Invalid index")
+        if (!checkIsItemIndexValid(index)) {
             return
         }
 
@@ -94,4 +97,7 @@ class ExpenseDetailViewModel @Inject constructor(
             )
         }
     }
+
+    private fun checkIsItemIndexValid(index: Int): Boolean =
+        index >= 0 && index < _expenseDetailList.value.count()
 }
