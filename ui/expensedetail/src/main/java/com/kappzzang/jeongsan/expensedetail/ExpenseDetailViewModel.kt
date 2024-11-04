@@ -32,11 +32,15 @@ class ExpenseDetailViewModel @Inject constructor(
 
     fun saveExpenseDetail() {
         viewModelScope.launch(ioDispatcher) {
-            editExpenseDetailUseCase.invoke(expenseDetailList.value, expenseId.value, groupId = groupId.value)
+            editExpenseDetailUseCase.invoke(
+                expenseDetailList.value,
+                expenseId.value,
+                groupId = groupId.value
+            )
         }
     }
 
-    fun setInitialData(expenseId:String, groupId: String) {
+    fun setInitialData(expenseId: String, groupId: String) {
         this.expenseId.value = expenseId
         this.groupId.value = groupId
         initExpense()
@@ -70,7 +74,6 @@ class ExpenseDetailViewModel @Inject constructor(
             itemPrice = item.itemPrice,
             selectedQuantity = quantity
         )
-
 
     fun updateItemCheck(checked: Boolean, index: Int) {
         if (!checkIsItemIndexValid(index)) {

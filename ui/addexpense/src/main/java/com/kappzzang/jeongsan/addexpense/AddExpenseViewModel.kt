@@ -97,8 +97,9 @@ class AddExpenseViewModel @Inject constructor(
         if (!checkItemValid()) {
             return false
         }
-        if (uploadingProgress.value == ExpenseUploadingProgress.UPLOADING)
+        if (uploadingProgress.value == ExpenseUploadingProgress.UPLOADING) {
             return true
+        }
 
         _uploadingProgress.value = ExpenseUploadingProgress.UPLOADING
 
