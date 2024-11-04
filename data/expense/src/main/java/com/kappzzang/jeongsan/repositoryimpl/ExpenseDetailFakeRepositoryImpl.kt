@@ -55,7 +55,8 @@ class ExpenseDetailFakeRepositoryImpl @Inject constructor() : ExpenseDetailRepos
 
     override suspend fun saveExpenseDetail(
         edited: List<ExpenseDetailItem>,
-        expenseId: String
+        expenseId: String,
+        groupId: String
     ): Result<Unit> = Result.success(Unit)
 
     companion object {
