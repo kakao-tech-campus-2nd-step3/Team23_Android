@@ -19,29 +19,35 @@ class ExpenseFakeRepositoryImpl @Inject constructor(
     override fun getExpenseList(
         groupId: String,
         expenseState: ExpenseState
-    ): Flow<ExpenseListResponse> = flow {
+    ): Flow<Result<ExpenseListResponse>> = flow {
         emit(
-            cachedData.getOrDefault(
-                ExpenseListCachingKey(expenseState, groupId),
-                ExpenseListResponse.emptyList()
+            Result.success(
+                cachedData.getOrDefault(
+                    ExpenseListCachingKey(expenseState, groupId),
+                    ExpenseListResponse.emptyList()
+                )
             )
         )
         dataSource.getExpenseData(expenseState).collect {
             cachedData[ExpenseListCachingKey(expenseState, groupId)] = it
         }
         emit(
-            cachedData.getOrDefault(
-                ExpenseListCachingKey(expenseState, groupId),
-                ExpenseListResponse.emptyList()
+            Result.success(
+                cachedData.getOrDefault(
+                    ExpenseListCachingKey(expenseState, groupId),
+                    ExpenseListResponse.emptyList()
+                )
             )
         )
     }
 
-    override suspend fun getExpenseListToGetPaid(groupId: String): ExpenseListResponse =
-        dataSource.getExpenseData(
-            ExpenseState.TRANSFER_PENDING
-        ).last()
+    override suspend fun getExpenseListToGetPaid(groupId: String): Result<ExpenseListResponse> =
+        Result.success(
+            dataSource.getExpenseData(
+                ExpenseState.TRANSFER_PENDING
+            ).last()
+        )
 
-    override suspend fun uploadExpense(receiptItem: ReceiptItem, groupId: String): String =
-        dataSource.addExpense(receiptItem)
+    override suspend fun uploadExpense(receiptItem: ReceiptItem, groupId: String): Result<String> =
+        Result.success(dataSource.addExpense(receiptItem))
 }

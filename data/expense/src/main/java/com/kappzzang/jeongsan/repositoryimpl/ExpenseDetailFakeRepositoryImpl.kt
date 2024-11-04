@@ -8,7 +8,7 @@ import com.kappzzang.jeongsan.repository.ExpenseDetailRepository
 import javax.inject.Inject
 
 class ExpenseDetailFakeRepositoryImpl @Inject constructor() : ExpenseDetailRepository {
-    override suspend fun getExpenseDetail(expenseId: String): ExpenseItemWithDetails {
+    override suspend fun getExpenseDetail(expenseId: String): Result<ExpenseItemWithDetails> {
         val details =
             listOf(
                 ExpenseDetailItem(
@@ -50,16 +50,17 @@ class ExpenseDetailFakeRepositoryImpl @Inject constructor() : ExpenseDetailRepos
             ),
             expenseDetails = details
         )
-        return expenseItemWithDetails
+        return Result.success(expenseItemWithDetails)
     }
 
-    override suspend fun saveExpenseDetail(edited: List<ExpenseDetailItem>, expenseId: String) {
-        // 저장하기
-    }
+    override suspend fun saveExpenseDetail(
+        edited: List<ExpenseDetailItem>,
+        expenseId: String
+    ): Result<Unit> = Result.success(Unit)
 
     companion object {
         const val FAKE_IMAGE_URL = "https://www.kakaotechcampus.com/fileUpDownload/" +
-            "download.do?p_savefile=gatepage_20230330053504999_1.png&p_realfile=" +
-            "GNB+%EB%A1%9C%EA%B3%A0%28%EB%B3%B4%EB%9D%BC%29.png"
+                "download.do?p_savefile=gatepage_20230330053504999_1.png&p_realfile=" +
+                "GNB+%EB%A1%9C%EA%B3%A0%28%EB%B3%B4%EB%9D%BC%29.png"
     }
 }
