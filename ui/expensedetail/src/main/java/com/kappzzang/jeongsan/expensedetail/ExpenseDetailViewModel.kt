@@ -83,6 +83,7 @@ class ExpenseDetailViewModel @Inject constructor(
             selectedQuantity = quantity
         )
 
+
     fun updateItemCheck(checked: Boolean, index: Int) {
         if (!checkIsItemIndexValid(index)) {
             return

@@ -5,10 +5,10 @@ import com.kappzzang.jeongsan.model.ExpenseListResponse
 import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.usecase.GetExpenseListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class ExpenseListOnCalculationPageViewModel @Inject constructor(
@@ -34,7 +34,7 @@ class ExpenseListOnCalculationPageViewModel @Inject constructor(
                     expenseList.emit(it)
                 }.onFailure {
                     expenseList.emit(ExpenseListResponse.emptyList())
-                    // TODO: ExpenseList 조회 실패 시 예외 처리
+                    //TODO: ExpenseList 조회 실패 시 예외 처리
                 }
             }
         }
