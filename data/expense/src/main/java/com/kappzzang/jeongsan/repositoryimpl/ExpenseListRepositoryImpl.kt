@@ -7,7 +7,6 @@ import com.kappzzang.jeongsan.model.ExpenseListResponse
 import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.model.ReceiptItem
 import com.kappzzang.jeongsan.repository.ExpenseRepository
-import com.kappzzang.jeongsan.repository.ServerAuthenticationRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -26,17 +25,18 @@ class ExpenseListRepositoryImpl @Inject constructor(
                 ExpenseEntityMapper.mapResponseWithExpenseEntityToModel(it)
             }
 
-
     override fun getExpenseList(
         groupId: String,
         expenseState: ExpenseState
     ): Flow<Result<ExpenseListResponse>> = flow {
         // 먼저 캐싱된 데이터 emit
         emit(
-            Result.success(cachedData.getOrDefault(
-                ExpenseListCachingKey(expenseState, groupId),
-                ExpenseListResponse.emptyList()
-            ))
+            Result.success(
+                cachedData.getOrDefault(
+                    ExpenseListCachingKey(expenseState, groupId),
+                    ExpenseListResponse.emptyList()
+                )
+            )
         )
 
         // Remote API로 지출 목록 불러오고 캐싱 데이터 갱신
@@ -58,7 +58,6 @@ class ExpenseListRepositoryImpl @Inject constructor(
     ).mapCatching {
         mapResponseBody(it)
     }
-
 
     private fun mapResponseBody(body: ExpenseListResponseDTO): ExpenseListResponse {
         val expenses = body.expenseList.map { ExpenseEntityMapper.mapExpenseEntityToModel(it) }

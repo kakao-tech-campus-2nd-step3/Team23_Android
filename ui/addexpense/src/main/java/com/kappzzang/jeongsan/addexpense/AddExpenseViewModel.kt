@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-enum class ExpenseUploadingProgress {NOT_STARTED, UPLOADING, UPLOAD_SUCCESS, UPLOAD_FAILED}
+enum class ExpenseUploadingProgress { NOT_STARTED, UPLOADING, UPLOAD_SUCCESS, UPLOAD_FAILED }
 
 @HiltViewModel
 class AddExpenseViewModel @Inject constructor(
@@ -97,8 +97,9 @@ class AddExpenseViewModel @Inject constructor(
         if (!checkItemValid()) {
             return false
         }
-        if (uploadingProgress.value == ExpenseUploadingProgress.UPLOADING)
+        if (uploadingProgress.value == ExpenseUploadingProgress.UPLOADING) {
             return true
+        }
 
         _uploadingProgress.value = ExpenseUploadingProgress.UPLOADING
 

@@ -23,7 +23,6 @@ class ExpenseListRemoteDatasource @Inject constructor(
         ExpenseState.TRANSFERED -> "completed"
     }
 
-
     suspend fun getExpenseList(
         expenseState: ExpenseState,
         groupId: String
@@ -41,12 +40,11 @@ class ExpenseListRemoteDatasource @Inject constructor(
         return processResponseCode(response)
     }
 
-    private fun checkIsChecked(state: ExpenseState): Boolean? =
-        when (state) {
-            ExpenseState.CONFIRMED -> true
-            ExpenseState.NOT_CONFIRMED -> false
-            else -> null
-        }
+    private fun checkIsChecked(state: ExpenseState): Boolean? = when (state) {
+        ExpenseState.CONFIRMED -> true
+        ExpenseState.NOT_CONFIRMED -> false
+        else -> null
+    }
 
     suspend fun addExpense(
         receiptItem: ReceiptItem,

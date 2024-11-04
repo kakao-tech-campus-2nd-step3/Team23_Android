@@ -5,8 +5,8 @@ import com.kappzzang.jeongsan.entity.expensedetail.ExpenseDetailEntity
 import com.kappzzang.jeongsan.entity.expensedetail.ExpenseDetailSelectionInfoEntity
 import com.kappzzang.jeongsan.entity.expensedetail.UpdateExpenseDetailPayloadDTO
 import com.kappzzang.jeongsan.model.ExpenseDetailItem
-import retrofit2.Response
 import javax.inject.Inject
+import retrofit2.Response
 
 class ExpenseDetailRemoteDatasource @Inject constructor(
     private val receiptRetrofitService: ReceiptRetrofitService
@@ -58,7 +58,9 @@ class ExpenseDetailRemoteDatasource @Inject constructor(
                     response.body()?.let {
                         return Result.success(it)
                     }
-                        ?: Result.failure(IllegalStateException("알 수 없는 오류 발생: ${response.message()}"))
+                        ?: Result.failure(
+                            IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
+                        )
                 } else {
                     Result.failure(IllegalStateException("알 수 없는 오류 발생: ${response.message()}"))
                 }

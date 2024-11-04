@@ -13,7 +13,10 @@ interface ExpenseRepository {
      *  @param expenseState 조회할 지출의 상태 (정산 중, 송금 요청, 송금 완료 ...)
      *  @return 지출 목록 response flow
      */
-    fun getExpenseList(groupId: String, expenseState: ExpenseState): Flow<Result<ExpenseListResponse>>
+    fun getExpenseList(
+        groupId: String,
+        expenseState: ExpenseState
+    ): Flow<Result<ExpenseListResponse>>
 
     suspend fun getExpenseListToGetPaid(groupId: String): Result<ExpenseListResponse>
 

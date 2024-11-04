@@ -5,11 +5,8 @@ import com.kappzzang.jeongsan.entity.expensedetail.ExpenseDetailEntity
 import com.kappzzang.jeongsan.mapper.ExpenseEntityMapper
 import com.kappzzang.jeongsan.model.ExpenseDetailItem
 import com.kappzzang.jeongsan.model.ExpenseItemWithDetails
-import com.kappzzang.jeongsan.model.ExpenseListResponse
 import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.repository.ExpenseDetailRepository
-import com.kappzzang.jeongsan.repository.ServerAuthenticationRepository
-import retrofit2.Response
 import javax.inject.Inject
 
 class ExpenseDetailRepositoryImpl @Inject constructor(
@@ -30,10 +27,13 @@ class ExpenseDetailRepositoryImpl @Inject constructor(
             ExpenseState.NOT_CONFIRMED
         )
 
-    override suspend fun saveExpenseDetail(edited: List<ExpenseDetailItem>, expenseId: String, groupId: String): Result<Unit> =
-        expenseDetailRemoteDatasource.updateExpenseDetail(
-            expenseId = expenseId,
-            groupId = groupId,
-            edited = edited
-        )
+    override suspend fun saveExpenseDetail(
+        edited: List<ExpenseDetailItem>,
+        expenseId: String,
+        groupId: String
+    ): Result<Unit> = expenseDetailRemoteDatasource.updateExpenseDetail(
+        expenseId = expenseId,
+        groupId = groupId,
+        edited = edited
+    )
 }

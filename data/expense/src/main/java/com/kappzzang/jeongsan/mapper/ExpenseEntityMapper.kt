@@ -95,7 +95,6 @@ object ExpenseEntityMapper {
         }
     }
 
-    fun mapResponseWithExpenseEntityToModel(
-        entity: ResponseWithExpenseIdDTO
-    ): String = entity.expenseId
+    fun mapResponseWithExpenseEntityToModel(entity: ResponseWithExpenseIdDTO): String =
+        entity.expenseId
 }
