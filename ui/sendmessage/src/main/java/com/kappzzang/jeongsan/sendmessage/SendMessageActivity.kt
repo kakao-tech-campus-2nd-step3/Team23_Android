@@ -1,4 +1,4 @@
-package com.kappzzang.jeongsan.expenselist.sendmessage
+package com.kappzzang.jeongsan.sendmessage
 
 import android.os.Bundle
 import android.widget.Toast
@@ -8,19 +8,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.kappzzang.jeongsan.expenselist.R
-import com.kappzzang.jeongsan.expenselist.databinding.ActivitySendMessageBinding
-import com.kappzzang.jeongsan.navigation.AppNavigator
+import com.kappzzang.jeongsan.sendmessage.databinding.ActivitySendMessageBinding
 import com.kappzzang.jeongsan.util.IntegerFormatter.formatDecimalSeparator
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SendMessageActivity : AppCompatActivity() {
-
-    @Inject
-    lateinit var navigator: AppNavigator
     private val viewModel: SendMessageViewModel by viewModels()
     private lateinit var binding: ActivitySendMessageBinding
     private lateinit var memberAdapter: MemberAdapter
@@ -65,7 +59,7 @@ class SendMessageActivity : AppCompatActivity() {
         binding.sendMessageButton.setOnClickListener {
             lifecycleScope.launch {
                 if (viewModel.sendTransferMessage()) {
-                    startActivity(navigator.navigateToSendComplete(this@SendMessageActivity))
+                    startActivity(intent)
                 } else {
                     Toast.makeText(
                         this@SendMessageActivity,

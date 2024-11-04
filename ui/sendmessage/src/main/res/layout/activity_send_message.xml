@@ -8,7 +8,7 @@
     android:padding="@dimen/all_layout_padding"
     android:clipToPadding="false"
     android:background="@color/background_base"
-    tools:context=".sendmessage.SendMessageActivity">
+    tools:context=".SendMessageActivity">
     <TextView
         android:id="@+id/page_title_textview"
         android:layout_width="match_parent"

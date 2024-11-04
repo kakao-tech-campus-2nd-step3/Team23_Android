@@ -13,7 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.kappzzang.jeongsan.intentcontract.ExpenseListContract
 import com.kappzzang.jeongsan.main.databinding.ActivityMainBinding
-import com.kappzzang.jeongsan.navigation.AppNavigator
+import com.kappzzang.jeongsan.navigation.CreateGroupNavigator
+import com.kappzzang.jeongsan.navigation.ExpenseListNavigator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.launch
@@ -21,7 +22,10 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     @Inject
-    lateinit var appNavigator: AppNavigator
+    lateinit var expenseListNavigator: ExpenseListNavigator
+
+    @Inject
+    lateinit var createGroupNavigator: CreateGroupNavigator
 
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainPageViewModel by viewModels()
@@ -41,7 +45,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setGroupListRecyclerView() {
         groupListAdapter = GroupListAdapter { id ->
-            val intent = appNavigator.navigateToExpenseList(this)
+            val intent = expenseListNavigator.navigateToExpenseList(this, id)
             intent.putExtra(ExpenseListContract.GROUP_ID, id)
             ContextCompat.startActivity(binding.root.context, intent, null)
         }
@@ -56,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         // TODO: 이후 Jetpack Navigation을 사용하여 화면 전환
         binding.createGroupButton.setOnClickListener {
             startActivity(
-                appNavigator.navigateToCreateGroup(this)
+                createGroupNavigator.navigateToCreateGroup(this)
             )
         }
     }

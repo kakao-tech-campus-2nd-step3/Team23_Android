@@ -1,4 +1,4 @@
-package com.kappzzang.jeongsan.expenselist.sendmessage
+package com.kappzzang.jeongsan.sendmessage
 
 import com.kappzzang.jeongsan.model.TransferDetailItem
 import com.kappzzang.jeongsan.usecase.GetTransferInfoUseCase
@@ -34,7 +34,10 @@ class SendMessageViewModelTest {
         Dispatchers.setMain(testDispatcher)
         coEvery { mockGetTransferInfoUseCase() } returns emptyList()
         coEvery { mockSendTransferMessageUseCase(any()) } returns true
-        viewModel = SendMessageViewModel(mockGetTransferInfoUseCase, mockSendTransferMessageUseCase)
+        viewModel = SendMessageViewModel(
+            mockGetTransferInfoUseCase,
+            mockSendTransferMessageUseCase
+        )
     }
 
     @After
@@ -54,7 +57,10 @@ class SendMessageViewModelTest {
         coEvery { mockGetTransferInfoUseCase() } returns expectedTransferInfo
 
         // when
-        viewModel = SendMessageViewModel(mockGetTransferInfoUseCase, mockSendTransferMessageUseCase)
+        viewModel = SendMessageViewModel(
+            mockGetTransferInfoUseCase,
+            mockSendTransferMessageUseCase
+        )
         advanceUntilIdle()
 
         // then
