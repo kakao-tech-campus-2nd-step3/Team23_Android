@@ -6,6 +6,7 @@ import com.kappzzang.jeongsan.entity.GetGroupResponse
 import com.kappzzang.jeongsan.entity.GetLinkResponse
 import com.kappzzang.jeongsan.entity.GetMemberInfoResponse
 import com.kappzzang.jeongsan.entity.GetMyExpenseResponse
+import com.kappzzang.jeongsan.entity.JoinGroupRequest
 import com.kappzzang.jeongsan.entity.JoinGroupResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -47,7 +48,7 @@ interface GroupRetrofitService {
     suspend fun joinGroup(
         @Header("Authorization") token: String,
         @Path("teamId") groupId: Long,
-        @Body memberId: Long
+        @Body request: JoinGroupRequest
     ): Response<JoinGroupResponse>
 
     @GET("/api/members/link")

@@ -7,6 +7,7 @@ import com.kappzzang.jeongsan.entity.GetGroupResponse
 import com.kappzzang.jeongsan.entity.GetLinkResponse
 import com.kappzzang.jeongsan.entity.GetMemberInfoResponse
 import com.kappzzang.jeongsan.entity.GroupInfo
+import com.kappzzang.jeongsan.entity.JoinGroupRequest
 import com.kappzzang.jeongsan.entity.JoinGroupResponse
 import com.kappzzang.jeongsan.entity.MemberInfo
 import javax.inject.Inject
@@ -123,7 +124,7 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
         val response = groupApi.joinGroup(
             token = jwt,
             groupId = groupId,
-            memberId = myId
+            request = JoinGroupRequest(myId)
         )
         handleJoinGroupResponse(response)
     } catch (e: Exception) {
