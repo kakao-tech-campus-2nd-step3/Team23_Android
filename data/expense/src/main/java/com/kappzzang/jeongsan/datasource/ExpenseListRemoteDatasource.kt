@@ -23,63 +23,80 @@ class ExpenseListRemoteDatasource @Inject constructor(
         ExpenseState.TRANSFERED -> "completed"
     }
 
-    private fun checkNeedAdditionalQuery(state: ExpenseState): Boolean =
-        (state == ExpenseState.CONFIRMED || state == ExpenseState.NOT_CONFIRMED)
-
-    private fun checkIsChecked(state: ExpenseState): Boolean = state == ExpenseState.CONFIRMED
 
     suspend fun getExpenseList(
         expenseState: ExpenseState,
-        jwt: String,
         groupId: String
-    ): Response<ExpenseListResponseDTO> {
-        val needAdditionalQuery = checkNeedAdditionalQuery(expenseState)
-        val result: Response<ExpenseListResponseDTO> = if (needAdditionalQuery) {
+    ): Result<ExpenseListResponseDTO> {
+        val response = try {
             receiptRetrofitService.getExpenseList(
                 groupId = groupId,
-                jwt = jwt,
                 state = mapExpenseStateToDtoState(expenseState),
                 checked = checkIsChecked(expenseState)
             )
-        } else {
-            receiptRetrofitService.getExpenseList(
-                groupId = groupId,
-                jwt = jwt,
-                state = mapExpenseStateToDtoState(expenseState)
-            )
+        } catch (e: Exception) {
+            return Result.failure(e)
         }
 
-        return result
+        return processResponseCode(response)
     }
+
+    private fun checkIsChecked(state: ExpenseState): Boolean? =
+        when (state) {
+            ExpenseState.CONFIRMED -> true
+            ExpenseState.NOT_CONFIRMED -> false
+            else -> null
+        }
 
     suspend fun addExpense(
         receiptItem: ReceiptItem,
-        jwt: String,
         groupId: String
-    ): Response<ResponseWithExpenseIdDTO> {
-        val postBody = SaveExpensePayloadDTO(
-            title = receiptItem.title,
-            items = receiptItem.expenseDetailItemList.map {
-                ExpenseEntityMapper.mapReceiptDetailItemToExpenseItemEntity(it)
-            },
-            paymentTime = receiptItem.paymentTime.formatToTransferString(),
-            image = ImageEntity(
-                name = "",
-                data = receiptItem.imageBase64 ?: "",
-                url = "",
-                format = IMAGE_FORMAT
-            ),
-            categoryId = CATEGORY_ID
-        )
+    ): Result<ResponseWithExpenseIdDTO> {
+        val response = try {
+            val postBody = SaveExpensePayloadDTO(
+                title = receiptItem.title,
+                items = receiptItem.expenseDetailItemList.map {
+                    ExpenseEntityMapper.mapReceiptDetailItemToExpenseItemEntity(it)
+                },
+                paymentTime = receiptItem.paymentTime.formatToTransferString(),
+                image = ImageEntity(
+                    name = "",
+                    data = receiptItem.imageBase64 ?: "",
+                    url = "",
+                    format = IMAGE_FORMAT
+                ),
+                categoryId = CATEGORY_ID
+            )
 
-        val result = receiptRetrofitService.saveExpense(
-            groupId = groupId,
-            jwt = jwt,
-            body = postBody
-        )
+            receiptRetrofitService.saveExpense(
+                groupId = groupId,
+                body = postBody
+            )
+        } catch (e: Exception) {
+            return Result.failure(e)
+        }
 
-        return result
+        return processResponseCode(response)
     }
+
+    private fun <T> processResponseCode(response: Response<T>): Result<T> {
+        when (response.code()) {
+            400 -> throw IllegalArgumentException("유효하지 않는 입력 값")
+            404 -> throw IllegalStateException(response.message())
+            500 -> throw IllegalStateException(response.message())
+
+            else -> {
+                if (response.code() / 100 == 2) {
+                    response.body()?.let {
+                        return Result.success<T>(it)
+                    } ?: throw IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
+                } else {
+                    throw IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
+                }
+            }
+        }
+    }
+
     companion object {
         const val IMAGE_FORMAT = "JPG"
         const val CATEGORY_ID = 0L

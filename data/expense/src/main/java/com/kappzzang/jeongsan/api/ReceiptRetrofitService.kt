@@ -16,35 +16,24 @@ interface ReceiptRetrofitService {
     @POST("/api/receipts/{teamId}")
     suspend fun saveExpense(
         @Path(value = "teamId") groupId: String,
-        @Header("accessToken") jwt: String,
         @Body body: SaveExpensePayloadDTO
     ): Response<ResponseWithExpenseIdDTO>
 
     @GET("/api/receipts/items/{expenseId}")
     suspend fun getExpenseDetail(
-        @Path(value = "expenseId") expenseId: String,
-        @Header("accessToken") jwt: String
+        @Path(value = "expenseId") expenseId: String
     ): Response<ExpenseDetailEntity>
 
     @POST("/api/expenses/personal/{teamId}/{expenseId}")
     suspend fun updateExpenseDetail(
         @Path(value = "teamId") groupId: String,
-        @Path(value = "expenseId") expenseId: String,
-        @Header("accessToken") jwt: String
+        @Path(value = "expenseId") expenseId: String
     )
 
     @GET("/api/expenses/{teamId}")
     suspend fun getExpenseList(
         @Path(value = "teamId") groupId: String,
-        @Header("accessToken") jwt: String,
         @Query("state") state: String,
-        @Query("isChecked") checked: Boolean
-    ): Response<ExpenseListResponseDTO>
-
-    @GET("/api/expenses/{teamId}")
-    suspend fun getExpenseList(
-        @Path(value = "teamId") groupId: String,
-        @Header("accessToken") jwt: String,
-        @Query("state") state: String
+        @Query("isChecked") checked: Boolean?
     ): Response<ExpenseListResponseDTO>
 }

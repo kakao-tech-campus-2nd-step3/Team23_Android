@@ -1,6 +1,7 @@
 package com.kappzzang.jeongsan.mapper
 
 import com.kappzzang.jeongsan.entity.ExpenseItemEntity
+import com.kappzzang.jeongsan.entity.ResponseWithExpenseIdDTO
 import com.kappzzang.jeongsan.entity.expensedetail.ExpenseDetailEntity
 import com.kappzzang.jeongsan.entity.expensedetail.ExpenseDetailItemEntity
 import com.kappzzang.jeongsan.entity.expenselist.ExpenseRemoteEntity
@@ -93,4 +94,8 @@ object ExpenseEntityMapper {
             }
         }
     }
+
+    fun mapResponseWithExpenseEntityToModel(
+        entity: ResponseWithExpenseIdDTO
+    ): String = entity.expenseId
 }
