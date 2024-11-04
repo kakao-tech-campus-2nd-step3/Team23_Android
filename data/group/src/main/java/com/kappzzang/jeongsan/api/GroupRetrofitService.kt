@@ -51,13 +51,9 @@ interface GroupRetrofitService {
     ): Response<JoinGroupResponse>
 
     @GET("/api/members/link")
-    suspend fun getLink(
-        @Header("Authorization") token: String,
-    ): Response<GetLinkResponse>
+    suspend fun getLink(@Header("Authorization") token: String): Response<GetLinkResponse>
 
     // expense모듈에 속해야하는 것 같아 구현을 마치지 않음
     @GET("/api/expenses/ipaid/{teamId}")
-    suspend fun getMyExpense(
-        @Header("Authorization") token: String,
-    ): Response<GetMyExpenseResponse>
+    suspend fun getMyExpense(@Header("Authorization") token: String): Response<GetMyExpenseResponse>
 }

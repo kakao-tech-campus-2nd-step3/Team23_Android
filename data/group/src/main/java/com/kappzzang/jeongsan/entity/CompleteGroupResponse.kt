@@ -8,5 +8,5 @@ data class CompleteGroupResponse(
     @SerializedName("errorCode")
     val errorCode: String,
     @SerializedName("message")
-    val message: String,
+    val message: String
 )

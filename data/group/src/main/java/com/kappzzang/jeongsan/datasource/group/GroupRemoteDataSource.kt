@@ -9,14 +9,11 @@ import com.kappzzang.jeongsan.entity.GetMemberInfoResponse
 import com.kappzzang.jeongsan.entity.GroupInfo
 import com.kappzzang.jeongsan.entity.JoinGroupResponse
 import com.kappzzang.jeongsan.entity.MemberInfo
-import retrofit2.Response
 import javax.inject.Inject
+import retrofit2.Response
 
-class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetrofitService){
-    suspend fun getGroupInfo(
-        jwt: String,
-        isCompleted: Boolean
-    ): Result<List<GroupInfo>> = try {
+class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetrofitService) {
+    suspend fun getGroupInfo(jwt: String, isCompleted: Boolean): Result<List<GroupInfo>> = try {
         val response = groupApi.getGroupInfo(
             token = jwt,
             isCompleted = isCompleted
@@ -54,28 +51,24 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
         Result.failure(e)
     }
 
-    private fun handleCreateGroupResponse(
-        response: Response<CreateGroupResponse>
-    ): Result<Long> = when {
-        response.isSuccessful -> {
-            Result.success(response.body()!!.groupId)
+    private fun handleCreateGroupResponse(response: Response<CreateGroupResponse>): Result<Long> =
+        when {
+            response.isSuccessful -> {
+                Result.success(response.body()!!.groupId)
+            }
+            response.code() == 404 -> {
+                Result.failure(Exception("유저를 찾을 수 없음"))
+            }
+            // 겹쳐도 되기로 했던 것 같은데
+            response.code() == 409 -> {
+                Result.failure(Exception("중복된 모임 이름이 존재"))
+            }
+            else -> {
+                Result.failure(Exception("알수없는 오류 발생"))
+            }
         }
-        response.code() == 404 -> {
-            Result.failure(Exception("유저를 찾을 수 없음"))
-        }
-        // 겹쳐도 되기로 했던 것 같은데
-        response.code() == 409 -> {
-            Result.failure(Exception("중복된 모임 이름이 존재"))
-        }
-        else -> {
-            Result.failure(Exception("알수없는 오류 발생"))
-        }
-    }
 
-    suspend fun completeGroup(
-        jwt: String,
-        groupId: Long
-    ): Result<Boolean> = try {
+    suspend fun completeGroup(jwt: String, groupId: Long): Result<Boolean> = try {
         val response = groupApi.completeGroup(
             token = jwt,
             groupId = groupId
@@ -102,10 +95,7 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
         }
     }
 
-    suspend fun getMemberInfo(
-        jwt: String,
-        groupId: Long
-    ): Result<List<MemberInfo>> = try {
+    suspend fun getMemberInfo(jwt: String, groupId: Long): Result<List<MemberInfo>> = try {
         val response = groupApi.getMemberInfo(
             token = jwt,
             groupId = groupId
@@ -129,11 +119,7 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
         }
     }
 
-    suspend fun joinGroup(
-        jwt: String,
-        groupId: Long,
-        myId: Long
-    ): Result<Boolean> = try {
+    suspend fun joinGroup(jwt: String, groupId: Long, myId: Long): Result<Boolean> = try {
         val response = groupApi.joinGroup(
             token = jwt,
             groupId = groupId,
@@ -144,26 +130,23 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
         Result.failure(e)
     }
 
-    private fun handleJoinGroupResponse(
-        response: Response<JoinGroupResponse>
-    ): Result<Boolean> = when {
-        response.isSuccessful -> {
-            Result.success(true)
+    private fun handleJoinGroupResponse(response: Response<JoinGroupResponse>): Result<Boolean> =
+        when {
+            response.isSuccessful -> {
+                Result.success(true)
+            }
+            response.code() == 400 -> {
+                Result.failure(Exception("모임에 초대 되지 않은 유저"))
+            }
+            response.code() == 404 -> {
+                Result.failure(Exception("잘못된 memberId, 사용자를 찾을 수 없음"))
+            }
+            else -> {
+                Result.failure(Exception("알수없는 오류 발생"))
+            }
         }
-        response.code() == 400 -> {
-            Result.failure(Exception("모임에 초대 되지 않은 유저"))
-        }
-        response.code() == 404 -> {
-            Result.failure(Exception("잘못된 memberId, 사용자를 찾을 수 없음"))
-        }
-        else -> {
-            Result.failure(Exception("알수없는 오류 발생"))
-        }
-    }
 
-    suspend fun getLink(
-        jwt: String
-    ): Result<String> = try {
+    suspend fun getLink(jwt: String): Result<String> = try {
         val response = groupApi.getLink(
             token = jwt
         )
@@ -172,9 +155,7 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
         Result.failure(e)
     }
 
-    private fun handleGetLinkResponse(
-        response: Response<GetLinkResponse>
-    ): Result<String> = when {
+    private fun handleGetLinkResponse(response: Response<GetLinkResponse>): Result<String> = when {
         response.isSuccessful -> {
             Result.success(response.body()!!.link)
         }
