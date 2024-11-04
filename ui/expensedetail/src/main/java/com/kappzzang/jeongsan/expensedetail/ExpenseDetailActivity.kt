@@ -66,10 +66,10 @@ class ExpenseDetailActivity : AppCompatActivity() {
         )
 
         expenseId?.let {
-            viewModel.updateExpenseIdAndInit(it)
+            viewModel.setInitialData(it, "")
         } ?: let {
             Toast.makeText(this, "지출 정보를 불러오는 데 실패했습니다.", Toast.LENGTH_LONG).show()
-            viewModel.updateExpenseIdAndInit("0")
+            viewModel.setInitialData("0", "")
         }
     }
 }
