@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class GroupInfo(
     @SerializedName("teamId")
-    val id: Int,
+    val id: Long,
     @SerializedName("name")
     val name: String,
     @SerializedName("isCompleted")

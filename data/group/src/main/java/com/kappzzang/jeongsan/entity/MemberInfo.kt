@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class MemberInfo(
     @SerializedName("memberId")
-    val id: Int,
+    val id: Long,
     @SerializedName("nickname")
     val name: String,
     @SerializedName("profileImage")
