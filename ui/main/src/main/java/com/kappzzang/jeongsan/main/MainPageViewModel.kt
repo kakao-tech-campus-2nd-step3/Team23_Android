@@ -9,7 +9,7 @@ import com.kappzzang.jeongsan.usecase.GetProgressingGroupUseCase
 import com.kappzzang.jeongsan.usecase.GetUserInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -19,7 +19,8 @@ import kotlinx.coroutines.withContext
 class MainPageViewModel @Inject constructor(
     private val getProgressingGroupUseCase: GetProgressingGroupUseCase,
     private val getDoneGroupUseCase: GetDoneGroupUseCase,
-    private val getUserInfoUseCase: GetUserInfoUseCase
+    private val getUserInfoUseCase: GetUserInfoUseCase,
+    private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _userName = MutableStateFlow("")
@@ -36,7 +37,7 @@ class MainPageViewModel @Inject constructor(
         loadGroupList()
     }
 
-    private fun loadUserInfo() {
+    fun loadUserInfo() {
         viewModelScope.launch {
             val userInfo = getUserInfoUseCase()
             _userName.value = userInfo?.name ?: "알 수 없음"
@@ -46,7 +47,7 @@ class MainPageViewModel @Inject constructor(
 
     fun loadGroupList() {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
+            withContext(ioDispatcher) {
                 val resultGroupList = mutableListOf<GroupViewItem>()
 
                 val progressingGroupList = getProgressingGroupUseCase()

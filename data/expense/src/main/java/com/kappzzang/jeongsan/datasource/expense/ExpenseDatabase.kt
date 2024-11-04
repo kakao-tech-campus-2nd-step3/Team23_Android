@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.kappzzang.jeongsan.entity.ExpenseEntity
+import com.kappzzang.jeongsan.entity.expenselist.ExpenseRoomEntity
 import com.kappzzang.jeongsan.model.ExpenseState
 import java.sql.Timestamp
 import java.util.Date
@@ -17,11 +17,11 @@ private val colorList =
     listOf("#87A2FF", "#FFD7C4", "#87A2FF", "#987D9A", "#987D9A", "#BB9AB1", "#BB9AB1")
 private val categoryNameList = listOf("커피", "편의점", "커피", "영화관", "영화관", "식당", "식당")
 
-private fun makeFakeItemWithState(expenseState: ExpenseState, id: Int): ExpenseEntity {
+private fun makeFakeItemWithState(expenseState: ExpenseState, id: Int): ExpenseRoomEntity {
     val adjustedIndex =
         (id + 1) * (ExpenseState.entries.indexOf(expenseState) + 1)
 
-    return ExpenseEntity(
+    return ExpenseRoomEntity(
         name = nameList[adjustedIndex % nameList.size],
         totalPrice = 1200 * adjustedIndex,
         image = "",
@@ -34,7 +34,7 @@ private fun makeFakeItemWithState(expenseState: ExpenseState, id: Int): ExpenseE
     )
 }
 
-@Database(entities = [ExpenseEntity::class], version = 1)
+@Database(entities = [ExpenseRoomEntity::class], version = 1)
 abstract class ExpenseDatabase : RoomDatabase() {
 
     abstract fun expenseDao(): ExpenseDao

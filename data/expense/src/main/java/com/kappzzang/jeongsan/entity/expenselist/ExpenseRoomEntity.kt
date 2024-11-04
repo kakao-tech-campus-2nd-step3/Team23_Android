@@ -1,4 +1,4 @@
-package com.kappzzang.jeongsan.entity
+package com.kappzzang.jeongsan.entity.expenselist
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import com.kappzzang.jeongsan.datasource.expense.ExpenseContract
 
 @Entity(tableName = ExpenseContract.ExpenseEntity.TABLE_NAME)
-class ExpenseEntity(
+class ExpenseRoomEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = ExpenseContract.ExpenseEntity.COLUMN_ID) var id: Long = 0,
     @ColumnInfo(name = ExpenseContract.ExpenseEntity.COLUMN_NAME) var name: String = "",

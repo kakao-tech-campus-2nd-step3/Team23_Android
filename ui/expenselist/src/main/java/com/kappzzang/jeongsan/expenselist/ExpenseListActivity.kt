@@ -23,6 +23,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.kappzzang.jeongsan.expenselist.databinding.ActivityExpenseListBinding
 import com.kappzzang.jeongsan.expenselist.inviteinfo.InviteInfoDialogFragment
 import com.kappzzang.jeongsan.expenselist.sendmessage.SendMessageActivity
+import com.kappzzang.jeongsan.expenselist.viewmodel.ExpenseListViewModel
 import com.kappzzang.jeongsan.intentcontract.AddExpenseContract
 import com.kappzzang.jeongsan.intentcontract.ExpenseListContract
 import com.kappzzang.jeongsan.intentcontract.ReceiptCameraContract
@@ -84,7 +85,6 @@ class ExpenseListActivity : AppCompatActivity() {
 
         activityReceiptCameraLauncher = createReceiptCameraLauncher()
 
-        // TODO: 임시 연결용 코드
         binding.requestExpenseFab.setOnClickListener {
             startActivity(Intent(this, SendMessageActivity::class.java))
         }
