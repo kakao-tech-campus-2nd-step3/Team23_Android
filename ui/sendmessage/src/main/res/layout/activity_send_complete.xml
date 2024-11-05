@@ -8,6 +8,7 @@
     android:padding="@dimen/all_layout_padding"
     tools:context=".SendCompleteActivity">
     <TextView
+        android:id="@+id/send_complete_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
