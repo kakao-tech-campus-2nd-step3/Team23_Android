@@ -44,7 +44,7 @@ class ColorPickerDialog : DialogFragment() {
     private fun initiateRecyclerView() {
         binding.categoryListRecyclerview.apply {
             adapter = CategoryListAdapter{
-                activityViewModel.updateSelectedCategoryId(it)
+                activityViewModel.updateSelectedCategory(it)
             }
             layoutManager = LinearLayoutManager(context)
         }
@@ -63,15 +63,15 @@ class ColorPickerDialog : DialogFragment() {
     private fun observeSelectedCategoryId() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                activityViewModel.selectedCategoryId.collect {
-                    viewModel.updateSelectedItemId(it)
+                activityViewModel.selectedCategory.collect {
+                    viewModel.updateSelectedItem(it)
                 }
             }
         }
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 activityViewModel.categoryList.collect {
-                    viewModel.updateUIItemList(it, activityViewModel.selectedCategoryId.value)
+                    viewModel.updateUIItemList(it, activityViewModel.selectedCategory.value.id)
                 }
             }
         }

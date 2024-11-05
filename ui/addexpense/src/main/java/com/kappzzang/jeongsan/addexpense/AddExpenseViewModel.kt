@@ -1,8 +1,6 @@
 package com.kappzzang.jeongsan.addexpense
 
 import android.graphics.Bitmap
-import android.util.Base64
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.data.ExpenseItemInput
@@ -12,17 +10,14 @@ import com.kappzzang.jeongsan.model.ReceiptDetailItem
 import com.kappzzang.jeongsan.model.ReceiptItem
 import com.kappzzang.jeongsan.usecase.GetCategoryListUseCase
 import com.kappzzang.jeongsan.usecase.UploadExpenseUseCase
+import com.kappzzang.jeongsan.util.Base64BitmapEncoder
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 enum class ExpenseUploadingProgress { NOT_STARTED, UPLOADING, UPLOAD_SUCCESS, UPLOAD_FAILED }
@@ -41,9 +36,9 @@ class AddExpenseViewModel @Inject constructor(
         )
     }
 
+    private val _selectedCategory = MutableStateFlow(ExpenseCategory("", "", ""))
     private val _inputsLocked = MutableStateFlow(false)
     private val _createdExpenseId = MutableStateFlow("")
-    private val _selectedCategoryId = MutableStateFlow("")
     private val _categoryList by lazy { getCategoryList() }
     private val _uploadingProgress = MutableStateFlow(ExpenseUploadingProgress.NOT_STARTED)
     private val _expenseImageBitmap = MutableStateFlow<Bitmap?>(null)
@@ -62,16 +57,8 @@ class AddExpenseViewModel @Inject constructor(
     val groupId = _groupId.asStateFlow()
     val createdExpenseId = _createdExpenseId.asStateFlow()
 
-    var selectedCategoryId = _selectedCategoryId.asStateFlow()
+    var selectedCategory = _selectedCategory.asStateFlow()
     val categoryList = _categoryList.asStateFlow()
-    val imagePickerButtonColor = selectedCategoryId.map { id ->
-        categoryList.value.find { it.id == id }
-            ?.color?:UNDEFINED_COLOR
-    }.stateIn(
-        scope = viewModelScope,
-        initialValue = UNDEFINED_COLOR,
-        started = SharingStarted.WhileSubscribed(5_000L)
-    )
 
     private fun getCategoryList(): MutableStateFlow<List<ExpenseCategory>> {
         val mList = MutableStateFlow<List<ExpenseCategory>>(emptyList())
@@ -79,7 +66,7 @@ class AddExpenseViewModel @Inject constructor(
             getCategoryListUseCase.invoke().onSuccess {
                 mList.emit(it)
                 it.lastOrNull()?.let{ item ->
-                    updateSelectedCategoryId(item.id)
+                    updateSelectedCategory(item.id)
                 }
             }
         }
@@ -180,14 +167,13 @@ class AddExpenseViewModel @Inject constructor(
             return null
         }
 
-        val byteArrayOutputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
-        val byteArray = byteArrayOutputStream.toByteArray()
-        return Base64.encodeToString(byteArray, Base64.DEFAULT)
+        return Base64BitmapEncoder.convertBitmapToBase64String(bitmap)
     }
 
-    fun updateSelectedCategoryId(id: String) {
-        _selectedCategoryId.value = id
+    fun updateSelectedCategory(categoryId: String) {
+        categoryList.value.find{it.id == categoryId} ?.let {
+            _selectedCategory.value = it
+        }
     }
 
     private fun checkItemValid(): Boolean {

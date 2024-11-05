@@ -27,11 +27,11 @@ class ColorPickerViewModel @Inject constructor() : ViewModel() {
             }
     }
 
-    fun updateSelectedItemId(id: String) {
+    fun updateSelectedItem(item: ExpenseCategory) {
         _expenseCategoryUIItemList.value =
             expenseCategoryUIItemList.value.map {
                 it.copy(
-                    selected = it.id == id
+                    selected = it.id == item.id
                 )
             }
     }
