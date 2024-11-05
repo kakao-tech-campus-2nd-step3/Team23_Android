@@ -38,7 +38,7 @@ class SendCompleteActivity : AppCompatActivity() {
 
         binding.closeButton.setOnClickListener {
             closeTimer.cancel()
-            endActivity()
+            finish()
         }
     }
 
@@ -81,7 +81,7 @@ class SendCompleteActivity : AppCompatActivity() {
             override fun onFinish() {
                 binding.timeTextView.text = "0"
                 binding.timeProgressIndicator.progress = 0
-                endActivity()
+                finish()
             }
         }
     }
@@ -91,6 +91,7 @@ class SendCompleteActivity : AppCompatActivity() {
             startExpenseListActivity(it)
         }
     }
+
     private fun startExpenseListActivity(groupId: String) {
         val expenseIntent = expenseListNavigator.navigateToExpenseList(
             this@SendCompleteActivity,
@@ -99,6 +100,7 @@ class SendCompleteActivity : AppCompatActivity() {
         startActivity(expenseIntent)
         finish()
     }
+
     companion object {
         private const val CLOSE_TIME = 3
         private const val TIME_INTERVAL = 10L
