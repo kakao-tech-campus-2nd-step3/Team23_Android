@@ -28,6 +28,7 @@ import com.kappzzang.jeongsan.intentcontract.ReceiptCameraContract
 import com.kappzzang.jeongsan.model.OcrResultResponse
 import com.kappzzang.jeongsan.navigation.AddExpenseNavigator
 import com.kappzzang.jeongsan.navigation.CameraNavigator
+import com.kappzzang.jeongsan.navigation.ExpenseDetailNavigator
 import com.kappzzang.jeongsan.navigation.SendMessageNavigator
 import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,6 +45,9 @@ class ExpenseListActivity : AppCompatActivity() {
 
     @Inject
     lateinit var sendMessageNavigator: SendMessageNavigator
+
+    @Inject
+    lateinit var expenseDetailNavigator: ExpenseDetailNavigator
 
     private val viewModel: ExpenseListViewModel by viewModels()
     private val binding: ActivityExpenseListBinding by lazy {
@@ -263,6 +267,11 @@ class ExpenseListActivity : AppCompatActivity() {
 
     // TODO: 선택한 지출 확인용 임시 코드
     private fun startExpenseDetailActivity(expenseId: String) {
-        Toast.makeText(this, expenseId, Toast.LENGTH_SHORT).show()
+        val groupId = viewModel.groupId.value
+        expenseDetailNavigator.navigateToExpenseDetail(
+            packageContext = this,
+            groupId = groupId,
+            expenseId = expenseId
+        )
     }
 }
