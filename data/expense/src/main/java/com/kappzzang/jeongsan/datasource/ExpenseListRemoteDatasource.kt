@@ -1,6 +1,7 @@
 package com.kappzzang.jeongsan.datasource
 
 import com.kappzzang.jeongsan.api.ReceiptRetrofitService
+import com.kappzzang.jeongsan.entity.GetCategoryListResponseDTO
 import com.kappzzang.jeongsan.entity.ImageEntity
 import com.kappzzang.jeongsan.entity.ResponseWithExpenseIdDTO
 import com.kappzzang.jeongsan.entity.SaveExpensePayloadDTO
@@ -71,6 +72,16 @@ class ExpenseListRemoteDatasource @Inject constructor(
                 body = postBody
             )
         } catch (e: Exception) {
+            return Result.failure(e)
+        }
+
+        return processResponseCode(response)
+    }
+
+    suspend fun getCategoryList(): Result<GetCategoryListResponseDTO> {
+        val response = try {
+            receiptRetrofitService.getCategoryColorList()
+        } catch (e:Exception) {
             return Result.failure(e)
         }
 
