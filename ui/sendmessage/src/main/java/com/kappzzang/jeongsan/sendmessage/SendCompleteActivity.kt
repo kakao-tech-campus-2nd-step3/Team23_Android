@@ -1,10 +1,13 @@
 package com.kappzzang.jeongsan.sendmessage
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.kappzzang.jeongsan.intentcontract.SendMessageContract
+import com.kappzzang.jeongsan.navigation.ExpenseListNavigator
 import com.kappzzang.jeongsan.sendmessage.databinding.ActivitySendCompleteBinding
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.TimeUnit
 import nl.dionsegijn.konfetti.core.Angle
 import nl.dionsegijn.konfetti.core.Party
@@ -13,12 +16,20 @@ import nl.dionsegijn.konfetti.core.Rotation
 import nl.dionsegijn.konfetti.core.emitter.Emitter
 import nl.dionsegijn.konfetti.core.models.Shape
 import nl.dionsegijn.konfetti.core.models.Size
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class SendCompleteActivity : AppCompatActivity() {
+    @Inject
+    lateinit var expenseListNavigator: ExpenseListNavigator
+    private val viewModel: SendCompleteViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         val binding = ActivitySendCompleteBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        handleIntent()
         binding.congratulations.start(
             Party(
                 speed = 40f,
@@ -50,15 +61,29 @@ class SendCompleteActivity : AppCompatActivity() {
             override fun onFinish() {
                 binding.timeTextView.text = "0"
                 binding.timeProgressIndicator.progress = 0
-                startActivity(Intent(this@SendCompleteActivity, SendMessageActivity::class.java))
+                endActivity()
             }
         }
         closeTimer.start()
 
         binding.closeButton.setOnClickListener {
             closeTimer.cancel()
-            startActivity(Intent(this@SendCompleteActivity, SendMessageActivity::class.java))
+            endActivity()
         }
+    }
+    private fun handleIntent() {
+        val groupId = intent.getStringExtra(SendMessageContract.GROUP_ID)
+        viewModel.setGroupId(groupId)
+    }
+    private fun endActivity() {
+        viewModel.groupId.value?.let {
+            startExpenseListActivity(it)
+        }
+    }
+    private fun startExpenseListActivity(groupId: String) {
+        val expenseIntent = expenseListNavigator.navigateToExpenseList(this@SendCompleteActivity, groupId.toString())
+        startActivity(expenseIntent)
+        finish()
     }
     companion object {
         private const val CLOSE_TIME = 3
