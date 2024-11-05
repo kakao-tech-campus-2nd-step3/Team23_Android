@@ -48,7 +48,8 @@ class KakaoOAuthTokenKakaoAuthDataMapperTest {
         )
 
         // when
-        val mapped = KakaoOAuthTokenKakaoAuthDataMapper.mapRefreshDtoToAuthData(responseDto, authData)
+        val mapped =
+            KakaoOAuthTokenKakaoAuthDataMapper.mapRefreshDtoToAuthData(responseDto, authData)
 
         // then
         assertThat(mapped.kakaoAccessToken).isEqualTo(newAccessToken)
@@ -69,7 +70,8 @@ class KakaoOAuthTokenKakaoAuthDataMapperTest {
         val responseDTO = getSampleDTO()
 
         // when
-        val mapped = KakaoOAuthTokenKakaoAuthDataMapper.mapRefreshDtoToAuthData(responseDTO, authData)
+        val mapped =
+            KakaoOAuthTokenKakaoAuthDataMapper.mapRefreshDtoToAuthData(responseDTO, authData)
 
         // then
         assertThat(mapped.kakaoRefreshToken).isEqualTo(refreshToken)
@@ -91,7 +93,8 @@ class KakaoOAuthTokenKakaoAuthDataMapperTest {
         )
 
         // when
-        val mapped = KakaoOAuthTokenKakaoAuthDataMapper.mapRefreshDtoToAuthData(responseDTO, authData)
+        val mapped =
+            KakaoOAuthTokenKakaoAuthDataMapper.mapRefreshDtoToAuthData(responseDTO, authData)
 
         // then
         assertThat(mapped.kakaoRefreshToken).isEqualTo(newRefreshToken)

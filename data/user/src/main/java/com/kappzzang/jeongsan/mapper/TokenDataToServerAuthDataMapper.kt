@@ -5,10 +5,8 @@ import com.kappzzang.jeongsan.entity.TokenData
 
 object TokenDataToServerAuthDataMapper {
 
-    fun mapTokenDataToServerAuthData(tokenData: TokenData): ServerAuthData {
-        return ServerAuthData(
-            accessToken = tokenData.accessToken,
-            refreshToken = tokenData.refreshToken
-        )
-    }
+    fun mapTokenDataToServerAuthData(tokenData: TokenData) = ServerAuthData(
+        accessToken = tokenData.accessToken,
+        refreshToken = tokenData.refreshToken
+    )
 }

@@ -26,7 +26,8 @@ class AuthenticateWithKakaoUseCase @Inject constructor(
     private fun checkNeedToRefresh(data: KakaoAuthData): Boolean =
         (data.accessTokenExpirationTime - getCurrentTime()) < REFRESH_TIME_WITHIN_MILLISECONDS
 
-    private fun checkIsEmptyAuthData(authData: KakaoAuthData): Boolean = authData.kakaoAccessToken == ""
+    private fun checkIsEmptyAuthData(authData: KakaoAuthData): Boolean =
+        authData.kakaoAccessToken == ""
 
     operator fun invoke(): Flow<AuthenticationResult> {
         val authDataFlow = authenticationRepository.getKakaoAuthData()

@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class AuthenticateWithServerUseCase @Inject constructor(
     private val authenticationRepository: AuthenticationRepository,
-    private val serverAuthenticationRepository: ServerAuthenticationRepository,
+    private val serverAuthenticationRepository: ServerAuthenticationRepository
 ) {
 
     suspend operator fun invoke(nickname: String, email: String, profileImageUrl: String) {
