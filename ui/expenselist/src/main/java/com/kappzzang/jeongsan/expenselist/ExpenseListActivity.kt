@@ -216,7 +216,7 @@ class ExpenseListActivity : AppCompatActivity() {
             setMessage(
                 String.format(
                     getString(R.string.dialog_body_ask_camera),
-                    getString(com.kappzzang.jeongsan.R.string.app_name)
+                    getString(R.string.app_name)
                 )
             )
             setPositiveButton(getString(R.string.dialog_allow)) { _, _ ->
