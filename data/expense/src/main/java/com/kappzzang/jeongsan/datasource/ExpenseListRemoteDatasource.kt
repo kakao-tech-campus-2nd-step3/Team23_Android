@@ -64,7 +64,7 @@ class ExpenseListRemoteDatasource @Inject constructor(
                     url = "",
                     format = IMAGE_FORMAT
                 ),
-                categoryId = CATEGORY_ID
+                categoryId = receiptItem.categoryId.toLong()
             )
 
             receiptRetrofitService.saveExpense(

@@ -130,7 +130,7 @@ class AddExpenseViewModel @Inject constructor(
 
         val receiptItem = ReceiptItem(
             title = expenseName.value,
-            categoryColor = "#FF0000", // TODO: 카테고리 색을 넣도록 UI 수정 필요
+            categoryId = selectedCategory.value.id,
             imageBase64 = convertBitmapToBase64(_expenseImageBitmap.value),
             expenseDetailItemList = _expenseItemList.value.subList(
                 0,
