@@ -25,6 +25,7 @@ import com.kappzzang.jeongsan.expenselist.inviteinfo.InviteInfoDialogFragment
 import com.kappzzang.jeongsan.expenselist.viewmodel.ExpenseListViewModel
 import com.kappzzang.jeongsan.intentcontract.ExpenseListContract
 import com.kappzzang.jeongsan.intentcontract.ReceiptCameraContract
+import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.model.OcrResultResponse
 import com.kappzzang.jeongsan.navigation.AddExpenseNavigator
 import com.kappzzang.jeongsan.navigation.CameraNavigator
@@ -83,8 +84,8 @@ class ExpenseListActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.selectedExpense.collect {
-                    if (it.isNotEmpty()) {
-                        startExpenseDetailActivity(it)
+                    if (it.expenseId.isNotEmpty()) {
+                        startExpenseDetailActivity(it.expenseId, it.editable)
                     }
                 }
             }
@@ -146,7 +147,8 @@ class ExpenseListActivity : AppCompatActivity() {
     private fun startAddExpenseActivity() {
         val intent = addExpenseNavigator.navigateToAddExpenseManually(
             packageContext = this,
-            groupId = viewModel.groupId.value)
+            groupId = viewModel.groupId.value
+        )
         startActivity(intent)
     }
 
@@ -159,7 +161,8 @@ class ExpenseListActivity : AppCompatActivity() {
                 packageContext = this,
                 ocrResponse = ocrResult,
                 image = receiptImage,
-                groupId = viewModel.groupId.value)
+                groupId = viewModel.groupId.value
+            )
         startActivity(intent)
     }
 
@@ -195,7 +198,7 @@ class ExpenseListActivity : AppCompatActivity() {
             this,
             android.Manifest.permission.CAMERA
         ) ==
-            PackageManager.PERMISSION_GRANTED
+                PackageManager.PERMISSION_GRANTED
     } else {
         true
     }
@@ -266,12 +269,13 @@ class ExpenseListActivity : AppCompatActivity() {
     }
 
     // TODO: 선택한 지출 확인용 임시 코드
-    private fun startExpenseDetailActivity(expenseId: String) {
+    private fun startExpenseDetailActivity(expenseId: String, isEditable: Boolean) {
         val groupId = viewModel.groupId.value
         expenseDetailNavigator.navigateToExpenseDetail(
             packageContext = this,
             groupId = groupId,
-            expenseId = expenseId
+            expenseId = expenseId,
+            editable = isEditable
         )
     }
 }

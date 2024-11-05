@@ -74,7 +74,14 @@ class ExpenseDetailActivity : AppCompatActivity() {
             return
         }
 
-        viewModel.setInitialData(expenseId, groupId)
+        val editable = intent?.getParcelableData<Boolean>(
+            ExpenseDetailContract.EDITABLE
+        )?:let {
+            throwExpenseDataLoadFailError()
+            return
+        }
+
+        viewModel.setInitialData(expenseId, groupId, editable)
     }
 
     private fun throwExpenseDataLoadFailError() {

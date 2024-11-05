@@ -2,6 +2,7 @@ package com.kappzzang.jeongsan.expenselist.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.usecase.GetCurrentGroupInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -10,6 +11,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+
+data class SelectedExpenseData(val expenseId: String, val editable: Boolean)
 
 @HiltViewModel
 class ExpenseListViewModel @Inject constructor(
@@ -22,7 +25,7 @@ class ExpenseListViewModel @Inject constructor(
 
     val groupId = _groupId.asStateFlow()
 
-    private val _selectedExpense = MutableStateFlow("")
+    private val _selectedExpense = MutableStateFlow(SelectedExpenseData("", false))
     val selectedExpense = _selectedExpense.asStateFlow()
 
     private fun fetchGroupInfo() {
@@ -41,7 +44,7 @@ class ExpenseListViewModel @Inject constructor(
         fetchGroupInfo()
     }
 
-    fun clickExpenseItem(expenseId: String) {
-        _selectedExpense.value = expenseId
+    fun clickExpenseItem(expenseId: String, state: ExpenseState) {
+        _selectedExpense.value = SelectedExpenseData(expenseId, (state == ExpenseState.NOT_CONFIRMED) || (state == ExpenseState.CONFIRMED))
     }
 }

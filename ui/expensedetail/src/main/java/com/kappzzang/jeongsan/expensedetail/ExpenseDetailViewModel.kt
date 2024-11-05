@@ -24,10 +24,12 @@ class ExpenseDetailViewModel @Inject constructor(
 ) : ViewModel() {
     private val _expense = MutableStateFlow(ExpenseItemWithDetails.EMPTY)
     private val _expenseDetailList = MutableStateFlow(emptyList<ExpenseDetailItem>())
+    private val _formEditable = MutableStateFlow(true)
     val expenseDetailList = _expenseDetailList.asStateFlow()
 
     private val groupId = MutableStateFlow("")
     private val expenseId = MutableStateFlow("")
+    private val formEditable = _formEditable.asStateFlow()
     val expense: StateFlow<ExpenseItemWithDetails> = _expense.asStateFlow()
 
     fun saveExpenseDetail() {
@@ -40,9 +42,10 @@ class ExpenseDetailViewModel @Inject constructor(
         }
     }
 
-    fun setInitialData(expenseId: String, groupId: String) {
+    fun setInitialData(expenseId: String, groupId: String, editable: Boolean) {
         this.expenseId.value = expenseId
         this.groupId.value = groupId
+        _formEditable.value = editable
         initExpense()
     }
 

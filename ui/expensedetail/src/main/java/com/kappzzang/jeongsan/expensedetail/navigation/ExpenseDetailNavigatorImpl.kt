@@ -11,11 +11,16 @@ class ExpenseDetailNavigatorImpl @Inject constructor() : ExpenseDetailNavigator 
     override fun navigateToExpenseDetail(
         packageContext: Context,
         expenseId: String,
-        groupId: String
+        groupId: String,
+        editable: Boolean
     ): Intent =
         Intent(packageContext, ExpenseDetailActivity::class.java)
             .apply {
                 this.putExtra(ExpenseDetailContract.EXPENSE_ID, expenseId)
                 this.putExtra(ExpenseDetailContract.GROUP_ID, groupId)
+                this.putExtra(
+                    ExpenseDetailContract.EDITABLE,
+                    editable
+                )
             }
 }

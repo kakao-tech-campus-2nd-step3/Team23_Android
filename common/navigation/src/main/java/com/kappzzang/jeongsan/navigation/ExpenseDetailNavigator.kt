@@ -7,6 +7,7 @@ interface ExpenseDetailNavigator {
     fun navigateToExpenseDetail(
         packageContext: Context,
         expenseId: String,
-        groupId: String
+        groupId: String,
+        editable: Boolean
     ): Intent
 }
