@@ -1,6 +1,8 @@
 package com.kappzzang.jeongsan.sendmessage
 
+import android.content.Intent
 import android.os.Bundle
+import android.os.CountDownTimer
 import androidx.appcompat.app.AppCompatActivity
 import com.kappzzang.jeongsan.sendmessage.databinding.ActivitySendCompleteBinding
 import java.util.concurrent.TimeUnit
@@ -33,5 +35,33 @@ class SendCompleteActivity : AppCompatActivity() {
                 position = Position.Relative(0.5, 1.0)
             )
         )
+
+        binding.timeProgressIndicator.max = 100
+        binding.timeTextView.text = CLOSE_TIME.toString()
+
+        val closeTimer = object : CountDownTimer(CLOSE_TIME * 1000L, TIME_INTERVAL) {
+            override fun onTick(millisUntilFinished: Long) {
+                val remainTime = (millisUntilFinished / 1000L) + 1L
+                binding.timeTextView.text = remainTime.toString()
+                val progress = (millisUntilFinished / (CLOSE_TIME * 1000.0) * 100).toInt()
+                binding.timeProgressIndicator.progress = progress
+            }
+
+            override fun onFinish() {
+                binding.timeTextView.text = "0"
+                binding.timeProgressIndicator.progress = 0
+                startActivity(Intent(this@SendCompleteActivity, SendMessageActivity::class.java))
+            }
+        }
+        closeTimer.start()
+
+        binding.closeButton.setOnClickListener {
+            closeTimer.cancel()
+            startActivity(Intent(this@SendCompleteActivity, SendMessageActivity::class.java))
+        }
+    }
+    companion object {
+        private const val CLOSE_TIME = 3
+        private const val TIME_INTERVAL = 10L
     }
 }

@@ -1,5 +1,6 @@
 package com.kappzzang.jeongsan.sendmessage
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -59,7 +60,8 @@ class SendMessageActivity : AppCompatActivity() {
         binding.sendMessageButton.setOnClickListener {
             lifecycleScope.launch {
                 if (viewModel.sendTransferMessage()) {
-                    startActivity(intent)
+                    val m = Intent(this@SendMessageActivity, SendCompleteActivity::class.java)
+                    startActivity(m)
                 } else {
                     Toast.makeText(
                         this@SendMessageActivity,
