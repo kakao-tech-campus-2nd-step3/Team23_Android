@@ -25,7 +25,6 @@ import com.kappzzang.jeongsan.expenselist.inviteinfo.InviteInfoDialogFragment
 import com.kappzzang.jeongsan.expenselist.viewmodel.ExpenseListViewModel
 import com.kappzzang.jeongsan.intentcontract.ExpenseListContract
 import com.kappzzang.jeongsan.intentcontract.ReceiptCameraContract
-import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.model.OcrResultResponse
 import com.kappzzang.jeongsan.navigation.AddExpenseNavigator
 import com.kappzzang.jeongsan.navigation.CameraNavigator
@@ -199,7 +198,7 @@ class ExpenseListActivity : AppCompatActivity() {
             this,
             android.Manifest.permission.CAMERA
         ) ==
-                PackageManager.PERMISSION_GRANTED
+            PackageManager.PERMISSION_GRANTED
     } else {
         true
     }

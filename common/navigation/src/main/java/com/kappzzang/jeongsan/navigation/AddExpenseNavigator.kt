@@ -13,8 +13,5 @@ interface AddExpenseNavigator {
         groupId: String
     ): Intent
 
-    fun navigateToAddExpenseManually(
-        packageContext: Context,
-        groupId: String
-    ): Intent
+    fun navigateToAddExpenseManually(packageContext: Context, groupId: String): Intent
 }

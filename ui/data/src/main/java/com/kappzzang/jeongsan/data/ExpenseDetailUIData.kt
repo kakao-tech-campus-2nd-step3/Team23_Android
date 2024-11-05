@@ -1,6 +1,5 @@
 package com.kappzzang.jeongsan.data
 
-import android.os.Parcelable
 import com.kappzzang.jeongsan.model.ExpenseDetailItem
 
 data class ExpenseDetailUIData(
@@ -28,4 +27,3 @@ fun ExpenseDetailItem.toUIData(formEnabled: Boolean): ExpenseDetailUIData = Expe
     selectedQuantity = this.selectedQuantity,
     formEnabled = formEnabled
 )
-

@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kappzzang.jeongsan.data.ExpenseDetailUIData
 import com.kappzzang.jeongsan.expensedetail.databinding.ItemExpenseDetailItemBinding
-import com.kappzzang.jeongsan.model.ExpenseDetailItem
 
 interface ExpenseDetailItemCallback {
     fun onCheckedChange(view: CompoundButton, enable: Boolean)

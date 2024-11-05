@@ -6,7 +6,6 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kappzzang.jeongsan.data.ExpenseDetailUIData
-import com.kappzzang.jeongsan.model.ExpenseDetailItem
 import kotlinx.coroutines.flow.StateFlow
 
 object ExpenseDetailBindingAdapter {

@@ -2,7 +2,6 @@ package com.kappzzang.jeongsan.expensedetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kappzzang.jeongsan.data.ExpenseDetailUIData
 import com.kappzzang.jeongsan.data.toUIData
 import com.kappzzang.jeongsan.model.ExpenseDetailItem
 import com.kappzzang.jeongsan.model.ExpenseItemWithDetails
@@ -27,11 +26,11 @@ class ExpenseDetailViewModel @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
     private val _expense = MutableStateFlow(ExpenseItemWithDetails.EMPTY)
-    private val _expenseDetailRawList = MutableStateFlow(emptyList<ExpenseDetailItem>())
-    private val _formEditable = MutableStateFlow(true)
+    private val expenseDetailRawList = MutableStateFlow(emptyList<ExpenseDetailItem>())
+    private val formEditable = MutableStateFlow(true)
 
-    val expenseDetailList = _expenseDetailRawList.combine(
-        _formEditable
+    val expenseDetailList = expenseDetailRawList.combine(
+        formEditable
     ) { list, editable ->
         list.map {
             it.toUIData(editable)
@@ -59,7 +58,7 @@ class ExpenseDetailViewModel @Inject constructor(
     fun setInitialData(expenseId: String, groupId: String, editable: Boolean) {
         this.expenseId.value = expenseId
         this.groupId.value = groupId
-        _formEditable.value = editable
+        formEditable.value = editable
         initExpense()
     }
 
@@ -68,7 +67,7 @@ class ExpenseDetailViewModel @Inject constructor(
             val result = getExpenseDetailUseCase.invoke(expenseId.value)
             result.onSuccess {
                 _expense.value = it
-                _expenseDetailRawList.emit(_expense.value.expenseDetails)
+                expenseDetailRawList.emit(_expense.value.expenseDetails)
             }
                 .onFailure {
                     // TODO: Expense Detail 조회 실패 시 예외처리
@@ -98,8 +97,8 @@ class ExpenseDetailViewModel @Inject constructor(
         }
 
         viewModelScope.launch(Dispatchers.Main) {
-            _expenseDetailRawList.emit(
-                _expenseDetailRawList.value.toMutableList().also {
+            expenseDetailRawList.emit(
+                expenseDetailRawList.value.toMutableList().also {
                     it[index] = getItemWithEnabled(it[index], checked)
                 }
             )
@@ -112,8 +111,8 @@ class ExpenseDetailViewModel @Inject constructor(
         }
 
         viewModelScope.launch(Dispatchers.Main) {
-            _expenseDetailRawList.emit(
-                _expenseDetailRawList.value.toMutableList().also {
+            expenseDetailRawList.emit(
+                expenseDetailRawList.value.toMutableList().also {
                     it[index] = getItemWithQuantity(it[index], quantity)
                 }
             )

@@ -49,7 +49,11 @@ class AddExpenseActivity : AppCompatActivity() {
 
         binding.addexpenseSubmitButton.setOnClickListener {
             if (!viewModel.uploadExpense()) {
-                Toast.makeText(this, getString(R.string.add_expense_complete_form_notify), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    getString(R.string.add_expense_complete_form_notify),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -67,7 +71,7 @@ class AddExpenseActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uploadingProgress.collect { state ->
-                    when(state) {
+                    when (state) {
                         ExpenseUploadingProgress.NOT_STARTED -> {
                             viewModel.setInputsLock(false)
                         }
@@ -167,7 +171,11 @@ class AddExpenseActivity : AppCompatActivity() {
         groupId?.let {
             viewModel.initGroupId(it)
         } ?: let {
-            Toast.makeText(this, getString(R.string.add_expense_error_message_load_group_info), Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                this,
+                getString(R.string.add_expense_error_message_load_group_info),
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 

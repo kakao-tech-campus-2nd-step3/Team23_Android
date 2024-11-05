@@ -6,7 +6,6 @@ import com.kappzzang.jeongsan.model.ExpenseItem
 import com.kappzzang.jeongsan.model.ExpenseItemWithDetails
 import com.kappzzang.jeongsan.usecase.EditExpenseDetailUseCase
 import com.kappzzang.jeongsan.usecase.GetExpenseDetailUseCase
-import com.kappzzang.jeongsan.usecase.GetExpenseUseCase
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk

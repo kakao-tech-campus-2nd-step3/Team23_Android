@@ -63,20 +63,20 @@ class ExpenseDetailActivity : AppCompatActivity() {
     private fun getIntentData() {
         val expenseId = intent?.getParcelableData<String>(
             ExpenseDetailContract.EXPENSE_ID
-        )?:let {
+        ) ?: let {
             throwExpenseDataLoadFailError()
             return
         }
         val groupId = intent?.getParcelableData<String>(
             ExpenseDetailContract.GROUP_ID
-        )?:let {
+        ) ?: let {
             throwExpenseDataLoadFailError()
             return
         }
 
         val editable = intent?.getParcelableData<Boolean>(
             ExpenseDetailContract.EDITABLE
-        )?:let {
+        ) ?: let {
             throwExpenseDataLoadFailError()
             return
         }
@@ -85,7 +85,11 @@ class ExpenseDetailActivity : AppCompatActivity() {
     }
 
     private fun throwExpenseDataLoadFailError() {
-        Toast.makeText(this, getString(R.string.expense_detail_error_message_load_expense_info), Toast.LENGTH_LONG).show()
+        Toast.makeText(
+            this,
+            getString(R.string.expense_detail_error_message_load_expense_info),
+            Toast.LENGTH_LONG
+        ).show()
         finish()
     }
 }
