@@ -2,6 +2,7 @@ package com.kappzzang.jeongsan.addexpense
 
 import android.graphics.Bitmap
 import android.util.Base64
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.data.ExpenseItemInput
@@ -9,6 +10,7 @@ import com.kappzzang.jeongsan.model.ExpenseCategory
 import com.kappzzang.jeongsan.model.OcrResultResponse
 import com.kappzzang.jeongsan.model.ReceiptDetailItem
 import com.kappzzang.jeongsan.model.ReceiptItem
+import com.kappzzang.jeongsan.usecase.GetCategoryListUseCase
 import com.kappzzang.jeongsan.usecase.UploadExpenseUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.ByteArrayOutputStream
@@ -16,8 +18,11 @@ import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 enum class ExpenseUploadingProgress { NOT_STARTED, UPLOADING, UPLOAD_SUCCESS, UPLOAD_FAILED }
@@ -25,7 +30,8 @@ enum class ExpenseUploadingProgress { NOT_STARTED, UPLOADING, UPLOAD_SUCCESS, UP
 @HiltViewModel
 class AddExpenseViewModel @Inject constructor(
     private val uploadExpenseUseCase: UploadExpenseUseCase,
-    private val ioDispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher,
+    private val getCategoryListUseCase: GetCategoryListUseCase
 ) : ViewModel() {
     private val _expenseItemList by lazy {
         MutableStateFlow(
@@ -38,7 +44,7 @@ class AddExpenseViewModel @Inject constructor(
     private val _inputsLocked = MutableStateFlow(false)
     private val _createdExpenseId = MutableStateFlow("")
     private val _selectedCategoryId = MutableStateFlow("")
-    private val _categoryList = MutableStateFlow<List<ExpenseCategory>>(emptyList())
+    private val _categoryList by lazy { getCategoryList() }
     private val _uploadingProgress = MutableStateFlow(ExpenseUploadingProgress.NOT_STARTED)
     private val _expenseImageBitmap = MutableStateFlow<Bitmap?>(null)
     private val _manualMode = MutableStateFlow(true)
@@ -58,6 +64,27 @@ class AddExpenseViewModel @Inject constructor(
 
     var selectedCategoryId = _selectedCategoryId.asStateFlow()
     val categoryList = _categoryList.asStateFlow()
+    val imagePickerButtonColor = selectedCategoryId.map { id ->
+        categoryList.value.find { it.id == id }
+            ?.color?:UNDEFINED_COLOR
+    }.stateIn(
+        scope = viewModelScope,
+        initialValue = UNDEFINED_COLOR,
+        started = SharingStarted.WhileSubscribed(5_000L)
+    )
+
+    private fun getCategoryList(): MutableStateFlow<List<ExpenseCategory>> {
+        val mList = MutableStateFlow<List<ExpenseCategory>>(emptyList())
+        viewModelScope.launch(Dispatchers.IO) {
+            getCategoryListUseCase.invoke().onSuccess {
+                mList.emit(it)
+                it.lastOrNull()?.let{ item ->
+                    updateSelectedCategoryId(item.id)
+                }
+            }
+        }
+        return mList
+    }
 
     fun setManualMode(mode: ManualMode) {
         viewModelScope.launch(Dispatchers.Main) {
@@ -186,6 +213,7 @@ class AddExpenseViewModel @Inject constructor(
     }
 
     companion object {
+        const val UNDEFINED_COLOR = "#000000"
         enum class ManualMode { MANUAL, RECEIPT }
     }
 }

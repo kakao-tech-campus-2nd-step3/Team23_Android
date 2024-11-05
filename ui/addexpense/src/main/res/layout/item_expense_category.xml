@@ -39,7 +39,7 @@
             app:layout_constraintLeft_toRightOf="@id/expense_category_color_dot_imageview"
             app:layout_constraintRight_toLeftOf="@id/expense_category_check_imageview"
             android:textSize="18sp"
-            android:text="파랑"
+            android:text="@{item.name}"
             android:gravity="center_vertical"
             />
 

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -30,6 +29,8 @@ class ColorPickerDialog : DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = DialogColorPickerBinding.inflate(inflater, container, false)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
         return binding.root
     }
 
@@ -66,7 +67,8 @@ class ColorPickerDialog : DialogFragment() {
                     viewModel.updateSelectedItemId(it)
                 }
             }
-
+        }
+        lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 activityViewModel.categoryList.collect {
                     viewModel.updateUIItemList(it, activityViewModel.selectedCategoryId.value)

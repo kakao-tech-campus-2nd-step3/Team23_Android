@@ -71,6 +71,7 @@ object AddExpenseBindingAdapter {
     }
 
     @BindingAdapter("imageColor")
+    @JvmStatic
     fun ImageView.setImageColor(backgroundColor: String) {
 
         val color: Int = try {
@@ -86,9 +87,9 @@ object AddExpenseBindingAdapter {
     @JvmStatic
     fun attachExpenseList(
         recyclerView: RecyclerView,
-        items: StateFlow<List<ExpenseCategoryUIItem>>?
+        items: StateFlow<List<ExpenseCategoryUIItem>>
     ) {
-        items?.let {
+        items.let {
             (recyclerView.adapter as? CategoryListAdapter)
                 ?.submitList(
                     it.value

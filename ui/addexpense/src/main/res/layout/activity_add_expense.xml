@@ -122,9 +122,12 @@
                 app:layout_constraintWidth_percent=".5" />
 
             <ImageButton
-                android:layout_width="60dp"
-                android:layout_height="40dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/add_expense_color_dot"
                 android:id="@+id/expense_selected_category"
+                android:background="@color/transparent"
+                imageColor="@{viewModel.imagePickerButtonColor}"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toRightOf="@id/addexpense_name_edittext"
                 app:layout_constraintTop_toTopOf="@id/addexpense_name_edittext"
