@@ -13,7 +13,8 @@ class AddExpenseNavigatorImpl @Inject constructor() : AddExpenseNavigator {
     override fun navigateToAddExpenseWithImage(
         packageContext: Context,
         ocrResponse: OcrResultResponse.OcrSuccess,
-        image: Uri
+        image: Uri,
+        groupId: String
     ): Intent {
         val intent = Intent(packageContext, AddExpenseActivity::class.java)
         intent.putExtra(
@@ -28,15 +29,23 @@ class AddExpenseNavigatorImpl @Inject constructor() : AddExpenseNavigator {
             AddExpenseContract.EXPENSE_DATA,
             ocrResponse
         )
+        intent.putExtra(
+            AddExpenseContract.GROUP_ID,
+            groupId
+        )
 
         return intent
     }
 
-    override fun navigateToAddExpenseManually(packageContext: Context): Intent {
+    override fun navigateToAddExpenseManually(packageContext: Context, groupId: String): Intent {
         val intent = Intent(packageContext, AddExpenseActivity::class.java)
         intent.putExtra(
             AddExpenseContract.INTENT_EXPENSE_MODE,
             AddExpenseContract.EXPENSE_MODE_MANUAL
+        )
+        intent.putExtra(
+            AddExpenseContract.GROUP_ID,
+            groupId
         )
 
         return intent
