@@ -222,6 +222,7 @@ class ExpenseListActivity : AppCompatActivity() {
 
     private fun setOnAddExpenseFabClickedListener() {
         val popupMenu = PopupMenu(this, binding.addExpenseFab)
+        val groupId = viewModel.groupId.value
         popupMenu.menuInflater.inflate(R.menu.menu_add_expense, popupMenu.menu)
         popupMenu.setForceShowIcon(true)
 

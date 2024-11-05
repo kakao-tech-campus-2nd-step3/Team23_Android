@@ -5,14 +5,12 @@ import com.kappzzang.jeongsan.entity.ImageEntity
 import com.kappzzang.jeongsan.entity.ResponseWithExpenseIdDTO
 import com.kappzzang.jeongsan.entity.SaveExpensePayloadDTO
 import com.kappzzang.jeongsan.entity.expenselist.ExpenseListResponseDTO
-import com.kappzzang.jeongsan.entity.expenselist.ExpenseRoomEntity
 import com.kappzzang.jeongsan.mapper.ExpenseEntityMapper
 import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.model.ReceiptItem
 import com.kappzzang.jeongsan.util.DateConverter.formatToTransferString
-import java.sql.Timestamp
-import javax.inject.Inject
 import retrofit2.Response
+import javax.inject.Inject
 
 class ExpenseListRemoteDatasource @Inject constructor(
     private val receiptRetrofitService: ReceiptRetrofitService
@@ -25,75 +23,81 @@ class ExpenseListRemoteDatasource @Inject constructor(
         ExpenseState.TRANSFERED -> "completed"
     }
 
-    private fun checkNeedAdditionalQuery(state: ExpenseState): Boolean =
-        (state == ExpenseState.CONFIRMED || state == ExpenseState.NOT_CONFIRMED)
-
-    private fun checkIsChecked(state: ExpenseState): Boolean = state == ExpenseState.CONFIRMED
-
     suspend fun getExpenseList(
         expenseState: ExpenseState,
-        jwt: String,
         groupId: String
-    ): Response<ExpenseListResponseDTO> {
-        val needAdditionalQuery = checkNeedAdditionalQuery(expenseState)
-        val result: Response<ExpenseListResponseDTO> = if (needAdditionalQuery) {
+    ): Result<ExpenseListResponseDTO> {
+        val response = try {
             receiptRetrofitService.getExpenseList(
                 groupId = groupId,
-                jwt = jwt,
                 state = mapExpenseStateToDtoState(expenseState),
                 checked = checkIsChecked(expenseState)
             )
-        } else {
-            receiptRetrofitService.getExpenseList(
-                groupId = groupId,
-                jwt = jwt,
-                state = mapExpenseStateToDtoState(expenseState)
-            )
+        } catch (e: Exception) {
+            return Result.failure(e)
         }
 
-        return result
+        return processResponseCode(response)
+    }
+
+    private fun checkIsChecked(state: ExpenseState): Boolean? = when (state) {
+        ExpenseState.CONFIRMED -> true
+        ExpenseState.NOT_CONFIRMED -> false
+        else -> null
     }
 
     suspend fun addExpense(
         receiptItem: ReceiptItem,
-        jwt: String,
         groupId: String
-    ): Response<ResponseWithExpenseIdDTO> {
-        val postBody = SaveExpensePayloadDTO(
-            title = receiptItem.title,
-            items = receiptItem.expenseDetailItemList.map {
-                ExpenseEntityMapper.mapReceiptDetailItemToExpenseItemEntity(it)
-            },
-            paymentTime = receiptItem.paymentTime.formatToTransferString(),
-            image = ImageEntity(
-                name = "",
-                data = receiptItem.imageBase64 ?: "",
-                url = "",
-                format = IMAGE_FORMAT
-            ),
-            categoryId = CATEGORY_ID
-        )
+    ): Result<ResponseWithExpenseIdDTO> {
+        val response = try {
+            val postBody = SaveExpensePayloadDTO(
+                title = receiptItem.title,
+                items = receiptItem.expenseDetailItemList.map {
+                    ExpenseEntityMapper.mapReceiptDetailItemToExpenseItemEntity(it)
+                },
+                paymentTime = receiptItem.paymentTime.formatToTransferString(),
+                image = ImageEntity(
+                    name = "",
+                    data = receiptItem.imageBase64 ?: "",
+                    url = "",
+                    format = IMAGE_FORMAT
+                ),
+                categoryId = CATEGORY_ID
+            )
 
-        val result = receiptRetrofitService.saveExpense(
-            groupId = groupId,
-            jwt = jwt,
-            body = postBody
-        )
+            receiptRetrofitService.saveExpense(
+                groupId = groupId,
+                body = postBody
+            )
+        } catch (e: Exception) {
+            return Result.failure(e)
+        }
 
-        return result
+        return processResponseCode(response)
     }
 
-    fun addExpense(receiptItem: ReceiptItem): String {
-        val expenseEntity = ExpenseRoomEntity(
-            name = receiptItem.title,
-            totalPrice = receiptItem.expenseDetailItemList.sumOf { it.itemPrice * it.itemQuantity },
-            createdTime = Timestamp(System.currentTimeMillis()).toString(),
-            categoryColor = receiptItem.categoryColor,
-            expenseState = ExpenseState.CONFIRMED.ordinal
-        )
+    private fun <T> processResponseCode(response: Response<T>): Result<T> {
+        when (response.code()) {
+            400 -> throw IllegalArgumentException("유효하지 않는 입력 값")
+            404 -> throw IllegalStateException(response.message())
+            500 -> throw IllegalStateException(response.message())
 
-        // expenseDatabase.expenseDao().addExpense(expenseEntity)
-        return expenseEntity.id.toString()
+            else -> {
+                if (response.code() / 100 == 2) {
+                    response.body()?.let {
+                        return Result.success<T>(it)
+                    }
+                        ?: return Result.failure(
+                            IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
+                        )
+                } else {
+                    return Result.failure(
+                        IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
+                    )
+                }
+            }
+        }
     }
 
     companion object {

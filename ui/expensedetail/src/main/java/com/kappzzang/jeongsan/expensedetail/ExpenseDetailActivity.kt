@@ -1,10 +1,13 @@
 package com.kappzzang.jeongsan.expensedetail
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.expensedetail.databinding.ActivityExpenseDetailBinding
+import com.kappzzang.jeongsan.intentcontract.ExpenseDetailContract
+import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,6 +23,10 @@ class ExpenseDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+
+        if (savedInstanceState == null) {
+            initiateViewModel()
+        }
 
         initiateRecyclerView()
         setContentView(binding.root)
@@ -47,5 +54,22 @@ class ExpenseDetailActivity : AppCompatActivity() {
         binding.expenseDetailItemListRecyclerview.adapter = expenseDetailAdapter
         binding.expenseDetailItemListRecyclerview.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+    }
+
+    private fun initiateViewModel() {
+        getExpenseId()
+    }
+
+    private fun getExpenseId() {
+        val expenseId = intent?.getParcelableData<String>(
+            ExpenseDetailContract.EXPENSE_ID
+        )
+
+        expenseId?.let {
+            viewModel.setInitialData(it, "")
+        } ?: let {
+            Toast.makeText(this, "지출 정보를 불러오는 데 실패했습니다.", Toast.LENGTH_LONG).show()
+            viewModel.setInitialData("0", "")
+        }
     }
 }

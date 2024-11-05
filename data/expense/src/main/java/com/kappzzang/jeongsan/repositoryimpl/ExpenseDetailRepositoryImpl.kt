@@ -1,42 +1,39 @@
 package com.kappzzang.jeongsan.repositoryimpl
 
+import com.kappzzang.jeongsan.datasource.ExpenseDetailRemoteDatasource
+import com.kappzzang.jeongsan.entity.expensedetail.ExpenseDetailEntity
+import com.kappzzang.jeongsan.mapper.ExpenseEntityMapper
 import com.kappzzang.jeongsan.model.ExpenseDetailItem
+import com.kappzzang.jeongsan.model.ExpenseItemWithDetails
+import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.repository.ExpenseDetailRepository
 import javax.inject.Inject
 
-class ExpenseDetailRepositoryImpl @Inject constructor() : ExpenseDetailRepository {
-    override suspend fun getExpenseDetail(): List<ExpenseDetailItem> = listOf(
-        ExpenseDetailItem(
-            "id1",
-            "아주 맛있는 과자",
-            4000,
-            3,
-            0
-        ),
-        ExpenseDetailItem(
-            "id2",
-            "아주 맛없는 고기",
-            50000,
-            1,
-            0
-        ),
-        ExpenseDetailItem(
-            "id3",
-            "밍밍한 국",
-            500,
-            6,
-            0
-        ),
-        ExpenseDetailItem(
-            "id4",
-            "상차림비",
-            100,
-            10,
-            0
-        )
-    )
+class ExpenseDetailRepositoryImpl @Inject constructor(
+    private val expenseDetailRemoteDatasource: ExpenseDetailRemoteDatasource
+) : ExpenseDetailRepository {
 
-    override suspend fun saveExpenseDetail(edited: List<ExpenseDetailItem>) {
-        // 저장하기
-    }
+    override suspend fun getExpenseDetail(expenseId: String): Result<ExpenseItemWithDetails> =
+        expenseDetailRemoteDatasource.getExpenseDetail(
+            expenseId = expenseId
+        ).mapCatching {
+            mapResponseToExpenseDetail(it, expenseId)
+        }
+
+    private fun mapResponseToExpenseDetail(entity: ExpenseDetailEntity, expenseId: String) =
+        ExpenseEntityMapper.mapDetailedExpenseEntityToModel(
+            entity,
+            expenseId,
+            ExpenseState.NOT_CONFIRMED
+        )
+
+    override suspend fun saveExpenseDetail(
+        edited: List<ExpenseDetailItem>,
+        expenseId: String,
+        groupId: String
+    ): Result<Unit> = expenseDetailRemoteDatasource.updateExpenseDetail(
+        expenseId = expenseId,
+        groupId = groupId,
+        edited = edited
+    )
 }

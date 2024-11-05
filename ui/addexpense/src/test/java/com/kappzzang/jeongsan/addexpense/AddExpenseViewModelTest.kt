@@ -160,7 +160,7 @@ class AddExpenseViewModelTest {
         val testBitmap = mockk<Bitmap>()
         val testBase64 = "test_base64"
         every { viewModel.convertBitmapToBase64(any()) } returns testBase64
-        coEvery { mockUploadExpenseUseCase(any()) } returns "test success"
+        coEvery { mockUploadExpenseUseCase(any(), any()) } returns Result.success("test success")
 
         val testOcrResult = OcrResultResponse.OcrSuccess(
             name = "Test Receipt",
@@ -180,7 +180,7 @@ class AddExpenseViewModelTest {
         // Then
         assertEquals(true, result)
         val receiptItemSlot = slot<ReceiptItem>()
-        coVerify { mockUploadExpenseUseCase(capture(receiptItemSlot)) }
+        coVerify { mockUploadExpenseUseCase(capture(receiptItemSlot), any()) }
         assertEquals(testOcrResult.name, receiptItemSlot.captured.title)
         assertEquals(testBase64, receiptItemSlot.captured.imageBase64)
         assertEquals(
