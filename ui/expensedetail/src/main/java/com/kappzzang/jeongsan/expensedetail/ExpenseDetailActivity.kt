@@ -78,7 +78,7 @@ class ExpenseDetailActivity : AppCompatActivity() {
     }
 
     private fun throwExpenseDataLoadFailError() {
-        Toast.makeText(this, "지출 정보를 불러오는 데 실패했습니다.", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, getString(R.string.expense_detail_error_message_load_expense_info), Toast.LENGTH_LONG).show()
         finish()
     }
 }

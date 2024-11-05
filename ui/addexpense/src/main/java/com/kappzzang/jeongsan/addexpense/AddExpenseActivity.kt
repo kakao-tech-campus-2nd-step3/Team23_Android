@@ -49,7 +49,7 @@ class AddExpenseActivity : AppCompatActivity() {
 
         binding.addexpenseSubmitButton.setOnClickListener {
             if (!viewModel.uploadExpense()) {
-                Toast.makeText(this, "지출 내역을 완성해주세요!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.add_expense_complete_form_notify), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -166,7 +166,7 @@ class AddExpenseActivity : AppCompatActivity() {
         groupId?.let {
             viewModel.initGroupId(it)
         } ?: let {
-            Toast.makeText(this, "그룹 정보를 불러오는 데 실패했습니다.", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.add_expense_error_message_load_group_info), Toast.LENGTH_LONG).show()
         }
     }
 

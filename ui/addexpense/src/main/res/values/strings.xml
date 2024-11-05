@@ -8,4 +8,6 @@
     <string name="add_expense_submit">완료</string>
     <string name="add_expense_name">매장명</string>
     <string name="add_expense_add_picture_text">사진 추가</string>
+    <string name="add_expense_complete_form_notify">지출 내역을 완성해주세요!</string>
+    <string name="add_expense_error_message_load_group_info">그룹 정보를 불러오는 데 실패했습니다.</string>
 </resources>
