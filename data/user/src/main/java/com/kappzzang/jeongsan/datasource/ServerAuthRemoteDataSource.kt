@@ -11,7 +11,10 @@ import com.kappzzang.jeongsan.entity.TokenData
 import javax.inject.Inject
 import retrofit2.Response
 
-class ServerAuthRemoteDataSource @Inject constructor(private val authApi: ServerAuthRetrofitService) {
+class ServerAuthRemoteDataSource @Inject constructor(
+    private val authApi: ServerAuthRetrofitService
+) {
+
     suspend fun refreshToken(refreshToken: String): Result<RefreshTokenData> = try {
         val response = authApi.refreshToken(RefreshTokenRequest(refreshToken = refreshToken))
         handleRefreshResponse(response)
