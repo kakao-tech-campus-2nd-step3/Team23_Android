@@ -1,6 +1,7 @@
 package com.kappzzang.jeongsan.repositoryimpl
 
 import com.kappzzang.jeongsan.datasource.ExpenseListFakeDatasource
+import com.kappzzang.jeongsan.model.ExpenseCategory
 import com.kappzzang.jeongsan.model.ExpenseListResponse
 import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.model.ReceiptItem
@@ -15,6 +16,14 @@ class ExpenseFakeRepositoryImpl @Inject constructor(
 ) : ExpenseRepository {
 
     private val cachedData = HashMap<ExpenseListCachingKey, ExpenseListResponse>()
+
+    private fun getFakeCategoryList(): List<ExpenseCategory> =
+        listOf(
+            ExpenseCategory(id = "1", color = "#ff0000", name = "편의점"),
+            ExpenseCategory(id = "2", color = "#4f6622", name = "영화관"),
+            ExpenseCategory(id = "3", color = "#7777ff", name = "숙박"),
+            ExpenseCategory(id = "4", color = "#999999", name = "기타")
+        )
 
     override fun getExpenseList(
         groupId: String,
@@ -50,4 +59,7 @@ class ExpenseFakeRepositoryImpl @Inject constructor(
 
     override suspend fun uploadExpense(receiptItem: ReceiptItem, groupId: String): Result<String> =
         Result.success(dataSource.addExpense(receiptItem))
+
+    override suspend fun getExpenseCategoryList(): Result<List<ExpenseCategory>> =
+        Result.success(getFakeCategoryList())
 }
