@@ -9,8 +9,12 @@ interface AddExpenseNavigator {
     fun navigateToAddExpenseWithImage(
         packageContext: Context,
         ocrResponse: OcrResultResponse.OcrSuccess,
-        image: Uri
+        image: Uri,
+        groupId: String
     ): Intent
 
-    fun navigateToAddExpenseManually(packageContext: Context): Intent
+    fun navigateToAddExpenseManually(
+        packageContext: Context,
+        groupId: String
+    ): Intent
 }
