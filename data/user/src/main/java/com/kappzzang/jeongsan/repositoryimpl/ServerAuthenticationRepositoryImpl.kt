@@ -9,11 +9,15 @@ class ServerAuthenticationRepositoryImpl @Inject constructor(
     val dataSource: ServerAuthRemoteDataSource
 ) : ServerAuthenticationRepository {
 
-    override fun loginToServer(authData: ServerAuthData) {
+    override fun loginToServer(email: String): ServerAuthData {
         TODO("Not yet implemented")
     }
 
-    override fun registerToServer(authData: ServerAuthData) {
+    override fun registerToServer(
+        nickname: String,
+        email: String,
+        profileImageUrl: String
+    ): ServerAuthData {
         TODO("Not yet implemented")
     }
 
