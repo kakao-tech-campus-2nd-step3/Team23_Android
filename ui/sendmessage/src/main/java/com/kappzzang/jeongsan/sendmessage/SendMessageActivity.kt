@@ -1,6 +1,5 @@
 package com.kappzzang.jeongsan.sendmessage
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -10,13 +9,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.intentcontract.SendMessageContract
-import com.kappzzang.jeongsan.navigation.MainPageNavigator
 import com.kappzzang.jeongsan.navigation.SendMessageNavigator
 import com.kappzzang.jeongsan.sendmessage.databinding.ActivitySendMessageBinding
 import com.kappzzang.jeongsan.util.IntegerFormatter.formatDecimalSeparator
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SendMessageActivity : AppCompatActivity() {
@@ -36,8 +34,8 @@ class SendMessageActivity : AppCompatActivity() {
         initRecyclerView()
         setTotalPriceObserver()
         setSendButton()
-
     }
+
     private fun handleIntent() {
         val groupId = intent.getStringExtra(SendMessageContract.GROUP_ID)
         viewModel.setGroupId(groupId)

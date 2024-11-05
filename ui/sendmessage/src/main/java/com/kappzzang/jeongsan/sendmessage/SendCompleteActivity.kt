@@ -9,6 +9,7 @@ import com.kappzzang.jeongsan.navigation.ExpenseListNavigator
 import com.kappzzang.jeongsan.sendmessage.databinding.ActivitySendCompleteBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 import nl.dionsegijn.konfetti.core.Angle
 import nl.dionsegijn.konfetti.core.Party
 import nl.dionsegijn.konfetti.core.Position
@@ -16,7 +17,6 @@ import nl.dionsegijn.konfetti.core.Rotation
 import nl.dionsegijn.konfetti.core.emitter.Emitter
 import nl.dionsegijn.konfetti.core.models.Shape
 import nl.dionsegijn.konfetti.core.models.Size
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class SendCompleteActivity : AppCompatActivity() {
@@ -92,7 +92,10 @@ class SendCompleteActivity : AppCompatActivity() {
         }
     }
     private fun startExpenseListActivity(groupId: String) {
-        val expenseIntent = expenseListNavigator.navigateToExpenseList(this@SendCompleteActivity, groupId.toString())
+        val expenseIntent = expenseListNavigator.navigateToExpenseList(
+            this@SendCompleteActivity,
+            groupId
+        )
         startActivity(expenseIntent)
         finish()
     }
