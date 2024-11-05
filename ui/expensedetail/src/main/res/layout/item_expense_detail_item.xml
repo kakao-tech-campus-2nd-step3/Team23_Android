@@ -19,6 +19,8 @@
         <variable
             name="item"
             type="com.kappzzang.jeongsan.data.ExpenseDetailUIData" />
+
+        <import type="android.view.View"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -34,6 +36,7 @@
             android:checked="@{item.selectedQuantity>0}"
             android:onCheckedChanged="@{itemCallback.onCheckedChange}"
             android:enabled="@{item.formEnabled}"
+            android:visibility="@{item.formEnabled?View.VISIBLE:View.INVISIBLE}"
             app:buttonTint="#49454F"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
