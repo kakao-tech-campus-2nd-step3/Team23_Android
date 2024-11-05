@@ -65,7 +65,7 @@ class AddExpenseViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             getCategoryListUseCase.invoke().onSuccess {
                 mList.emit(it)
-                it.lastOrNull()?.let{ item ->
+                it.lastOrNull()?.let { item ->
                     updateSelectedCategory(item.id)
                 }
             }
@@ -171,7 +171,7 @@ class AddExpenseViewModel @Inject constructor(
     }
 
     fun updateSelectedCategory(categoryId: String) {
-        categoryList.value.find{it.id == categoryId} ?.let {
+        categoryList.value.find { it.id == categoryId }?.let {
             _selectedCategory.value = it
         }
     }

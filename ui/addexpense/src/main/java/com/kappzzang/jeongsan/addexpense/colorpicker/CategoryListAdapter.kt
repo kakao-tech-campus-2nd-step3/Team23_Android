@@ -15,8 +15,7 @@ class CategoryListAdapter(private val onCategoryItemClickListener: (categoryId: 
             override fun areItemsTheSame(
                 oldItem: ExpenseCategoryUIItem,
                 newItem: ExpenseCategoryUIItem
-            ): Boolean =
-                oldItem.id == newItem.id
+            ): Boolean = oldItem.id == newItem.id
 
             override fun areContentsTheSame(
                 oldItem: ExpenseCategoryUIItem,
@@ -31,7 +30,7 @@ class CategoryListAdapter(private val onCategoryItemClickListener: (categoryId: 
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
-                onExpenseItemClickListener.invoke(binding.item?.id?:"")
+                onExpenseItemClickListener.invoke(binding.item?.id ?: "")
             }
         }
 

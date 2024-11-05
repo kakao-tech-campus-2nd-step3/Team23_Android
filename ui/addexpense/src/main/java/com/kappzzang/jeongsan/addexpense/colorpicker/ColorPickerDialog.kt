@@ -43,7 +43,7 @@ class ColorPickerDialog : DialogFragment() {
 
     private fun initiateRecyclerView() {
         binding.categoryListRecyclerview.apply {
-            adapter = CategoryListAdapter{
+            adapter = CategoryListAdapter {
                 activityViewModel.updateSelectedCategory(it)
             }
             layoutManager = LinearLayoutManager(context)

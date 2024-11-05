@@ -41,9 +41,9 @@ class ExpenseListFakeDatasource @Inject constructor(private val expenseDatabase:
     }
 
     private fun getCategoryFromId(id: String): String {
-        val r = id.toIntOrNull()?:0
-        val g = (r*4+3)%10
-        val b = (g*4+3)%10
+        val r = id.toIntOrNull() ?: 0
+        val g = (r * 4 + 3) % 10
+        val b = (g * 4 + 3) % 10
         return "#$r$r$g$g$b$b"
     }
 

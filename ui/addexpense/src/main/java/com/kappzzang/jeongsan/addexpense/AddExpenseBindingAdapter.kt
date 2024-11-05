@@ -1,9 +1,6 @@
 package com.kappzzang.jeongsan.addexpense
 
 import android.graphics.Color
-import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.core.widget.addTextChangedListener
@@ -13,7 +10,6 @@ import androidx.databinding.InverseBindingListener
 import androidx.recyclerview.widget.RecyclerView
 import com.kappzzang.jeongsan.addexpense.colorpicker.CategoryListAdapter
 import com.kappzzang.jeongsan.data.ExpenseCategoryUIItem
-import com.kappzzang.jeongsan.model.ExpenseCategory
 import kotlinx.coroutines.flow.StateFlow
 
 object AddExpenseBindingAdapter {
@@ -73,7 +69,6 @@ object AddExpenseBindingAdapter {
     @BindingAdapter("imageColor")
     @JvmStatic
     fun ImageView.setImageColor(backgroundColor: String) {
-
         val color: Int = try {
             Color.parseColor(backgroundColor)
         } catch (e: Exception) {
@@ -81,7 +76,6 @@ object AddExpenseBindingAdapter {
         }
         setColorFilter(color)
     }
-
 
     @BindingAdapter("categoryItems")
     @JvmStatic

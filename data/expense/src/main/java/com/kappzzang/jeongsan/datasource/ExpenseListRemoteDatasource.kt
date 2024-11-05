@@ -81,7 +81,7 @@ class ExpenseListRemoteDatasource @Inject constructor(
     suspend fun getCategoryList(): Result<GetCategoryListResponseDTO> {
         val response = try {
             receiptRetrofitService.getCategoryColorList()
-        } catch (e:Exception) {
+        } catch (e: Exception) {
             return Result.failure(e)
         }
 

@@ -74,6 +74,12 @@ class AddExpenseActivity : AppCompatActivity() {
         }
     }
 
+    private fun createColorPickerDialogFragment(): ColorPickerDialog {
+        val dialog = ColorPickerDialog()
+        dialog.dialog?.setCanceledOnTouchOutside(true)
+        return dialog
+    }
+
     private fun subscribeExpenseUploadState() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -107,6 +113,10 @@ class AddExpenseActivity : AppCompatActivity() {
             )
         )
         finish()
+    }
+
+    private fun showColorPickerDialog() {
+        colorPickerDialogFragment.show(supportFragmentManager, "colorPickerDialog")
     }
 
     private fun updateExpenseImage(imageBitmap: Bitmap?) {

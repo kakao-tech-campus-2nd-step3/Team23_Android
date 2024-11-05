@@ -17,13 +17,12 @@ class ExpenseFakeRepositoryImpl @Inject constructor(
 
     private val cachedData = HashMap<ExpenseListCachingKey, ExpenseListResponse>()
 
-    private fun getFakeCategoryList(): List<ExpenseCategory> =
-        listOf(
-            ExpenseCategory(id = "1", color = "#ff0000", name = "편의점"),
-            ExpenseCategory(id = "2", color = "#4f6622", name = "영화관"),
-            ExpenseCategory(id = "3", color = "#7777ff", name = "숙박"),
-            ExpenseCategory(id = "4", color = "#999999", name = "기타")
-        )
+    private fun getFakeCategoryList(): List<ExpenseCategory> = listOf(
+        ExpenseCategory(id = "1", color = "#ff0000", name = "편의점"),
+        ExpenseCategory(id = "2", color = "#4f6622", name = "영화관"),
+        ExpenseCategory(id = "3", color = "#7777ff", name = "숙박"),
+        ExpenseCategory(id = "4", color = "#999999", name = "기타")
+    )
 
     override fun getExpenseList(
         groupId: String,

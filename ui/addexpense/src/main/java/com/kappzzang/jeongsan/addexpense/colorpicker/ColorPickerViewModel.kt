@@ -5,13 +5,14 @@ import androidx.lifecycle.ViewModel
 import com.kappzzang.jeongsan.data.ExpenseCategoryUIItem
 import com.kappzzang.jeongsan.model.ExpenseCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
 
 @HiltViewModel
 class ColorPickerViewModel @Inject constructor() : ViewModel() {
-    private val _expenseCategoryUIItemList = MutableStateFlow<List<ExpenseCategoryUIItem>>(emptyList())
+    private val _expenseCategoryUIItemList =
+        MutableStateFlow<List<ExpenseCategoryUIItem>>(emptyList())
     val expenseCategoryUIItemList = _expenseCategoryUIItemList.asStateFlow()
 
     fun updateUIItemList(expenseCategoryList: List<ExpenseCategory>, selectedId: String) {
