@@ -85,6 +85,7 @@ class ExpenseListActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.selectedExpense.collect {
                     if (it.expenseId.isNotEmpty()) {
+                        viewModel.resetExpenseSelection()
                         startExpenseDetailActivity(it.expenseId, it.editable)
                     }
                 }
@@ -271,11 +272,12 @@ class ExpenseListActivity : AppCompatActivity() {
     // TODO: 선택한 지출 확인용 임시 코드
     private fun startExpenseDetailActivity(expenseId: String, isEditable: Boolean) {
         val groupId = viewModel.groupId.value
-        expenseDetailNavigator.navigateToExpenseDetail(
+        val intent = expenseDetailNavigator.navigateToExpenseDetail(
             packageContext = this,
             groupId = groupId,
             expenseId = expenseId,
             editable = isEditable
         )
+        startActivity(intent)
     }
 }

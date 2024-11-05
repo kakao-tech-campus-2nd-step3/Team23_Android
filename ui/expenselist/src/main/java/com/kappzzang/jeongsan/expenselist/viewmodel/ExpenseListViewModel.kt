@@ -47,4 +47,8 @@ class ExpenseListViewModel @Inject constructor(
     fun clickExpenseItem(expenseId: String, state: ExpenseState) {
         _selectedExpense.value = SelectedExpenseData(expenseId, (state == ExpenseState.NOT_CONFIRMED) || (state == ExpenseState.CONFIRMED))
     }
+
+    fun resetExpenseSelection() {
+        _selectedExpense.value = SelectedExpenseData("", false)
+    }
 }
