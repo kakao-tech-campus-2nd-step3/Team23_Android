@@ -47,19 +47,10 @@ class AddExpenseActivity : AppCompatActivity() {
         initiateRecyclerView()
         setContentView(binding.root)
 
-        // TODO: uploadingProgress를 Observe하여 ExpenseDetail로 이동하게 수정
         binding.addexpenseSubmitButton.setOnClickListener {
-            if (viewModel.uploadExpense()) {
-                startActivity(appNavigator.navigateToExpenseDetail(
-                    packageContext = this,
-                    groupId = viewModel.groupId.value,
-                    expenseId = "0"))
-                finish()
-                return@setOnClickListener
+            if (!viewModel.uploadExpense()) {
+                Toast.makeText(this, "지출 내역을 완성해주세요!", Toast.LENGTH_SHORT).show()
             }
-
-            // TODO: 값이 완전히 채워지지 않은 경우
-            Toast.makeText(this, "지출 내역을 완성해주세요!", Toast.LENGTH_SHORT).show()
         }
 
         lifecycleScope.launch {
@@ -69,6 +60,41 @@ class AddExpenseActivity : AppCompatActivity() {
                 }
             }
         }
+        subscribeExpenseUploadState()
+    }
+
+    private fun subscribeExpenseUploadState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uploadingProgress.collect { state ->
+                    when(state) {
+                        ExpenseUploadingProgress.NOT_STARTED -> {
+                            viewModel.setInputsLock(false)
+                        }
+                        ExpenseUploadingProgress.UPLOADING -> {
+                            viewModel.setInputsLock(true)
+                        }
+                        ExpenseUploadingProgress.UPLOAD_SUCCESS -> {
+                            startExpenseDetailActivityAndFinish()
+                        }
+                        ExpenseUploadingProgress.UPLOAD_FAILED -> {
+                            viewModel.setInputsLock(false)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun startExpenseDetailActivityAndFinish() {
+        startActivity(
+            appNavigator.navigateToExpenseDetail(
+                packageContext = this,
+                groupId = viewModel.groupId.value,
+                expenseId = viewModel.createdExpenseId.value
+            )
+        )
+        finish()
     }
 
     private fun updateExpenseImage(imageBitmap: Bitmap?) {
