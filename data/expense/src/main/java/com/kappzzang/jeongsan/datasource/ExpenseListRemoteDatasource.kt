@@ -9,8 +9,8 @@ import com.kappzzang.jeongsan.mapper.ExpenseEntityMapper
 import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.model.ReceiptItem
 import com.kappzzang.jeongsan.util.DateConverter.formatToTransferString
-import javax.inject.Inject
 import retrofit2.Response
+import javax.inject.Inject
 
 class ExpenseListRemoteDatasource @Inject constructor(
     private val receiptRetrofitService: ReceiptRetrofitService
@@ -87,9 +87,9 @@ class ExpenseListRemoteDatasource @Inject constructor(
                 if (response.code() / 100 == 2) {
                     response.body()?.let {
                         return Result.success<T>(it)
-                    } ?: throw IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
+                    } ?: return Result.failure(IllegalStateException("알 수 없는 오류 발생: ${response.message()}"))
                 } else {
-                    throw IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
+                    return Result.failure(IllegalStateException("알 수 없는 오류 발생: ${response.message()}"))
                 }
             }
         }
