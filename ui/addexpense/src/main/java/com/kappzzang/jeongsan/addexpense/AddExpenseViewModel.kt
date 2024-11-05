@@ -5,6 +5,7 @@ import android.util.Base64
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.data.ExpenseItemInput
+import com.kappzzang.jeongsan.model.ExpenseCategory
 import com.kappzzang.jeongsan.model.OcrResultResponse
 import com.kappzzang.jeongsan.model.ReceiptDetailItem
 import com.kappzzang.jeongsan.model.ReceiptItem
@@ -36,6 +37,8 @@ class AddExpenseViewModel @Inject constructor(
 
     private val _inputsLocked = MutableStateFlow(false)
     private val _createdExpenseId = MutableStateFlow("")
+    private val _selectedCategoryId = MutableStateFlow("")
+    private val _categoryList = MutableStateFlow<List<ExpenseCategory>>(emptyList())
     private val _uploadingProgress = MutableStateFlow(ExpenseUploadingProgress.NOT_STARTED)
     private val _expenseImageBitmap = MutableStateFlow<Bitmap?>(null)
     private val _manualMode = MutableStateFlow(true)
@@ -52,6 +55,9 @@ class AddExpenseViewModel @Inject constructor(
     val expenseName = MutableStateFlow("Demo")
     val groupId = _groupId.asStateFlow()
     val createdExpenseId = _createdExpenseId.asStateFlow()
+
+    var selectedCategoryId = _selectedCategoryId.asStateFlow()
+    val categoryList = _categoryList.asStateFlow()
 
     fun setManualMode(mode: ManualMode) {
         viewModelScope.launch(Dispatchers.Main) {
@@ -151,6 +157,10 @@ class AddExpenseViewModel @Inject constructor(
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
         val byteArray = byteArrayOutputStream.toByteArray()
         return Base64.encodeToString(byteArray, Base64.DEFAULT)
+    }
+
+    fun updateSelectedCategoryId(id: String) {
+        _selectedCategoryId.value = id
     }
 
     private fun checkItemValid(): Boolean {

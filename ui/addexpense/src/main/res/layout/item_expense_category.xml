@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View"/>
+
+        <variable
+            name="item"
+            type="com.kappzzang.jeongsan.data.ExpenseCategoryUIItem" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:paddingVertical="5dp">
+
+        <ImageView
+            android:id="@+id/expense_category_color_dot_imageview"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/add_expense_color_dot"
+            imageColor="@{item.color}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="UseAppTint" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/expense_category_color_dot_imageview"
+            app:layout_constraintRight_toLeftOf="@id/expense_category_check_imageview"
+            android:textSize="18sp"
+            android:text="파랑"
+            android:gravity="center_vertical"
+            />
+
+
+        <ImageView
+            android:id="@+id/expense_category_check_imageview"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/baseline_check_24"
+            android:tint="@color/blue500"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="@{item.selected?View.VISIBLE:View.INVISIBLE}"
+            tools:ignore="UseAppTint" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

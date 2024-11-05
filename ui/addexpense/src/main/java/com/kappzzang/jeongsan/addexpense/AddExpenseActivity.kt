@@ -14,6 +14,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.kappzzang.jeongsan.addexpense.colorpicker.ColorPickerDialog
 import com.kappzzang.jeongsan.addexpense.databinding.ActivityAddExpenseBinding
 import com.kappzzang.jeongsan.intentcontract.AddExpenseContract
 import com.kappzzang.jeongsan.model.OcrResultResponse
@@ -28,6 +29,9 @@ import kotlinx.coroutines.launch
 class AddExpenseActivity : AppCompatActivity() {
     @Inject
     lateinit var appNavigator: ExpenseDetailNavigator
+    private val colorPickerDialogFragment: ColorPickerDialog by lazy {
+        createColorPickerDialogFragment()
+    }
     private val viewModel: AddExpenseViewModel by viewModels()
     private val binding: ActivityAddExpenseBinding by lazy {
         ActivityAddExpenseBinding.inflate(
@@ -65,6 +69,9 @@ class AddExpenseActivity : AppCompatActivity() {
             }
         }
         subscribeExpenseUploadState()
+        binding.expenseSelectedCategory.setOnClickListener {
+            showColorPickerDialog()
+        }
     }
 
     private fun subscribeExpenseUploadState() {
