@@ -57,19 +57,28 @@ class ExpenseDetailActivity : AppCompatActivity() {
     }
 
     private fun initiateViewModel() {
-        getExpenseId()
+        getIntentData()
     }
 
-    private fun getExpenseId() {
+    private fun getIntentData() {
         val expenseId = intent?.getParcelableData<String>(
             ExpenseDetailContract.EXPENSE_ID
-        )
-
-        expenseId?.let {
-            viewModel.setInitialData(it, "")
-        } ?: let {
-            Toast.makeText(this, "지출 정보를 불러오는 데 실패했습니다.", Toast.LENGTH_LONG).show()
-            viewModel.setInitialData("0", "")
+        )?:let {
+            throwExpenseDataLoadFailError()
+            return
         }
+        val groupId = intent?.getParcelableData<String>(
+            ExpenseDetailContract.GROUP_ID
+        )?:let {
+            throwExpenseDataLoadFailError()
+            return
+        }
+
+        viewModel.setInitialData(expenseId, groupId)
+    }
+
+    private fun throwExpenseDataLoadFailError() {
+        Toast.makeText(this, "지출 정보를 불러오는 데 실패했습니다.", Toast.LENGTH_LONG).show()
+        finish()
     }
 }
