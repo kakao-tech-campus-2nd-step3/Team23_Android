@@ -63,7 +63,7 @@ class ExpenseDetailViewModelTest {
             )
         )
 
-        viewModel.setInitialData("testId", "")
+        viewModel.setInitialData("testId", "", true)
         advanceUntilIdle()
 
         viewModel.updateItemCheck(false, 0)
@@ -83,7 +83,7 @@ class ExpenseDetailViewModelTest {
                 )
             )
         )
-        viewModel.setInitialData("testId", "")
+        viewModel.setInitialData("testId", "", true)
         advanceUntilIdle()
 
         val testSelected = 10
