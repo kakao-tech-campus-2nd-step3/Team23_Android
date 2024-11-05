@@ -47,10 +47,13 @@ class AddExpenseActivity : AppCompatActivity() {
         initiateRecyclerView()
         setContentView(binding.root)
 
-        // TODO: 임시 연결용 코드
+        // TODO: uploadingProgress를 Observe하여 ExpenseDetail로 이동하게 수정
         binding.addexpenseSubmitButton.setOnClickListener {
             if (viewModel.uploadExpense()) {
-                startActivity(appNavigator.navigateToExpenseDetail(this))
+                startActivity(appNavigator.navigateToExpenseDetail(
+                    packageContext = this,
+                    groupId = viewModel.groupId.value,
+                    expenseId = "0"))
                 finish()
                 return@setOnClickListener
             }

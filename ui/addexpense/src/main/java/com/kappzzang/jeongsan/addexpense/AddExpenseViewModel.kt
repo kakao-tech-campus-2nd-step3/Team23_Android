@@ -38,7 +38,7 @@ class AddExpenseViewModel @Inject constructor(
     private val _expenseImageBitmap = MutableStateFlow<Bitmap?>(null)
     private val _manualMode = MutableStateFlow(true)
     private val _uploadedImage = MutableStateFlow(false)
-    private val groupId = MutableStateFlow("")
+    private val _groupId = MutableStateFlow("")
 
     val uploadingProgress = _uploadingProgress.asStateFlow()
     val expenseImageBitmap: StateFlow<Bitmap?> = _expenseImageBitmap.asStateFlow()
@@ -47,6 +47,7 @@ class AddExpenseViewModel @Inject constructor(
     val expenseItemList: StateFlow<List<ExpenseItemInput>> =
         _expenseItemList.asStateFlow()
     val expenseName = MutableStateFlow("Demo")
+    val groupId = _groupId.asStateFlow()
 
     fun setManualMode(mode: ManualMode) {
         viewModelScope.launch(Dispatchers.Main) {
@@ -73,7 +74,7 @@ class AddExpenseViewModel @Inject constructor(
     }
 
     fun initGroupId(groupId: String) {
-        this.groupId.value = groupId
+        this._groupId.value = groupId
     }
 
     fun addNewExpense() {
@@ -120,7 +121,7 @@ class AddExpenseViewModel @Inject constructor(
         )
 
         viewModelScope.launch(ioDispatcher) {
-            uploadExpenseUseCase(receiptItem, groupId.value)
+            uploadExpenseUseCase(receiptItem, _groupId.value)
                 .onSuccess {
                     _uploadingProgress.emit(ExpenseUploadingProgress.UPLOAD_SUCCESS)
                 }

@@ -140,7 +140,9 @@ class ExpenseListActivity : AppCompatActivity() {
     }
 
     private fun startAddExpenseActivity() {
-        val intent = addExpenseNavigator.navigateToAddExpenseManually(this)
+        val intent = addExpenseNavigator.navigateToAddExpenseManually(
+            packageContext = this,
+            groupId = viewModel.groupId.value)
         startActivity(intent)
     }
 
@@ -149,7 +151,11 @@ class ExpenseListActivity : AppCompatActivity() {
         receiptImage: Uri
     ) {
         val intent =
-            addExpenseNavigator.navigateToAddExpenseWithImage(this, ocrResult, receiptImage)
+            addExpenseNavigator.navigateToAddExpenseWithImage(
+                packageContext = this,
+                ocrResponse = ocrResult,
+                image = receiptImage,
+                groupId = viewModel.groupId.value)
         startActivity(intent)
     }
 
@@ -222,7 +228,6 @@ class ExpenseListActivity : AppCompatActivity() {
 
     private fun setOnAddExpenseFabClickedListener() {
         val popupMenu = PopupMenu(this, binding.addExpenseFab)
-        val groupId = viewModel.groupId.value
         popupMenu.menuInflater.inflate(R.menu.menu_add_expense, popupMenu.menu)
         popupMenu.setForceShowIcon(true)
 
