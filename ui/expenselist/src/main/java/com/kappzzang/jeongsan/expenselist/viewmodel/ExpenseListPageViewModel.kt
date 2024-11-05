@@ -62,8 +62,13 @@ open class ExpenseListPageViewModel @Inject constructor(
         cancelPreviousJob()
         expenseListFetchingJob = viewModelScope.launch(Dispatchers.IO) {
             getExpenseListUseCase(groupId, expenseState)
-                .collect {
-                    expenseList.emit(it)
+                .collect { result ->
+                    result.onSuccess {
+                        expenseList.emit(it)
+                    }
+                        .onFailure {
+                            // TODO: ExpenseList 조회 실패 시 예외 처리
+                        }
                 }
         }
     }

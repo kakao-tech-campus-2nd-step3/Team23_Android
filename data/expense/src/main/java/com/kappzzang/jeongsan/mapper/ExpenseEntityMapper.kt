@@ -1,6 +1,7 @@
 package com.kappzzang.jeongsan.mapper
 
 import com.kappzzang.jeongsan.entity.ExpenseItemEntity
+import com.kappzzang.jeongsan.entity.ResponseWithExpenseIdDTO
 import com.kappzzang.jeongsan.entity.expensedetail.ExpenseDetailEntity
 import com.kappzzang.jeongsan.entity.expensedetail.ExpenseDetailItemEntity
 import com.kappzzang.jeongsan.entity.expenselist.ExpenseRemoteEntity
@@ -53,18 +54,19 @@ object ExpenseEntityMapper {
         ),
         expenseImageUrl = entity.imageUrl,
         expenseDetails = entity.detailItems.map {
-            mapExpenseDetailEntityToModel(it)
+            mapExpenseDetailItemEntityToModel(it)
         }
     )
 
-    fun mapExpenseDetailEntityToModel(entity: ExpenseDetailItemEntity): ExpenseDetailItem =
-        ExpenseDetailItem(
-            selectedQuantity = entity.quantityConsumed,
-            itemQuantity = entity.quantity,
-            id = entity.id.toString(),
-            itemPrice = entity.unitPrice,
-            itemName = entity.name
-        )
+    private fun mapExpenseDetailItemEntityToModel(
+        entity: ExpenseDetailItemEntity
+    ): ExpenseDetailItem = ExpenseDetailItem(
+        selectedQuantity = entity.quantityConsumed,
+        itemQuantity = entity.quantity,
+        id = entity.id.toString(),
+        itemPrice = entity.unitPrice,
+        itemName = entity.name
+    )
 
     fun mapReceiptDetailItemToExpenseItemEntity(model: ReceiptDetailItem): ExpenseItemEntity =
         ExpenseItemEntity(
@@ -92,4 +94,7 @@ object ExpenseEntityMapper {
             }
         }
     }
+
+    fun mapResponseWithExpenseEntityToModel(entity: ResponseWithExpenseIdDTO): String =
+        entity.expenseId
 }

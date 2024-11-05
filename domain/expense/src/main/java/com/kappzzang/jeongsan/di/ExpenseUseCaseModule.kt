@@ -2,12 +2,10 @@ package com.kappzzang.jeongsan.di
 
 import com.kappzzang.jeongsan.repository.ExpenseDetailRepository
 import com.kappzzang.jeongsan.repository.ExpenseRepository
-import com.kappzzang.jeongsan.repository.ReceiptRepository
 import com.kappzzang.jeongsan.repository.TransferRepository
 import com.kappzzang.jeongsan.repository.UserInfoRepository
 import com.kappzzang.jeongsan.usecase.EditExpenseDetailUseCase
 import com.kappzzang.jeongsan.usecase.GetExpenseDetailUseCase
-import com.kappzzang.jeongsan.usecase.GetExpenseUseCase
 import com.kappzzang.jeongsan.usecase.GetTransferInfoUseCase
 import com.kappzzang.jeongsan.usecase.SendTransferMessageUseCase
 import com.kappzzang.jeongsan.usecase.UploadExpenseUseCase
@@ -24,16 +22,12 @@ object ExpenseUseCaseModule {
         GetExpenseDetailUseCase(expenseDetailRepository)
 
     @Provides
-    fun provideGetExpenseUseCase(expenseRepository: ExpenseRepository) =
-        GetExpenseUseCase(expenseRepository)
-
-    @Provides
     fun provideEditExpenseDetailUseCase(expenseDetailRepository: ExpenseDetailRepository) =
         EditExpenseDetailUseCase(expenseDetailRepository)
 
     @Provides
-    fun provideUploadExpenseUseCase(receiptRepository: ReceiptRepository) =
-        UploadExpenseUseCase(receiptRepository)
+    fun provideUploadExpenseUseCase(expenseRepository: ExpenseRepository) =
+        UploadExpenseUseCase(expenseRepository)
 
     @Provides
     fun provideGetTransferInfoUseCase(transferRepository: TransferRepository) =
