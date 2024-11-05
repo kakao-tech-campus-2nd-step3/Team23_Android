@@ -23,13 +23,31 @@ class SendCompleteActivity : AppCompatActivity() {
     @Inject
     lateinit var expenseListNavigator: ExpenseListNavigator
     private val viewModel: SendCompleteViewModel by viewModels()
+    private val binding: ActivitySendCompleteBinding by lazy {
+        ActivitySendCompleteBinding.inflate(layoutInflater)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val binding = ActivitySendCompleteBinding.inflate(layoutInflater)
         setContentView(binding.root)
         handleIntent()
+        setCongratulationsEffect()
+
+        val closeTimer = getCountTimer()
+        closeTimer.start()
+
+        binding.closeButton.setOnClickListener {
+            closeTimer.cancel()
+            endActivity()
+        }
+    }
+
+    private fun handleIntent() {
+        val groupId = intent.getStringExtra(SendMessageContract.GROUP_ID)
+        viewModel.setGroupId(groupId)
+    }
+
+    private fun setCongratulationsEffect() {
         binding.congratulations.start(
             Party(
                 speed = 40f,
@@ -46,11 +64,13 @@ class SendCompleteActivity : AppCompatActivity() {
                 position = Position.Relative(0.5, 1.0)
             )
         )
+    }
 
+    private fun getCountTimer(): CountDownTimer {
         binding.timeProgressIndicator.max = 100
         binding.timeTextView.text = CLOSE_TIME.toString()
 
-        val closeTimer = object : CountDownTimer(CLOSE_TIME * 1000L, TIME_INTERVAL) {
+        return object : CountDownTimer(CLOSE_TIME * 1000L, TIME_INTERVAL) {
             override fun onTick(millisUntilFinished: Long) {
                 val remainTime = (millisUntilFinished / 1000L) + 1L
                 binding.timeTextView.text = remainTime.toString()
@@ -64,17 +84,8 @@ class SendCompleteActivity : AppCompatActivity() {
                 endActivity()
             }
         }
-        closeTimer.start()
+    }
 
-        binding.closeButton.setOnClickListener {
-            closeTimer.cancel()
-            endActivity()
-        }
-    }
-    private fun handleIntent() {
-        val groupId = intent.getStringExtra(SendMessageContract.GROUP_ID)
-        viewModel.setGroupId(groupId)
-    }
     private fun endActivity() {
         viewModel.groupId.value?.let {
             startExpenseListActivity(it)
