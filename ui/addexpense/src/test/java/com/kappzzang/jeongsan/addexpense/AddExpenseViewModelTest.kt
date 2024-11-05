@@ -160,7 +160,7 @@ class AddExpenseViewModelTest {
         val testBitmap = mockk<Bitmap>()
         val testBase64 = "test_base64"
         every { viewModel.convertBitmapToBase64(any()) } returns testBase64
-        coEvery { mockUploadExpenseUseCase(any(), any()) } returns "test success"
+        coEvery { mockUploadExpenseUseCase(any(), any()) } returns Result.success("test success")
 
         val testOcrResult = OcrResultResponse.OcrSuccess(
             name = "Test Receipt",
