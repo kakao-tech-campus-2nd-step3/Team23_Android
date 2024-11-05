@@ -18,7 +18,7 @@
 
         <variable
             name="item"
-            type="com.kappzzang.jeongsan.model.ExpenseDetailItem" />
+            type="com.kappzzang.jeongsan.data.ExpenseDetailUIData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,6 +33,7 @@
             android:layout_height="0dp"
             android:checked="@{item.selectedQuantity>0}"
             android:onCheckedChanged="@{itemCallback.onCheckedChange}"
+            android:enabled="@{item.formEnabled}"
             app:buttonTint="#49454F"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -83,7 +84,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginVertical="8dp"
-            android:enabled="@{item.selectedQuantity>0}"
+            android:enabled="@{(item.selectedQuantity>0 &amp;&amp; item.formEnabled)}"
             android:paddingHorizontal="0dp"
             app:boxBackgroundColor="@color/white"
             app:endIconMinSize="24dp"

@@ -91,7 +91,8 @@ class AddExpenseActivity : AppCompatActivity() {
             appNavigator.navigateToExpenseDetail(
                 packageContext = this,
                 groupId = viewModel.groupId.value,
-                expenseId = viewModel.createdExpenseId.value
+                expenseId = viewModel.createdExpenseId.value,
+                editable = true
             )
         )
         finish()

@@ -9,6 +9,7 @@ import android.widget.CompoundButton
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.kappzzang.jeongsan.data.ExpenseDetailUIData
 import com.kappzzang.jeongsan.expensedetail.databinding.ItemExpenseDetailItemBinding
 import com.kappzzang.jeongsan.model.ExpenseDetailItem
 
@@ -27,23 +28,23 @@ interface ExpenseDetailCallback {
 class ExpenseDetailItemListAdapter(
     private val context: Context,
     private val callback: ExpenseDetailCallback
-) : ListAdapter<ExpenseDetailItem, ExpenseDetailItemListAdapter.ExpenseDetailItemViewHolder>(
+) : ListAdapter<ExpenseDetailUIData, ExpenseDetailItemListAdapter.ExpenseDetailItemViewHolder>(
     object :
-        DiffUtil.ItemCallback<ExpenseDetailItem>() {
+        DiffUtil.ItemCallback<ExpenseDetailUIData>() {
         override fun areItemsTheSame(
-            oldItem: ExpenseDetailItem,
-            newItem: ExpenseDetailItem
+            oldItem: ExpenseDetailUIData,
+            newItem: ExpenseDetailUIData
         ): Boolean = oldItem.id == newItem.id
 
         override fun areContentsTheSame(
-            oldItem: ExpenseDetailItem,
-            newItem: ExpenseDetailItem
+            oldItem: ExpenseDetailUIData,
+            newItem: ExpenseDetailUIData
         ): Boolean = oldItem == newItem
     }
 ) {
     class ExpenseDetailItemViewHolder(private val binding: ItemExpenseDetailItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: ExpenseDetailItem) {
+        fun bind(item: ExpenseDetailUIData) {
             binding.item = item
             binding.isPlaceholder =
                 (this.bindingAdapterPosition + 1 == this.bindingAdapter?.itemCount)
