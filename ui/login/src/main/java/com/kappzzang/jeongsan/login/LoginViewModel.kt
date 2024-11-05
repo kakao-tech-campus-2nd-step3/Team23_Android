@@ -12,8 +12,9 @@ import com.kakao.sdk.common.model.ClientErrorCause
 import com.kappzzang.jeongsan.data.KakaoAuthData
 import com.kappzzang.jeongsan.model.AuthenticationResult
 import com.kappzzang.jeongsan.usecase.AuthenticateWithKakaoUseCase
+import com.kappzzang.jeongsan.usecase.AuthenticateWithServerUseCase
 import com.kappzzang.jeongsan.usecase.AuthorizeWithKakaoUseCase
-import com.kappzzang.jeongsan.usecase.RegisterWithKakaoUseCase
+import com.kappzzang.jeongsan.usecase.GetUserInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
@@ -31,7 +32,8 @@ class LoginViewModel @Inject constructor(
     private val application: Application,
     private val authorizeWithKakaoUseCase: AuthorizeWithKakaoUseCase,
     private val authenticateWithKakaoUseCase: AuthenticateWithKakaoUseCase,
-    private val registerUseCase: RegisterWithKakaoUseCase,
+    private val authenticateWithServerUseCase: AuthenticateWithServerUseCase,
+    private val getUserInfo: GetUserInfoUseCase,
     private val ioDispatcher: CoroutineDispatcher
 ) : AndroidViewModel(application) {
     private val authStatus by lazy {
@@ -104,14 +106,23 @@ class LoginViewModel @Inject constructor(
     fun onKakaoAuthorizationSuccess(token: OAuthToken?) {
         token?.let {
             _kakaoLoginStatus.value = KakaoLoginStatus.ON_LOGIN
-            authorizeWithKakao(mapOAuthTokenToKakaoAuthData(token))
+            viewModelScope.launch(ioDispatcher) {
+                authenticateWithServer()
+                authorizeWithKakao(mapOAuthTokenToKakaoAuthData(token))
+            }
         }
     }
 
-    private fun authorizeWithKakao(authData: KakaoAuthData) {
-        viewModelScope.launch(ioDispatcher) {
-            authorizeWithKakaoUseCase(authData)
-            _loginStatus.emit(LoginStatus.LOGIN_COMPLETE)
+    private suspend fun authorizeWithKakao(authData: KakaoAuthData) {
+        authorizeWithKakaoUseCase(authData)
+        _loginStatus.emit(LoginStatus.LOGIN_COMPLETE)
+    }
+
+    private suspend fun authenticateWithServer() {
+        getUserInfo()?.let {
+            authenticateWithServerUseCase(it.name, it.email, it.profileUrl)
+        } ?: run {
+            _loginStatus.emit(LoginStatus.FAILED)
         }
     }
 }
