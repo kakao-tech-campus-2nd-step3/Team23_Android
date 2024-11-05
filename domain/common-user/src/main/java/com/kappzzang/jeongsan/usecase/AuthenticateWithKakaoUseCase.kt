@@ -1,6 +1,6 @@
 package com.kappzzang.jeongsan.usecase
 
-import com.kappzzang.jeongsan.data.AuthData
+import com.kappzzang.jeongsan.data.KakaoAuthData
 import com.kappzzang.jeongsan.model.AuthenticationResult
 import com.kappzzang.jeongsan.repository.KakaoAuthenticationRepository
 import com.kappzzang.jeongsan.util.AuthenticationRepository
@@ -12,27 +12,24 @@ class AuthenticateWithKakaoUseCase @Inject constructor(
     private val authenticationRepository: AuthenticationRepository,
     private val kakaoAuthenticationRepository: KakaoAuthenticationRepository
 ) {
-    private fun updateAccessToken(old: AuthData, new: AuthData): AuthData =
+    private fun updateAccessToken(old: KakaoAuthData, new: KakaoAuthData): KakaoAuthData =
         if (new.kakaoRefreshToken.isEmpty()) {
             new.copy(
-                kakaoRefreshToken = old.kakaoRefreshToken,
-                jwt = old.jwt
+                kakaoRefreshToken = old.kakaoRefreshToken
             )
         } else {
-            new.copy(
-                jwt = old.jwt
-            )
+            new.copy()
         }
 
     private fun getCurrentTime(): Long = System.currentTimeMillis()
 
-    private fun checkNeedToRefresh(data: AuthData): Boolean =
+    private fun checkNeedToRefresh(data: KakaoAuthData): Boolean =
         (data.accessTokenExpirationTime - getCurrentTime()) < REFRESH_TIME_WITHIN_MILLISECONDS
 
-    private fun checkIsEmptyAuthData(authData: AuthData): Boolean = authData.kakaoAccessToken == ""
+    private fun checkIsEmptyAuthData(authData: KakaoAuthData): Boolean = authData.kakaoAccessToken == ""
 
     operator fun invoke(): Flow<AuthenticationResult> {
-        val authDataFlow = authenticationRepository.getAuthData()
+        val authDataFlow = authenticationRepository.getKakaoAuthData()
 
         return authDataFlow.map { authData ->
             if (checkIsEmptyAuthData(authData)) {
@@ -42,7 +39,7 @@ class AuthenticateWithKakaoUseCase @Inject constructor(
                     val newData = kakaoAuthenticationRepository.refreshKakaoToken(authData)
                     val updateData = updateAccessToken(authData, newData)
 
-                    authenticationRepository.updateAuthData(updateData)
+                    authenticationRepository.updateKakaoAuthData(updateData)
                     AuthenticationResult.AuthenticationSuccess(updateData)
                 } else {
                     AuthenticationResult.AuthenticationSuccess(authData)

@@ -1,12 +1,12 @@
 package com.kappzzang.jeongsan
 
-import com.kappzzang.jeongsan.data.AuthData
+import com.kappzzang.jeongsan.data.KakaoAuthData
 import com.kappzzang.jeongsan.entity.KakaoRefreshTokenResponseDTO
-import com.kappzzang.jeongsan.mapper.KakaoOAuthTokenAuthDataMapper
+import com.kappzzang.jeongsan.mapper.KakaoOAuthTokenKakaoAuthDataMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
-class KakaoOAuthTokenAuthDataMapperTest {
+class KakaoOAuthTokenKakaoAuthDataMapperTest {
     private fun getSampleDTO() = KakaoRefreshTokenResponseDTO(
         refreshToken = null,
         tokenType = "type",
@@ -26,7 +26,7 @@ class KakaoOAuthTokenAuthDataMapperTest {
         )
 
         // when
-        val mapped = KakaoOAuthTokenAuthDataMapper.mapRefreshDtoToAuthData(responseDto, null)
+        val mapped = KakaoOAuthTokenKakaoAuthDataMapper.mapRefreshDtoToAuthData(responseDto, null)
 
         // then
         assertThat(mapped.kakaoRefreshToken).isEqualTo(refreshToken)
@@ -41,15 +41,14 @@ class KakaoOAuthTokenAuthDataMapperTest {
         val responseDto = getSampleDTO().copy(
             accessToken = newAccessToken
         )
-        val authData = AuthData(
+        val authData = KakaoAuthData(
             kakaoAccessToken = "oldAccessToken",
             kakaoRefreshToken = "refreshToken",
-            accessTokenExpirationTime = outdatedExpirationTime,
-            jwt = "jwt"
+            accessTokenExpirationTime = outdatedExpirationTime
         )
 
         // when
-        val mapped = KakaoOAuthTokenAuthDataMapper.mapRefreshDtoToAuthData(responseDto, authData)
+        val mapped = KakaoOAuthTokenKakaoAuthDataMapper.mapRefreshDtoToAuthData(responseDto, authData)
 
         // then
         assertThat(mapped.kakaoAccessToken).isEqualTo(newAccessToken)
@@ -62,19 +61,17 @@ class KakaoOAuthTokenAuthDataMapperTest {
         // given
         val refreshToken = "refresh"
         val jwt = "jwt"
-        val authData = AuthData(
+        val authData = KakaoAuthData(
             kakaoAccessToken = "",
             kakaoRefreshToken = refreshToken,
-            accessTokenExpirationTime = 0,
-            jwt = jwt
+            accessTokenExpirationTime = 0
         )
         val responseDTO = getSampleDTO()
 
         // when
-        val mapped = KakaoOAuthTokenAuthDataMapper.mapRefreshDtoToAuthData(responseDTO, authData)
+        val mapped = KakaoOAuthTokenKakaoAuthDataMapper.mapRefreshDtoToAuthData(responseDTO, authData)
 
         // then
-        assertThat(mapped.jwt).isEqualTo(jwt)
         assertThat(mapped.kakaoRefreshToken).isEqualTo(refreshToken)
     }
 
@@ -84,18 +81,17 @@ class KakaoOAuthTokenAuthDataMapperTest {
         val refreshToken = "refresh"
         val newRefreshToken = "newRefresh"
 
-        val authData = AuthData(
+        val authData = KakaoAuthData(
             kakaoAccessToken = "",
             kakaoRefreshToken = refreshToken,
-            accessTokenExpirationTime = 0,
-            jwt = "jwt"
+            accessTokenExpirationTime = 0
         )
         val responseDTO = getSampleDTO().copy(
             refreshToken = newRefreshToken
         )
 
         // when
-        val mapped = KakaoOAuthTokenAuthDataMapper.mapRefreshDtoToAuthData(responseDTO, authData)
+        val mapped = KakaoOAuthTokenKakaoAuthDataMapper.mapRefreshDtoToAuthData(responseDTO, authData)
 
         // then
         assertThat(mapped.kakaoRefreshToken).isEqualTo(newRefreshToken)

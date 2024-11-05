@@ -1,6 +1,6 @@
 package com.kappzzang.jeongsan
 
-import com.kappzzang.jeongsan.data.AuthData
+import com.kappzzang.jeongsan.data.KakaoAuthData
 import com.kappzzang.jeongsan.model.AuthenticationResult
 import com.kappzzang.jeongsan.repository.KakaoAuthenticationRepository
 import com.kappzzang.jeongsan.usecase.AuthenticateWithKakaoUseCase
@@ -26,14 +26,13 @@ class AuthenticateWithKakaoUseCaseTest {
     @Test
     fun `Access 토큰이 존재하지 않으면 NoToken을 리턴한다`() {
         // given
-        val emptyAuthData = AuthData(
-            jwt = null,
+        val emptyAuthData = KakaoAuthData(
             kakaoAccessToken = "",
             kakaoRefreshToken = "",
             accessTokenExpirationTime = 0
         )
 
-        every { mockAuthenticationRepository.getAuthData() } returns flow { emit(emptyAuthData) }
+        every { mockAuthenticationRepository.getKakaoAuthData() } returns flow { emit(emptyAuthData) }
 
         // when
         val useCase = AuthenticateWithKakaoUseCase(
@@ -52,14 +51,13 @@ class AuthenticateWithKakaoUseCaseTest {
     fun `만료 기한이 얼마 남지 않은 AccessToken은 Refresh하여 리턴한다`() {
         // given
         val expirationTime = System.currentTimeMillis() + 1000L * 60
-        val authData = AuthData(
-            jwt = null,
+        val authData = KakaoAuthData(
             kakaoAccessToken = "token",
             kakaoRefreshToken = "refresh",
             accessTokenExpirationTime = expirationTime
         )
 
-        every { mockAuthenticationRepository.getAuthData() } returns flow { emit(authData) }
+        every { mockAuthenticationRepository.getKakaoAuthData() } returns flow { emit(authData) }
 
         // when
         val useCase = AuthenticateWithKakaoUseCase(
@@ -84,21 +82,19 @@ class AuthenticateWithKakaoUseCaseTest {
         val oldJwt = "jwt"
         val newExpirationTime = System.currentTimeMillis() + 500_000L
 
-        val authData = AuthData(
-            jwt = oldJwt,
+        val authData = KakaoAuthData(
             kakaoAccessToken = "oldAccessToken",
             kakaoRefreshToken = "refreshToken",
             accessTokenExpirationTime = System.currentTimeMillis()
         )
 
-        val newData = AuthData(
-            jwt = "",
+        val newData = KakaoAuthData(
             kakaoAccessToken = newAccessToken,
             kakaoRefreshToken = newRefreshToken,
             accessTokenExpirationTime = newExpirationTime
         )
 
-        every { mockAuthenticationRepository.getAuthData() } returns flow { emit(authData) }
+        every { mockAuthenticationRepository.getKakaoAuthData() } returns flow { emit(authData) }
         coEvery { mockKakaoAuthenticationRepository.refreshKakaoToken(any()) } returns newData
 
         // when
@@ -116,7 +112,6 @@ class AuthenticateWithKakaoUseCaseTest {
             assertThat(resultAuthData?.kakaoAccessToken).isEqualTo(newAccessToken)
             assertThat(resultAuthData?.kakaoRefreshToken).isEqualTo(newRefreshToken)
             assertThat(resultAuthData?.accessTokenExpirationTime).isEqualTo(newExpirationTime)
-            assertThat(resultAuthData?.jwt).isEqualTo(oldJwt)
         }
     }
 }

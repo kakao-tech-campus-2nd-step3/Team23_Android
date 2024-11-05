@@ -9,7 +9,7 @@ import com.kakao.sdk.common.model.AuthError
 import com.kakao.sdk.common.model.AuthErrorCause
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
-import com.kappzzang.jeongsan.data.AuthData
+import com.kappzzang.jeongsan.data.KakaoAuthData
 import com.kappzzang.jeongsan.model.AuthenticationResult
 import com.kappzzang.jeongsan.usecase.AuthenticateWithKakaoUseCase
 import com.kappzzang.jeongsan.usecase.AuthorizeWithKakaoUseCase
@@ -81,11 +81,10 @@ class LoginViewModel @Inject constructor(
             .show()
     }
 
-    private fun mapOAuthTokenToAuthData(token: OAuthToken): AuthData = AuthData(
+    private fun mapOAuthTokenToKakaoAuthData(token: OAuthToken): KakaoAuthData = KakaoAuthData(
         kakaoAccessToken = token.accessToken,
         kakaoRefreshToken = token.refreshToken,
-        accessTokenExpirationTime = token.accessTokenExpiresAt.time,
-        jwt = null
+        accessTokenExpirationTime = token.accessTokenExpiresAt.time
     )
 
     fun onKakaoAuthorizationFailure(error: Throwable?) {
@@ -105,11 +104,11 @@ class LoginViewModel @Inject constructor(
     fun onKakaoAuthorizationSuccess(token: OAuthToken?) {
         token?.let {
             _kakaoLoginStatus.value = KakaoLoginStatus.ON_LOGIN
-            authorizeWithKakao(mapOAuthTokenToAuthData(token))
+            authorizeWithKakao(mapOAuthTokenToKakaoAuthData(token))
         }
     }
 
-    private fun authorizeWithKakao(authData: AuthData) {
+    private fun authorizeWithKakao(authData: KakaoAuthData) {
         viewModelScope.launch(ioDispatcher) {
             authorizeWithKakaoUseCase(authData)
             _loginStatus.emit(LoginStatus.LOGIN_COMPLETE)

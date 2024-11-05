@@ -1,11 +1,11 @@
 package com.kappzzang.jeongsan.repository
 
-import com.kappzzang.jeongsan.data.AuthData
+import com.kappzzang.jeongsan.data.KakaoAuthData
 
 interface ServerAuthenticationRepository {
-    fun registerToServer(authData: AuthData)
+    fun registerToServer(authData: KakaoAuthData)
 
-    fun getJwtFromServer(authData: AuthData): AuthData
+    fun getJwtFromServer(authData: KakaoAuthData): KakaoAuthData
 
     fun getSavedJwt(): String
 }
