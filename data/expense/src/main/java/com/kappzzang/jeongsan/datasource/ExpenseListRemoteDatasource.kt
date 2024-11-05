@@ -87,9 +87,14 @@ class ExpenseListRemoteDatasource @Inject constructor(
                 if (response.code() / 100 == 2) {
                     response.body()?.let {
                         return Result.success<T>(it)
-                    } ?: return Result.failure(IllegalStateException("알 수 없는 오류 발생: ${response.message()}"))
+                    }
+                        ?: return Result.failure(
+                            IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
+                        )
                 } else {
-                    return Result.failure(IllegalStateException("알 수 없는 오류 발생: ${response.message()}"))
+                    return Result.failure(
+                        IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
+                    )
                 }
             }
         }
