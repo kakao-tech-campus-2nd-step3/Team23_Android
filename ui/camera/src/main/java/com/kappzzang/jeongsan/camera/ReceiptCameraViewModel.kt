@@ -12,7 +12,7 @@ import com.kappzzang.jeongsan.util.Base64BitmapEncoder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.IOException
 import javax.inject.Inject
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -20,7 +20,8 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class ReceiptCameraViewModel @Inject constructor(
     private val application: Application,
-    private val analyzeReceiptImageUseCase: AnalyzeReceiptImageUseCase
+    private val analyzeReceiptImageUseCase: AnalyzeReceiptImageUseCase,
+    private val ioDispatcher: CoroutineDispatcher
 ) : AndroidViewModel(application) {
     enum class ReceiptPictureState {
         NOT_TAKEN,
@@ -53,7 +54,7 @@ class ReceiptCameraViewModel @Inject constructor(
 
         _receiptPictureState.value = ReceiptPictureState.SENDING_TO_SERVER
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(ioDispatcher) {
             val response = analyzeReceiptImageUseCase(bitmap)
 
             when (response) {
