@@ -115,4 +115,8 @@ class LoginViewModel @Inject constructor(
             _loginStatus.emit(LoginStatus.LOGIN_COMPLETE)
         }
     }
+
+    fun bypassLogin() {
+        _loginStatus.value = LoginStatus.LOGIN_COMPLETE
+    }
 }
