@@ -3,6 +3,7 @@ package com.kappzzang.jeongsan.repositoryimpl
 import com.kappzzang.jeongsan.datasource.ExpenseListRemoteDatasource
 import com.kappzzang.jeongsan.entity.expenselist.ExpenseListResponseDTO
 import com.kappzzang.jeongsan.mapper.ExpenseEntityMapper
+import com.kappzzang.jeongsan.model.ExpenseCategory
 import com.kappzzang.jeongsan.model.ExpenseListResponse
 import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.model.ReceiptItem
@@ -24,6 +25,13 @@ class ExpenseListRepositoryImpl @Inject constructor(
             .mapCatching {
                 ExpenseEntityMapper.mapResponseWithExpenseEntityToModel(it)
             }
+
+    override suspend fun getExpenseCategoryList(): Result<List<ExpenseCategory>> =
+        dataSource.getCategoryList().mapCatching {
+            it.categoryList.map { category ->
+                ExpenseEntityMapper.mapCategoryToModel(category)
+            }
+        }
 
     override fun getExpenseList(
         groupId: String,

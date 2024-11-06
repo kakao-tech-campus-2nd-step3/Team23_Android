@@ -41,6 +41,7 @@ class InviteInfoDialogFragment : DialogFragment() {
         setDialogStyle()
         initRecyclerView()
         setCloseButton()
+
         Log.d(
             TAG,
             "id: ${expenseViewModel.groupId.value}, name: ${expenseViewModel.groupName.value}"

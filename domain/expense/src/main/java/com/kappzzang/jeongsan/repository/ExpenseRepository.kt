@@ -1,5 +1,6 @@
 package com.kappzzang.jeongsan.repository
 
+import com.kappzzang.jeongsan.model.ExpenseCategory
 import com.kappzzang.jeongsan.model.ExpenseListResponse
 import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.model.ReceiptItem
@@ -21,4 +22,6 @@ interface ExpenseRepository {
     suspend fun getExpenseListToGetPaid(groupId: String): Result<ExpenseListResponse>
 
     suspend fun uploadExpense(receiptItem: ReceiptItem, groupId: String): Result<String>
+
+    suspend fun getExpenseCategoryList(): Result<List<ExpenseCategory>>
 }
