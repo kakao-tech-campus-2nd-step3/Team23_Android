@@ -54,7 +54,7 @@ class ColorPickerDialog : DialogFragment() {
         dialog?.window?.let { window ->
             window.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
 
-            val width = (resources.displayMetrics.widthPixels * 0.5).toInt()
+            val width = (resources.displayMetrics.widthPixels * 0.8).toInt()
             val height = (resources.displayMetrics.heightPixels * 0.7).toInt()
             window.setLayout(width, height)
         }
