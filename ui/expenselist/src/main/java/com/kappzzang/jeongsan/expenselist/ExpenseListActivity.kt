@@ -98,7 +98,7 @@ class ExpenseListActivity : AppCompatActivity() {
     }
 
     private fun navigateToSendMessage() {
-        val intent = sendMessageNavigator.navigateToSendMessage(this)
+        val intent = sendMessageNavigator.navigateToSendMessage(this, viewModel.groupId.value)
         startActivity(intent)
     }
 
