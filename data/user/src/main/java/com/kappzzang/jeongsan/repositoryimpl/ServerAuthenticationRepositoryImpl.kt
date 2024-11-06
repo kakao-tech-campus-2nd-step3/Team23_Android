@@ -11,59 +11,48 @@ class ServerAuthenticationRepositoryImpl @Inject constructor(
     private val dataSource: ServerAuthRemoteDataSource
 ) : ServerAuthenticationRepository {
 
-    override suspend fun loginToServer(email: String): ServerAuthData {
-        val result = dataSource.login(email)
-
-        return when (result.isSuccess) {
-            true -> {
-                TokenDataToServerAuthDataMapper.mapTokenDataToServerAuthData(result.getOrThrow())
-            }
-
-            false -> {
-                val exception = result.exceptionOrNull() ?: Exception("Unknown Error")
+    override suspend fun loginToServer(email: String): Result<ServerAuthData> =
+        dataSource.login(email).fold(
+            onSuccess = { tokenData ->
+                val serverAuthData =
+                    TokenDataToServerAuthDataMapper.mapTokenDataToServerAuthData(tokenData)
+                Result.success(serverAuthData)
+            },
+            onFailure = { exception ->
                 Log.e(TAG, exception.message, exception.cause)
-                throw exception
+                Result.failure(exception)
             }
-        }
-    }
+        )
 
     override suspend fun registerToServer(
         nickname: String,
         email: String,
         profileImageUrl: String
-    ): ServerAuthData {
-        val result = dataSource.register(nickname, email, profileImageUrl)
-
-        return when (result.isSuccess) {
-            true -> {
-                TokenDataToServerAuthDataMapper.mapTokenDataToServerAuthData(result.getOrThrow())
-            }
-
-            false -> {
-                val exception = result.exceptionOrNull() ?: Exception("Unknown Error")
-                Log.e(TAG, exception.message, exception.cause)
-                throw exception
-            }
+    ): Result<ServerAuthData> = dataSource.register(nickname, email, profileImageUrl).fold(
+        onSuccess = { tokenData ->
+            val serverAuthData =
+                TokenDataToServerAuthDataMapper.mapTokenDataToServerAuthData(tokenData)
+            Result.success(serverAuthData)
+        },
+        onFailure = { exception ->
+            Log.e(TAG, exception.message, exception.cause)
+            Result.failure(exception)
         }
-    }
+    )
 
-    override suspend fun refreshJwtFromServer(authData: ServerAuthData): ServerAuthData {
-        val result = dataSource.refreshToken(authData.refreshToken)
-
-        return when (result.isSuccess) {
-            true -> {
-                authData.copy(
-                    accessToken = result.getOrThrow().accessToken
+    override suspend fun refreshJwtFromServer(authData: ServerAuthData): Result<ServerAuthData> =
+        dataSource.refreshToken(authData.refreshToken).fold(
+            onSuccess = { refreshTokenData ->
+                val serverAuthData = authData.copy(
+                    accessToken = refreshTokenData.accessToken
                 )
-            }
-
-            false -> {
-                val exception = result.exceptionOrNull() ?: Exception("Unknown Error")
+                Result.success(serverAuthData)
+            },
+            onFailure = { exception ->
                 Log.e(TAG, exception.message, exception.cause)
-                throw exception
+                Result.failure(exception)
             }
-        }
-    }
+        )
 
     companion object {
         private const val TAG = "ServerAuthenticationRepositoryImpl"
