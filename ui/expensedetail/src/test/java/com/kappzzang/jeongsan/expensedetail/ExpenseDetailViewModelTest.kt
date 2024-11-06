@@ -79,7 +79,7 @@ class ExpenseDetailViewModelTest {
                 item = ExpenseItem.EMPTY,
                 expenseImageUrl = "",
                 expenseDetails = listOf(
-                    ExpenseDetailItem("testId", "testItem", 100, 30, 10)
+                    ExpenseDetailItem("testId", "testItem", 100, 30, 20)
                 )
             )
         )
