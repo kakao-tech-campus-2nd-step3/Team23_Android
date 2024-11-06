@@ -65,7 +65,7 @@ class GroupInfoRepositoryImpl @Inject constructor(
             jwt = token,
             groupName = createdGroup.name,
             groupSubject = createdGroup.subject,
-            groupMemberId = createdGroup.memberUuidList.map { 1L }
+            groupMemberUuidList = createdGroup.memberUuidList
         )
     }
 

@@ -36,7 +36,7 @@ interface GroupRetrofitService {
         @Header("Authorization") token: String,
         @Query("name") name: String,
         @Query("subject") subject: String,
-        @Query("members") memberIdList: List<Long>
+        @Query("members") memberIdList: List<String>
     ): Response<CreateGroupResponse>
 
     @PATCH("/api/teams/{teamId}")

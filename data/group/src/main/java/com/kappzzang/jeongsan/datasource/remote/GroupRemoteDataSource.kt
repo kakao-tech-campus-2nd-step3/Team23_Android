@@ -61,13 +61,13 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
         jwt: String,
         groupName: String,
         groupSubject: String,
-        groupMemberId: List<Long>
+        groupMemberUuidList: List<String>
     ): Result<Long> = try {
         val response = groupApi.createGroup(
             token = jwt,
             name = groupName,
             subject = groupSubject,
-            memberIdList = groupMemberId
+            memberIdList = groupMemberUuidList
         )
         handleCreateGroupResponse(response)
     } catch (e: Exception) {
