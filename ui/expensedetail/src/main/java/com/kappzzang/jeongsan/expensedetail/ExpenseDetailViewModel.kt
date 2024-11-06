@@ -121,5 +121,5 @@ class ExpenseDetailViewModel @Inject constructor(
     }
 
     private fun checkIsItemIndexValid(index: Int): Boolean =
-        index >= 0 && index < expenseDetailUIData.value.count()
+        index >= 0 && index < _expense.value.expenseDetails.count()
 }
