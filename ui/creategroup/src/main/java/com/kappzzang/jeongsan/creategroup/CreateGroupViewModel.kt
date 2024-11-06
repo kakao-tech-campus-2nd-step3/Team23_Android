@@ -7,6 +7,7 @@ import com.kappzzang.jeongsan.model.GroupCreateItem
 import com.kappzzang.jeongsan.usecase.SendInviteMessageUseCase
 import com.kappzzang.jeongsan.usecase.UploadGroupInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +18,8 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class CreateGroupViewModel @Inject constructor(
     private val uploadGroupInfoUseCase: UploadGroupInfoUseCase,
-    private val sendInviteMessageUseCase: SendInviteMessageUseCase
+    private val sendInviteMessageUseCase: SendInviteMessageUseCase,
+    private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     val groupName = MutableStateFlow("")
@@ -69,7 +71,7 @@ class CreateGroupViewModel @Inject constructor(
             memberIdList = _groupMemberList.value.map { it.uuid }
         )
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(ioDispatcher) {
             uploadGroupInfoUseCase(groupInfo)
         }
         return true
