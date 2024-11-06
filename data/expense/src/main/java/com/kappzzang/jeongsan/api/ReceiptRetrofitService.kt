@@ -1,5 +1,6 @@
 package com.kappzzang.jeongsan.api
 
+import com.kappzzang.jeongsan.entity.GetCategoryListResponseDTO
 import com.kappzzang.jeongsan.entity.ResponseWithExpenseIdDTO
 import com.kappzzang.jeongsan.entity.SaveExpensePayloadDTO
 import com.kappzzang.jeongsan.entity.expensedetail.ExpenseDetailEntity
@@ -37,4 +38,7 @@ interface ReceiptRetrofitService {
         @Query("state") state: String,
         @Query("isChecked") checked: Boolean?
     ): Response<ExpenseListResponseDTO>
+
+    @GET("/api/expenses/categories")
+    suspend fun getCategoryColorList(): Response<GetCategoryListResponseDTO>
 }

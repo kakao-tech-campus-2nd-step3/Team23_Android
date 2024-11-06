@@ -61,22 +61,11 @@ class ExpenseDetailActivity : AppCompatActivity() {
     }
 
     private fun getIntentData() {
-        val expenseId = intent?.getParcelableData<String>(
-            ExpenseDetailContract.EXPENSE_ID
-        ) ?: let {
-            throwExpenseDataLoadFailError()
-            return
-        }
-        val groupId = intent?.getParcelableData<String>(
-            ExpenseDetailContract.GROUP_ID
-        ) ?: let {
-            throwExpenseDataLoadFailError()
-            return
-        }
+        val expenseId = intent?.getParcelableData<String>(ExpenseDetailContract.EXPENSE_ID)
+        val groupId = intent?.getParcelableData<String>(ExpenseDetailContract.GROUP_ID)
+        val editable = intent?.getParcelableData<Boolean>(ExpenseDetailContract.EDITABLE)
 
-        val editable = intent?.getParcelableData<Boolean>(
-            ExpenseDetailContract.EDITABLE
-        ) ?: let {
+        if (expenseId == null || groupId == null || editable == null) {
             throwExpenseDataLoadFailError()
             return
         }
