@@ -2,12 +2,15 @@ package com.kappzzang.jeongsan.repositoryimpl
 
 import android.util.Log
 import com.kakao.sdk.talk.TalkApiClient
+import com.kappzzang.jeongsan.datasource.remote.GroupRemoteDataSource
 import com.kappzzang.jeongsan.repository.InviteRepository
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class InviteRepositoryImpl @Inject constructor() : InviteRepository {
+class InviteRepositoryImpl @Inject constructor(
+    private val groupRemoteDataSource: GroupRemoteDataSource
+) : InviteRepository {
 
     // TODO: 추후 친구에게 보내기로 수정
     override suspend fun sendInviteMessage(

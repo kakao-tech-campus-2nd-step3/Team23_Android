@@ -22,12 +22,8 @@ class InviteInfoViewModel @Inject constructor(
     private val _inviteInfo = MutableStateFlow<List<MemberItem>>(emptyList())
     val inviteInfo: StateFlow<List<MemberItem>> = _inviteInfo
 
-    init {
-        // 더미 데이터 삽입 & 적용
-        viewModelScope.launch(ioDispatcher) {
-            getInviteInfoUseCase.insertDummyData()
-            _inviteInfo.emit(getInviteInfoUseCase())
-        }
+    fun getInviteInfo(groupId: String) {
+        viewModelScope.launch(ioDispatcher) { _inviteInfo.emit(getInviteInfoUseCase.invoke(groupId)) }
     }
 
     fun sendInviteMessage(groupId: String, groupName: String, memberId: String) =

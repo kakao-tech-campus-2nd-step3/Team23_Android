@@ -1,8 +1,8 @@
 package com.kappzzang.jeongsan.repositoryimpl
 
-import com.kappzzang.jeongsan.datasource.group.GroupDatabase
-import com.kappzzang.jeongsan.entity.GroupEntity
-import com.kappzzang.jeongsan.mapper.GroupEntityMapper
+import android.util.Log
+import com.kappzzang.jeongsan.datasource.remote.GroupRemoteDataSource
+import com.kappzzang.jeongsan.mapper.GroupEntityMapper.toGroupItem
 import com.kappzzang.jeongsan.model.GroupCreateItem
 import com.kappzzang.jeongsan.model.GroupItem
 import com.kappzzang.jeongsan.repository.GroupInfoRepository
@@ -10,17 +10,34 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class GroupInfoRepositoryImpl @Inject constructor(private val groupDatabase: GroupDatabase) :
-    GroupInfoRepository {
+class GroupInfoRepositoryImpl @Inject constructor(
+    private val groupRemoteDataSource: GroupRemoteDataSource
+) : GroupInfoRepository {
 
     override suspend fun getProgressingGroupInfo(): List<GroupItem> {
-        // TODO: 임시로 테스트 데이터 반환 - 이후에 서버에서 받아오도록 수정
-        return groupDatabase.groupDao().getProgressingGroup().map { getGroupItemFromEntity(it) }
+        val token = ""
+        val result = groupRemoteDataSource.getGroupInfo(token, false)
+        result.fold(
+            onSuccess = {
+                return it.map { it.toGroupItem() }
+            },
+            onFailure = {
+                return emptyList()
+            }
+        )
     }
 
     override suspend fun getDoneGroupInfo(): List<GroupItem> {
-        // TODO: 임시로 테스트 데이터 반환 - 이후에 서버에서 받아오도록 수정
-        return groupDatabase.groupDao().getDoneGroup().map { getGroupItemFromEntity(it) }
+        val token = ""
+        val result = groupRemoteDataSource.getGroupInfo(token, true)
+        result.fold(
+            onSuccess = {
+                return it.map { it.toGroupItem() }
+            },
+            onFailure = {
+                return emptyList()
+            }
+        )
     }
 
     private fun getGroupItemFromEntity(entity: GroupEntity) = GroupItem(
@@ -42,7 +59,17 @@ class GroupInfoRepositoryImpl @Inject constructor(private val groupDatabase: Gro
     }
 
     override suspend fun uploadGroupInfo(createdGroup: GroupCreateItem) {
-        groupDatabase.groupDao()
-            .addGroup(GroupEntityMapper.mapGroupCreateToGroupEntity(createdGroup))
+        val token = ""
+        Log.d("GroupRepositoryImpl", createdGroup.memberUuidList.toString())
+        groupRemoteDataSource.createGroup(
+            jwt = token,
+            groupName = createdGroup.name,
+            groupSubject = createdGroup.subject,
+            groupMemberId = createdGroup.memberUuidList.map { 1L }
+        )
+    }
+
+    fun getBlankGroupItem(): GroupItem {
+        return GroupItem("", "", true, "", listOf())
     }
 }

@@ -21,7 +21,6 @@ class CreateGroupViewModel @Inject constructor(
 ) : ViewModel() {
 
     val groupName = MutableStateFlow("")
-//    val groupName: StateFlow<String> = _groupName
 
     private val _groupId = MutableStateFlow("")
     val groupId = _groupId.asStateFlow()
@@ -31,12 +30,6 @@ class CreateGroupViewModel @Inject constructor(
 
     private val _groupMemberList = MutableStateFlow<List<MemberUIData>>(emptyList())
     val groupMemberList: StateFlow<List<MemberUIData>> = _groupMemberList
-
-//    fun updateGroupName(name: String) {
-//        viewModelScope.launch {
-//            groupName.emit(name)
-//        }
-//    }
 
     fun updateGroupSubject(subject: String) {
         viewModelScope.launch {
@@ -66,9 +59,10 @@ class CreateGroupViewModel @Inject constructor(
         val groupInfo = GroupCreateItem(
             name = groupName.value,
             subject = _groupSubject.value,
-            memberIdList = _groupMemberList.value.map { it.uuid }
+            memberUuidList = _groupMemberList.value.map { it.uuid }
         )
 
+        // TODO(): 생성 성공시 그룹아이디를 받아 ViewModel에 저장 -> 초대메시지 전달에 사용
         viewModelScope.launch(Dispatchers.IO) {
             uploadGroupInfoUseCase(groupInfo)
         }

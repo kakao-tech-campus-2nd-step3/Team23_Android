@@ -1,6 +1,7 @@
 package com.kappzzang.jeongsan.mapper
 
 import com.kappzzang.jeongsan.entity.MemberEntity
+import com.kappzzang.jeongsan.entity.MemberInfo
 import com.kappzzang.jeongsan.model.MemberItem
 
 object MemberEntityMapper {
@@ -17,4 +18,13 @@ object MemberEntityMapper {
         profileImageUrl = memberItem.profileImageUrl,
         isInvited = memberItem.isInvited
     )
+
+    fun MemberInfo.toMemberItem(): MemberItem {
+        return MemberItem(
+            id = id.toString(),
+            name = name,
+            profileImageUrl = profileImageUrl,
+            isInvited = isInvited
+        )
+    }
 }

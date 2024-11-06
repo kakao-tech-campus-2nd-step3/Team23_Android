@@ -37,7 +37,7 @@ class InviteInfoDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        inviteViewModel.getInviteInfo(expenseViewModel.groupId.value)
         setDialogStyle()
         initRecyclerView()
         setCloseButton()
