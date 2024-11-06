@@ -40,7 +40,14 @@ class AddExpenseViewModelTest {
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
         coEvery { mockGetCategoryListUseCase() } returns Result.success(emptyList())
-        viewModel = spyk(AddExpenseViewModel(mockUploadExpenseUseCase, testDispatcher, mockGetCategoryListUseCase))
+        viewModel =
+            spyk(
+                AddExpenseViewModel(
+                    mockUploadExpenseUseCase,
+                    testDispatcher,
+                    mockGetCategoryListUseCase
+                )
+            )
     }
 
     @After
