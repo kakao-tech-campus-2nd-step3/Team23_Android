@@ -47,16 +47,14 @@ class AddExpenseActivity : AppCompatActivity() {
         initiateRecyclerView()
         setContentView(binding.root)
 
-        // TODO: 임시 연결용 코드
         binding.addexpenseSubmitButton.setOnClickListener {
-            if (viewModel.uploadExpense()) {
-                startActivity(appNavigator.navigateToExpenseDetail(this))
-                finish()
-                return@setOnClickListener
+            if (!viewModel.uploadExpense()) {
+                Toast.makeText(
+                    this,
+                    getString(R.string.add_expense_complete_form_notify),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-
-            // TODO: 값이 완전히 채워지지 않은 경우
-            Toast.makeText(this, "지출 내역을 완성해주세요!", Toast.LENGTH_SHORT).show()
         }
 
         lifecycleScope.launch {
@@ -66,6 +64,42 @@ class AddExpenseActivity : AppCompatActivity() {
                 }
             }
         }
+        subscribeExpenseUploadState()
+    }
+
+    private fun subscribeExpenseUploadState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uploadingProgress.collect { state ->
+                    when (state) {
+                        ExpenseUploadingProgress.NOT_STARTED -> {
+                            viewModel.setInputsLock(false)
+                        }
+                        ExpenseUploadingProgress.UPLOADING -> {
+                            viewModel.setInputsLock(true)
+                        }
+                        ExpenseUploadingProgress.UPLOAD_SUCCESS -> {
+                            startExpenseDetailActivityAndFinish()
+                        }
+                        ExpenseUploadingProgress.UPLOAD_FAILED -> {
+                            viewModel.setInputsLock(false)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun startExpenseDetailActivityAndFinish() {
+        startActivity(
+            appNavigator.navigateToExpenseDetail(
+                packageContext = this,
+                groupId = viewModel.groupId.value,
+                expenseId = viewModel.createdExpenseId.value,
+                editable = true
+            )
+        )
+        finish()
     }
 
     private fun updateExpenseImage(imageBitmap: Bitmap?) {
@@ -137,7 +171,11 @@ class AddExpenseActivity : AppCompatActivity() {
         groupId?.let {
             viewModel.initGroupId(it)
         } ?: let {
-            Toast.makeText(this, "그룹 정보를 불러오는 데 실패했습니다.", Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                this,
+                getString(R.string.add_expense_error_message_load_group_info),
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 
