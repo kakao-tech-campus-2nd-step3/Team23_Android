@@ -62,7 +62,6 @@ class CreateGroupViewModel @Inject constructor(
             subject = _groupSubject.value,
             memberUuidList = _groupMemberList.value.map { it.uuid }
         )
-        
         // TODO(): 생성 성공시 그룹아이디를 받아 ViewModel에 저장 -> 초대메시지 전달에 사용
         viewModelScope.launch(ioDispatcher) {
             uploadGroupInfoUseCase(groupInfo)
