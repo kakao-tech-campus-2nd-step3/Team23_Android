@@ -8,13 +8,19 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.kappzzang.jeongsan.intentcontract.SendMessageContract
+import com.kappzzang.jeongsan.navigation.SendMessageNavigator
 import com.kappzzang.jeongsan.sendmessage.databinding.ActivitySendMessageBinding
 import com.kappzzang.jeongsan.util.IntegerFormatter.formatDecimalSeparator
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SendMessageActivity : AppCompatActivity() {
+    @Inject
+    lateinit var sendMessageNavigator: SendMessageNavigator
+
     private val viewModel: SendMessageViewModel by viewModels()
     private lateinit var binding: ActivitySendMessageBinding
     private lateinit var memberAdapter: MemberAdapter
@@ -24,9 +30,15 @@ class SendMessageActivity : AppCompatActivity() {
         binding = ActivitySendMessageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        handleIntent()
         initRecyclerView()
         setTotalPriceObserver()
         setSendButton()
+    }
+
+    private fun handleIntent() {
+        val groupId = intent.getStringExtra(SendMessageContract.GROUP_ID)
+        viewModel.setGroupId(groupId)
     }
 
     private fun initRecyclerView() {
@@ -59,7 +71,7 @@ class SendMessageActivity : AppCompatActivity() {
         binding.sendMessageButton.setOnClickListener {
             lifecycleScope.launch {
                 if (viewModel.sendTransferMessage()) {
-                    startActivity(intent)
+                    startSendCompleteActivity()
                 } else {
                     Toast.makeText(
                         this@SendMessageActivity,
@@ -69,5 +81,14 @@ class SendMessageActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun startSendCompleteActivity() {
+        val resIntent = sendMessageNavigator.navigateToSendComplete(
+            this@SendMessageActivity,
+            viewModel.groupId.value
+        )
+        startActivity(resIntent)
+        finish()
     }
 }

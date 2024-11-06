@@ -23,6 +23,10 @@ class SendMessageViewModel @Inject constructor(
     private val _totalPrice = MutableStateFlow(0)
     val totalPrice: StateFlow<Int> = _totalPrice
 
+    private val _groupId = MutableStateFlow<String>("")
+    val groupId: StateFlow<String>
+        get() = _groupId
+
     init {
         loadTransferInfo()
     }
@@ -39,4 +43,8 @@ class SendMessageViewModel @Inject constructor(
     }
 
     suspend fun sendTransferMessage(): Boolean = sendTransferMessageUseCase(_transferInfo.value)
+
+    fun setGroupId(groupId: String?) {
+        _groupId.value = groupId ?: ""
+    }
 }
