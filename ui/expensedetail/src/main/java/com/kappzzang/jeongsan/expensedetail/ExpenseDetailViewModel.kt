@@ -8,7 +8,6 @@ import com.kappzzang.jeongsan.model.ExpenseItemWithDetails
 import com.kappzzang.jeongsan.usecase.EditExpenseDetailUseCase
 import com.kappzzang.jeongsan.usecase.GetExpenseDetailUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +17,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class ExpenseDetailViewModel @Inject constructor(
@@ -96,13 +96,12 @@ class ExpenseDetailViewModel @Inject constructor(
         }
 
         viewModelScope.launch(Dispatchers.Main) {
-            _expense.emit(
-                _expense.value.copy(
-                    expenseDetails = _expense.value.expenseDetails.toMutableList().also {
-                        it[index] = getItemWithEnabled(it[index], checked)
-                    }
-                )
+            val modifiedExpense = _expense.value.copy(
+                expenseDetails = _expense.value.expenseDetails.toMutableList().also {
+                    it[index] = getItemWithEnabled(it[index], checked)
+                }
             )
+            _expense.emit(modifiedExpense)
         }
     }
 
@@ -112,13 +111,12 @@ class ExpenseDetailViewModel @Inject constructor(
         }
 
         viewModelScope.launch(Dispatchers.Main) {
-            _expense.emit(
-                _expense.value.copy(
-                    expenseDetails = _expense.value.expenseDetails.toMutableList().also {
-                        it[index] = getItemWithQuantity(it[index], quantity)
-                    }
-                )
+            val modifiedExpense = _expense.value.copy(
+                expenseDetails = _expense.value.expenseDetails.toMutableList().also {
+                    it[index] = getItemWithQuantity(it[index], quantity)
+                }
             )
+            _expense.emit(modifiedExpense)
         }
     }
 
