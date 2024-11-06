@@ -1,4 +1,4 @@
-package com.kappzzang.jeongsan.datasource.group
+package com.kappzzang.jeongsan.datasource.remote
 
 import com.kappzzang.jeongsan.api.GroupRetrofitService
 import com.kappzzang.jeongsan.entity.CompleteGroupResponse
@@ -167,6 +167,4 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
             Result.failure(Exception("알수없는 오류 발생"))
         }
     }
-
-    // getMyExpense는 expense모듈에 속해야하는 것 같아 구현을 마치지 않음
 }
