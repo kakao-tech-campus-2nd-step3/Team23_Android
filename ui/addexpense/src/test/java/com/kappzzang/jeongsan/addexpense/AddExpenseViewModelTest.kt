@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import com.kappzzang.jeongsan.model.OcrDetailItem
 import com.kappzzang.jeongsan.model.OcrResultResponse
 import com.kappzzang.jeongsan.model.ReceiptItem
+import com.kappzzang.jeongsan.usecase.GetCategoryListUseCase
 import com.kappzzang.jeongsan.usecase.UploadExpenseUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -30,6 +31,7 @@ import org.junit.Test
 class AddExpenseViewModelTest {
 
     private val mockUploadExpenseUseCase = mockk<UploadExpenseUseCase>()
+    private val mockGetCategoryListUseCase = mockk<GetCategoryListUseCase>()
     private lateinit var viewModel: AddExpenseViewModel
 
     private val testDispatcher = StandardTestDispatcher(TestCoroutineScheduler())
@@ -37,7 +39,8 @@ class AddExpenseViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        viewModel = spyk(AddExpenseViewModel(mockUploadExpenseUseCase, testDispatcher))
+        coEvery { mockGetCategoryListUseCase() } returns Result.success(emptyList())
+        viewModel = spyk(AddExpenseViewModel(mockUploadExpenseUseCase, testDispatcher, mockGetCategoryListUseCase))
     }
 
     @After
