@@ -49,8 +49,6 @@ class CategoryListAdapter(private val onCategoryItemClickListener: (categoryId: 
             onCategoryItemClickListener
         )
 
-    override fun getItemCount(): Int = currentList.size
-
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
         holder.bind(currentList[position])
     }
