@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.expenselist.databinding.FragmentPendingExpenseListBinding
 import com.kappzzang.jeongsan.expenselist.viewmodel.ExpenseListViewModel
 import com.kappzzang.jeongsan.expenselist.viewmodel.PendingExpenseListPageViewModel
+import com.kappzzang.jeongsan.model.ExpenseState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,7 +35,7 @@ class PendingExpenseListFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = activity
         binding.pendingExpenseListRecyclerview.adapter = ExpenseListAdapter {
-            activityViewModel.clickExpenseItem(it)
+            activityViewModel.clickExpenseItem(it, ExpenseState.TRANSFER_PENDING)
         }
         binding.pendingExpenseListRecyclerview.layoutManager = LinearLayoutManager(this.context)
 

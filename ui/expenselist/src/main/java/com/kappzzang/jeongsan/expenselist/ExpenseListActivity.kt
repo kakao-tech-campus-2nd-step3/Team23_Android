@@ -28,6 +28,7 @@ import com.kappzzang.jeongsan.intentcontract.ReceiptCameraContract
 import com.kappzzang.jeongsan.model.OcrResultResponse
 import com.kappzzang.jeongsan.navigation.AddExpenseNavigator
 import com.kappzzang.jeongsan.navigation.CameraNavigator
+import com.kappzzang.jeongsan.navigation.ExpenseDetailNavigator
 import com.kappzzang.jeongsan.navigation.SendMessageNavigator
 import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,6 +45,9 @@ class ExpenseListActivity : AppCompatActivity() {
 
     @Inject
     lateinit var sendMessageNavigator: SendMessageNavigator
+
+    @Inject
+    lateinit var expenseDetailNavigator: ExpenseDetailNavigator
 
     private val viewModel: ExpenseListViewModel by viewModels()
     private val binding: ActivityExpenseListBinding by lazy {
@@ -79,8 +83,9 @@ class ExpenseListActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.selectedExpense.collect {
-                    if (it.isNotEmpty()) {
-                        startExpenseDetailActivity(it)
+                    if (it.expenseId.isNotEmpty()) {
+                        viewModel.resetExpenseSelection()
+                        startExpenseDetailActivity(it.expenseId, it.editable)
                     }
                 }
             }
@@ -140,7 +145,10 @@ class ExpenseListActivity : AppCompatActivity() {
     }
 
     private fun startAddExpenseActivity() {
-        val intent = addExpenseNavigator.navigateToAddExpenseManually(this)
+        val intent = addExpenseNavigator.navigateToAddExpenseManually(
+            packageContext = this,
+            groupId = viewModel.groupId.value
+        )
         startActivity(intent)
     }
 
@@ -149,7 +157,12 @@ class ExpenseListActivity : AppCompatActivity() {
         receiptImage: Uri
     ) {
         val intent =
-            addExpenseNavigator.navigateToAddExpenseWithImage(this, ocrResult, receiptImage)
+            addExpenseNavigator.navigateToAddExpenseWithImage(
+                packageContext = this,
+                ocrResponse = ocrResult,
+                image = receiptImage,
+                groupId = viewModel.groupId.value
+            )
         startActivity(intent)
     }
 
@@ -206,7 +219,7 @@ class ExpenseListActivity : AppCompatActivity() {
             setMessage(
                 String.format(
                     getString(R.string.dialog_body_ask_camera),
-                    getString(com.kappzzang.jeongsan.R.string.app_name)
+                    getString(R.string.app_name)
                 )
             )
             setPositiveButton(getString(R.string.dialog_allow)) { _, _ ->
@@ -222,7 +235,6 @@ class ExpenseListActivity : AppCompatActivity() {
 
     private fun setOnAddExpenseFabClickedListener() {
         val popupMenu = PopupMenu(this, binding.addExpenseFab)
-        val groupId = viewModel.groupId.value
         popupMenu.menuInflater.inflate(R.menu.menu_add_expense, popupMenu.menu)
         popupMenu.setForceShowIcon(true)
 
@@ -257,7 +269,14 @@ class ExpenseListActivity : AppCompatActivity() {
     }
 
     // TODO: 선택한 지출 확인용 임시 코드
-    private fun startExpenseDetailActivity(expenseId: String) {
-        Toast.makeText(this, expenseId, Toast.LENGTH_SHORT).show()
+    private fun startExpenseDetailActivity(expenseId: String, isEditable: Boolean) {
+        val groupId = viewModel.groupId.value
+        val intent = expenseDetailNavigator.navigateToExpenseDetail(
+            packageContext = this,
+            groupId = groupId,
+            expenseId = expenseId,
+            editable = isEditable
+        )
+        startActivity(intent)
     }
 }
