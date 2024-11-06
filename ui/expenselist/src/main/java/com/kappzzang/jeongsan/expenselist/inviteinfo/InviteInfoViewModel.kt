@@ -23,7 +23,9 @@ class InviteInfoViewModel @Inject constructor(
     val inviteInfo: StateFlow<List<MemberItem>> = _inviteInfo
 
     fun getInviteInfo(groupId: String) {
-        viewModelScope.launch(ioDispatcher) { _inviteInfo.emit(getInviteInfoUseCase.invoke(groupId)) }
+        viewModelScope.launch(ioDispatcher) {
+            _inviteInfo.emit(getInviteInfoUseCase.invoke(groupId))
+        }
     }
 
     fun sendInviteMessage(groupId: String, groupName: String, memberId: String) =

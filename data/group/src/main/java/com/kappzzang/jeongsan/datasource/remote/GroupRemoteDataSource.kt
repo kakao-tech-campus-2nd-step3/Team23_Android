@@ -36,7 +36,7 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
         }
     }
 
-    suspend fun getTargetGroupInfo(jwt:String, groupId: Long) = try {
+    suspend fun getTargetGroupInfo(jwt: String, groupId: Long) = try {
         val response = groupApi.getTargetGroupInfo(
             token = jwt,
             groupId = groupId
@@ -117,7 +117,6 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
             Result.failure(Exception("알수없는 오류 발생"))
         }
     }
-
 
     suspend fun getMemberInfo(jwt: String, groupId: Long): Result<List<MemberInfo>> = try {
         val response = groupApi.getMemberInfo(

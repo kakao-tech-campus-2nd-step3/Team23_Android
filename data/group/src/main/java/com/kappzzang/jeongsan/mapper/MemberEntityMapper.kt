@@ -19,12 +19,10 @@ object MemberEntityMapper {
         isInvited = memberItem.isInvited
     )
 
-    fun MemberInfo.toMemberItem(): MemberItem {
-        return MemberItem(
-            id = id.toString(),
-            name = name,
-            profileImageUrl = profileImageUrl,
-            isInvited = isInvited
-        )
-    }
+    fun MemberInfo.toMemberItem() = MemberItem(
+        id = id.toString(),
+        name = name,
+        profileImageUrl = profileImageUrl,
+        isInvited = isInvited
+    )
 }

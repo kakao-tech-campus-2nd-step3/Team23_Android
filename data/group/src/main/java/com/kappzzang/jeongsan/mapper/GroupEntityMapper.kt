@@ -13,13 +13,11 @@ object GroupEntityMapper {
         memberProfileImage = "https://avatars.githubusercontent.com/u/38340588?v=4"
     )
 
-    fun GroupInfo.toGroupItem(): GroupItem {
-        return GroupItem(
-            id = id.toString(),
-            name = name,
-            isCompleted = isCompleted,
-            subject = subject,
-            profileImageURL = previewList.map { it.profileImageUrl }
-        )
-    }
+    fun GroupInfo.toGroupItem() = GroupItem(
+        id = id.toString(),
+        name = name,
+        isCompleted = isCompleted,
+        subject = subject,
+        profileImageURL = previewList.map { it.profileImageUrl }
+    )
 }

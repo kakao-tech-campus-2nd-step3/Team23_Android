@@ -7,10 +7,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -18,9 +17,8 @@ object GroupRetrofitModule {
 
     @Provides
     @Singleton
-    fun provideGroupRemoteDataSource(groupApi: GroupRetrofitService): GroupRemoteDataSource {
-        return GroupRemoteDataSource(groupApi)
-    }
+    fun provideGroupRemoteDataSource(groupApi: GroupRetrofitService) =
+        GroupRemoteDataSource(groupApi)
 
     @Provides
     @Singleton
