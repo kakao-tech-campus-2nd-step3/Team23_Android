@@ -6,7 +6,7 @@ import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.usecase.GetCurrentGroupInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
@@ -16,7 +16,8 @@ data class SelectedExpenseData(val expenseId: String, val editable: Boolean)
 
 @HiltViewModel
 class ExpenseListViewModel @Inject constructor(
-    private val getCurrentGroupInfoUseCase: GetCurrentGroupInfoUseCase
+    private val getCurrentGroupInfoUseCase: GetCurrentGroupInfoUseCase,
+    private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
     private var _groupId = MutableStateFlow("")
     private val _groupName = MutableStateFlow("")
@@ -29,7 +30,7 @@ class ExpenseListViewModel @Inject constructor(
     val selectedExpense = _selectedExpense.asStateFlow()
 
     private fun fetchGroupInfo() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(ioDispatcher) {
             getCurrentGroupInfoUseCase(_groupId.value).map {
                 it.name
             }.collect {

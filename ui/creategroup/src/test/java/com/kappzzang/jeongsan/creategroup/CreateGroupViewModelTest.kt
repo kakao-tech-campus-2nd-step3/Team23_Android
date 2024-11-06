@@ -34,7 +34,11 @@ class CreateGroupViewModelTest {
         Dispatchers.setMain(testDispatcher)
         coEvery { mockUploadGroupInfoUseCase(any()) } returns Unit
         coEvery { mockSendInviteMessageUseCase(any(), any(), any()) } returns true
-        viewModel = CreateGroupViewModel(mockUploadGroupInfoUseCase, mockSendInviteMessageUseCase)
+        viewModel = CreateGroupViewModel(
+            mockUploadGroupInfoUseCase,
+            mockSendInviteMessageUseCase,
+            testDispatcher
+        )
     }
 
     @After
