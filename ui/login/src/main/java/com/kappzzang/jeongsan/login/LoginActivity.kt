@@ -12,6 +12,7 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
+import com.kappzzang.jeongsan.build_config.BuildConfig
 import com.kappzzang.jeongsan.login.databinding.ActivityLoginBinding
 import com.kappzzang.jeongsan.navigation.MainPageNavigator
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,6 +40,7 @@ class LoginActivity : AppCompatActivity() {
         }
         Log.d(TAG, intent?.data?.toString().toString())
         startCollectingKakaoLoginState()
+        createBypassLogin(binding)
 
         viewModel.login()
     }
@@ -98,6 +100,16 @@ class LoginActivity : AppCompatActivity() {
             }
         } else {
             UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
+        }
+    }
+
+    private fun createBypassLogin(binding: ActivityLoginBinding) {
+        if (BuildConfig.DEBUG) {
+            binding.loginByKakaoImagebutton.isLongClickable = true
+            binding.loginByKakaoImagebutton.setOnLongClickListener {
+                viewModel.bypassLogin()
+                true
+            }
         }
     }
 
