@@ -3,7 +3,6 @@ package com.kappzzang.jeongsan.login
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
@@ -105,7 +104,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun createBypassLogin(binding: ActivityLoginBinding) {
-        if(BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             binding.loginByKakaoImagebutton.isLongClickable = true
             binding.loginByKakaoImagebutton.setOnLongClickListener {
                 viewModel.bypassLogin()
