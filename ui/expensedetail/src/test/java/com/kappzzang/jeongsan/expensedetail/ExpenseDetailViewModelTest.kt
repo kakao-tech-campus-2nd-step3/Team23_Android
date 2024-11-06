@@ -63,13 +63,13 @@ class ExpenseDetailViewModelTest {
             )
         )
 
-        viewModel.setInitialData("testId", "")
+        viewModel.setInitialData("testId", "", true)
         advanceUntilIdle()
 
         viewModel.updateItemCheck(false, 0)
         advanceUntilIdle()
 
-        assertEquals(0, viewModel.expenseDetailList.value[0].selectedQuantity)
+        assertEquals(0, viewModel.expense.value.expenseDetails[0].selectedQuantity)
     }
 
     @Test
@@ -79,17 +79,17 @@ class ExpenseDetailViewModelTest {
                 item = ExpenseItem.EMPTY,
                 expenseImageUrl = "",
                 expenseDetails = listOf(
-                    ExpenseDetailItem("testId", "testItem", 100, 30, 10)
+                    ExpenseDetailItem("testId", "testItem", 100, 30, 20)
                 )
             )
         )
-        viewModel.setInitialData("testId", "")
+        viewModel.setInitialData("testId", "", true)
         advanceUntilIdle()
 
         val testSelected = 10
         viewModel.updateSelectedQuantity(testSelected, 0)
         advanceUntilIdle()
 
-        assertEquals(testSelected, viewModel.expenseDetailList.value[0].selectedQuantity)
+        assertEquals(testSelected, viewModel.expense.value.expenseDetails[0].selectedQuantity)
     }
 }

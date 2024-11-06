@@ -2,6 +2,7 @@ package com.kappzzang.jeongsan.expensedetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kappzzang.jeongsan.data.toUIData
 import com.kappzzang.jeongsan.model.ExpenseDetailItem
 import com.kappzzang.jeongsan.model.ExpenseItemWithDetails
 import com.kappzzang.jeongsan.usecase.EditExpenseDetailUseCase
@@ -11,8 +12,11 @@ import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -22,8 +26,20 @@ class ExpenseDetailViewModel @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
     private val _expense = MutableStateFlow(ExpenseItemWithDetails.EMPTY)
-    private val _expenseDetailList = MutableStateFlow(emptyList<ExpenseDetailItem>())
-    val expenseDetailList = _expenseDetailList.asStateFlow()
+    private val formEditable = MutableStateFlow(true)
+
+    val expenseDetailUIData = combine(
+        _expense,
+        formEditable
+    ) { expense, editable ->
+        expense.expenseDetails.map {
+            it.toUIData(editable)
+        }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000L),
+        initialValue = emptyList()
+    )
 
     private val groupId = MutableStateFlow("")
     private val expenseId = MutableStateFlow("")
@@ -32,16 +48,17 @@ class ExpenseDetailViewModel @Inject constructor(
     fun saveExpenseDetail() {
         viewModelScope.launch(ioDispatcher) {
             editExpenseDetailUseCase.invoke(
-                expenseDetailList.value,
+                expenseDetailUIData.value.map { it.toExpenseDetailItem() },
                 expenseId.value,
                 groupId = groupId.value
             )
         }
     }
 
-    fun setInitialData(expenseId: String, groupId: String) {
+    fun setInitialData(expenseId: String, groupId: String, editable: Boolean) {
         this.expenseId.value = expenseId
         this.groupId.value = groupId
+        formEditable.value = editable
         initExpense()
     }
 
@@ -50,7 +67,6 @@ class ExpenseDetailViewModel @Inject constructor(
             val result = getExpenseDetailUseCase.invoke(expenseId.value)
             result.onSuccess {
                 _expense.value = it
-                _expenseDetailList.emit(_expense.value.expenseDetails)
             }
                 .onFailure {
                     // TODO: Expense Detail 조회 실패 시 예외처리
@@ -80,11 +96,12 @@ class ExpenseDetailViewModel @Inject constructor(
         }
 
         viewModelScope.launch(Dispatchers.Main) {
-            _expenseDetailList.emit(
-                _expenseDetailList.value.toMutableList().also {
+            val modifiedExpense = _expense.value.copy(
+                expenseDetails = _expense.value.expenseDetails.toMutableList().also {
                     it[index] = getItemWithEnabled(it[index], checked)
                 }
             )
+            _expense.emit(modifiedExpense)
         }
     }
 
@@ -94,14 +111,15 @@ class ExpenseDetailViewModel @Inject constructor(
         }
 
         viewModelScope.launch(Dispatchers.Main) {
-            _expenseDetailList.emit(
-                _expenseDetailList.value.toMutableList().also {
+            val modifiedExpense = _expense.value.copy(
+                expenseDetails = _expense.value.expenseDetails.toMutableList().also {
                     it[index] = getItemWithQuantity(it[index], quantity)
                 }
             )
+            _expense.emit(modifiedExpense)
         }
     }
 
     private fun checkIsItemIndexValid(index: Int): Boolean =
-        index >= 0 && index < _expenseDetailList.value.count()
+        index >= 0 && index < _expense.value.expenseDetails.count()
 }
