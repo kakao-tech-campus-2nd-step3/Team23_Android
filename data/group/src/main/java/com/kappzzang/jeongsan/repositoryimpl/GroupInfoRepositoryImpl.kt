@@ -40,22 +40,22 @@ class GroupInfoRepositoryImpl @Inject constructor(
         )
     }
 
-    private fun getGroupItemFromEntity(entity: GroupEntity) = GroupItem(
-        entity.id.toString(),
-        entity.name,
-        entity.isCompleted,
-        entity.subject,
-        if (entity.memberProfileImage == "") emptyList() else listOf(entity.memberProfileImage)
-    )
-
-    override fun getGroupInfo(groupId: String): Flow<GroupItem> = flow {
-        emit(
-            groupId.toLongOrNull()?.let { id ->
-                groupDatabase.groupDao().inquireGroupInfo(id).firstOrNull()?.let {
-                    getGroupItemFromEntity(it)
-                } ?: GroupItem("0", "", false, "", emptyList())
-            } ?: GroupItem("0", "", false, "", emptyList())
-        )
+    override fun getTargetGroupInfo(groupId: String): Flow<GroupItem> = flow {
+        val token = ""
+        groupId.toLongOrNull()?.let { id ->
+            groupRemoteDataSource.getTargetGroupInfo(token, id).fold(
+                onSuccess = {
+                    it.toGroupItem()
+                },
+                onFailure = {
+                    getBlankGroupItem()
+                }
+            )
+        }?.let {
+            emit(
+                getBlankGroupItem()
+            )
+        }
     }
 
     override suspend fun uploadGroupInfo(createdGroup: GroupCreateItem) {

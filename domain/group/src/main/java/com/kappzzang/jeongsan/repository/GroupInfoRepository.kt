@@ -14,7 +14,7 @@ interface GroupInfoRepository {
      *  @param groupId 그룹명
      *  @return 그룹 정보
      */
-    fun getGroupInfo(groupId: String): Flow<GroupItem>
+    fun getTargetGroupInfo(groupId: String): Flow<GroupItem>
 
     suspend fun uploadGroupInfo(createdGroup: GroupCreateItem)
 }
