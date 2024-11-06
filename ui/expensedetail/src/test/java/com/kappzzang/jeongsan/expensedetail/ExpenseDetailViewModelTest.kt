@@ -68,8 +68,8 @@ class ExpenseDetailViewModelTest {
 
         viewModel.updateItemCheck(false, 0)
         advanceUntilIdle()
-
-        assertEquals(0, viewModel.expenseDetailList.value[0].selectedQuantity)
+        
+        assertEquals(0, viewModel.expense.value.expenseDetails[0].selectedQuantity)
     }
 
     @Test
@@ -90,6 +90,6 @@ class ExpenseDetailViewModelTest {
         viewModel.updateSelectedQuantity(testSelected, 0)
         advanceUntilIdle()
 
-        assertEquals(testSelected, viewModel.expenseDetailList.value[0].selectedQuantity)
+        assertEquals(testSelected, viewModel.expense.value.expenseDetails[0].selectedQuantity)
     }
 }

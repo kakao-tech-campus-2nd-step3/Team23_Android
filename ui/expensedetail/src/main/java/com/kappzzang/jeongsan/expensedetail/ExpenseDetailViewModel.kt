@@ -26,13 +26,13 @@ class ExpenseDetailViewModel @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
     private val _expense = MutableStateFlow(ExpenseItemWithDetails.EMPTY)
-    private val expenseDetailRawList = MutableStateFlow(emptyList<ExpenseDetailItem>())
     private val formEditable = MutableStateFlow(true)
 
-    val expenseDetailList = expenseDetailRawList.combine(
+    val expenseDetailUIData = combine(
+        _expense,
         formEditable
-    ) { list, editable ->
-        list.map {
+    ) { expense, editable ->
+        expense.expenseDetails.map {
             it.toUIData(editable)
         }
     }.stateIn(
@@ -48,7 +48,7 @@ class ExpenseDetailViewModel @Inject constructor(
     fun saveExpenseDetail() {
         viewModelScope.launch(ioDispatcher) {
             editExpenseDetailUseCase.invoke(
-                expenseDetailList.value.map { it.toExpenseDetailItem() },
+                expenseDetailUIData.value.map { it.toExpenseDetailItem() },
                 expenseId.value,
                 groupId = groupId.value
             )
@@ -67,7 +67,6 @@ class ExpenseDetailViewModel @Inject constructor(
             val result = getExpenseDetailUseCase.invoke(expenseId.value)
             result.onSuccess {
                 _expense.value = it
-                expenseDetailRawList.emit(_expense.value.expenseDetails)
             }
                 .onFailure {
                     // TODO: Expense Detail 조회 실패 시 예외처리
@@ -97,10 +96,12 @@ class ExpenseDetailViewModel @Inject constructor(
         }
 
         viewModelScope.launch(Dispatchers.Main) {
-            expenseDetailRawList.emit(
-                expenseDetailRawList.value.toMutableList().also {
-                    it[index] = getItemWithEnabled(it[index], checked)
-                }
+            _expense.emit(
+                _expense.value.copy(
+                    expenseDetails = _expense.value.expenseDetails.toMutableList().also {
+                        it[index] = getItemWithEnabled(it[index], checked)
+                    }
+                )
             )
         }
     }
@@ -111,14 +112,16 @@ class ExpenseDetailViewModel @Inject constructor(
         }
 
         viewModelScope.launch(Dispatchers.Main) {
-            expenseDetailRawList.emit(
-                expenseDetailRawList.value.toMutableList().also {
-                    it[index] = getItemWithQuantity(it[index], quantity)
-                }
+            _expense.emit(
+                _expense.value.copy(
+                    expenseDetails = _expense.value.expenseDetails.toMutableList().also {
+                        it[index] = getItemWithQuantity(it[index], quantity)
+                    }
+                )
             )
         }
     }
 
     private fun checkIsItemIndexValid(index: Int): Boolean =
-        index >= 0 && index < expenseDetailList.value.count()
+        index >= 0 && index < expenseDetailUIData.value.count()
 }
