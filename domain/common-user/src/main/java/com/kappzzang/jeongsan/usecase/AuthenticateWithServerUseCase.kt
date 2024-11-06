@@ -12,7 +12,7 @@ class AuthenticateWithServerUseCase @Inject constructor(
     suspend operator fun invoke(nickname: String, email: String, profileImageUrl: String) {
         val authData = try {
             serverAuthenticationRepository.loginToServer(email)
-        } catch (e: Exception) {
+        } catch (e: NoSuchElementException) {
             serverAuthenticationRepository.registerToServer(nickname, email, profileImageUrl)
         }
 

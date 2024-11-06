@@ -31,11 +31,11 @@ class ServerAuthRemoteDataSource @Inject constructor(
         }
 
         response.code() == 403 -> {
-            Result.failure(Exception("리프레시 토큰이 유효하지 않음."))
+            Result.failure(SecurityException("리프레시 토큰이 유효하지 않음."))
         }
 
         response.code() == 404 -> {
-            Result.failure(Exception("사용자를 찾을 수 없음."))
+            Result.failure(NoSuchElementException("사용자를 찾을 수 없음."))
         }
 
         else -> {
@@ -62,7 +62,7 @@ class ServerAuthRemoteDataSource @Inject constructor(
         }
 
         response.code() == 400 -> {
-            Result.failure(Exception("해당 사용자는 이미 회원가입됨."))
+            Result.failure(IllegalStateException("해당 사용자는 이미 회원가입됨."))
         }
 
         else -> {
@@ -86,7 +86,7 @@ class ServerAuthRemoteDataSource @Inject constructor(
         }
 
         response.code() == 404 -> {
-            Result.failure(Exception("사용자를 찾을 수 없음."))
+            Result.failure(NoSuchElementException("사용자를 찾을 수 없음."))
         }
 
         else -> {
