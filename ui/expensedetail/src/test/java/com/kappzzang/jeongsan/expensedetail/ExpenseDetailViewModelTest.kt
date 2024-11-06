@@ -68,7 +68,7 @@ class ExpenseDetailViewModelTest {
 
         viewModel.updateItemCheck(false, 0)
         advanceUntilIdle()
-        
+
         assertEquals(0, viewModel.expense.value.expenseDetails[0].selectedQuantity)
     }
 
