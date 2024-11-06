@@ -39,6 +39,13 @@ class ColorPickerDialog : DialogFragment() {
         initiateRecyclerView()
         observeSelectedCategoryId()
         setDialogStyle()
+        initiateConfirmButton()
+    }
+
+    private fun initiateConfirmButton() {
+        binding.categoryListConfirmButton.setOnClickListener {
+            dismiss()
+        }
     }
 
     private fun initiateRecyclerView() {
