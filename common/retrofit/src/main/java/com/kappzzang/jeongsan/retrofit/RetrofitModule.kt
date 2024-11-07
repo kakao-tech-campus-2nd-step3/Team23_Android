@@ -27,6 +27,10 @@ object RetrofitModule {
     @Retention(AnnotationRetention.BINARY)
     annotation class ServiceRetrofit
 
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class ServiceAuthRetrofit
+
     @Provides
     @Singleton
     @KakaoAuthRetrofit
@@ -40,6 +44,14 @@ object RetrofitModule {
     @KakaoApiRetrofit
     fun provideKakaoApiRetrofitBuilder(): Retrofit = Retrofit.Builder()
         .baseUrl(BuildConfig.KAKAO_API_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    @Provides
+    @Singleton
+    @ServiceAuthRetrofit
+    fun provideServiceAuthRetrofitBuilder(): Retrofit = Retrofit.Builder()
+        .baseUrl(BuildConfig.SERVICE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
