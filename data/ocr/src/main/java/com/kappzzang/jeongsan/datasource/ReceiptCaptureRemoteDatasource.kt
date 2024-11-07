@@ -9,16 +9,13 @@ import retrofit2.Response
 class ReceiptCaptureRemoteDatasource @Inject constructor(
     private val ocrRetrofitService: OcrRetrofitService
 ) {
-    suspend fun analyzeReceipt(
-        jwt: String,
-        base64Encoded: String
-    ): Response<ReceiptAnalyzeResponse> = ocrRetrofitService.analyzeReceipt(
-        token = jwt,
-        receiptImage = ReceiptImage(
-            format = "",
-            name = "",
-            base64Encoded = base64Encoded,
-            url = ""
+    suspend fun analyzeReceipt(base64Encoded: String): Response<ReceiptAnalyzeResponse> =
+        ocrRetrofitService.analyzeReceipt(
+            receiptImage = ReceiptImage(
+                format = "",
+                name = "",
+                base64Encoded = base64Encoded,
+                url = ""
+            )
         )
-    )
 }
