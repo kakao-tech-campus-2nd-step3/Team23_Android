@@ -25,7 +25,7 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/my_total_expense_explain_textview"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/parent" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/total_expense_textview"
@@ -36,7 +36,7 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/total_expense_explain_textview"
             app:layout_constraintStart_toEndOf="@id/total_expense_explain_textview"
-            app:layout_constraintTop_toTopOf="@id/parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="@{viewModel.uiData.totalPriceText}" />
 
         <TextView
