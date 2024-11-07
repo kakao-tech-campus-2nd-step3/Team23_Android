@@ -28,8 +28,8 @@ class InviteInfoViewModel @Inject constructor(
         }
     }
 
-    fun sendInviteMessage(groupId: String, groupName: String, memberId: String) =
+    fun sendInviteMessage(groupId: String, groupName: String, memberUuid: List<String>) =
         viewModelScope.launch {
-            sendInviteMessageUseCase.invoke(groupId, groupName, memberId)
+            sendInviteMessageUseCase.invoke(groupId, groupName, memberUuid)
         }
 }

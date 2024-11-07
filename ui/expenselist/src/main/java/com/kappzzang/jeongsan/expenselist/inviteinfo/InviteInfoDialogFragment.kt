@@ -58,11 +58,11 @@ class InviteInfoDialogFragment : DialogFragment() {
     }
 
     private fun initRecyclerView() {
-        memberAdapter = MemberInfoAdapter { memberId ->
+        memberAdapter = MemberInfoAdapter { memberUuid ->
             inviteViewModel.sendInviteMessage(
                 expenseViewModel.groupId.value,
                 expenseViewModel.groupName.value,
-                memberId
+                listOf(memberUuid)
             )
         }
         binding.memberContentRecyclerview.apply {

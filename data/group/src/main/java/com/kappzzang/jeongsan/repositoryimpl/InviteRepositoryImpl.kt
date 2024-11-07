@@ -12,24 +12,27 @@ class InviteRepositoryImpl @Inject constructor(
     private val groupRemoteDataSource: GroupRemoteDataSource
 ) : InviteRepository {
 
-    // TODO: 추후 친구에게 보내기로 수정
     override suspend fun sendInviteMessage(
         groupId: String,
         groupName: String,
-        memberId: String
+        memberUuidList: List<String>
     ): Boolean = suspendCoroutine { continuation ->
-        TalkApiClient.instance.sendCustomMemo(
+        TalkApiClient.instance.sendCustomMessage(
+            receiverUuids = memberUuidList,
             templateId = INVITE_MESSAGE_TEMPLATE_ID,
             templateArgs = mapOf(
                 GROUP_ID to groupId,
                 GROUP_NAME to groupName
             )
-        ) { error ->
+        ) { result, error ->
             if (error != null) {
                 Log.e(TAG, "초대 메시지 전송 실패", error)
                 continuation.resume(false)
-            } else {
+            } else if (result != null) {
                 Log.i(TAG, "초대 메시지 전송 성공")
+                if (result.failureInfos != null) {
+                    Log.i(TAG, "일부에게 초대 메시지 전송 실패")
+                }
                 continuation.resume(true)
             }
         }

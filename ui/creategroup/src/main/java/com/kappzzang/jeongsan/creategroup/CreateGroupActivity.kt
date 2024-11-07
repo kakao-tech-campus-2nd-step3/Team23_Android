@@ -153,6 +153,7 @@ class CreateGroupActivity : AppCompatActivity() {
             enableIndex = true, // 인덱스뷰 사용 여부
             showFavorite = true, // 즐겨찾기 친구 표시 여부
             showPickedFriend = true, // 선택한 친구 표시 여부, 멀티 피커에만 사용 가능
+            showMyProfile = false, // 내 프로필 표시 여부
             maxPickableCount = 100, // 선택 가능한 최대 대상 수
             minPickableCount = 1 // 선택 가능한 최소 대상 수
         )
