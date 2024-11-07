@@ -95,17 +95,24 @@ class CreateGroupActivity : AppCompatActivity() {
 
     private fun setCreateGroupButton() {
         binding.createGroupButton.setOnClickListener {
-            val isUploadSuccess = viewModel.uploadGroupInfo()
-            if (isUploadSuccess) {
-                // TODO: 그룹 생성 성공 시 그룹아이디를 서버에서 전달 받아 해당 그룹에 대한 초대 메시지 전송하도록 수정
-                viewModel.sendInviteMessageAll("idFromServer")
-                finish()
-            } else {
+            if (!viewModel.checkGroupInfoValidation()) {
                 Toast.makeText(
                     this,
                     getString(R.string.create_group_empty_info),
                     Toast.LENGTH_SHORT
                 ).show()
+            } else {
+                val isUploadSuccess = viewModel.uploadGroupInfo()
+                if (isUploadSuccess) {
+                    viewModel.sendInviteMessageAll(viewModel.groupId.value)
+                    finish()
+                } else {
+                    Toast.makeText(
+                        this,
+                        getString(R.string.create_group_fail_create),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
     }
@@ -146,6 +153,7 @@ class CreateGroupActivity : AppCompatActivity() {
             enableIndex = true, // 인덱스뷰 사용 여부
             showFavorite = true, // 즐겨찾기 친구 표시 여부
             showPickedFriend = true, // 선택한 친구 표시 여부, 멀티 피커에만 사용 가능
+            showMyProfile = false, // 내 프로필 표시 여부
             maxPickableCount = 100, // 선택 가능한 최대 대상 수
             minPickableCount = 1 // 선택 가능한 최소 대상 수
         )

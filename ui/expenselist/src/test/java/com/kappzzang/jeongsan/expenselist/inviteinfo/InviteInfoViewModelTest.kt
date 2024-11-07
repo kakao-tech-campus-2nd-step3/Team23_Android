@@ -25,7 +25,7 @@ class InviteInfoViewModelTest {
 
     @Before
     fun setUp() {
-        coEvery { getInviteInfoUseCase() } returns emptyList()
+        coEvery { getInviteInfoUseCase(any()) } returns emptyList()
         coEvery { getInviteInfoUseCase.insertDummyData() } returns Unit
         coEvery { sendInviteMessageUseCase(any(), any(), any()) }
         Dispatchers.setMain(testDispatcher)

@@ -32,7 +32,7 @@ class CreateGroupViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        coEvery { mockUploadGroupInfoUseCase(any()) } returns Unit
+        coEvery { mockUploadGroupInfoUseCase(any()) } returns 1L
         coEvery { mockSendInviteMessageUseCase(any(), any(), any()) } returns true
         viewModel = CreateGroupViewModel(
             mockUploadGroupInfoUseCase,
@@ -99,7 +99,7 @@ class CreateGroupViewModelTest {
     }
 
     @Test
-    fun `그룹 정보가 유효하지 않으면 업로드가 진행되지 않는지 확인`() = runTest {
+    fun `그룹 정보가 유효하지 않을 때 확인`() = runTest {
         // given
 
         // when
@@ -111,7 +111,7 @@ class CreateGroupViewModelTest {
     }
 
     @Test
-    fun `그룹 정보가 유효하면 업로드가 잘 진행되는지 확인`() = runTest {
+    fun `그룹 정보가 유효할때 확인`() = runTest {
         // given
         val testGroupName = "Test Group"
         val testGroupSubject = "✈️"
@@ -125,12 +125,11 @@ class CreateGroupViewModelTest {
         advanceUntilIdle()
 
         // when
-        val result = viewModel.uploadGroupInfo()
+        val result = viewModel.checkGroupInfoValidation()
         advanceUntilIdle()
 
         // then
         assertEquals(true, result)
-        coVerify { mockUploadGroupInfoUseCase(any()) }
     }
 
     @Test
@@ -151,8 +150,8 @@ class CreateGroupViewModelTest {
         advanceUntilIdle()
 
         // then
-        for (member in testMembers) {
-            coVerify { mockSendInviteMessageUseCase(testGroupId, testGroupName, member.uuid) }
+        coVerify {
+            mockSendInviteMessageUseCase(testGroupId, testGroupName, testMembers.map { it.uuid })
         }
     }
 }
