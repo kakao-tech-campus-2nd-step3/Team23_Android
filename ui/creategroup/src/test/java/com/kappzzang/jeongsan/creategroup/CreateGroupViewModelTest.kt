@@ -5,10 +5,8 @@ import com.kappzzang.jeongsan.usecase.SendInviteMessageUseCase
 import com.kappzzang.jeongsan.usecase.UploadGroupInfoUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
-import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -21,8 +19,6 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import org.mockito.ArgumentMatchers
-import org.mockito.ArgumentMatchers.any
 
 @ExperimentalCoroutinesApi
 class CreateGroupViewModelTest {
@@ -154,6 +150,8 @@ class CreateGroupViewModelTest {
         advanceUntilIdle()
 
         // then
-        coVerify { mockSendInviteMessageUseCase(testGroupId, testGroupName, testMembers.map { it.uuid }) }
+        coVerify {
+            mockSendInviteMessageUseCase(testGroupId, testGroupName, testMembers.map { it.uuid })
+        }
     }
 }
