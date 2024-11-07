@@ -4,13 +4,9 @@ import com.kappzzang.jeongsan.entity.ReceiptAnalyzeResponse
 import com.kappzzang.jeongsan.entity.ReceiptImage
 import retrofit2.Response
 import retrofit2.http.Body
-import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface OcrRetrofitService {
     @POST("/api/receipts/analyze")
-    suspend fun analyzeReceipt(
-        @Header("Authorization") token: String,
-        @Body receiptImage: ReceiptImage
-    ): Response<ReceiptAnalyzeResponse>
+    suspend fun analyzeReceipt(@Body receiptImage: ReceiptImage): Response<ReceiptAnalyzeResponse>
 }

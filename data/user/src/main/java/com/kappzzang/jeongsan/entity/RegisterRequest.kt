@@ -3,6 +3,8 @@ package com.kappzzang.jeongsan.entity
 import com.google.gson.annotations.SerializedName
 
 data class RegisterRequest(
+    @SerializedName("uuid")
+    val uuid: String,
     @SerializedName("nickname")
     val nickname: String,
     @SerializedName("email")

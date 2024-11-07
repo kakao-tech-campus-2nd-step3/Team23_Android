@@ -25,10 +25,11 @@ class ServerAuthenticationRepositoryImpl @Inject constructor(
         )
 
     override suspend fun registerToServer(
+        uuid: String,
         nickname: String,
         email: String,
         profileImageUrl: String
-    ): Result<ServerAuthData> = dataSource.register(nickname, email, profileImageUrl).fold(
+    ): Result<ServerAuthData> = dataSource.register(uuid, nickname, email, profileImageUrl).fold(
         onSuccess = { tokenData ->
             val serverAuthData =
                 TokenDataToServerAuthDataMapper.mapTokenDataToServerAuthData(tokenData)
@@ -39,20 +40,6 @@ class ServerAuthenticationRepositoryImpl @Inject constructor(
             Result.failure(exception)
         }
     )
-
-    override suspend fun refreshJwtFromServer(authData: ServerAuthData): Result<ServerAuthData> =
-        dataSource.refreshToken(authData.refreshToken).fold(
-            onSuccess = { refreshTokenData ->
-                val serverAuthData = authData.copy(
-                    accessToken = refreshTokenData.accessToken
-                )
-                Result.success(serverAuthData)
-            },
-            onFailure = { exception ->
-                Log.e(TAG, exception.message, exception.cause)
-                Result.failure(exception)
-            }
-        )
 
     companion object {
         private const val TAG = "ServerAuthenticationRepositoryImpl"

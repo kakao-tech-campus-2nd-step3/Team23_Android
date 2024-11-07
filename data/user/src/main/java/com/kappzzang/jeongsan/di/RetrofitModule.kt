@@ -18,7 +18,7 @@ object RetrofitModule {
     ): KakaoAuthRetrofitService = kakaoAuthRetrofit.create(KakaoAuthRetrofitService::class.java)
 
     @Provides
-    fun provideKakaoApiRetrofitService(
-        @RetrofitModule.ServiceRetrofit serverAuthRetrofit: Retrofit
+    fun provideServerAuthRetrofitService(
+        @RetrofitModule.ServiceAuthRetrofit serverAuthRetrofit: Retrofit
     ): ServerAuthRetrofitService = serverAuthRetrofit.create(ServerAuthRetrofitService::class.java)
 }

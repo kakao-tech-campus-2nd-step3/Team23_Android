@@ -45,15 +45,24 @@ class ServerAuthRemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun register(nickname: String, email: String, profileUrl: String): Result<TokenData> =
-        try {
-            val response = authApi.register(
-                RegisterRequest(nickname = nickname, email = email, profileImageUrl = profileUrl)
+    suspend fun register(
+        uuid: String,
+        nickname: String,
+        email: String,
+        profileUrl: String
+    ): Result<TokenData> = try {
+        val response = authApi.register(
+            RegisterRequest(
+                uuid = uuid,
+                nickname = nickname,
+                email = email,
+                profileImageUrl = profileUrl
             )
-            handleRegisterResponse(response)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+        )
+        handleRegisterResponse(response)
+    } catch (e: Exception) {
+        Result.failure(e)
+    }
 
     // 회원가입 시 Response를 처리
     private fun handleRegisterResponse(response: Response<AuthResponse>): Result<TokenData> = when {
