@@ -6,6 +6,7 @@ interface ServerAuthenticationRepository {
     suspend fun loginToServer(email: String): Result<ServerAuthData>
 
     suspend fun registerToServer(
+        uuid: String,
         nickname: String,
         email: String,
         profileImageUrl: String

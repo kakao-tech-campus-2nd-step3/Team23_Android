@@ -25,10 +25,11 @@ class ServerAuthenticationRepositoryImpl @Inject constructor(
         )
 
     override suspend fun registerToServer(
+        uuid: String,
         nickname: String,
         email: String,
         profileImageUrl: String
-    ): Result<ServerAuthData> = dataSource.register(nickname, email, profileImageUrl).fold(
+    ): Result<ServerAuthData> = dataSource.register(uuid, nickname, email, profileImageUrl).fold(
         onSuccess = { tokenData ->
             val serverAuthData =
                 TokenDataToServerAuthDataMapper.mapTokenDataToServerAuthData(tokenData)
