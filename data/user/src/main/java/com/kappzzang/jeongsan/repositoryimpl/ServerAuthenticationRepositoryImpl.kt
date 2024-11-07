@@ -40,20 +40,6 @@ class ServerAuthenticationRepositoryImpl @Inject constructor(
         }
     )
 
-    override suspend fun refreshJwtFromServer(authData: ServerAuthData): Result<ServerAuthData> =
-        dataSource.refreshToken(authData.refreshToken).fold(
-            onSuccess = { refreshTokenData ->
-                val serverAuthData = authData.copy(
-                    accessToken = refreshTokenData.accessToken
-                )
-                Result.success(serverAuthData)
-            },
-            onFailure = { exception ->
-                Log.e(TAG, exception.message, exception.cause)
-                Result.failure(exception)
-            }
-        )
-
     companion object {
         private const val TAG = "ServerAuthenticationRepositoryImpl"
     }

@@ -10,6 +10,4 @@ interface ServerAuthenticationRepository {
         email: String,
         profileImageUrl: String
     ): Result<ServerAuthData>
-
-    suspend fun refreshJwtFromServer(authData: ServerAuthData): Result<ServerAuthData>
 }
