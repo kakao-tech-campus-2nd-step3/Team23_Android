@@ -2,8 +2,6 @@ package com.kappzzang.jeongsan.retrofit
 
 import com.kappzzang.jeongsan.util.AuthenticationRepository
 import javax.inject.Inject
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -17,14 +15,10 @@ class HeaderInterceptor @Inject constructor(private val authRepository: Authenti
             return chain.proceed(newRequest)
         }
 
-        var token = ""
-        runBlocking {
-            val authData = authRepository.getServerAuthData().first()
-            token = ("Bearer ${authData.accessToken}")
-        }
+        val serverAuthData = authRepository.getServerAuthData()
 
         val newRequest = chain.request().newBuilder()
-            .addHeader(AUTH_HEADER_KEY, token)
+            .addHeader(AUTH_HEADER_KEY, "Bearer ${serverAuthData.accessToken}")
             .build()
         val response = chain.proceed(newRequest)
 

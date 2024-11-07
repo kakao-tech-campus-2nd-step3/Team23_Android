@@ -2,7 +2,6 @@ package com.kappzzang.jeongsan.retrofit
 
 import com.kappzzang.jeongsan.util.AuthenticationRepository
 import javax.inject.Inject
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.Request
@@ -18,7 +17,7 @@ class AuthInterceptor @Inject constructor(private val authRepository: Authentica
         }
 
         // 기존의 authData
-        val authData = runBlocking { authRepository.getServerAuthData().first() }
+        val authData = authRepository.getServerAuthData()
 
         // 서버에 새로운 토큰을 요청
         val newAuthData = runBlocking {
@@ -29,9 +28,7 @@ class AuthInterceptor @Inject constructor(private val authRepository: Authentica
         } ?: return null
 
         // 새로운 토큰을 저장
-        runBlocking {
-            authRepository.updateServerAuthData(newAuthData)
-        }
+        authRepository.updateServerAuthData(newAuthData)
 
         return originRequest.newBuilder()
             .removeHeader(AUTH_HEADER_KEY)
