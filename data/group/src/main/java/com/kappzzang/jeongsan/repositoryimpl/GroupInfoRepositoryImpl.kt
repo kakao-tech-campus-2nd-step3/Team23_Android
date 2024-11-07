@@ -15,8 +15,7 @@ class GroupInfoRepositoryImpl @Inject constructor(
 ) : GroupInfoRepository {
 
     override suspend fun getProgressingGroupInfo(): List<GroupItem> {
-        val token = ""
-        val result = groupRemoteDataSource.getGroupInfo(token, false)
+        val result = groupRemoteDataSource.getGroupInfo(false)
         result.fold(
             onSuccess = {
                 return it.map { it.toGroupItem() }
@@ -28,8 +27,7 @@ class GroupInfoRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getDoneGroupInfo(): List<GroupItem> {
-        val token = ""
-        val result = groupRemoteDataSource.getGroupInfo(token, true)
+        val result = groupRemoteDataSource.getGroupInfo(true)
         result.fold(
             onSuccess = {
                 return it.map { it.toGroupItem() }
@@ -41,9 +39,8 @@ class GroupInfoRepositoryImpl @Inject constructor(
     }
 
     override fun getTargetGroupInfo(groupId: String): Flow<GroupItem> = flow {
-        val token = ""
         groupId.toLongOrNull()?.let { id ->
-            groupRemoteDataSource.getTargetGroupInfo(token, id).fold(
+            groupRemoteDataSource.getTargetGroupInfo(id).fold(
                 onSuccess = {
                     it.toGroupItem()
                 },
@@ -59,10 +56,8 @@ class GroupInfoRepositoryImpl @Inject constructor(
     }
 
     override suspend fun uploadGroupInfo(createdGroup: GroupCreateItem): Long {
-        val token = ""
         Log.d("GroupRepositoryImpl", createdGroup.memberUuidList.toString())
         val result = groupRemoteDataSource.createGroup(
-            jwt = token,
             groupName = createdGroup.name,
             groupSubject = createdGroup.subject,
             groupMemberUuidList = createdGroup.memberUuidList

@@ -13,15 +13,13 @@ class MemberRepositoryImpl @Inject constructor(
 ) : MemberRepository {
     override suspend fun addMember(groupId: String, memberId: String) {
         withContext(Dispatchers.IO) {
-            val token = ""
-            groupRemoteDataSource.joinGroup(token, groupId.toLong(), memberId.toLong())
+            groupRemoteDataSource.joinGroup(groupId.toLong(), memberId.toLong())
         }
     }
 
     override suspend fun getAllMember(groupId: String): List<MemberItem> =
         withContext(Dispatchers.IO) {
-            val token = ""
-            groupRemoteDataSource.getMemberInfo(token, groupId.toLong()).fold(
+            groupRemoteDataSource.getMemberInfo(groupId.toLong()).fold(
                 onSuccess = { memberInfoList ->
                     memberInfoList.map { it.toMemberItem() }
                 },
