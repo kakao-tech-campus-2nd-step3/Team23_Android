@@ -6,6 +6,7 @@ import com.kappzzang.jeongsan.entity.GetGroupResponse
 import com.kappzzang.jeongsan.entity.GetLinkResponse
 import com.kappzzang.jeongsan.entity.GetMemberInfoResponse
 import com.kappzzang.jeongsan.entity.GetMyExpenseResponse
+import com.kappzzang.jeongsan.entity.GetTargetGroupResponse
 import com.kappzzang.jeongsan.entity.JoinGroupRequest
 import com.kappzzang.jeongsan.entity.JoinGroupResponse
 import retrofit2.Response
@@ -24,12 +25,18 @@ interface GroupRetrofitService {
         @Query("isClosed") isCompleted: Boolean
     ): Response<GetGroupResponse>
 
+    @GET("/api/teams/{teamId}")
+    suspend fun getTargetGroupInfo(
+        @Header("Authorization") token: String,
+        @Path("teamId") groupId: Long
+    ): Response<GetTargetGroupResponse>
+
     @POST("/api/teams")
     suspend fun createGroup(
         @Header("Authorization") token: String,
         @Query("name") name: String,
         @Query("subject") subject: String,
-        @Query("members") memberIdList: List<Long>
+        @Query("members") memberIdList: List<String>
     ): Response<CreateGroupResponse>
 
     @PATCH("/api/teams/{teamId}")

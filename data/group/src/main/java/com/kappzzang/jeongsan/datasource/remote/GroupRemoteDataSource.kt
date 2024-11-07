@@ -1,4 +1,4 @@
-package com.kappzzang.jeongsan.datasource.group
+package com.kappzzang.jeongsan.datasource.remote
 
 import com.kappzzang.jeongsan.api.GroupRetrofitService
 import com.kappzzang.jeongsan.entity.CompleteGroupResponse
@@ -6,6 +6,7 @@ import com.kappzzang.jeongsan.entity.CreateGroupResponse
 import com.kappzzang.jeongsan.entity.GetGroupResponse
 import com.kappzzang.jeongsan.entity.GetLinkResponse
 import com.kappzzang.jeongsan.entity.GetMemberInfoResponse
+import com.kappzzang.jeongsan.entity.GetTargetGroupResponse
 import com.kappzzang.jeongsan.entity.GroupInfo
 import com.kappzzang.jeongsan.entity.JoinGroupRequest
 import com.kappzzang.jeongsan.entity.JoinGroupResponse
@@ -35,17 +36,38 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
         }
     }
 
+    suspend fun getTargetGroupInfo(jwt: String, groupId: Long) = try {
+        val response = groupApi.getTargetGroupInfo(
+            token = jwt,
+            groupId = groupId
+        )
+        handleGetTargetGroupInfoResponse(response)
+    } catch (e: Exception) {
+        Result.failure(e)
+    }
+
+    private fun handleGetTargetGroupInfoResponse(
+        response: Response<GetTargetGroupResponse>
+    ): Result<GroupInfo> = when {
+        response.isSuccessful && response.body()?.groupInfo != null -> {
+            Result.success(response.body()!!.groupInfo)
+        }
+        else -> {
+            Result.failure(Exception("그룹 정보를 가져오는데 실패"))
+        }
+    }
+
     suspend fun createGroup(
         jwt: String,
         groupName: String,
         groupSubject: String,
-        groupMemberId: List<Long>
+        groupMemberUuidList: List<String>
     ): Result<Long> = try {
         val response = groupApi.createGroup(
             token = jwt,
             name = groupName,
             subject = groupSubject,
-            memberIdList = groupMemberId
+            memberIdList = groupMemberUuidList
         )
         handleCreateGroupResponse(response)
     } catch (e: Exception) {
@@ -167,6 +189,4 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
             Result.failure(Exception("알수없는 오류 발생"))
         }
     }
-
-    // getMyExpense는 expense모듈에 속해야하는 것 같아 구현을 마치지 않음
 }

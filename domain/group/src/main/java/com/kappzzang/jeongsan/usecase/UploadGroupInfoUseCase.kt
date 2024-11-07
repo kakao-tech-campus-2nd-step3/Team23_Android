@@ -7,7 +7,6 @@ import javax.inject.Inject
 class UploadGroupInfoUseCase @Inject constructor(
     private val groupInfoRepository: GroupInfoRepository
 ) {
-    suspend operator fun invoke(createdGroup: GroupCreateItem) {
+    suspend operator fun invoke(createdGroup: GroupCreateItem) =
         groupInfoRepository.uploadGroupInfo(createdGroup)
-    }
 }
