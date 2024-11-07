@@ -104,7 +104,8 @@ class SendTransferMessageUseCaseTest {
             UserItem(
                 name = "sampleUser",
                 uuid = "1234",
-                profileUrl = "https://example.org/"
+                profileUrl = "https://example.org/",
+                email = "example@domain.com"
             )
 
         val sampleTransferLink =

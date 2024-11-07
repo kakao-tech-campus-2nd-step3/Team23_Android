@@ -16,5 +16,9 @@ data class ExpenseRemoteEntity(
     @SerializedName("state")
     val state: String,
     @SerializedName("category")
-    val category: CategoryEntity
+    val category: CategoryEntity,
+    @SerializedName("checked")
+    val checked: Boolean? = null,
+    @SerializedName("personalExpense")
+    val myExpense: Int? = null
 )
