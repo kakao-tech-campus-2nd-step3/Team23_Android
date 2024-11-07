@@ -1,8 +1,8 @@
 package com.kappzzang.jeongsan.di
 
 import com.kappzzang.jeongsan.api.GroupRetrofitService
-import com.kappzzang.jeongsan.build_config.BuildConfig
 import com.kappzzang.jeongsan.datasource.remote.GroupRemoteDataSource
+import com.kappzzang.jeongsan.retrofit.RetrofitModule.ServiceRetrofit
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,9 +22,8 @@ object GroupRetrofitModule {
 
     @Provides
     @Singleton
-    fun provideGroupRetrofitService(): GroupRetrofitService = Retrofit.Builder()
-        .baseUrl(BuildConfig.SERVICE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+    fun provideGroupRetrofitService(
+        @ServiceRetrofit serviceRetrofit: Retrofit
+    ): GroupRetrofitService = serviceRetrofit
         .create(GroupRetrofitService::class.java)
 }
