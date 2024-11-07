@@ -58,15 +58,16 @@ class GroupInfoRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun uploadGroupInfo(createdGroup: GroupCreateItem) {
+    override suspend fun uploadGroupInfo(createdGroup: GroupCreateItem): Long {
         val token = ""
         Log.d("GroupRepositoryImpl", createdGroup.memberUuidList.toString())
-        groupRemoteDataSource.createGroup(
+        val result = groupRemoteDataSource.createGroup(
             jwt = token,
             groupName = createdGroup.name,
             groupSubject = createdGroup.subject,
             groupMemberUuidList = createdGroup.memberUuidList
         )
+        return result.getOrThrow()
     }
 
     fun getBlankGroupItem(): GroupItem = GroupItem("", "", true, "", listOf())

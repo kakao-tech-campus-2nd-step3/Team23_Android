@@ -95,17 +95,24 @@ class CreateGroupActivity : AppCompatActivity() {
 
     private fun setCreateGroupButton() {
         binding.createGroupButton.setOnClickListener {
-            val isUploadSuccess = viewModel.uploadGroupInfo()
-            if (isUploadSuccess) {
-                // TODO: 그룹 생성 성공 시 그룹아이디를 서버에서 전달 받아 해당 그룹에 대한 초대 메시지 전송하도록 수정
-                viewModel.sendInviteMessageAll(viewModel.groupId.value)
-                finish()
-            } else {
+            if (!viewModel.checkGroupInfoValidation()) {
                 Toast.makeText(
                     this,
                     getString(R.string.create_group_empty_info),
                     Toast.LENGTH_SHORT
                 ).show()
+            } else {
+                val isUploadSuccess = viewModel.uploadGroupInfo()
+                if (isUploadSuccess) {
+                    viewModel.sendInviteMessageAll(viewModel.groupId.value)
+                    finish()
+                } else {
+                    Toast.makeText(
+                        this,
+                        getString(R.string.create_group_fail_create),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
     }

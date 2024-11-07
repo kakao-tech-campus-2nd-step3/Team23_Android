@@ -16,5 +16,5 @@ interface GroupInfoRepository {
      */
     fun getTargetGroupInfo(groupId: String): Flow<GroupItem>
 
-    suspend fun uploadGroupInfo(createdGroup: GroupCreateItem)
+    suspend fun uploadGroupInfo(createdGroup: GroupCreateItem): Long
 }

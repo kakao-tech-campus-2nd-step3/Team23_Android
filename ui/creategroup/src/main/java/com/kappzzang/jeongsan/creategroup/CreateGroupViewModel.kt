@@ -53,29 +53,33 @@ class CreateGroupViewModel @Inject constructor(
     }
 
     fun uploadGroupInfo(): Boolean {
-        if (!checkGroupInfoValidation()) {
-            return false
-        }
-
         val groupInfo = GroupCreateItem(
             name = groupName.value,
             subject = _groupSubject.value,
             memberUuidList = _groupMemberList.value.map { it.uuid }
         )
-        // TODO(): 생성 성공시 그룹아이디를 받아 ViewModel에 저장 -> 초대메시지 전달에 사용
+        var isSuccess = false
         viewModelScope.launch(ioDispatcher) {
-            uploadGroupInfoUseCase(groupInfo)
+            isSuccess = try {
+                val result = uploadGroupInfoUseCase(groupInfo)
+                _groupId.value = result.toString()
+                true
+            } catch (e: Exception) {
+                false
+            }
         }
-        return true
+        return isSuccess
     }
 
-    fun sendInviteMessageAll(groupId: String) = _groupMemberList.value.forEach { member ->
-        viewModelScope.launch {
-            sendInviteMessageUseCase.invoke(groupId, groupName.value, member.uuid)
-        }
+    fun sendInviteMessageAll(groupId: String) = viewModelScope.launch {
+        sendInviteMessageUseCase.invoke(
+            groupId,
+            groupName.value,
+            _groupMemberList.value.map { it.uuid }
+        )
     }
 
-    private fun checkGroupInfoValidation(): Boolean = groupName.value.isNotEmpty() &&
+    fun checkGroupInfoValidation(): Boolean = groupName.value.isNotEmpty() &&
         _groupSubject.value.isNotEmpty() &&
         _groupMemberList.value.isNotEmpty()
 }
