@@ -70,7 +70,7 @@ class ExpenseListRepositoryImpl @Inject constructor(
     private fun mapResponseBody(body: ExpenseListResponseDTO): ExpenseListResponse {
         val expenses = body.expenseList.map { ExpenseEntityMapper.mapExpenseEntityToModel(it) }
         return ExpenseListResponse(
-            totalExpenseToSend = body.totalPrice.toInt(),
+            totalExpenseToSend = body.myTotalExpense ?: 0,
             expenseList = expenses,
             totalPrice = body.totalPrice.toInt()
         )

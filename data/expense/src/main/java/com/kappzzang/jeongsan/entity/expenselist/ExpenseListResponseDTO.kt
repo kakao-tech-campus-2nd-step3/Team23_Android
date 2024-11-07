@@ -7,8 +7,8 @@ import kotlinx.serialization.Serializable
 data class ExpenseListResponseDTO(
     @SerializedName("expenseList")
     val expenseList: List<ExpenseRemoteEntity>,
-    @SerializedName("checked")
-    val checked: Boolean,
     @SerializedName("totalPrice")
-    val totalPrice: Long
+    val totalPrice: Long,
+    @SerializedName("totalExpense")
+    val myTotalExpense: Int? = null
 )
