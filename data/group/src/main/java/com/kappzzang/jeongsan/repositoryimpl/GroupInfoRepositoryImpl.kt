@@ -70,5 +70,11 @@ class GroupInfoRepositoryImpl @Inject constructor(
         return result.getOrThrow()
     }
 
-    fun getBlankGroupItem(): GroupItem = GroupItem("", "", true, "", listOf())
+    private fun getBlankGroupItem(): GroupItem = GroupItem(
+        "",
+        "",
+        true,
+        "",
+        listOf()
+    )
 }
