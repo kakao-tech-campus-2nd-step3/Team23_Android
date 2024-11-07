@@ -1,11 +1,12 @@
 package com.kappzzang.jeongsan.di
 
 import com.kappzzang.jeongsan.repository.KakaoAuthenticationRepository
+import com.kappzzang.jeongsan.repository.ServerAuthenticationRepository
 import com.kappzzang.jeongsan.repository.UserInfoRepository
 import com.kappzzang.jeongsan.usecase.AuthenticateWithKakaoUseCase
+import com.kappzzang.jeongsan.usecase.AuthenticateWithServerUseCase
 import com.kappzzang.jeongsan.usecase.AuthorizeWithKakaoUseCase
 import com.kappzzang.jeongsan.usecase.GetUserInfoUseCase
-import com.kappzzang.jeongsan.usecase.RegisterWithKakaoUseCase
 import com.kappzzang.jeongsan.util.AuthenticationRepository
 import dagger.Module
 import dagger.Provides
@@ -23,13 +24,16 @@ object UserUseCaseModule {
     ) = AuthenticateWithKakaoUseCase(authenticationRepository, kakaoAuthenticationRepository)
 
     @Provides
+    fun provideAuthenticateWithServerUseCase(
+        authenticationRepository: AuthenticationRepository,
+        serverAuthenticationRepository: ServerAuthenticationRepository
+    ) = AuthenticateWithServerUseCase(authenticationRepository, serverAuthenticationRepository)
+
+    @Provides
     fun provideAuthorizeWithKakaoUseCase(authenticationRepository: AuthenticationRepository) =
         AuthorizeWithKakaoUseCase(authenticationRepository)
 
     @Provides
     fun provideGetUserInfoUseCase(userInfoRepository: UserInfoRepository) =
         GetUserInfoUseCase(userInfoRepository)
-
-    @Provides
-    fun registerWithKakaoUseCase() = RegisterWithKakaoUseCase()
 }

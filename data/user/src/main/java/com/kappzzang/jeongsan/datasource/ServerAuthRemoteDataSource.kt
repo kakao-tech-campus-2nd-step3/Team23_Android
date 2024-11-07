@@ -1,6 +1,6 @@
 package com.kappzzang.jeongsan.datasource
 
-import com.kappzzang.jeongsan.api.ServiceAuthRetrofitService
+import com.kappzzang.jeongsan.api.ServerAuthRetrofitService
 import com.kappzzang.jeongsan.entity.AuthResponse
 import com.kappzzang.jeongsan.entity.LoginRequest
 import com.kappzzang.jeongsan.entity.RefreshResponse
@@ -11,7 +11,10 @@ import com.kappzzang.jeongsan.entity.TokenData
 import javax.inject.Inject
 import retrofit2.Response
 
-class AuthRemoteDataSource @Inject constructor(private val authApi: ServiceAuthRetrofitService) {
+class ServerAuthRemoteDataSource @Inject constructor(
+    private val authApi: ServerAuthRetrofitService
+) {
+
     suspend fun refreshToken(refreshToken: String): Result<RefreshTokenData> = try {
         val response = authApi.refreshToken(RefreshTokenRequest(refreshToken = refreshToken))
         handleRefreshResponse(response)
@@ -28,11 +31,11 @@ class AuthRemoteDataSource @Inject constructor(private val authApi: ServiceAuthR
         }
 
         response.code() == 403 -> {
-            Result.failure(Exception("리프레시 토큰이 유효하지 않음."))
+            Result.failure(SecurityException("리프레시 토큰이 유효하지 않음."))
         }
 
         response.code() == 404 -> {
-            Result.failure(Exception("사용자를 찾을 수 없음."))
+            Result.failure(NoSuchElementException("사용자를 찾을 수 없음."))
         }
 
         else -> {
@@ -59,7 +62,7 @@ class AuthRemoteDataSource @Inject constructor(private val authApi: ServiceAuthR
         }
 
         response.code() == 400 -> {
-            Result.failure(Exception("해당 사용자는 이미 회원가입됨."))
+            Result.failure(IllegalStateException("해당 사용자는 이미 회원가입됨."))
         }
 
         else -> {
@@ -83,7 +86,7 @@ class AuthRemoteDataSource @Inject constructor(private val authApi: ServiceAuthR
         }
 
         response.code() == 404 -> {
-            Result.failure(Exception("사용자를 찾을 수 없음."))
+            Result.failure(NoSuchElementException("사용자를 찾을 수 없음."))
         }
 
         else -> {

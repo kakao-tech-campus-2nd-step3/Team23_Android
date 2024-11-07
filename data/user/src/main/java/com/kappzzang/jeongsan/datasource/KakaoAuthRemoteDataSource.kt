@@ -7,7 +7,7 @@ import com.kappzzang.jeongsan.entity.KakaoRefreshTokenResponseDTO
 import javax.inject.Inject
 import retrofit2.Response
 
-class KakaoAuthenticationDataSource @Inject constructor(
+class KakaoAuthRemoteDataSource @Inject constructor(
     private val kakaoApi: KakaoAuthRetrofitService
 ) {
 

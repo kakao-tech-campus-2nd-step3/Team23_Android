@@ -9,11 +9,12 @@ import com.kakao.sdk.common.model.AuthError
 import com.kakao.sdk.common.model.AuthErrorCause
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
-import com.kappzzang.jeongsan.data.AuthData
+import com.kappzzang.jeongsan.data.KakaoAuthData
 import com.kappzzang.jeongsan.model.AuthenticationResult
 import com.kappzzang.jeongsan.usecase.AuthenticateWithKakaoUseCase
+import com.kappzzang.jeongsan.usecase.AuthenticateWithServerUseCase
 import com.kappzzang.jeongsan.usecase.AuthorizeWithKakaoUseCase
-import com.kappzzang.jeongsan.usecase.RegisterWithKakaoUseCase
+import com.kappzzang.jeongsan.usecase.GetUserInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
@@ -31,7 +32,8 @@ class LoginViewModel @Inject constructor(
     private val application: Application,
     private val authorizeWithKakaoUseCase: AuthorizeWithKakaoUseCase,
     private val authenticateWithKakaoUseCase: AuthenticateWithKakaoUseCase,
-    private val registerUseCase: RegisterWithKakaoUseCase,
+    private val authenticateWithServerUseCase: AuthenticateWithServerUseCase,
+    private val getUserInfo: GetUserInfoUseCase,
     private val ioDispatcher: CoroutineDispatcher
 ) : AndroidViewModel(application) {
     private val authStatus by lazy {
@@ -81,11 +83,10 @@ class LoginViewModel @Inject constructor(
             .show()
     }
 
-    private fun mapOAuthTokenToAuthData(token: OAuthToken): AuthData = AuthData(
+    private fun mapOAuthTokenToKakaoAuthData(token: OAuthToken): KakaoAuthData = KakaoAuthData(
         kakaoAccessToken = token.accessToken,
         kakaoRefreshToken = token.refreshToken,
-        accessTokenExpirationTime = token.accessTokenExpiresAt.time,
-        jwt = null
+        accessTokenExpirationTime = token.accessTokenExpiresAt.time
     )
 
     fun onKakaoAuthorizationFailure(error: Throwable?) {
@@ -105,14 +106,23 @@ class LoginViewModel @Inject constructor(
     fun onKakaoAuthorizationSuccess(token: OAuthToken?) {
         token?.let {
             _kakaoLoginStatus.value = KakaoLoginStatus.ON_LOGIN
-            authorizeWithKakao(mapOAuthTokenToAuthData(token))
+            viewModelScope.launch(ioDispatcher) {
+                authenticateWithServer()
+                authorizeWithKakao(mapOAuthTokenToKakaoAuthData(token))
+            }
         }
     }
 
-    private fun authorizeWithKakao(authData: AuthData) {
-        viewModelScope.launch(ioDispatcher) {
-            authorizeWithKakaoUseCase(authData)
-            _loginStatus.emit(LoginStatus.LOGIN_COMPLETE)
+    private suspend fun authorizeWithKakao(authData: KakaoAuthData) {
+        authorizeWithKakaoUseCase(authData)
+        _loginStatus.emit(LoginStatus.LOGIN_COMPLETE)
+    }
+
+    private suspend fun authenticateWithServer() {
+        getUserInfo()?.let {
+            authenticateWithServerUseCase(it.name, it.email, it.profileUrl)
+        } ?: run {
+            _loginStatus.emit(LoginStatus.FAILED)
         }
     }
 
