@@ -1,6 +1,7 @@
 package com.kappzzang.jeongsan.repositoryimpl
 
-import com.kappzzang.jeongsan.data.AuthData
+import com.kappzzang.jeongsan.data.KakaoAuthData
+import com.kappzzang.jeongsan.data.ServerAuthData
 import com.kappzzang.jeongsan.datasource.AuthLocalDataSource
 import com.kappzzang.jeongsan.util.AuthenticationRepository
 import javax.inject.Inject
@@ -11,13 +12,23 @@ class AuthenticationRepositoryImpl
     private val datasource: AuthLocalDataSource
 ) : AuthenticationRepository {
 
-    override fun getAuthData(): Flow<AuthData> = datasource.getAuthDataFlow()
+    override fun getKakaoAuthData(): Flow<KakaoAuthData> = datasource.getKakaoAuthDataFlow()
 
-    override suspend fun updateAuthData(newData: AuthData) {
-        datasource.updatePreference(newData)
+    override fun getServerAuthData(): Flow<ServerAuthData> = datasource.getServerAuthDataFlow()
+
+    override suspend fun updateKakaoAuthData(newData: KakaoAuthData) {
+        datasource.updateKakaoPreference(newData)
     }
 
-    override suspend fun removeAuthData() {
+    override suspend fun updateServerAuthData(newData: ServerAuthData) {
+        datasource.updateServerPreference(newData)
+    }
+
+    override suspend fun removeKakaoAuthData() {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun removeServerAuthData() {
         TODO("Not yet implemented")
     }
 }
