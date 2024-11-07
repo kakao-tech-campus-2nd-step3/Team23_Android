@@ -18,6 +18,7 @@ class AuthenticateWithServerUseCase @Inject constructor(
     ) {
         val authData = attemptLoginOrRegister(uuid, nickname, email, profileImageUrl)
         authenticationRepository.updateServerAuthData(authData)
+        authenticationRepository.updateUuid(uuid)
     }
 
     private suspend fun attemptLoginOrRegister(
