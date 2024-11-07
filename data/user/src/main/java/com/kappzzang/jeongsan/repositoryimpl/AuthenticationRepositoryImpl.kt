@@ -15,9 +15,11 @@ class AuthenticationRepositoryImpl
     private val serverAuthRemoteDataSource: ServerAuthRemoteDataSource
 ) : AuthenticationRepository {
 
-    override fun getKakaoAuthData(): Flow<KakaoAuthData> = authLocalDataSource.getKakaoAuthDataFlow()
+    override fun getKakaoAuthData(): Flow<KakaoAuthData> =
+        authLocalDataSource.getKakaoAuthDataFlow()
 
-    override fun getServerAuthData(): Flow<ServerAuthData> = authLocalDataSource.getServerAuthDataFlow()
+    override fun getServerAuthData(): Flow<ServerAuthData> =
+        authLocalDataSource.getServerAuthDataFlow()
 
     override suspend fun updateKakaoAuthData(newData: KakaoAuthData) {
         authLocalDataSource.updateKakaoPreference(newData)

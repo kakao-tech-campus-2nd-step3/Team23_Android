@@ -6,9 +6,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.OkHttpClient
 import javax.inject.Qualifier
 import javax.inject.Singleton
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -65,7 +65,8 @@ object RetrofitModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(
-        headerInterceptor: HeaderInterceptor, authInterceptor: AuthInterceptor
+        headerInterceptor: HeaderInterceptor,
+        authInterceptor: AuthInterceptor
     ): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(headerInterceptor)
         .authenticator(authInterceptor)

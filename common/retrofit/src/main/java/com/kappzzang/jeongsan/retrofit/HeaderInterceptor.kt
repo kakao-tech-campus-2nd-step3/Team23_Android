@@ -7,11 +7,10 @@ import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class HeaderInterceptor @Inject constructor(
-    private val authRepository: AuthenticationRepository
-) : Interceptor{
+class HeaderInterceptor @Inject constructor(private val authRepository: AuthenticationRepository) :
+    Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        if(chain.request().headers()[SKIP_AUTH_KEY] == SKIP_AUTH_VALUE){
+        if (chain.request().headers()[SKIP_AUTH_KEY] == SKIP_AUTH_VALUE) {
             val newRequest = chain.request().newBuilder()
                 .removeHeader(SKIP_AUTH_KEY)
                 .build()
