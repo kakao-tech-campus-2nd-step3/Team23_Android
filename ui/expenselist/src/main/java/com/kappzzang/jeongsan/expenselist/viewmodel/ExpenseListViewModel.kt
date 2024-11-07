@@ -2,6 +2,7 @@ package com.kappzzang.jeongsan.expenselist.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kappzzang.jeongsan.data.ExpenseListGroupInfoUIData
 import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.usecase.GetCurrentGroupInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -9,7 +10,6 @@ import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 data class SelectedExpenseData(val expenseId: String, val editable: Boolean)
@@ -19,10 +19,10 @@ class ExpenseListViewModel @Inject constructor(
     private val getCurrentGroupInfoUseCase: GetCurrentGroupInfoUseCase,
     private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
-    private var _groupId = MutableStateFlow("")
-    private val _groupName = MutableStateFlow("")
+    private val _groupId = MutableStateFlow("")
+    private val _groupUIItem = MutableStateFlow(ExpenseListGroupInfoUIData.EMPTY)
 
-    val groupName = _groupName.asStateFlow()
+    val groupUIItem = _groupUIItem.asStateFlow()
 
     val groupId = _groupId.asStateFlow()
 
@@ -31,10 +31,13 @@ class ExpenseListViewModel @Inject constructor(
 
     private fun fetchGroupInfo() {
         viewModelScope.launch(ioDispatcher) {
-            getCurrentGroupInfoUseCase(_groupId.value).map {
-                it.name
-            }.collect {
-                _groupName.emit(it)
+            getCurrentGroupInfoUseCase(_groupId.value).collect {
+                _groupUIItem.emit(
+                    ExpenseListGroupInfoUIData(
+                        groupName = it.name,
+                        groupSubject = it.subject
+                    )
+                )
             }
         }
     }
