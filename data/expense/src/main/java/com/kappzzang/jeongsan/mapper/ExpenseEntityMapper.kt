@@ -26,7 +26,8 @@ object ExpenseEntityMapper {
                 state = ExpenseState.entries[entity.expenseState]
             ),
             date = DateConverter.parseFromString(entity.createdTime),
-            categoryColor = entity.categoryColor
+            categoryColor = entity.categoryColor,
+            payerUuid = ""
         )
 
     fun mapExpenseEntityToModel(
@@ -40,7 +41,8 @@ object ExpenseEntityMapper {
             state = mapExpenseStateToDomainState(entity.state, checked)
         ),
         date = DateConverter.parseFromString(entity.createdAt),
-        categoryColor = entity.category.color
+        categoryColor = entity.category.color,
+        payerUuid = entity.payerUuid
     )
 
     fun mapDetailedExpenseEntityToModel(
