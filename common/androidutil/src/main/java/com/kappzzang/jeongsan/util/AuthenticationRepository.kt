@@ -16,4 +16,6 @@ interface AuthenticationRepository {
     suspend fun removeKakaoAuthData()
 
     suspend fun removeServerAuthData()
+
+    suspend fun refreshJwtFromServer(authData: ServerAuthData): Result<ServerAuthData>
 }

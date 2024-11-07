@@ -15,11 +15,8 @@ import javax.inject.Inject
 import retrofit2.Response
 
 class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetrofitService) {
-    suspend fun getGroupInfo(jwt: String, isCompleted: Boolean): Result<List<GroupInfo>> = try {
-        val response = groupApi.getGroupInfo(
-            token = jwt,
-            isCompleted = isCompleted
-        )
+    suspend fun getGroupInfo(isCompleted: Boolean): Result<List<GroupInfo>> = try {
+        val response = groupApi.getGroupInfo(isCompleted = isCompleted)
         handleGetGroupInfoResponse(response)
     } catch (e: Exception) {
         Result.failure(e)
@@ -36,11 +33,8 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
         }
     }
 
-    suspend fun getTargetGroupInfo(jwt: String, groupId: Long) = try {
-        val response = groupApi.getTargetGroupInfo(
-            token = jwt,
-            groupId = groupId
-        )
+    suspend fun getTargetGroupInfo(groupId: Long) = try {
+        val response = groupApi.getTargetGroupInfo(groupId = groupId)
         handleGetTargetGroupInfoResponse(response)
     } catch (e: Exception) {
         Result.failure(e)
@@ -58,13 +52,11 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
     }
 
     suspend fun createGroup(
-        jwt: String,
         groupName: String,
         groupSubject: String,
         groupMemberUuidList: List<String>
     ): Result<Long> = try {
         val response = groupApi.createGroup(
-            token = jwt,
             name = groupName,
             subject = groupSubject,
             memberIdList = groupMemberUuidList
@@ -91,11 +83,8 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
             }
         }
 
-    suspend fun completeGroup(jwt: String, groupId: Long): Result<Boolean> = try {
-        val response = groupApi.completeGroup(
-            token = jwt,
-            groupId = groupId
-        )
+    suspend fun completeGroup(groupId: Long): Result<Boolean> = try {
+        val response = groupApi.completeGroup(groupId = groupId)
         handleCompleteGroupResponse(response)
     } catch (e: Exception) {
         Result.failure(e)
@@ -118,11 +107,8 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
         }
     }
 
-    suspend fun getMemberInfo(jwt: String, groupId: Long): Result<List<MemberInfo>> = try {
-        val response = groupApi.getMemberInfo(
-            token = jwt,
-            groupId = groupId
-        )
+    suspend fun getMemberInfo(groupId: Long): Result<List<MemberInfo>> = try {
+        val response = groupApi.getMemberInfo(groupId = groupId)
         handleGetMemberInfoResponse(response)
     } catch (e: Exception) {
         Result.failure(e)
@@ -142,9 +128,8 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
         }
     }
 
-    suspend fun joinGroup(jwt: String, groupId: Long, myId: Long): Result<Boolean> = try {
+    suspend fun joinGroup(groupId: Long, myId: Long): Result<Boolean> = try {
         val response = groupApi.joinGroup(
-            token = jwt,
             groupId = groupId,
             request = JoinGroupRequest(myId)
         )
@@ -169,10 +154,8 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
             }
         }
 
-    suspend fun getLink(jwt: String): Result<String> = try {
-        val response = groupApi.getLink(
-            token = jwt
-        )
+    suspend fun getLink(): Result<String> = try {
+        val response = groupApi.getLink()
         handleGetLinkResponse(response)
     } catch (e: Exception) {
         Result.failure(e)
