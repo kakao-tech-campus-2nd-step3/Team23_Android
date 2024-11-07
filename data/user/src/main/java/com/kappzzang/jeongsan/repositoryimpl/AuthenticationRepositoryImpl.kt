@@ -48,6 +48,17 @@ class AuthenticationRepositoryImpl
             }
         )
 
+    // TODO: 추후에 EncryptedSharedPreferences를 사용하여 동기적으로 처리하기
+    override fun getUuid(): Flow<String> = authLocalDataSource.getUuidFlow()
+
+    override suspend fun updateUuid(uuid: String) {
+        authLocalDataSource.updateUuid(uuid)
+    }
+
+    override suspend fun removeUuid() {
+        authLocalDataSource.removeUuid()
+    }
+
     companion object {
         private const val TAG = "AuthenticationRepositoryImpl"
     }
