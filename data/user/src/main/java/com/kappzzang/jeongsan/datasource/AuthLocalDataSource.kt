@@ -43,6 +43,21 @@ class AuthLocalDataSource @Inject constructor(private val dataStore: DataStore<P
         )
     }
 
+    suspend fun removeKakaoAuthData() {
+        dataStore.edit { preferences ->
+            preferences.remove(KAKAO_ACCESS_TOKEN)
+            preferences.remove(KAKAO_REFRESH_TOKEN)
+            preferences.remove(KAKAO_ACCESS_EXPIRATION)
+        }
+    }
+
+    suspend fun removeServerAuthData() {
+        dataStore.edit { preferences ->
+            preferences.remove(SERVER_ACCESS_TOKEN)
+            preferences.remove(SERVER_REFRESH_TOKEN)
+        }
+    }
+
     suspend fun updateKakaoPreference(data: KakaoAuthData) {
         dataStore.edit { preferences ->
             preferences[KAKAO_ACCESS_TOKEN] = data.kakaoAccessToken
