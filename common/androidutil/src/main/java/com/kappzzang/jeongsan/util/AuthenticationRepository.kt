@@ -18,10 +18,9 @@ interface AuthenticationRepository {
 
     suspend fun refreshJwtFromServer(authData: ServerAuthData): Result<ServerAuthData>
 
-    // TODO: 추후에 EncryptedSharedPreferences를 사용하여 동기적으로 처리하기
-    fun getUuid(): Flow<String>
+    fun getUuid(): String
 
-    suspend fun updateUuid(uuid: String)
+    fun updateUuid(uuid: String)
 
-    suspend fun removeUuid()
+    fun removeUuid()
 }

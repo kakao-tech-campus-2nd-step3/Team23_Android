@@ -49,34 +49,26 @@ class AuthLocalDataSource @Inject constructor(private val sharedPreferences: Sha
         }
     }
 
-    // TODO: 추후에 EncryptedSharedPreferences를 사용하여 동기적으로 처리하기
-    fun getUuidFlow(): Flow<String> = dataStore.data.catch { exception ->
-        if (exception is IOException) {
-            emit(emptyPreferences())
-        } else {
-            throw exception
-        }
-    }.map { preferences ->
-        preferences[KAKAO_UUID] ?: ""
-    }
+    fun getUuid(): String = sharedPreferences.getString(KAKAO_UUID, "") ?: ""
 
-    suspend fun removeUuid() {
-        dataStore.edit { preferences ->
-            preferences.remove(KAKAO_UUID)
+    fun removeUuid() {
+        sharedPreferences.edit {
+            remove(KAKAO_UUID)
         }
     }
 
-    suspend fun updateUuid(uuid: String) {
-        dataStore.edit { preferences ->
-            preferences[KAKAO_UUID] = uuid
+    fun updateUuid(uuid: String) {
+        sharedPreferences.edit {
+            putString(KAKAO_UUID, uuid)
         }
     }
 
     companion object {
-        const val KAKAO_ACCESS_TOKEN = "kakao_access_token"
+        private const val KAKAO_ACCESS_TOKEN = "kakao_access_token"
         private const val KAKAO_REFRESH_TOKEN = "kakao_refresh_token"
         private const val KAKAO_ACCESS_EXPIRATION = "kakao_access_token_expiration"
         private const val SERVER_ACCESS_TOKEN = "server_access_token"
         private const val SERVER_REFRESH_TOKEN = "server_refresh_token"
+        private const val KAKAO_UUID = "kakao_uuid"
     }
 }
