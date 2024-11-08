@@ -1,24 +1,17 @@
 package com.kappzzang.jeongsan.expensedetail
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.expensedetail.databinding.ActivityExpenseDetailBinding
-import com.kappzzang.jeongsan.expensedetail.expensedetailpage.ExpenseDetailCallback
-import com.kappzzang.jeongsan.expensedetail.expensedetailpage.ExpenseDetailItemListAdapter
-import com.kappzzang.jeongsan.expensedetail.expensedetailpage.ExpenseDetailSaveState
 import com.kappzzang.jeongsan.intentcontract.ExpenseDetailContract
 import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -112,11 +105,11 @@ class ExpenseDetailActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.expenseDetailSaveState.collect {
-                    if(it == ExpenseDetailSaveState.SUCCESS){
+                viewModel.expenseDetailState.collect {
+                    if(it == ExpenseDetailState.SUCCESS){
                         finish()
                     }
-                    else if(it == ExpenseDetailSaveState.FAILED){
+                    else if(it == ExpenseDetailState.FAILED){
                         Toast.makeText(this@ExpenseDetailActivity, R.string.expense_detail_error_message_save_expense_info, Toast.LENGTH_LONG).show()
                         finish()
                     }

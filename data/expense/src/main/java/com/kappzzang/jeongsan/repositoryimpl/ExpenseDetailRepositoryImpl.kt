@@ -45,4 +45,8 @@ class ExpenseDetailRepositoryImpl @Inject constructor(
         ).mapCatching {
             ExpenseDetailMapper.mapExpenseSelectionStatusEntityToModel(it)
         }
+
+    override suspend fun setExpenseState(expenseId: String, expenseState: ExpenseState): Result<Unit> {
+        TODO("Not yet implemented")
+    }
 }

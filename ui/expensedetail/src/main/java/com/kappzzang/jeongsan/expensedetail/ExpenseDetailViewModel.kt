@@ -1,23 +1,26 @@
 package com.kappzzang.jeongsan.expensedetail
 
 import androidx.lifecycle.ViewModel
-import com.kappzzang.jeongsan.expensedetail.expensedetailpage.ExpenseDetailSaveState
+import androidx.lifecycle.viewModelScope
+import com.kappzzang.jeongsan.usecase.SetExpenseToPendingUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 enum class ExpenseDetailPage { EXPENSE_DETAIL, SELECTION_STATUS }
 
 @HiltViewModel
 class ExpenseDetailViewModel @Inject constructor(
-    private val ioDispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher,
+    private val setExpenseToPendingUseCase: SetExpenseToPendingUseCase
 ) : ViewModel() {
     private val _currentPage = MutableStateFlow(ExpenseDetailPage.EXPENSE_DETAIL)
     private val _showPayerUI = MutableStateFlow(false)
 
-    private val _expenseDetailSaveState = MutableStateFlow(ExpenseDetailSaveState.NOT_UPLOADING)
+    private val _expenseDetailState = MutableStateFlow(ExpenseDetailState.IDLE)
 
     var groupId = ""
         private set
@@ -28,11 +31,28 @@ class ExpenseDetailViewModel @Inject constructor(
 
     val currentPage = _currentPage.asStateFlow()
     val showPayerUI = _showPayerUI.asStateFlow()
-    val expenseDetailSaveState = _expenseDetailSaveState.asStateFlow()
+    val expenseDetailState = _expenseDetailState.asStateFlow()
+
+    private fun switchToPendingExpense() {
+        if (_expenseDetailState.value != ExpenseDetailState.IDLE) {
+            return
+        }
+
+        _expenseDetailState.value = ExpenseDetailState.SWITCHING_TO_PENDING
+        viewModelScope.launch(ioDispatcher) {
+            setExpenseToPendingUseCase.invoke(expenseId)
+                .onSuccess {
+                    _expenseDetailState.value = ExpenseDetailState.SUCCESS
+                }
+                .onFailure {
+                    _expenseDetailState.value = ExpenseDetailState.FAILED
+                }
+        }
+    }
 
     fun setSaveResult(isSuccess: Boolean) {
-        _expenseDetailSaveState.value =
-            if (isSuccess) ExpenseDetailSaveState.SUCCESS else ExpenseDetailSaveState.FAILED
+        _expenseDetailState.value =
+            if (isSuccess) ExpenseDetailState.SUCCESS else ExpenseDetailState.FAILED
     }
 
     fun setInitialData(expenseId: String, groupId: String, editable: Boolean, isPayer: Boolean) {
@@ -50,7 +70,7 @@ class ExpenseDetailViewModel @Inject constructor(
     }
 
     fun clickSaveDetailsAndClose() {
-        _expenseDetailSaveState.value = ExpenseDetailSaveState.UPLOADING
+        _expenseDetailState.value = ExpenseDetailState.UPLOADING
     }
 
     fun clickToSelectionStatus() {
@@ -62,6 +82,8 @@ class ExpenseDetailViewModel @Inject constructor(
     }
 
     fun clickSwitchToPending() {
-
+        switchToPendingExpense()
     }
 }
+
+enum class ExpenseDetailState { IDLE, UPLOADING, SUCCESS, FAILED, SWITCHING_TO_PENDING }

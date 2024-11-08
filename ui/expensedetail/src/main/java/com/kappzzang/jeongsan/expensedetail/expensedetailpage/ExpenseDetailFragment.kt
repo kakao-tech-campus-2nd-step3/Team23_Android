@@ -12,6 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.kappzzang.jeongsan.expensedetail.ExpenseDetailState
 import com.kappzzang.jeongsan.expensedetail.ExpenseDetailViewModel
 import com.kappzzang.jeongsan.expensedetail.databinding.FragmentExpenseDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -55,8 +56,8 @@ class ExpenseDetailFragment : Fragment() {
         }
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
-                activityViewModel.expenseDetailSaveState.collect {
-                    if(it == ExpenseDetailSaveState.UPLOADING) {
+                activityViewModel.expenseDetailState.collect {
+                    if(it == ExpenseDetailState.UPLOADING) {
                         viewModel.saveExpenseDetail()
                     }
                 }
@@ -64,11 +65,11 @@ class ExpenseDetailFragment : Fragment() {
         }
     }
 
-    private fun processExpenseDetailSaveResult(result: ExpenseDetailSaveState) {
-        if(result == ExpenseDetailSaveState.SUCCESS) {
+    private fun processExpenseDetailSaveResult(result: ExpenseDetailState) {
+        if(result == ExpenseDetailState.SUCCESS) {
             sendExpenseUploadResult(true)
         }
-        else if(result == ExpenseDetailSaveState.FAILED) {
+        else if(result == ExpenseDetailState.FAILED) {
             sendExpenseUploadResult(false)
         }
     }

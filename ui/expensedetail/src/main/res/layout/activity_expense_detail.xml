@@ -11,6 +11,7 @@
         <import type="android.view.View" />
 
         <import type="com.kappzzang.jeongsan.expensedetail.ExpenseDetailPage" />
+        <import type="com.kappzzang.jeongsan.expensedetail.ExpenseDetailState" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -61,6 +62,7 @@
         <Button
             android:id="@+id/expense_detail_primary_button"
             style="@style/BottomButton"
+            android:enabled="@{(viewModel.expenseDetailState == ExpenseDetailState.IDLE)?true:false}"
             android:text="@{viewModel.currentPage == ExpenseDetailPage.EXPENSE_DETAIL?@string/expense_detail_submit:@string/expense_detail_switch_to_pending}"
             android:textSize="@dimen/all_bottom_button_text_size"
             android:layout_width="0dp"
@@ -71,6 +73,7 @@
         <Button
             android:id="@+id/expense_detail_secondary_button"
             style="@style/BottomButtonSecondary"
+            android:enabled="@{(viewModel.expenseDetailState == ExpenseDetailState.IDLE)?true:false}"
             android:text="@{viewModel.currentPage == ExpenseDetailPage.EXPENSE_DETAIL?@string/expense_detail_check_status:@string/expense_detail_modify}"
             android:textSize="@dimen/all_bottom_button_text_size"
             android:visibility="@{viewModel.showPayerUI?View.VISIBLE:View.GONE}"
