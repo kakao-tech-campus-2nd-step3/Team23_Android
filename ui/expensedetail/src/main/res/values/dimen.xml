@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 영수증 추가 -->
+    <dimen name="expense_selection_status_header_selector_bias"> 0.35 </dimen>
+    <dimen name="expense_selection_status_header_quantity_bias"> 0.3 </dimen>
+    <dimen name="expense_selection_status_header_price_bias"> 0.35 </dimen>
+</resources>
