@@ -1,83 +1,59 @@
 package com.kappzzang.jeongsan.datasource
 
-import androidx.datastore.core.DataStore
-import androidx.datastore.core.IOException
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.emptyPreferences
-import androidx.datastore.preferences.core.longPreferencesKey
-import androidx.datastore.preferences.core.stringPreferencesKey
+import android.content.SharedPreferences
+import androidx.core.content.edit
 import com.kappzzang.jeongsan.data.KakaoAuthData
 import com.kappzzang.jeongsan.data.ServerAuthData
 import javax.inject.Inject
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
 
-class AuthLocalDataSource @Inject constructor(private val dataStore: DataStore<Preferences>) {
+class AuthLocalDataSource @Inject constructor(private val sharedPreferences: SharedPreferences) {
 
-    fun getKakaoAuthDataFlow(): Flow<KakaoAuthData> = dataStore.data.catch { exception ->
-        if (exception is IOException) {
-            emit(emptyPreferences())
-        } else {
-            throw exception
-        }
-    }.map { preferences ->
-        KakaoAuthData(
-            kakaoAccessToken = preferences[KAKAO_ACCESS_TOKEN] ?: "",
-            kakaoRefreshToken = preferences[KAKAO_REFRESH_TOKEN] ?: "",
-            accessTokenExpirationTime = preferences[KAKAO_ACCESS_EXPIRATION] ?: 0L
-        )
-    }
+    fun getKakaoAuthData() = KakaoAuthData(
+        kakaoAccessToken = sharedPreferences.getString(KAKAO_ACCESS_TOKEN, "") ?: "",
+        kakaoRefreshToken = sharedPreferences.getString(KAKAO_REFRESH_TOKEN, "") ?: "",
+        accessTokenExpirationTime = sharedPreferences.getLong(KAKAO_ACCESS_EXPIRATION, 0L)
+    )
 
-    fun getServerAuthDataFlow(): Flow<ServerAuthData> = dataStore.data.catch { exception ->
-        if (exception is IOException) {
-            emit(emptyPreferences())
-        } else {
-            throw exception
-        }
-    }.map { preferences ->
-        ServerAuthData(
-            accessToken = preferences[SERVER_ACCESS_TOKEN] ?: "",
-            refreshToken = preferences[SERVER_REFRESH_TOKEN] ?: ""
-        )
-    }
+    fun getServerAuthData() = ServerAuthData(
+        accessToken = sharedPreferences.getString(SERVER_ACCESS_TOKEN, "") ?: "",
+        refreshToken = sharedPreferences.getString(SERVER_REFRESH_TOKEN, "") ?: ""
+    )
 
-    suspend fun removeKakaoAuthData() {
-        dataStore.edit { preferences ->
-            preferences.remove(KAKAO_ACCESS_TOKEN)
-            preferences.remove(KAKAO_REFRESH_TOKEN)
-            preferences.remove(KAKAO_ACCESS_EXPIRATION)
+    fun removeKakaoAuthData() {
+        sharedPreferences.edit {
+            remove(KAKAO_ACCESS_TOKEN)
+            remove(KAKAO_REFRESH_TOKEN)
+            remove(KAKAO_ACCESS_EXPIRATION)
         }
     }
 
-    suspend fun removeServerAuthData() {
-        dataStore.edit { preferences ->
-            preferences.remove(SERVER_ACCESS_TOKEN)
-            preferences.remove(SERVER_REFRESH_TOKEN)
+    fun removeServerAuthData() {
+        sharedPreferences.edit {
+            remove(SERVER_ACCESS_TOKEN)
+            remove(SERVER_REFRESH_TOKEN)
         }
     }
 
-    suspend fun updateKakaoPreference(data: KakaoAuthData) {
-        dataStore.edit { preferences ->
-            preferences[KAKAO_ACCESS_TOKEN] = data.kakaoAccessToken
-            preferences[KAKAO_REFRESH_TOKEN] = data.kakaoRefreshToken
-            preferences[KAKAO_ACCESS_EXPIRATION] = data.accessTokenExpirationTime
+    fun updateKakaoPreference(data: KakaoAuthData) {
+        sharedPreferences.edit {
+            putString(KAKAO_ACCESS_TOKEN, data.kakaoAccessToken)
+            putString(KAKAO_REFRESH_TOKEN, data.kakaoRefreshToken)
+            putLong(KAKAO_ACCESS_EXPIRATION, data.accessTokenExpirationTime)
         }
     }
 
-    suspend fun updateServerPreference(data: ServerAuthData) {
-        dataStore.edit { preferences ->
-            preferences[SERVER_ACCESS_TOKEN] = data.accessToken
-            preferences[SERVER_REFRESH_TOKEN] = data.refreshToken
+    fun updateServerPreference(data: ServerAuthData) {
+        sharedPreferences.edit {
+            putString(SERVER_ACCESS_TOKEN, data.accessToken)
+            putString(SERVER_REFRESH_TOKEN, data.refreshToken)
         }
     }
 
     companion object {
-        val KAKAO_ACCESS_TOKEN = stringPreferencesKey("kakao_access_token")
-        val KAKAO_REFRESH_TOKEN = stringPreferencesKey("kakao_refresh_token")
-        val KAKAO_ACCESS_EXPIRATION = longPreferencesKey("kakao_access_token_expiration")
-        val SERVER_ACCESS_TOKEN = stringPreferencesKey("server_access_token")
-        val SERVER_REFRESH_TOKEN = stringPreferencesKey("server_refresh_token")
+        const val KAKAO_ACCESS_TOKEN = "kakao_access_token"
+        private const val KAKAO_REFRESH_TOKEN = "kakao_refresh_token"
+        private const val KAKAO_ACCESS_EXPIRATION = "kakao_access_token_expiration"
+        private const val SERVER_ACCESS_TOKEN = "server_access_token"
+        private const val SERVER_REFRESH_TOKEN = "server_refresh_token"
     }
 }
