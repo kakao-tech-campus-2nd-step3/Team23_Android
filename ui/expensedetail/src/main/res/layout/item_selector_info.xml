@@ -38,7 +38,7 @@
         <TextView
             android:id="@+id/expense_selection_quantity_textview"
             style="@style/ExpenseDetailHeaderLabel"
-            android:text="@{item.quantityText}}"
+            android:text="@{item.quantityText}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/expense_selection_price_textview"
             app:layout_constraintStart_toEndOf="@id/expense_selection_selector_textview"

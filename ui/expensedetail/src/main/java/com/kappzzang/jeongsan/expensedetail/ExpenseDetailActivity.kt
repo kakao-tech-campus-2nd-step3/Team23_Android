@@ -52,25 +52,23 @@ class ExpenseDetailActivity : AppCompatActivity() {
 
     private fun setButtonsOnClickListener() {
         binding.expenseDetailPrimaryButton.setOnClickListener {
-            if(viewModel.currentPage.value == ExpenseDetailPage.EXPENSE_DETAIL) {
+            if (viewModel.currentPage.value == ExpenseDetailPage.EXPENSE_DETAIL) {
                 clickSubmitButton()
-            }
-            else{
+            } else {
                 clickSwitchToPendingButton()
             }
         }
 
         binding.expenseDetailSecondaryButton.setOnClickListener {
-            if(viewModel.currentPage.value == ExpenseDetailPage.EXPENSE_DETAIL) {
+            if (viewModel.currentPage.value == ExpenseDetailPage.EXPENSE_DETAIL) {
                 clickToStatusButton()
-            }
-            else{
+            } else {
                 clickToDetailButton()
             }
         }
     }
 
-    private fun clickSubmitButton(){
+    private fun clickSubmitButton() {
         viewModel.clickSaveDetailsAndClose()
     }
 
@@ -82,7 +80,7 @@ class ExpenseDetailActivity : AppCompatActivity() {
         viewModel.clickToExpenseDetail()
     }
 
-    private fun clickSwitchToPendingButton(){
+    private fun clickSwitchToPendingButton() {
         viewModel.clickSwitchToPending()
     }
 
@@ -92,25 +90,31 @@ class ExpenseDetailActivity : AppCompatActivity() {
                 viewModel.currentPage.collect {
                     try {
                         when (it) {
-                            ExpenseDetailPage.EXPENSE_DETAIL -> navController.navigate(R.id.action_selectionStatusFragment_to_expenseDetailFragment)
-                            ExpenseDetailPage.SELECTION_STATUS -> navController.navigate(R.id.action_expenseDetailFragment_to_selectionStatusFragment)
+                            ExpenseDetailPage.EXPENSE_DETAIL -> navController.navigate(
+                                R.id.action_selectionStatusFragment_to_expenseDetailFragment
+                            )
+                            ExpenseDetailPage.SELECTION_STATUS -> navController.navigate(
+                                R.id.action_expenseDetailFragment_to_selectionStatusFragment
+                            )
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
                 }
-
             }
         }
 
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.expenseDetailState.collect {
-                    if(it == ExpenseDetailState.SUCCESS){
+                    if (it == ExpenseDetailState.SUCCESS) {
                         finish()
-                    }
-                    else if(it == ExpenseDetailState.FAILED){
-                        Toast.makeText(this@ExpenseDetailActivity, R.string.expense_detail_error_message_save_expense_info, Toast.LENGTH_LONG).show()
+                    } else if (it == ExpenseDetailState.FAILED) {
+                        Toast.makeText(
+                            this@ExpenseDetailActivity,
+                            R.string.expense_detail_error_message_save_expense_info,
+                            Toast.LENGTH_LONG
+                        ).show()
                         finish()
                     }
                 }

@@ -3,7 +3,6 @@ package com.kappzzang.jeongsan.expenselist
 import android.view.View
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.kappzzang.jeongsan.data.ExpenseSelectionInfoUIData
 import com.kappzzang.jeongsan.expenselist.customview.CustomOutlineProvider
 import com.kappzzang.jeongsan.expenselist.customview.ExpenseListItemBoxType
 import kotlinx.coroutines.flow.StateFlow

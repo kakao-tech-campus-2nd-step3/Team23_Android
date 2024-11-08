@@ -40,7 +40,6 @@ class ExpenseDetailFragment : Fragment() {
         if (savedInstanceState == null) {
             initiateData()
             Log.d("KSC", "ExpenseDetailFragment View Created")
-
         }
         initiateRecyclerView()
         collectStateFlow()
@@ -57,7 +56,7 @@ class ExpenseDetailFragment : Fragment() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 activityViewModel.expenseDetailState.collect {
-                    if(it == ExpenseDetailState.UPLOADING) {
+                    if (it == ExpenseDetailState.UPLOADING) {
                         viewModel.saveExpenseDetail()
                     }
                 }
@@ -66,10 +65,9 @@ class ExpenseDetailFragment : Fragment() {
     }
 
     private fun processExpenseDetailSaveResult(result: ExpenseDetailState) {
-        if(result == ExpenseDetailState.SUCCESS) {
+        if (result == ExpenseDetailState.SUCCESS) {
             sendExpenseUploadResult(true)
-        }
-        else if(result == ExpenseDetailState.FAILED) {
+        } else if (result == ExpenseDetailState.FAILED) {
             sendExpenseUploadResult(false)
         }
     }

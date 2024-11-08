@@ -1,6 +1,5 @@
 package com.kappzzang.jeongsan.expensedetail.selectionstatus
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.data.ExpenseSelectionInfoUIData
@@ -9,13 +8,13 @@ import com.kappzzang.jeongsan.model.ExpenseSelectionStatus
 import com.kappzzang.jeongsan.usecase.GetExpenseSelectionStatusUseCase
 import com.kappzzang.jeongsan.util.IntegerFormatter.formatDecimalSeparator
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class SelectionStatusViewModel @Inject constructor(
@@ -45,7 +44,9 @@ class SelectionStatusViewModel @Inject constructor(
         }
     }
 
-    private fun mapSelectionStatusItemsToUIItemList(status: ExpenseSelectionStatus): List<SelectionInfoItem> {
+    private fun mapSelectionStatusItemsToUIItemList(
+        status: ExpenseSelectionStatus
+    ): List<SelectionInfoItem> {
         val list = mutableListOf<SelectionInfoItem>()
         for (item in status.items) {
             // 각 아이템 별 Header 생성

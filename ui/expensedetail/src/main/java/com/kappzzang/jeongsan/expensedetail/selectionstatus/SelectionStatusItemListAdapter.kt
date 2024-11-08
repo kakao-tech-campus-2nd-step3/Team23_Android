@@ -42,7 +42,6 @@ class SelectionStatusItemListAdapter(internal val context: Context) :
                 }
             }
 
-
             override fun areContentsTheSame(
                 oldItem: SelectionInfoItem,
                 newItem: SelectionInfoItem
@@ -73,8 +72,9 @@ class SelectionStatusItemListAdapter(internal val context: Context) :
             selectorInfoBinding?.apply {
                 this.item = item
 
-                if((bindingAdapter as? SelectionStatusItemListAdapter)==null)
+                if ((bindingAdapter as? SelectionStatusItemListAdapter) == null) {
                     return
+                }
                 Glide.with((bindingAdapter as SelectionStatusItemListAdapter).context)
                     .load(item.imageUrl)
                     .into(expenseSelectionThumbnailImageview)
@@ -139,17 +139,14 @@ class SelectionStatusItemListAdapter(internal val context: Context) :
             }
 
             CELL_DIVIDER -> {
-
             }
         }
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return when (getItem(position)) {
-            SelectionInfoItem.Divider -> CELL_DIVIDER
-            is SelectionInfoItem.Header -> CELL_HEADER
-            is SelectionInfoItem.SelectorItem -> CELL_ITEM
-        }
+    override fun getItemViewType(position: Int): Int = when (getItem(position)) {
+        SelectionInfoItem.Divider -> CELL_DIVIDER
+        is SelectionInfoItem.Header -> CELL_HEADER
+        is SelectionInfoItem.SelectorItem -> CELL_ITEM
     }
 
     companion object {

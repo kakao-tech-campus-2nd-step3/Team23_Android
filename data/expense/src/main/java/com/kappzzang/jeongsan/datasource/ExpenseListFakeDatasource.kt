@@ -2,8 +2,6 @@ package com.kappzzang.jeongsan.datasource
 
 import com.kappzzang.jeongsan.datasource.expense.ExpenseDatabase
 import com.kappzzang.jeongsan.entity.expenselist.ExpenseRoomEntity
-import com.kappzzang.jeongsan.mapper.ExpenseDetailMapper
-import com.kappzzang.jeongsan.mapper.ExpenseEntityMapper
 import com.kappzzang.jeongsan.mapper.ExpenseListEntityMapper
 import com.kappzzang.jeongsan.model.ExpenseListResponse
 import com.kappzzang.jeongsan.model.ExpenseState

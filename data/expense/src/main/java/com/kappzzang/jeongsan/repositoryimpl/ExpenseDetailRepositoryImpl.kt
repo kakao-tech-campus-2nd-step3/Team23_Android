@@ -2,7 +2,6 @@ package com.kappzzang.jeongsan.repositoryimpl
 
 import com.kappzzang.jeongsan.datasource.ExpenseDetailRemoteDatasource
 import com.kappzzang.jeongsan.entity.expensedetail.ExpenseDetailEntity
-import com.kappzzang.jeongsan.entity.expensedetail.ExpenseSelectionResponseDTO
 import com.kappzzang.jeongsan.mapper.ExpenseDetailMapper
 import com.kappzzang.jeongsan.model.ExpenseDetailItem
 import com.kappzzang.jeongsan.model.ExpenseItemWithDetails
@@ -39,14 +38,18 @@ class ExpenseDetailRepositoryImpl @Inject constructor(
         edited = edited
     )
 
-    override suspend fun getExpenseSelectionStatus(expenseId: String): Result<ExpenseSelectionStatus> =
-        expenseDetailRemoteDatasource.getExpenseSelectionStatus(
-            expenseId = expenseId
-        ).mapCatching {
-            ExpenseDetailMapper.mapExpenseSelectionStatusEntityToModel(it)
-        }
+    override suspend fun getExpenseSelectionStatus(
+        expenseId: String
+    ): Result<ExpenseSelectionStatus> = expenseDetailRemoteDatasource.getExpenseSelectionStatus(
+        expenseId = expenseId
+    ).mapCatching {
+        ExpenseDetailMapper.mapExpenseSelectionStatusEntityToModel(it)
+    }
 
-    override suspend fun setExpenseState(expenseId: String, expenseState: ExpenseState): Result<Unit> {
+    override suspend fun setExpenseState(
+        expenseId: String,
+        expenseState: ExpenseState
+    ): Result<Unit> {
         TODO("Not yet implemented")
     }
 }
