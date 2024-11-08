@@ -20,9 +20,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.kappzzang.jeongsan.camera.databinding.ActivityReceiptCameraBinding
-import com.kappzzang.jeongsan.intentcontract.ReceiptCameraContract
 import com.kappzzang.jeongsan.model.OcrResultResponse
-import com.kappzzang.jeongsan.navigation.AppNavigator
+import com.kappzzang.jeongsan.navigation.ExpenseListNavigator
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import javax.inject.Inject
@@ -31,7 +30,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class ReceiptCameraActivity : AppCompatActivity() {
     @Inject
-    lateinit var appNavigator: AppNavigator
+    lateinit var appNavigator: ExpenseListNavigator
     private val binding: ActivityReceiptCameraBinding by lazy {
         ActivityReceiptCameraBinding.inflate(layoutInflater)
     }
@@ -149,6 +148,7 @@ class ReceiptCameraActivity : AppCompatActivity() {
                 ).show()
 
                 viewModel.serverResponse?.let {
+                    setResult(RESULT_CANCELED)
                     setResult(RESULT_CANCELED, getOcrResultIntent(it))
                 }
 
@@ -186,7 +186,7 @@ class ReceiptCameraActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
 
-                val intent = appNavigator.navigateToExpenseList(applicationContext)
+                val intent = appNavigator.getExpenseListCancelResult(applicationContext)
                 setResult(RESULT_CANCELED, intent)
                 finish()
             }
@@ -194,8 +194,9 @@ class ReceiptCameraActivity : AppCompatActivity() {
     }
 
     private fun getOcrResultIntent(response: OcrResultResponse): Intent =
-        appNavigator.navigateToExpenseList(applicationContext).apply {
-            putExtra(ReceiptCameraContract.OCR_RESULT, response)
-            putExtra(ReceiptCameraContract.OCR_RESULT_IMAGE, viewModel.pictureData.value)
-        }
+        appNavigator.getExpenseListWithOcrDataResult(
+            applicationContext,
+            response,
+            viewModel.pictureData.value
+        )
 }

@@ -115,10 +115,41 @@
                 android:text="@={viewModel.expenseName}"
                 android:textAlignment="center"
                 android:textSize="24sp"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/expense_selected_category"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintWidth_percent=".5" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:id="@+id/expense_selected_category"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/addexpense_name_edittext"
+                app:layout_constraintTop_toTopOf="@id/addexpense_name_edittext"
+                app:layout_constraintBottom_toBottomOf="@id/addexpense_name_edittext"
+                android:orientation="horizontal"
+                >
+                <ImageButton
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/add_expense_color_dot"
+                    android:background="@color/transparent"
+                    imageColor="@{viewModel.selectedCategory.color}"
+                    />
+                <TextView
+                    android:layout_marginStart="10dp"
+                    android:layout_width="60dp"
+                    android:layout_height="25dp"
+                    android:text="@{viewModel.selectedCategory.name}"
+                    />
+
+            </LinearLayout>
+
+
+
 
             <TextView
                 android:id="@+id/add_expense_label_name_textview"
@@ -176,6 +207,7 @@
             android:text="@string/add_expense_submit"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            android:enabled="@{viewModel.inputsLocked?false:true}"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

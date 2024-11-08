@@ -11,7 +11,7 @@ import com.kappzzang.jeongsan.usecase.GetExpenseListUseCase
 import com.kappzzang.jeongsan.util.IntegerFormatter.formatDecimalSeparator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -21,7 +21,8 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 open class ExpenseListPageViewModel @Inject constructor(
-    protected val getExpenseListUseCase: GetExpenseListUseCase
+    protected val getExpenseListUseCase: GetExpenseListUseCase,
+    private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     protected var expenseListFetchingJob: Job? = null
@@ -60,10 +61,15 @@ open class ExpenseListPageViewModel @Inject constructor(
 
     protected fun fetchExpenseList(expenseState: ExpenseState, groupId: String) {
         cancelPreviousJob()
-        expenseListFetchingJob = viewModelScope.launch(Dispatchers.IO) {
+        expenseListFetchingJob = viewModelScope.launch(ioDispatcher) {
             getExpenseListUseCase(groupId, expenseState)
-                .collect {
-                    expenseList.emit(it)
+                .collect { result ->
+                    result.onSuccess {
+                        expenseList.emit(it)
+                    }
+                        .onFailure {
+                            // TODO: ExpenseList 조회 실패 시 예외 처리
+                        }
                 }
         }
     }

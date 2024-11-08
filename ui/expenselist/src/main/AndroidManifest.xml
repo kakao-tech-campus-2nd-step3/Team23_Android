@@ -5,10 +5,10 @@
             android:name=".ExpenseListActivity"
             android:exported="false" />
         <activity
-            android:name=".sendmessage.SendMessageActivity"
+            android:name="com.kappzzang.jeongsan.sendmessage.SendMessageActivity"
             android:exported="false" />
         <activity
-            android:name=".sendcomplete.SendCompleteActivity"
+            android:name="com.kappzzang.jeongsan.sendmessage.SendCompleteActivity"
             android:exported="false" />
     </application>
 </manifest>

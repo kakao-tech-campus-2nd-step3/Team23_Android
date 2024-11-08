@@ -1,12 +1,20 @@
 package com.kappzzang.jeongsan.util
 
-import com.kappzzang.jeongsan.data.AuthData
-import kotlinx.coroutines.flow.Flow
+import com.kappzzang.jeongsan.data.KakaoAuthData
+import com.kappzzang.jeongsan.data.ServerAuthData
 
 interface AuthenticationRepository {
-    fun getAuthData(): Flow<AuthData>
+    fun getKakaoAuthData(): KakaoAuthData
 
-    suspend fun updateAuthData(newData: AuthData)
+    fun getServerAuthData(): ServerAuthData
 
-    suspend fun removeAuthData()
+    fun updateKakaoAuthData(newData: KakaoAuthData)
+
+    fun updateServerAuthData(newData: ServerAuthData)
+
+    fun removeKakaoAuthData()
+
+    fun removeServerAuthData()
+
+    suspend fun refreshJwtFromServer(authData: ServerAuthData): Result<ServerAuthData>
 }

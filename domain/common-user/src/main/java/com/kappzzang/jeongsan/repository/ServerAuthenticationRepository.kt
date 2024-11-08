@@ -1,11 +1,14 @@
 package com.kappzzang.jeongsan.repository
 
-import com.kappzzang.jeongsan.data.AuthData
+import com.kappzzang.jeongsan.data.ServerAuthData
 
 interface ServerAuthenticationRepository {
-    fun registerToServer(authData: AuthData)
+    suspend fun loginToServer(email: String): Result<ServerAuthData>
 
-    fun getJwtFromServer(authData: AuthData): AuthData
-
-    fun getSavedJwt(): String
+    suspend fun registerToServer(
+        uuid: String,
+        nickname: String,
+        email: String,
+        profileImageUrl: String
+    ): Result<ServerAuthData>
 }

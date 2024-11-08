@@ -8,7 +8,7 @@ import com.kappzzang.jeongsan.usecase.SendInviteMessageUseCase
 import com.kappzzang.jeongsan.usecase.UploadGroupInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,11 +17,11 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class CreateGroupViewModel @Inject constructor(
     private val uploadGroupInfoUseCase: UploadGroupInfoUseCase,
-    private val sendInviteMessageUseCase: SendInviteMessageUseCase
+    private val sendInviteMessageUseCase: SendInviteMessageUseCase,
+    private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     val groupName = MutableStateFlow("")
-//    val groupName: StateFlow<String> = _groupName
 
     private val _groupId = MutableStateFlow("")
     val groupId = _groupId.asStateFlow()
@@ -31,12 +31,6 @@ class CreateGroupViewModel @Inject constructor(
 
     private val _groupMemberList = MutableStateFlow<List<MemberUIData>>(emptyList())
     val groupMemberList: StateFlow<List<MemberUIData>> = _groupMemberList
-
-//    fun updateGroupName(name: String) {
-//        viewModelScope.launch {
-//            groupName.emit(name)
-//        }
-//    }
 
     fun updateGroupSubject(subject: String) {
         viewModelScope.launch {
@@ -59,29 +53,33 @@ class CreateGroupViewModel @Inject constructor(
     }
 
     fun uploadGroupInfo(): Boolean {
-        if (!checkGroupInfoValidation()) {
-            return false
-        }
-
         val groupInfo = GroupCreateItem(
             name = groupName.value,
             subject = _groupSubject.value,
-            memberIdList = _groupMemberList.value.map { it.uuid }
+            memberUuidList = _groupMemberList.value.map { it.uuid }
         )
-
-        viewModelScope.launch(Dispatchers.IO) {
-            uploadGroupInfoUseCase(groupInfo)
+        var isSuccess = false
+        viewModelScope.launch(ioDispatcher) {
+            isSuccess = try {
+                val result = uploadGroupInfoUseCase(groupInfo)
+                _groupId.value = result.toString()
+                true
+            } catch (e: Exception) {
+                false
+            }
         }
-        return true
+        return isSuccess
     }
 
-    fun sendInviteMessageAll(groupId: String) = _groupMemberList.value.forEach { member ->
-        viewModelScope.launch {
-            sendInviteMessageUseCase.invoke(groupId, groupName.value, member.uuid)
-        }
+    fun sendInviteMessageAll(groupId: String) = viewModelScope.launch {
+        sendInviteMessageUseCase.invoke(
+            groupId,
+            groupName.value,
+            _groupMemberList.value.map { it.uuid }
+        )
     }
 
-    private fun checkGroupInfoValidation(): Boolean = groupName.value.isNotEmpty() &&
+    fun checkGroupInfoValidation(): Boolean = groupName.value.isNotEmpty() &&
         _groupSubject.value.isNotEmpty() &&
         _groupMemberList.value.isNotEmpty()
 }

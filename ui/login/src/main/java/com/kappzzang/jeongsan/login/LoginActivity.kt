@@ -12,8 +12,9 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
+import com.kappzzang.jeongsan.build_config.BuildConfig
 import com.kappzzang.jeongsan.login.databinding.ActivityLoginBinding
-import com.kappzzang.jeongsan.navigation.AppNavigator
+import com.kappzzang.jeongsan.navigation.MainPageNavigator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.launch
@@ -21,7 +22,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
     @Inject
-    lateinit var appNavigator: AppNavigator
+    lateinit var appNavigator: MainPageNavigator
 
     private val viewModel: LoginViewModel by viewModels()
 
@@ -39,6 +40,7 @@ class LoginActivity : AppCompatActivity() {
         }
         Log.d(TAG, intent?.data?.toString().toString())
         startCollectingKakaoLoginState()
+        createBypassLogin(binding)
 
         viewModel.login()
     }
@@ -57,13 +59,17 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun navigateToMainPage() {
-        startActivity(
-            appNavigator.navigateToMainPage(this).also {
-                intent?.data?.let { uri ->
-                    it.data = Uri.parse(uri.toString())
-                }
-            }
-        )
+        val intent = intent?.data?.let {
+            appNavigator.navigateToMainPageAndEnterGroup(
+                this,
+                Uri.parse(it.toString())
+            )
+        } ?: let {
+            appNavigator.navigateToMainPage(
+                this
+            )
+        }
+        startActivity(intent)
     }
 
     private fun loginWithKakao() {
@@ -94,6 +100,16 @@ class LoginActivity : AppCompatActivity() {
             }
         } else {
             UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
+        }
+    }
+
+    private fun createBypassLogin(binding: ActivityLoginBinding) {
+        if (BuildConfig.DEBUG) {
+            binding.loginByKakaoImagebutton.isLongClickable = true
+            binding.loginByKakaoImagebutton.setOnLongClickListener {
+                viewModel.bypassLogin()
+                true
+            }
         }
     }
 
