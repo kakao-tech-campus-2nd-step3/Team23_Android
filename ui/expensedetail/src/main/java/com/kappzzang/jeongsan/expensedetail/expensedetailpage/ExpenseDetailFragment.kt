@@ -8,10 +8,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.expensedetail.ExpenseDetailViewModel
 import com.kappzzang.jeongsan.expensedetail.databinding.FragmentExpenseDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ExpenseDetailFragment : Fragment() {
@@ -38,6 +42,39 @@ class ExpenseDetailFragment : Fragment() {
 
         }
         initiateRecyclerView()
+        collectStateFlow()
+    }
+
+    private fun collectStateFlow() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+                viewModel.expenseDetailSaveState.collect {
+                    processExpenseDetailSaveResult(it)
+                }
+            }
+        }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+                activityViewModel.expenseDetailSaveState.collect {
+                    if(it == ExpenseDetailSaveState.UPLOADING) {
+                        viewModel.saveExpenseDetail()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun processExpenseDetailSaveResult(result: ExpenseDetailSaveState) {
+        if(result == ExpenseDetailSaveState.SUCCESS) {
+            sendExpenseUploadResult(true)
+        }
+        else if(result == ExpenseDetailSaveState.FAILED) {
+            sendExpenseUploadResult(false)
+        }
+    }
+
+    private fun sendExpenseUploadResult(isSuccess: Boolean) {
+        activityViewModel.setSaveResult(isSuccess)
     }
 
     private fun initiateData() {

@@ -1,6 +1,7 @@
 package com.kappzzang.jeongsan.expensedetail
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.expensedetail.databinding.ActivityExpenseDetailBinding
 import com.kappzzang.jeongsan.expensedetail.expensedetailpage.ExpenseDetailCallback
 import com.kappzzang.jeongsan.expensedetail.expensedetailpage.ExpenseDetailItemListAdapter
+import com.kappzzang.jeongsan.expensedetail.expensedetailpage.ExpenseDetailSaveState
 import com.kappzzang.jeongsan.intentcontract.ExpenseDetailContract
 import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,12 +59,38 @@ class ExpenseDetailActivity : AppCompatActivity() {
 
     private fun setButtonsOnClickListener() {
         binding.expenseDetailPrimaryButton.setOnClickListener {
-            viewModel.clickPrimaryButton()
+            if(viewModel.currentPage.value == ExpenseDetailPage.EXPENSE_DETAIL) {
+                clickSubmitButton()
+            }
+            else{
+                clickSwitchToPendingButton()
+            }
         }
 
         binding.expenseDetailSecondaryButton.setOnClickListener {
-            viewModel.clickSecondaryButton()
+            if(viewModel.currentPage.value == ExpenseDetailPage.EXPENSE_DETAIL) {
+                clickToStatusButton()
+            }
+            else{
+                clickToDetailButton()
+            }
         }
+    }
+
+    private fun clickSubmitButton(){
+        viewModel.clickSaveDetailsAndClose()
+    }
+
+    private fun clickToStatusButton() {
+        viewModel.clickToSelectionStatus()
+    }
+
+    private fun clickToDetailButton() {
+        viewModel.clickToExpenseDetail()
+    }
+
+    private fun clickSwitchToPendingButton(){
+        viewModel.clickSwitchToPending()
     }
 
     private fun collectStateFlow() {
@@ -76,6 +104,21 @@ class ExpenseDetailActivity : AppCompatActivity() {
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
+                    }
+                }
+
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.expenseDetailSaveState.collect {
+                    if(it == ExpenseDetailSaveState.SUCCESS){
+                        finish()
+                    }
+                    else if(it == ExpenseDetailSaveState.FAILED){
+                        Toast.makeText(this@ExpenseDetailActivity, R.string.expense_detail_error_message_save_expense_info, Toast.LENGTH_LONG).show()
+                        finish()
                     }
                 }
             }

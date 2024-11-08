@@ -1,6 +1,5 @@
 package com.kappzzang.jeongsan.expensedetail.expensedetailpage
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.data.toUIData
@@ -20,16 +19,24 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+enum class ExpenseDetailSaveState { NOT_UPLOADING, UPLOADING, SUCCESS, FAILED }
+
 @HiltViewModel
 class ExpenseDetailFragmentViewModel @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher,
     private val getExpenseDetailUseCase: GetExpenseDetailUseCase,
-    private val editExpenseDetailUseCase: EditExpenseDetailUseCase): ViewModel() {
+    private val editExpenseDetailUseCase: EditExpenseDetailUseCase
+) : ViewModel() {
 
     private val _expense = MutableStateFlow(ExpenseItemWithDetails.EMPTY)
     private val groupId = MutableStateFlow("")
     private val expenseId = MutableStateFlow("")
     private val formEditable = MutableStateFlow(true)
+    private val _expenseDetailSaveState = MutableStateFlow(ExpenseDetailSaveState.NOT_UPLOADING)
+    private val _expenseDetailSaveMessage = MutableStateFlow<String?>(null)
+
+    val expenseDetailSaveState = _expenseDetailSaveState.asStateFlow()
+    val expenseDetailSaveMessage = _expenseDetailSaveMessage.asStateFlow()
 
     val expenseDetailUIData = combine(
         _expense,
@@ -46,14 +53,32 @@ class ExpenseDetailFragmentViewModel @Inject constructor(
 
     val expense: StateFlow<ExpenseItemWithDetails> = _expense.asStateFlow()
 
+
     fun saveExpenseDetail() {
+        if (_expenseDetailSaveState.value != ExpenseDetailSaveState.NOT_UPLOADING) {
+            return
+        }
+        val expenseDetailItemList = expenseDetailUIData.value.map {
+            it.toExpenseDetailItem()
+        }
+        _expenseDetailSaveState.value = ExpenseDetailSaveState.UPLOADING
+        uploadEditList(expenseDetailItemList)
+    }
+
+    private fun uploadEditList(expenseDetailItemList: List<ExpenseDetailItem>) {
         viewModelScope.launch(ioDispatcher) {
             editExpenseDetailUseCase.invoke(
-                expenseDetailUIData.value.map { it.toExpenseDetailItem() },
+                expenseDetailItemList,
                 expenseId.value,
                 groupId = groupId.value
-            )
+            ).onSuccess {
+                _expenseDetailSaveState.value = ExpenseDetailSaveState.SUCCESS
+            }.onFailure {
+                _expenseDetailSaveState.value = ExpenseDetailSaveState.FAILED
+                _expenseDetailSaveMessage.value = it.message
+            }
         }
+
     }
 
     fun setInitialData(expenseId: String, groupId: String, editable: Boolean) {
