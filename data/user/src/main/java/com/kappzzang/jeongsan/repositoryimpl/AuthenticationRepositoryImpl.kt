@@ -7,7 +7,6 @@ import com.kappzzang.jeongsan.datasource.AuthLocalDataSource
 import com.kappzzang.jeongsan.datasource.ServerAuthRemoteDataSource
 import com.kappzzang.jeongsan.util.AuthenticationRepository
 import javax.inject.Inject
-import kotlinx.coroutines.flow.Flow
 
 class AuthenticationRepositoryImpl
 @Inject constructor(
@@ -15,25 +14,23 @@ class AuthenticationRepositoryImpl
     private val serverAuthRemoteDataSource: ServerAuthRemoteDataSource
 ) : AuthenticationRepository {
 
-    override fun getKakaoAuthData(): Flow<KakaoAuthData> =
-        authLocalDataSource.getKakaoAuthDataFlow()
+    override fun getKakaoAuthData(): KakaoAuthData = authLocalDataSource.getKakaoAuthData()
 
-    override fun getServerAuthData(): Flow<ServerAuthData> =
-        authLocalDataSource.getServerAuthDataFlow()
+    override fun getServerAuthData(): ServerAuthData = authLocalDataSource.getServerAuthData()
 
-    override suspend fun updateKakaoAuthData(newData: KakaoAuthData) {
+    override fun updateKakaoAuthData(newData: KakaoAuthData) {
         authLocalDataSource.updateKakaoPreference(newData)
     }
 
-    override suspend fun updateServerAuthData(newData: ServerAuthData) {
+    override fun updateServerAuthData(newData: ServerAuthData) {
         authLocalDataSource.updateServerPreference(newData)
     }
 
-    override suspend fun removeKakaoAuthData() {
+    override fun removeKakaoAuthData() {
         authLocalDataSource.removeKakaoAuthData()
     }
 
-    override suspend fun removeServerAuthData() {
+    override fun removeServerAuthData() {
         authLocalDataSource.removeServerAuthData()
     }
 

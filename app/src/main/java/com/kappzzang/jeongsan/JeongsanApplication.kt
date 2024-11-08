@@ -21,6 +21,6 @@ class JeongsanApplication : Application() {
     }
 
     companion object {
-        const val DATASTORE_NAME = "JeongsanDatastore"
+        const val ENCRYPTED_SHARED_PREFERENCES_NAME = "JeongsanEncryptedSharedPreferences"
     }
 }
