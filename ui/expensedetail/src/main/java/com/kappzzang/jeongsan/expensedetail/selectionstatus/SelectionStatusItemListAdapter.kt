@@ -1,17 +1,19 @@
 package com.kappzzang.jeongsan.expensedetail.selectionstatus
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.kappzzang.jeongsan.data.SelectionInfoItem
 import com.kappzzang.jeongsan.expensedetail.databinding.ItemDividerBinding
 import com.kappzzang.jeongsan.expensedetail.databinding.ItemSelectionItemHeaderBinding
 import com.kappzzang.jeongsan.expensedetail.databinding.ItemSelectorInfoBinding
 
-class SelectionStatusItemListAdapter :
+class SelectionStatusItemListAdapter(internal val context: Context) :
     ListAdapter<SelectionInfoItem, SelectionStatusItemListAdapter.SelectionStatusItemViewHolder>(
         object :
             DiffUtil.ItemCallback<SelectionInfoItem>() {
@@ -70,6 +72,12 @@ class SelectionStatusItemListAdapter :
         fun bindSelectorInfo(item: SelectionInfoItem.SelectorItem) {
             selectorInfoBinding?.apply {
                 this.item = item
+
+                if((bindingAdapter as? SelectionStatusItemListAdapter)==null)
+                    return
+                Glide.with((bindingAdapter as SelectionStatusItemListAdapter).context)
+                    .load(item.imageUrl)
+                    .into(expenseSelectionThumbnailImageview)
             }
         }
     }
@@ -85,7 +93,7 @@ class SelectionStatusItemListAdapter :
                     ItemSelectionItemHeaderBinding.inflate(
                         inflater,
                         parent,
-                        true
+                        false
                     )
                 )
             }
@@ -95,7 +103,7 @@ class SelectionStatusItemListAdapter :
                     ItemSelectorInfoBinding.inflate(
                         inflater,
                         parent,
-                        true
+                        false
                     )
                 )
             }
@@ -105,7 +113,7 @@ class SelectionStatusItemListAdapter :
                     ItemDividerBinding.inflate(
                         inflater,
                         parent,
-                        true
+                        false
                     )
                 )
             }

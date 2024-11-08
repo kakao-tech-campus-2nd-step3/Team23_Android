@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.kappzzang.jeongsan.expensedetail.ExpenseDetailViewModel" />
@@ -13,8 +13,7 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
-        tools:context=".expensedetail.ExpenseDetailActivity">
+        android:background="@color/white">
 
         <TextView
             android:id="@+id/expense_detail_header_textview"
@@ -43,14 +42,16 @@
             app:layout_constraintTop_toBottomOf="@id/expense_detail_header_textview" />
 
         <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/expense_detail_fragment_container_view"
+            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            app:defaultNavHost="false"
+            app:layout_constraintBottom_toTopOf="@id/expense_detail_submit_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/expense_detail_description_textview"
-            app:layout_constraintBottom_toTopOf="@id/expense_detail_submit_button"
-            />
-
+            app:navGraph="@navigation/expense_detail_nav_graph" />
 
 
         <Button

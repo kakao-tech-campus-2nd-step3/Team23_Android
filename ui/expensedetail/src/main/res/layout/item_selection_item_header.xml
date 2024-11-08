@@ -10,22 +10,25 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp">
+        android:layout_height="80dp"
+        android:paddingBottom="5dp">
         <TextView
+            android:id="@+id/expense_selection_header_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:text="@{header.name}"
             android:textSize="28sp"
-            android:textStyle="bold"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/expense_selection_header_textview"
+            app:layout_constraintBottom_toBottomOf="@+id/expense_selection_header_textview"
             app:layout_constraintEnd_toEndOf="parent"
-            android:textSize="16sp"
+            android:textSize="20sp"
+            android:text="@{header.priceText}"
             />
 
         <TextView
