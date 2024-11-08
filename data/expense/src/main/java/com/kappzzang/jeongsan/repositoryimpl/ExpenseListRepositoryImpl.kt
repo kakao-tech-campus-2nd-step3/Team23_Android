@@ -86,8 +86,12 @@ class ExpenseListRepositoryImpl @Inject constructor(
         mapResponseBody(it)
     }
 
+    private fun getUuid(): String {
+        TODO("UUID 조회 구현")
+    }
+
     private fun mapResponseBody(body: ExpenseListResponseDTO): ExpenseListResponse {
-        val expenses = body.expenseList.map { ExpenseEntityMapper.mapExpenseEntityToModel(it) }
+        val expenses = body.expenseList.map { ExpenseEntityMapper.mapExpenseEntityToModel(it, getUuid()) }
         return ExpenseListResponse(
             totalExpenseToSend = body.myTotalExpense ?: 0,
             expenseList = expenses,
