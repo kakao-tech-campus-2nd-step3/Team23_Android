@@ -5,7 +5,7 @@ import com.kappzzang.jeongsan.model.UserItem
 
 object KakaoUserInfoMapper {
     fun mapKakaoUserModelToUserItem(user: User): UserItem = UserItem(
-        uuid = user.id.toString(),
+        serviceId = user.id?.toString() ?: "",
         name = user.kakaoAccount?.profile?.nickname ?: "",
         email = user.kakaoAccount?.email ?: "",
         profileUrl = user.kakaoAccount?.profile?.profileImageUrl ?: ""

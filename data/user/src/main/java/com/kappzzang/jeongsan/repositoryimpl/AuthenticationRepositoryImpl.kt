@@ -48,14 +48,14 @@ class AuthenticationRepositoryImpl
             }
         )
 
-    override fun getUuid(): String = authLocalDataSource.getUuid()
+    override fun getServiceId(): String = authLocalDataSource.getServiceId()
 
-    override fun updateUuid(uuid: String) {
-        authLocalDataSource.updateUuid(uuid)
+    override fun updateServiceId(uuid: String) {
+        authLocalDataSource.updateServiceId(uuid)
     }
 
-    override fun removeUuid() {
-        authLocalDataSource.removeUuid()
+    override fun removeServiceId() {
+        authLocalDataSource.removeServiceId()
     }
 
     companion object {

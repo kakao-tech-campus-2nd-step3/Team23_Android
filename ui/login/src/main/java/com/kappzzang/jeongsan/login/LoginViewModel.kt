@@ -147,7 +147,7 @@ class LoginViewModel @Inject constructor(
 
     private suspend fun authenticateWithServer() {
         getUserInfo()?.let {
-            authenticateWithServerUseCase(it.uuid, it.name, it.email, it.profileUrl)
+            authenticateWithServerUseCase(it.serviceId, it.name, it.email, it.profileUrl)
         } ?: run {
             _loginStatus.emit(LoginStatus.FAILED)
         }

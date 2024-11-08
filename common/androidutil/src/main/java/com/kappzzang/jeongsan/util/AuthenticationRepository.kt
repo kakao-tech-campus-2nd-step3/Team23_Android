@@ -18,9 +18,9 @@ interface AuthenticationRepository {
 
     suspend fun refreshJwtFromServer(authData: ServerAuthData): Result<ServerAuthData>
 
-    fun getUuid(): String
+    fun getServiceId(): String
 
-    fun updateUuid(uuid: String)
+    fun updateServiceId(uuid: String)
 
-    fun removeUuid()
+    fun removeServiceId()
 }

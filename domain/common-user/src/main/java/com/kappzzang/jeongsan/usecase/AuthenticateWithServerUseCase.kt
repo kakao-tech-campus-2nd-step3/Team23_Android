@@ -11,14 +11,14 @@ class AuthenticateWithServerUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(
-        uuid: String,
+        serviceId: String,
         nickname: String,
         email: String,
         profileImageUrl: String
     ) {
-        val authData = attemptLoginOrRegister(uuid, nickname, email, profileImageUrl)
+        val authData = attemptLoginOrRegister(serviceId, nickname, email, profileImageUrl)
         authenticationRepository.updateServerAuthData(authData)
-        authenticationRepository.updateUuid(uuid)
+        authenticationRepository.updateServiceId(serviceId)
     }
 
     private suspend fun attemptLoginOrRegister(
