@@ -4,11 +4,5 @@
         <activity
             android:name=".ExpenseListActivity"
             android:exported="false" />
-        <activity
-            android:name="com.kappzzang.jeongsan.sendmessage.SendMessageActivity"
-            android:exported="false" />
-        <activity
-            android:name="com.kappzzang.jeongsan.sendmessage.SendCompleteActivity"
-            android:exported="false" />
     </application>
 </manifest>
