@@ -2,11 +2,9 @@ package com.kappzzang.jeongsan.di
 
 import com.kappzzang.jeongsan.repository.ExpenseDetailRepository
 import com.kappzzang.jeongsan.repository.ExpenseRepository
-import com.kappzzang.jeongsan.repository.ReceiptRepository
 import com.kappzzang.jeongsan.repository.TransferRepository
-import com.kappzzang.jeongsan.repositoryimpl.ExpenseDetailRepositoryImpl
+import com.kappzzang.jeongsan.repositoryimpl.ExpenseDetailFakeRepositoryImpl
 import com.kappzzang.jeongsan.repositoryimpl.ExpenseFakeRepositoryImpl
-import com.kappzzang.jeongsan.repositoryimpl.ReceiptRepositoryImpl
 import com.kappzzang.jeongsan.repositoryimpl.TransferRepositoryImpl
 import dagger.Binds
 import dagger.Module
@@ -26,14 +24,8 @@ abstract class ExpenseRepositoryModule {
     @Binds
     @Singleton
     abstract fun bindExpenseDetailRepository(
-        expenseDetailRepositoryImpl: ExpenseDetailRepositoryImpl
+        expenseDetailRepositoryImpl: ExpenseDetailFakeRepositoryImpl
     ): ExpenseDetailRepository
-
-    @Binds
-    @Singleton
-    abstract fun bindReceiptRepository(
-        receiptRepositoryImpl: ReceiptRepositoryImpl
-    ): ReceiptRepository
 
     @Binds
     @Singleton

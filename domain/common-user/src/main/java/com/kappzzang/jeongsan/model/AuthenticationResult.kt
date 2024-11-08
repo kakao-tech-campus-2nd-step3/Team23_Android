@@ -1,9 +1,9 @@
 package com.kappzzang.jeongsan.model
 
-import com.kappzzang.jeongsan.data.AuthData
+import com.kappzzang.jeongsan.data.KakaoAuthData
 
 sealed class AuthenticationResult {
-    data class AuthenticationSuccess(val authData: AuthData) : AuthenticationResult()
+    data class AuthenticationSuccess(val authData: KakaoAuthData) : AuthenticationResult()
 
     data object NoToken : AuthenticationResult()
 

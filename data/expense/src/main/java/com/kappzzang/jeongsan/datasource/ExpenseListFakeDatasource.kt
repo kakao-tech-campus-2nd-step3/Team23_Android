@@ -40,13 +40,20 @@ class ExpenseListFakeDatasource @Inject constructor(private val expenseDatabase:
         emit(fakeResponse)
     }
 
+    private fun getCategoryFromId(id: String): String {
+        val r = id.toIntOrNull() ?: 0
+        val g = (r * 4 + 3) % 10
+        val b = (g * 4 + 3) % 10
+        return "#$r$r$g$g$b$b"
+    }
+
     fun addExpense(receiptItem: ReceiptItem): String {
         val expenseEntity = ExpenseRoomEntity(
             name = receiptItem.title,
             totalPrice = receiptItem.expenseDetailItemList.sumOf { it.itemPrice * it.itemQuantity },
             createdTime = Timestamp(System.currentTimeMillis()).toString(),
-            categoryColor = receiptItem.categoryColor,
-            expenseState = ExpenseState.CONFIRMED.ordinal
+            categoryColor = getCategoryFromId(receiptItem.categoryId),
+            expenseState = ExpenseState.NOT_CONFIRMED.ordinal
         )
 
         expenseDatabase.expenseDao().addExpense(expenseEntity)

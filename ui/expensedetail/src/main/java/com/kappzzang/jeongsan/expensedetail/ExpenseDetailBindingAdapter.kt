@@ -5,7 +5,7 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.kappzzang.jeongsan.model.ExpenseDetailItem
+import com.kappzzang.jeongsan.data.ExpenseDetailUIData
 import kotlinx.coroutines.flow.StateFlow
 
 object ExpenseDetailBindingAdapter {
@@ -23,7 +23,7 @@ object ExpenseDetailBindingAdapter {
 
     @JvmStatic
     @BindingAdapter("app:detail_items")
-    fun attachList(recyclerView: RecyclerView, items: StateFlow<List<ExpenseDetailItem>>?) {
+    fun attachList(recyclerView: RecyclerView, items: StateFlow<List<ExpenseDetailUIData>>?) {
         items?.let {
             (recyclerView.adapter as? ExpenseDetailItemListAdapter)?.submitList(it.value)
         }

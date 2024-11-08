@@ -1,26 +1,31 @@
 package com.kappzzang.jeongsan.repositoryimpl
 
-import com.kappzzang.jeongsan.datasource.member.MemberDatabase
-import com.kappzzang.jeongsan.mapper.MemberEntityMapper
+import com.kappzzang.jeongsan.datasource.remote.GroupRemoteDataSource
+import com.kappzzang.jeongsan.mapper.MemberEntityMapper.toMemberItem
 import com.kappzzang.jeongsan.model.MemberItem
 import com.kappzzang.jeongsan.repository.MemberRepository
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class MemberRepositoryImpl @Inject constructor(private val memberDatabase: MemberDatabase) :
-    MemberRepository {
-    override suspend fun addMember(member: MemberItem) {
+class MemberRepositoryImpl @Inject constructor(
+    private val groupRemoteDataSource: GroupRemoteDataSource
+) : MemberRepository {
+    override suspend fun addMember(groupId: String, memberId: String) {
         withContext(Dispatchers.IO) {
-            memberDatabase.getMemberDao().addMember(
-                MemberEntityMapper.mapMemberToMemberEntity(member)
-            )
+            groupRemoteDataSource.joinGroup(groupId.toLong(), memberId.toLong())
         }
     }
 
-    override suspend fun getAllMember(): List<MemberItem> = withContext(Dispatchers.IO) {
-        memberDatabase.getMemberDao().getAllMember().map {
-            MemberEntityMapper.mapMemberEntityToMember(it)
+    override suspend fun getAllMember(groupId: String): List<MemberItem> =
+        withContext(Dispatchers.IO) {
+            groupRemoteDataSource.getMemberInfo(groupId.toLong()).fold(
+                onSuccess = { memberInfoList ->
+                    memberInfoList.map { it.toMemberItem() }
+                },
+                onFailure = {
+                    listOf()
+                }
+            )
         }
-    }
 }

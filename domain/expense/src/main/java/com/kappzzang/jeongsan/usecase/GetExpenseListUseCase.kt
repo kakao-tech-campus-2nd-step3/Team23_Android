@@ -10,7 +10,7 @@ class GetExpenseListUseCase @Inject constructor(private val repository: ExpenseR
     operator fun invoke(
         groupId: String,
         queryExpenseState: ExpenseState
-    ): Flow<ExpenseListResponse> = repository.getExpenseList(
+    ): Flow<Result<ExpenseListResponse>> = repository.getExpenseList(
         groupId,
         queryExpenseState
     )

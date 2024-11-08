@@ -1,23 +1,54 @@
 package com.kappzzang.jeongsan.repositoryimpl
 
-import com.kappzzang.jeongsan.data.AuthData
+import android.util.Log
+import com.kappzzang.jeongsan.data.KakaoAuthData
+import com.kappzzang.jeongsan.data.ServerAuthData
 import com.kappzzang.jeongsan.datasource.AuthLocalDataSource
+import com.kappzzang.jeongsan.datasource.ServerAuthRemoteDataSource
 import com.kappzzang.jeongsan.util.AuthenticationRepository
 import javax.inject.Inject
-import kotlinx.coroutines.flow.Flow
 
 class AuthenticationRepositoryImpl
 @Inject constructor(
-    private val datasource: AuthLocalDataSource
+    private val authLocalDataSource: AuthLocalDataSource,
+    private val serverAuthRemoteDataSource: ServerAuthRemoteDataSource
 ) : AuthenticationRepository {
 
-    override fun getAuthData(): Flow<AuthData> = datasource.getAuthDataFlow()
+    override fun getKakaoAuthData(): KakaoAuthData = authLocalDataSource.getKakaoAuthData()
 
-    override suspend fun updateAuthData(newData: AuthData) {
-        datasource.updatePreference(newData)
+    override fun getServerAuthData(): ServerAuthData = authLocalDataSource.getServerAuthData()
+
+    override fun updateKakaoAuthData(newData: KakaoAuthData) {
+        authLocalDataSource.updateKakaoPreference(newData)
     }
 
-    override suspend fun removeAuthData() {
-        TODO("Not yet implemented")
+    override fun updateServerAuthData(newData: ServerAuthData) {
+        authLocalDataSource.updateServerPreference(newData)
+    }
+
+    override fun removeKakaoAuthData() {
+        authLocalDataSource.removeKakaoAuthData()
+    }
+
+    override fun removeServerAuthData() {
+        authLocalDataSource.removeServerAuthData()
+    }
+
+    override suspend fun refreshJwtFromServer(authData: ServerAuthData): Result<ServerAuthData> =
+        serverAuthRemoteDataSource.refreshToken(authData.refreshToken).fold(
+            onSuccess = { refreshTokenData ->
+                val serverAuthData = authData.copy(
+                    accessToken = refreshTokenData.accessToken
+                )
+                Result.success(serverAuthData)
+            },
+            onFailure = { exception ->
+                Log.e(TAG, exception.message, exception.cause)
+                Result.failure(exception)
+            }
+        )
+
+    companion object {
+        private const val TAG = "AuthenticationRepositoryImpl"
     }
 }

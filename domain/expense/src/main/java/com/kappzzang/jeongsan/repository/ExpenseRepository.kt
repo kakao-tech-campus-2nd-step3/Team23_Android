@@ -1,8 +1,9 @@
 package com.kappzzang.jeongsan.repository
 
-import com.kappzzang.jeongsan.model.ExpenseItemWithDetails
+import com.kappzzang.jeongsan.model.ExpenseCategory
 import com.kappzzang.jeongsan.model.ExpenseListResponse
 import com.kappzzang.jeongsan.model.ExpenseState
+import com.kappzzang.jeongsan.model.ReceiptItem
 import kotlinx.coroutines.flow.Flow
 
 interface ExpenseRepository {
@@ -13,6 +14,14 @@ interface ExpenseRepository {
      *  @param expenseState 조회할 지출의 상태 (정산 중, 송금 요청, 송금 완료 ...)
      *  @return 지출 목록 response flow
      */
-    fun getExpenseList(groupId: String, expenseState: ExpenseState): Flow<ExpenseListResponse>
-    suspend fun getExpense(id: Long): ExpenseItemWithDetails
+    fun getExpenseList(
+        groupId: String,
+        expenseState: ExpenseState
+    ): Flow<Result<ExpenseListResponse>>
+
+    suspend fun getExpenseListToGetPaid(groupId: String): Result<ExpenseListResponse>
+
+    suspend fun uploadExpense(receiptItem: ReceiptItem, groupId: String): Result<String>
+
+    suspend fun getExpenseCategoryList(): Result<List<ExpenseCategory>>
 }
