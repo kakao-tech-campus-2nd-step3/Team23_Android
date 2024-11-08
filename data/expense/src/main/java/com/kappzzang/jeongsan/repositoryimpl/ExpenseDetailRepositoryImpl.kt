@@ -2,9 +2,11 @@ package com.kappzzang.jeongsan.repositoryimpl
 
 import com.kappzzang.jeongsan.datasource.ExpenseDetailRemoteDatasource
 import com.kappzzang.jeongsan.entity.expensedetail.ExpenseDetailEntity
-import com.kappzzang.jeongsan.mapper.ExpenseEntityMapper
+import com.kappzzang.jeongsan.entity.expensedetail.ExpenseSelectionResponseDTO
+import com.kappzzang.jeongsan.mapper.ExpenseDetailMapper
 import com.kappzzang.jeongsan.model.ExpenseDetailItem
 import com.kappzzang.jeongsan.model.ExpenseItemWithDetails
+import com.kappzzang.jeongsan.model.ExpenseSelectionStatus
 import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.repository.ExpenseDetailRepository
 import javax.inject.Inject
@@ -21,7 +23,7 @@ class ExpenseDetailRepositoryImpl @Inject constructor(
         }
 
     private fun mapResponseToExpenseDetail(entity: ExpenseDetailEntity, expenseId: String) =
-        ExpenseEntityMapper.mapDetailedExpenseEntityToModel(
+        ExpenseDetailMapper.mapDetailedExpenseEntityToModel(
             entity,
             expenseId,
             ExpenseState.NOT_CONFIRMED
@@ -36,4 +38,11 @@ class ExpenseDetailRepositoryImpl @Inject constructor(
         groupId = groupId,
         edited = edited
     )
+
+    override suspend fun getExpenseSelectionStatus(expenseId: String): Result<ExpenseSelectionStatus> =
+        expenseDetailRemoteDatasource.getExpenseSelectionStatus(
+            expenseId = expenseId
+        ).mapCatching {
+            ExpenseDetailMapper.mapExpenseSelectionStatusEntityToModel(it)
+        }
 }

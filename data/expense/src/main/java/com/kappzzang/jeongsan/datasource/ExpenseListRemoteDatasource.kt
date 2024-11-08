@@ -7,7 +7,7 @@ import com.kappzzang.jeongsan.entity.ImageEntity
 import com.kappzzang.jeongsan.entity.ResponseWithExpenseIdDTO
 import com.kappzzang.jeongsan.entity.SaveExpensePayloadDTO
 import com.kappzzang.jeongsan.entity.expenselist.ExpenseListResponseDTO
-import com.kappzzang.jeongsan.mapper.ExpenseEntityMapper
+import com.kappzzang.jeongsan.mapper.ExpenseDetailMapper
 import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.model.ReceiptItem
 import com.kappzzang.jeongsan.retrofit.ResponseData
@@ -58,7 +58,7 @@ class ExpenseListRemoteDatasource @Inject constructor(
             val postBody = SaveExpensePayloadDTO(
                 title = receiptItem.title,
                 items = receiptItem.expenseDetailItemList.map {
-                    ExpenseEntityMapper.mapReceiptDetailItemToExpenseItemEntity(it)
+                    ExpenseDetailMapper.mapReceiptDetailItemToExpenseItemEntity(it)
                 },
                 paymentTime = receiptItem.paymentTime.formatToTransferString(),
                 image = ImageEntity(

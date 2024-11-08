@@ -8,7 +8,7 @@ data class ExpenseSelectionItemEntity(
     @SerializedName("id")
     val id: Int,
     @SerializedName("name")
-    val name: Int,
+    val name: String,
     @SerializedName("quantity")
     val quantity: Int,
     @SerializedName("unitPrice")

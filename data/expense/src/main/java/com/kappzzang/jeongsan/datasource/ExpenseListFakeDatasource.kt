@@ -2,7 +2,9 @@ package com.kappzzang.jeongsan.datasource
 
 import com.kappzzang.jeongsan.datasource.expense.ExpenseDatabase
 import com.kappzzang.jeongsan.entity.expenselist.ExpenseRoomEntity
+import com.kappzzang.jeongsan.mapper.ExpenseDetailMapper
 import com.kappzzang.jeongsan.mapper.ExpenseEntityMapper
+import com.kappzzang.jeongsan.mapper.ExpenseListEntityMapper
 import com.kappzzang.jeongsan.model.ExpenseListResponse
 import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.model.ReceiptItem
@@ -24,7 +26,7 @@ class ExpenseListFakeDatasource @Inject constructor(private val expenseDatabase:
 
                 ExpenseState.TRANSFERED -> expenseDatabase.expenseDao().getTransferredExpense()
             }.map {
-                ExpenseEntityMapper.mapExpenseEntityToModel(it)
+                ExpenseListEntityMapper.mapExpenseEntityToModel(it)
             }
         var totalPrice = 0
 

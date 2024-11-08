@@ -2,7 +2,9 @@ package com.kappzzang.jeongsan.repositoryimpl
 
 import com.kappzzang.jeongsan.datasource.ExpenseListRemoteDatasource
 import com.kappzzang.jeongsan.entity.expenselist.ExpenseListResponseDTO
+import com.kappzzang.jeongsan.mapper.ExpenseDetailMapper
 import com.kappzzang.jeongsan.mapper.ExpenseEntityMapper
+import com.kappzzang.jeongsan.mapper.ExpenseListEntityMapper
 import com.kappzzang.jeongsan.model.ExpenseCategory
 import com.kappzzang.jeongsan.model.ExpenseListResponse
 import com.kappzzang.jeongsan.model.ExpenseState
@@ -91,7 +93,7 @@ class ExpenseListRepositoryImpl @Inject constructor(
     }
 
     private fun mapResponseBody(body: ExpenseListResponseDTO): ExpenseListResponse {
-        val expenses = body.expenseList.map { ExpenseEntityMapper.mapExpenseEntityToModel(it, getUuid()) }
+        val expenses = body.expenseList.map { ExpenseListEntityMapper.mapExpenseEntityToModel(it, getUuid()) }
         return ExpenseListResponse(
             totalExpenseToSend = body.myTotalExpense ?: 0,
             expenseList = expenses,
