@@ -32,7 +32,6 @@ class ExpenseDetailFragmentViewModel @Inject constructor(
     private val expenseId = MutableStateFlow("")
     private val formEditable = MutableStateFlow(true)
     private val _expenseDetailSaveState = MutableStateFlow(ExpenseDetailState.IDLE)
-    private val _expenseDetailSaveMessage = MutableStateFlow<String?>(null)
 
     val expenseDetailSaveState = _expenseDetailSaveState.asStateFlow()
 
@@ -72,7 +71,6 @@ class ExpenseDetailFragmentViewModel @Inject constructor(
                 _expenseDetailSaveState.value = ExpenseDetailState.SUCCESS
             }.onFailure {
                 _expenseDetailSaveState.value = ExpenseDetailState.FAILED
-                _expenseDetailSaveMessage.value = it.message
             }
         }
     }
