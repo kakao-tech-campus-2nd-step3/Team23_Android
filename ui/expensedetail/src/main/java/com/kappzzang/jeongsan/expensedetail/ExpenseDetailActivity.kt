@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +16,8 @@ import com.kappzzang.jeongsan.expensedetail.expensedetailpage.ExpenseDetailItemL
 import com.kappzzang.jeongsan.intentcontract.ExpenseDetailContract
 import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ExpenseDetailActivity : AppCompatActivity() {
@@ -42,17 +47,39 @@ class ExpenseDetailActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        navController.navigate(R.id.selectionStatusFragment)
-
-        // TODO: 임시 연결용 코드
-        binding.expenseDetailSubmitButton.setOnClickListener {
-            //viewModel.saveExpenseDetail()
-            finish()
-        }
+        setButtonsOnClickListener()
+        collectStateFlow()
     }
 
     private fun initiateViewModel() {
         getIntentData()
+    }
+
+    private fun setButtonsOnClickListener() {
+        binding.expenseDetailPrimaryButton.setOnClickListener {
+            viewModel.clickPrimaryButton()
+        }
+
+        binding.expenseDetailSecondaryButton.setOnClickListener {
+            viewModel.clickSecondaryButton()
+        }
+    }
+
+    private fun collectStateFlow() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.currentPage.collect {
+                    try {
+                        when (it) {
+                            ExpenseDetailPage.EXPENSE_DETAIL -> navController.navigate(R.id.action_selectionStatusFragment_to_expenseDetailFragment)
+                            ExpenseDetailPage.SELECTION_STATUS -> navController.navigate(R.id.action_expenseDetailFragment_to_selectionStatusFragment)
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+        }
     }
 
     private fun getIntentData() {
@@ -65,7 +92,7 @@ class ExpenseDetailActivity : AppCompatActivity() {
             return
         }
 
-        viewModel.setInitialData(expenseId, groupId, editable)
+        viewModel.setInitialData(expenseId, groupId, editable, true)
     }
 
     private fun throwExpenseDataLoadFailError() {

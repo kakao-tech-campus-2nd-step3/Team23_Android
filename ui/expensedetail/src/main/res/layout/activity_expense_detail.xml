@@ -7,6 +7,10 @@
         <variable
             name="viewModel"
             type="com.kappzzang.jeongsan.expensedetail.ExpenseDetailViewModel" />
+
+        <import type="android.view.View" />
+
+        <import type="com.kappzzang.jeongsan.expensedetail.ExpenseDetailPage" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,7 +26,7 @@
             android:layout_marginStart="@dimen/all_header_margin"
             android:layout_marginTop="@dimen/all_header_margin"
             android:fontFamily="sans-serif-black"
-            android:text="@string/expense_detail_header"
+            android:text="@{viewModel.currentPage == ExpenseDetailPage.EXPENSE_DETAIL?@string/expense_detail_header_detail_page:@string/expense_detail_header_status_page}"
             android:textColor="@color/black"
             android:textSize="@dimen/all_header_text_size"
             app:layout_constraintEnd_toEndOf="parent"
@@ -36,7 +40,7 @@
             android:layout_marginStart="@dimen/all_header_margin"
             android:layout_marginTop="13dp"
             android:fontFamily="sans-serif-medium"
-            android:text="@string/expense_detail_description"
+            android:text="@{viewModel.currentPage == ExpenseDetailPage.EXPENSE_DETAIL?@string/expense_detail_description_detail_page:@string/expense_detail_description_status_page}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/expense_detail_header_textview" />
@@ -47,7 +51,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:defaultNavHost="false"
-            app:layout_constraintBottom_toTopOf="@id/expense_detail_submit_button"
+            app:layout_constraintBottom_toTopOf="@id/expense_detail_primary_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/expense_detail_description_textview"
@@ -55,12 +59,24 @@
 
 
         <Button
-            android:id="@+id/expense_detail_submit_button"
+            android:id="@+id/expense_detail_primary_button"
             style="@style/BottomButton"
-            android:text="@string/expense_detail_submit"
+            android:text="@{viewModel.currentPage == ExpenseDetailPage.EXPENSE_DETAIL?@string/expense_detail_submit:@string/expense_detail_switch_to_pending}"
             android:textSize="@dimen/all_bottom_button_text_size"
+            android:layout_width="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/expense_detail_secondary_button"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/expense_detail_secondary_button"
+            style="@style/BottomButtonSecondary"
+            android:text="@{viewModel.currentPage == ExpenseDetailPage.EXPENSE_DETAIL?@string/expense_detail_check_status:@string/expense_detail_modify}"
+            android:textSize="@dimen/all_bottom_button_text_size"
+            android:visibility="@{viewModel.showPayerUI?View.VISIBLE:View.GONE}"
+            android:layout_width="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toEndOf="@id/expense_detail_primary_button" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
