@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ResponseWithExpenseIdDTO(
-    @SerializedName("expense_id")
-    val expenseId: String
+    @SerializedName("expenseId")
+    val expenseId: Int
 )
