@@ -62,6 +62,7 @@ class ExpenseListRemoteDatasource @Inject constructor(
                 paymentTime = receiptItem.paymentTime.formatToTransferString(),
                 image = ImageEntity(
                     name = "",
+                    // TODO Expense 저장 시 Payload가 너무 크면 오류가 발생하는 것 같아 수정. 추후 논의 후 롤백
                     data = "receiptItem.imageBase64" ?: "",
                     url = "",
                     format = IMAGE_FORMAT
