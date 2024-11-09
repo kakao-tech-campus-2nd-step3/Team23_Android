@@ -39,6 +39,6 @@ object UserUseCaseModule {
         GetUserInfoUseCase(userInfoRepository)
 
     @Provides
-    fun provideGetUserUuidUseCase(authenticationRepository: AuthenticationRepository) =
+    fun provideGetUserServiceIdUseCase(authenticationRepository: AuthenticationRepository) =
         GetUserServiceIdUseCase(authenticationRepository)
 }

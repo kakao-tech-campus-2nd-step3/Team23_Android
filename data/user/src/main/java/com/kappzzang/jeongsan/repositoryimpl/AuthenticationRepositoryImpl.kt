@@ -50,8 +50,8 @@ class AuthenticationRepositoryImpl
 
     override fun getServiceId(): String = authLocalDataSource.getServiceId()
 
-    override fun updateServiceId(uuid: String) {
-        authLocalDataSource.updateServiceId(uuid)
+    override fun updateServiceId(serviceId: String) {
+        authLocalDataSource.updateServiceId(serviceId)
     }
 
     override fun removeServiceId() {

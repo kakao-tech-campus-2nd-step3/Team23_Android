@@ -46,14 +46,14 @@ class ServerAuthRemoteDataSource @Inject constructor(
     }
 
     suspend fun register(
-        uuid: String,
+        serviceId: String,
         nickname: String,
         email: String,
         profileUrl: String
     ): Result<TokenData> = try {
         val response = authApi.register(
             RegisterRequest(
-                uuid = uuid,
+                serviceId = serviceId,
                 nickname = nickname,
                 email = email,
                 profileImageUrl = profileUrl
