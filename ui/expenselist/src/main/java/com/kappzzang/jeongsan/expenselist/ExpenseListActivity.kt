@@ -22,6 +22,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.kappzzang.jeongsan.expenselist.databinding.ActivityExpenseListBinding
 import com.kappzzang.jeongsan.expenselist.inviteinfo.InviteInfoDialogFragment
+import com.kappzzang.jeongsan.expenselist.viewmodel.CompleteGroupState
 import com.kappzzang.jeongsan.expenselist.viewmodel.ExpenseListViewModel
 import com.kappzzang.jeongsan.intentcontract.ExpenseListContract
 import com.kappzzang.jeongsan.intentcontract.ReceiptCameraContract
@@ -94,6 +95,7 @@ class ExpenseListActivity : AppCompatActivity() {
         initiateNavigation()
         setOnUpperMenuClickedListener()
         setOnAddExpenseFabClickedListener()
+        collectCompleteGroupState()
 
         activityReceiptCameraLauncher = createReceiptCameraLauncher()
 
@@ -125,12 +127,11 @@ class ExpenseListActivity : AppCompatActivity() {
                 return@setOnMenuItemClickListener when (menuItem.itemId) {
                     R.id.menu_invite_status -> {
                         inviteInfoDialogFragment.show(supportFragmentManager, "inviteInfoDialog")
-
                         true
                     }
 
                     R.id.menu_end_group -> {
-                        finish()
+                        viewModel.completeGroup()
                         true
                     }
 
@@ -141,6 +142,36 @@ class ExpenseListActivity : AppCompatActivity() {
             }
 
             popupMenu.show()
+        }
+    }
+
+    private fun collectCompleteGroupState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.completeGroupState.collect {
+                    when (it) {
+                        CompleteGroupState.IDLE -> {}
+                        CompleteGroupState.SUCCESS -> {
+                            Toast.makeText(
+                                this@ExpenseListActivity,
+                                "\"${viewModel.groupUIItem.value.groupSubject} " +
+                                    "${viewModel.groupUIItem.value.groupName}\" " +
+                                    getString(R.string.complete_group_success),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            finish()
+                        }
+
+                        CompleteGroupState.FAILED -> {
+                            Toast.makeText(
+                                this@ExpenseListActivity,
+                                getString(R.string.complete_group_fail),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -197,8 +228,7 @@ class ExpenseListActivity : AppCompatActivity() {
         ContextCompat.checkSelfPermission(
             this,
             android.Manifest.permission.CAMERA
-        ) ==
-            PackageManager.PERMISSION_GRANTED
+        ) == PackageManager.PERMISSION_GRANTED
     } else {
         true
     }

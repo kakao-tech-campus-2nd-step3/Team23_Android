@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.data.ExpenseListGroupInfoUIData
 import com.kappzzang.jeongsan.model.ExpenseState
+import com.kappzzang.jeongsan.usecase.CompleteGroupUseCase
 import com.kappzzang.jeongsan.usecase.GetCurrentGroupInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -17,6 +18,7 @@ data class SelectedExpenseData(val expenseId: String, val editable: Boolean)
 @HiltViewModel
 class ExpenseListViewModel @Inject constructor(
     private val getCurrentGroupInfoUseCase: GetCurrentGroupInfoUseCase,
+    private val completeGroupUseCase: CompleteGroupUseCase,
     private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
     private val _groupId = MutableStateFlow("")
@@ -28,6 +30,9 @@ class ExpenseListViewModel @Inject constructor(
 
     private val _selectedExpense = MutableStateFlow(SelectedExpenseData("", false))
     val selectedExpense = _selectedExpense.asStateFlow()
+
+    private val _completeGroupState = MutableStateFlow(CompleteGroupState.IDLE)
+    val completeGroupState = _completeGroupState.asStateFlow()
 
     private fun fetchGroupInfo() {
         viewModelScope.launch(ioDispatcher) {
@@ -59,4 +64,16 @@ class ExpenseListViewModel @Inject constructor(
     fun resetExpenseSelection() {
         _selectedExpense.value = SelectedExpenseData("", false)
     }
+
+    fun completeGroup() {
+        viewModelScope.launch(ioDispatcher) {
+            completeGroupUseCase(_groupId.value).onSuccess {
+                _completeGroupState.value = CompleteGroupState.SUCCESS
+            }.onFailure {
+                _completeGroupState.value = CompleteGroupState.FAILED
+            }
+        }
+    }
 }
+
+enum class CompleteGroupState { IDLE, SUCCESS, FAILED }
