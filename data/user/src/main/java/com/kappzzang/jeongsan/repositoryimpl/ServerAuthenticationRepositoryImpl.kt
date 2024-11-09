@@ -29,17 +29,18 @@ class ServerAuthenticationRepositoryImpl @Inject constructor(
         nickname: String,
         email: String,
         profileImageUrl: String
-    ): Result<ServerAuthData> = dataSource.register(serviceId, nickname, email, profileImageUrl).fold(
-        onSuccess = { tokenData ->
-            val serverAuthData =
-                TokenDataToServerAuthDataMapper.mapTokenDataToServerAuthData(tokenData)
-            Result.success(serverAuthData)
-        },
-        onFailure = { exception ->
-            Log.e(TAG, exception.message, exception.cause)
-            Result.failure(exception)
-        }
-    )
+    ): Result<ServerAuthData> =
+        dataSource.register(serviceId, nickname, email, profileImageUrl).fold(
+            onSuccess = { tokenData ->
+                val serverAuthData =
+                    TokenDataToServerAuthDataMapper.mapTokenDataToServerAuthData(tokenData)
+                Result.success(serverAuthData)
+            },
+            onFailure = { exception ->
+                Log.e(TAG, exception.message, exception.cause)
+                Result.failure(exception)
+            }
+        )
 
     companion object {
         private const val TAG = "ServerAuthenticationRepositoryImpl"

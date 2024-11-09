@@ -28,7 +28,12 @@ class AuthenticateWithServerUseCase @Inject constructor(
         profileImageUrl: String
     ): ServerAuthData = serverAuthenticationRepository.loginToServer(email).getOrElse { exception ->
         when (exception) {
-            is NoSuchElementException -> registerToServer(serviceId, nickname, email, profileImageUrl)
+            is NoSuchElementException -> registerToServer(
+                serviceId,
+                nickname,
+                email,
+                profileImageUrl
+            )
             else -> throw exception
         }
     }
