@@ -1,7 +1,9 @@
 package com.kappzzang.jeongsan.entity
 
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class ReceiptImage(
     @SerializedName("format")
     val format: String,
