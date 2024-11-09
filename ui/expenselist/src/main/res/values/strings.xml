@@ -30,4 +30,8 @@
     <!-- 지출 목록 상단 메뉴 -->
     <string name="menu_invite_status">초대 현황</string>
     <string name="menu_end_group">모임 종료</string>
+
+    <!-- 그룹 삭제 Toast -->
+    <string name="complete_group_success">모임을 종료했습니다.</string>
+    <string name="complete_group_fail">모임을 종료할 수 없습니다.</string>
 </resources>
