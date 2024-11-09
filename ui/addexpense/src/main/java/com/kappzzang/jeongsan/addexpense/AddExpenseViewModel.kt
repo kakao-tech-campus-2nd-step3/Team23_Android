@@ -3,6 +3,7 @@ package com.kappzzang.jeongsan.addexpense
 import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kappzzang.jeongsan.addexpense.data.ExpenseUploadUIState
 import com.kappzzang.jeongsan.data.ExpenseItemInput
 import com.kappzzang.jeongsan.model.ExpenseCategory
 import com.kappzzang.jeongsan.model.OcrResultResponse
@@ -20,8 +21,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-enum class ExpenseUploadingProgress { NOT_STARTED, UPLOADING, UPLOAD_SUCCESS, UPLOAD_FAILED }
-
 @HiltViewModel
 class AddExpenseViewModel @Inject constructor(
     private val uploadExpenseUseCase: UploadExpenseUseCase,
@@ -38,9 +37,9 @@ class AddExpenseViewModel @Inject constructor(
 
     private val _selectedCategory = MutableStateFlow(ExpenseCategory("", "#ffffff", ""))
     private val _inputsLocked = MutableStateFlow(false)
-    private val _createdExpenseId = MutableStateFlow("")
     private val _categoryList by lazy { getCategoryList() }
-    private val _uploadingProgress = MutableStateFlow(ExpenseUploadingProgress.NOT_STARTED)
+    private val _uploadingProgress =
+        MutableStateFlow<ExpenseUploadUIState>(ExpenseUploadUIState.Idle)
     private val _expenseImageBitmap = MutableStateFlow<Bitmap?>(null)
     private val _manualMode = MutableStateFlow(true)
     private val _uploadedImage = MutableStateFlow(false)
@@ -55,7 +54,6 @@ class AddExpenseViewModel @Inject constructor(
         _expenseItemList.asStateFlow()
     val expenseName = MutableStateFlow("Demo")
     val groupId = _groupId.asStateFlow()
-    val createdExpenseId = _createdExpenseId.asStateFlow()
 
     var selectedCategory = _selectedCategory.asStateFlow()
     val categoryList = _categoryList.asStateFlow()
@@ -122,11 +120,11 @@ class AddExpenseViewModel @Inject constructor(
         if (!checkItemValid()) {
             return false
         }
-        if (uploadingProgress.value == ExpenseUploadingProgress.UPLOADING) {
+        if (uploadingProgress.value is ExpenseUploadUIState.Uploading) {
             return true
         }
 
-        _uploadingProgress.value = ExpenseUploadingProgress.UPLOADING
+        _uploadingProgress.value = ExpenseUploadUIState.Uploading
 
         val receiptItem = ReceiptItem(
             title = expenseName.value,
@@ -147,11 +145,10 @@ class AddExpenseViewModel @Inject constructor(
         viewModelScope.launch(ioDispatcher) {
             uploadExpenseUseCase(receiptItem, _groupId.value)
                 .onSuccess {
-                    _createdExpenseId.emit(it)
-                    _uploadingProgress.emit(ExpenseUploadingProgress.UPLOAD_SUCCESS)
+                    _uploadingProgress.emit(ExpenseUploadUIState.UploadSuccess(it))
                 }
                 .onFailure {
-                    _uploadingProgress.emit(ExpenseUploadingProgress.UPLOAD_FAILED)
+                    _uploadingProgress.emit(ExpenseUploadUIState.UploadFailed)
                 }
         }
 
