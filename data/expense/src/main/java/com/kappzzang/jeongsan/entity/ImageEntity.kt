@@ -8,7 +8,7 @@ data class ImageEntity(
     @SerializedName("format")
     val format: String,
     @SerializedName("url")
-    val url: String,
+    val url: String?,
     @SerializedName("data")
     val data: String,
     @SerializedName("name")

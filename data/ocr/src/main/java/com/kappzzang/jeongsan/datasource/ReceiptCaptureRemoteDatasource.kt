@@ -12,16 +12,16 @@ class ReceiptCaptureRemoteDatasource @Inject constructor(
         try {
             val response = ocrRetrofitService.analyzeReceipt(
                 receiptImage = ReceiptImage(
-                    format = "",
-                    name = "",
+                    format = "JPEG",
+                    name = "empty",
                     base64Encoded = base64Encoded,
-                    url = ""
+                    url = null
                 )
             )
             return if (!response.isSuccessful) {
                 Result.failure(Exception(""))
             } else {
-                Result.success(response.body()!!)
+                Result.success(response.body()!!.data)
             }
         } catch (e: Exception) {
             return Result.failure(e)
