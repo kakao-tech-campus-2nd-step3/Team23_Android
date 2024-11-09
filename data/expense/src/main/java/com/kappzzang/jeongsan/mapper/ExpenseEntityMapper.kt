@@ -45,7 +45,7 @@ object ExpenseEntityMapper {
         ),
         date = DateConverter.parseFromString(entity.createdAt),
         categoryColor = parseColor(entity.category.color),
-        payerServiceId = entity.payerUuid ?: ""
+        payerServiceId = entity.payerServiceId ?: ""
     )
 
     fun mapDetailedExpenseEntityToModel(
