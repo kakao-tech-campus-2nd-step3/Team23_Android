@@ -13,13 +13,13 @@ import com.kappzzang.jeongsan.usecase.GetCategoryListUseCase
 import com.kappzzang.jeongsan.usecase.UploadExpenseUseCase
 import com.kappzzang.jeongsan.util.Base64BitmapEncoder
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class AddExpenseViewModel @Inject constructor(
@@ -38,7 +38,8 @@ class AddExpenseViewModel @Inject constructor(
     private val _selectedCategory = MutableStateFlow(ExpenseCategory("", "#ffffff", ""))
     private val _inputsLocked = MutableStateFlow(false)
     private val _categoryList by lazy { getCategoryList() }
-    private val _uploadingProgress = MutableStateFlow<ExpenseUploadUIState>(ExpenseUploadUIState.Idle)
+    private val _uploadingProgress =
+        MutableStateFlow<ExpenseUploadUIState>(ExpenseUploadUIState.Idle)
     private val _expenseImageBitmap = MutableStateFlow<Bitmap?>(null)
     private val _manualMode = MutableStateFlow(true)
     private val _uploadedImage = MutableStateFlow(false)
