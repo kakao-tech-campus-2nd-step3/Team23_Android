@@ -1,6 +1,6 @@
 package com.kappzzang.jeongsan.repositoryimpl
 
-import com.kappzzang.jeongsan.datasource.remote.GroupRemoteDataSource
+import com.kappzzang.jeongsan.datasource.GroupRemoteDataSource
 import com.kappzzang.jeongsan.mapper.GroupEntityMapper.toGroupItem
 import com.kappzzang.jeongsan.model.GroupCreateItem
 import com.kappzzang.jeongsan.model.GroupItem

@@ -1,7 +1,7 @@
 package com.kappzzang.jeongsan.di
 
 import com.kappzzang.jeongsan.api.GroupRetrofitService
-import com.kappzzang.jeongsan.datasource.remote.GroupRemoteDataSource
+import com.kappzzang.jeongsan.datasource.GroupRemoteDataSource
 import com.kappzzang.jeongsan.retrofit.RetrofitModule.ServiceRetrofit
 import dagger.Module
 import dagger.Provides

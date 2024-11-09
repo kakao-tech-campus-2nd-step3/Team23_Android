@@ -1,4 +1,4 @@
-package com.kappzzang.jeongsan.datasource.remote
+package com.kappzzang.jeongsan.datasource
 
 import com.kappzzang.jeongsan.api.GroupRetrofitService
 import com.kappzzang.jeongsan.entity.CompleteGroupResponse
