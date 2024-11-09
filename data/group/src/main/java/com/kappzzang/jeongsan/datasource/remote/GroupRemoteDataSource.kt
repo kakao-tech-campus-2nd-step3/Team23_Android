@@ -1,5 +1,6 @@
 package com.kappzzang.jeongsan.datasource.remote
 
+import android.util.Log
 import com.kappzzang.jeongsan.api.GroupRetrofitService
 import com.kappzzang.jeongsan.entity.CompleteGroupResponse
 import com.kappzzang.jeongsan.entity.CreateGroupResponse
@@ -24,12 +25,15 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
 
     private fun handleGetGroupInfoResponse(
         response: Response<GetGroupResponse>
-    ): Result<List<GroupInfo>> = when {
-        response.isSuccessful && !response.body()?.groupList.isNullOrEmpty() -> {
-            Result.success(response.body()!!.groupList)
-        }
-        else -> {
-            Result.failure(Exception("그룹 정보를 가져오는데 실패"))
+    ): Result<List<GroupInfo>> {
+        return when {
+            response.isSuccessful && response.body() != null -> {
+                Result.success(response.body()!!.groupList)
+            }
+
+            else -> {
+                Result.failure(Exception("그룹 정보를 가져오는데 실패"))
+            }
         }
     }
 
@@ -43,7 +47,7 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
     private fun handleGetTargetGroupInfoResponse(
         response: Response<GetTargetGroupResponse>
     ): Result<GroupInfo> = when {
-        response.isSuccessful && response.body()?.groupInfo != null -> {
+        response.isSuccessful && response.body() != null -> {
             Result.success(response.body()!!.groupInfo)
         }
         else -> {
@@ -66,8 +70,8 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
         Result.failure(e)
     }
 
-    private fun handleCreateGroupResponse(response: Response<CreateGroupResponse>): Result<Long> =
-        when {
+    private fun handleCreateGroupResponse(response: Response<CreateGroupResponse>): Result<Long> {
+        return when {
             response.isSuccessful -> {
                 Result.success(response.body()!!.groupId)
             }
@@ -79,9 +83,10 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
                 Result.failure(Exception("중복된 모임 이름이 존재"))
             }
             else -> {
-                Result.failure(Exception("알수없는 오류 발생"))
+                Result.failure(Exception("알수없는 오류 발생. 코드:${response.code()}"))
             }
         }
+    }
 
     suspend fun completeGroup(groupId: Long): Result<Boolean> = try {
         val response = groupApi.completeGroup(groupId = groupId)

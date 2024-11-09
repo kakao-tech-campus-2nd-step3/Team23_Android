@@ -49,10 +49,8 @@ class GroupInfoRepositoryImpl @Inject constructor(
                 }
             )
         }?.let {
-            emit(
-                getBlankGroupItem()
-            )
-        }
+            emit(it)
+        }?: emit(getBlankGroupItem())
     }
 
     override suspend fun uploadGroupInfo(createdGroup: GroupCreateItem): Long {
@@ -60,7 +58,7 @@ class GroupInfoRepositoryImpl @Inject constructor(
         val result = groupRemoteDataSource.createGroup(
             groupName = createdGroup.name,
             groupSubject = createdGroup.subject,
-            groupMemberUuidList = createdGroup.memberUuidList
+            groupMemberUuidList = listOf("1")
         )
         return result.getOrThrow()
     }

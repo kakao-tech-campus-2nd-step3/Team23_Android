@@ -39,6 +39,7 @@ class CreateGroupActivity : AppCompatActivity() {
         initRecyclerView()
         setPickerButton()
         setCreateGroupButton()
+        collectGroupUploadState()
     }
 
     private fun initSpinner() {
@@ -93,6 +94,36 @@ class CreateGroupActivity : AppCompatActivity() {
         }
     }
 
+    private fun collectGroupUploadState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.groupUploadState.collect {
+                    when (it) {
+                        GroupUploadState.IDLE -> {}
+                        GroupUploadState.UPLOADING -> {}
+                        GroupUploadState.SUCCESS -> groupUploadSuccess()
+                        GroupUploadState.FAILED -> groupUploadFailed()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun groupUploadSuccess() {
+        viewModel.sendInviteMessageAll(viewModel.groupId.value)
+        finish()
+
+    }
+
+    private fun groupUploadFailed() {
+        Toast.makeText(
+            this,
+            getString(R.string.create_group_fail_create),
+            Toast.LENGTH_SHORT
+        ).show()
+
+    }
+
     private fun setCreateGroupButton() {
         binding.createGroupButton.setOnClickListener {
             if (!viewModel.checkGroupInfoValidation()) {
@@ -102,17 +133,7 @@ class CreateGroupActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-                val isUploadSuccess = viewModel.uploadGroupInfo()
-                if (isUploadSuccess) {
-                    viewModel.sendInviteMessageAll(viewModel.groupId.value)
-                    finish()
-                } else {
-                    Toast.makeText(
-                        this,
-                        getString(R.string.create_group_fail_create),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+                viewModel.uploadGroupInfo()
             }
         }
     }
