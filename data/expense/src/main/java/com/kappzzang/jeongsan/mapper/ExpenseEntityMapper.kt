@@ -15,8 +15,11 @@ import com.kappzzang.jeongsan.model.ExpenseItemWithDetails
 import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.model.ReceiptDetailItem
 import com.kappzzang.jeongsan.util.DateConverter
+import java.util.regex.Pattern
 
 object ExpenseEntityMapper {
+    private val HEXADECIMAL_PATTERN: Pattern = Pattern.compile("\\p{XDigit}+")
+
     fun mapExpenseEntityToModel(entity: ExpenseRoomEntity): ExpenseItemWithCategory =
         ExpenseItemWithCategory(
             item = ExpenseItem(
@@ -41,8 +44,8 @@ object ExpenseEntityMapper {
             state = mapExpenseStateToDomainState(entity.state, checked)
         ),
         date = DateConverter.parseFromString(entity.createdAt),
-        categoryColor = entity.category.color,
-        payerUuid = entity.payerUuid
+        categoryColor = parseColor(entity.category.color),
+        payerUuid = entity.payerUuid ?: ""
     )
 
     fun mapDetailedExpenseEntityToModel(
@@ -79,6 +82,19 @@ object ExpenseEntityMapper {
             unitPrice = model.itemPrice
         )
 
+    private fun isHexadecimal(input: String): Boolean {
+        val matcher = HEXADECIMAL_PATTERN.matcher(input)
+        return matcher.matches()
+    }
+
+    private fun parseColor(color: String): String = if (color.startsWith('#')) {
+        color
+    } else if (isHexadecimal(color) && (color.length == 6 || color.length == 8)) {
+        "#$color"
+    } else {
+        throw IllegalArgumentException("The Input is not a hexcolor")
+    }
+
     private fun getSumOfAllDetailItems(detailItems: List<ExpenseDetailItemEntity>): Int =
         detailItems.sumOf {
             it.unitPrice * it.quantity
@@ -102,18 +118,9 @@ object ExpenseEntityMapper {
     fun mapResponseWithExpenseEntityToModel(entity: ResponseWithExpenseIdDTO): String =
         entity.expenseId
 
-    fun mapCategoryToModel(entity: CategoryEntity): ExpenseCategory {
-        val colorCode =
-            if (entity.color.startsWith("#")) {
-                entity.color
-            } else {
-                "#${entity.color}"
-            }
-
-        return ExpenseCategory(
-            id = entity.id.toString(),
-            color = colorCode,
-            name = entity.name
-        )
-    }
+    fun mapCategoryToModel(entity: CategoryEntity): ExpenseCategory = ExpenseCategory(
+        id = entity.id.toString(),
+        color = parseColor(entity.color),
+        name = entity.name
+    )
 }

@@ -54,7 +54,7 @@ class ExpenseDetailRemoteDatasource @Inject constructor(
     private fun <T> processResponseBody(response: Response<T>): Result<T> {
         Log.d(
             "KSC",
-            "ProcessExpenseDetail code: ${response.code()}, Type: ${response.body() ?: Unit::class.java}"
+            "ProcessExpenseDetail code: ${response.code()}, message: ${response.message()}"
         )
         when (response.code()) {
             404 -> return Result.failure(IllegalStateException("존재하지 않는 지출"))
@@ -77,7 +77,7 @@ class ExpenseDetailRemoteDatasource @Inject constructor(
     private fun <T> processResponseBodyWithData(response: Response<ResponseData<T>>): Result<T> {
         Log.d(
             "KSC",
-            "ProcessExpenseDetail code: ${response.code()}, Type: ${response.body() ?: Unit::class.java}"
+            "ProcessExpenseDetail code: ${response.code()}, message: ${response.message()}"
         )
         when (response.code()) {
             404 -> return Result.failure(IllegalStateException("존재하지 않는 지출"))
