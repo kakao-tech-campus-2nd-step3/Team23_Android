@@ -154,6 +154,7 @@ class CreateGroupActivity : AppCompatActivity() {
         selectedUsers?.users?.map { user ->
             MemberUIData(
                 uuid = user.uuid,
+                serviceId = user.id?.toString() ?: "",
                 name = user.profileNickname ?: UNKNOWN_NICKNAME,
                 profileImageUrl = user.profileThumbnailImage ?: DEFAULT_THUMBNAIL_URL
             )
@@ -163,7 +164,7 @@ class CreateGroupActivity : AppCompatActivity() {
         private const val TAG = "CreateGroupActivity"
         private const val UNKNOWN_NICKNAME = "알 수 없음"
         private const val DEFAULT_THUMBNAIL_URL =
-            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+            "https://img1.kakaocdn.net/thumb/R110x110.q70/?fname=https://t1.kakaocdn.net/account_images/default_profile.jpeg"
         private val openPickerFriendRequestParams = OpenPickerFriendRequestParams(
             title = "멀티 피커", // 피커 이름
             viewAppearance = ViewAppearance.AUTO, // 피커 화면 모드
