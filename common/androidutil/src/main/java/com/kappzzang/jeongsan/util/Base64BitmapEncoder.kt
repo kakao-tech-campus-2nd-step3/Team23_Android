@@ -9,7 +9,6 @@ import android.provider.MediaStore
 import java.io.ByteArrayOutputStream
 import java.util.Base64
 
-
 object Base64BitmapEncoder {
     fun convertBitmapToBase64String(bitmap: Bitmap): String {
         val resized = resizeBitmap(bitmap, 1024)

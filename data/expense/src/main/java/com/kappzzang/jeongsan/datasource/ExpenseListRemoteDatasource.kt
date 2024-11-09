@@ -63,7 +63,7 @@ class ExpenseListRemoteDatasource @Inject constructor(
                 paymentTime = receiptItem.paymentTime.formatToTransferString(),
                 image = ImageEntity(
                     name = "empty",
-                    data = receiptItem.imageBase64?:"",
+                    data = receiptItem.imageBase64 ?: "",
                     url = "empty",
                     format = IMAGE_FORMAT
                 ),
