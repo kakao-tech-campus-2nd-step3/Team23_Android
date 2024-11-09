@@ -9,5 +9,7 @@ import retrofit2.http.POST
 
 interface OcrRetrofitService {
     @POST("/api/receipts/analyze")
-    suspend fun analyzeReceipt(@Body receiptImage: ReceiptImage): Response<ResponseData<ReceiptAnalyzeResponse>>
+    suspend fun analyzeReceipt(
+        @Body receiptImage: ReceiptImage
+    ): Response<ResponseData<ReceiptAnalyzeResponse>>
 }

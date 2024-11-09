@@ -14,24 +14,20 @@ object DateConverter {
         .replace('T', ' ')
         .replace('Z', ' ')
 
-    fun parseFromString(timeStamp: String): LocalDateTime {
-        return try {
-            // String을 Date로 변환
-            val fixedTimeStamp = fixTimestampFormat(timeStamp)
-            val date = Timestamp.valueOf(fixedTimeStamp)
+    fun parseFromString(timeStamp: String): LocalDateTime = try {
+        // String을 Date로 변환
+        val fixedTimeStamp = fixTimestampFormat(timeStamp)
+        val date = Timestamp.valueOf(fixedTimeStamp)
 
-            // Date를 서울 타임존의 Instant로 변환
-            val instant = Instant.ofEpochMilli(date.time)
-                .atZone(ZoneId.systemDefault())
+        // Date를 서울 타임존의 Instant로 변환
+        val instant = Instant.ofEpochMilli(date.time)
+            .atZone(ZoneId.systemDefault())
 
-            // Instant를 LocalDateTime으로 변환
-            instant.toLocalDateTime()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            LocalDateTime.now()
-        }
-
-
+        // Instant를 LocalDateTime으로 변환
+        instant.toLocalDateTime()
+    } catch (e: Exception) {
+        e.printStackTrace()
+        LocalDateTime.now()
     }
 
     fun LocalDateTime.formatToTransferString(): String =
