@@ -49,10 +49,8 @@ class GroupInfoRepositoryImpl @Inject constructor(
                 }
             )
         }?.let {
-            emit(
-                getBlankGroupItem()
-            )
-        }
+            emit(it)
+        } ?: emit(getBlankGroupItem())
     }
 
     override suspend fun uploadGroupInfo(createdGroup: GroupCreateItem): Long {
@@ -60,7 +58,10 @@ class GroupInfoRepositoryImpl @Inject constructor(
         val result = groupRemoteDataSource.createGroup(
             groupName = createdGroup.name,
             groupSubject = createdGroup.subject,
-            groupMemberUuidList = createdGroup.memberUuidList
+            // groupMemberUuidList = createdGroup.memberUuidList
+            // TODO 멤버 UUID가 null로 들어가 있어서 제대로 처리가 안되는 오류가 있다고 합니다.
+            // TODO 서버 내에 저장된 더미 데이터인 UUID 1 값을 넣게 임시조치 했습니다.
+            groupMemberUuidList = listOf("1")
         )
         return result.getOrThrow()
     }

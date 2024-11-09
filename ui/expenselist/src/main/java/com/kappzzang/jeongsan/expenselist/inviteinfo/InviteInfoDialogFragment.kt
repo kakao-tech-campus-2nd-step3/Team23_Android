@@ -2,7 +2,6 @@ package com.kappzzang.jeongsan.expenselist.inviteinfo
 
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,11 +40,6 @@ class InviteInfoDialogFragment : DialogFragment() {
         setDialogStyle()
         initRecyclerView()
         setCloseButton()
-
-        Log.d(
-            TAG,
-            "id: ${expenseViewModel.groupId.value}, name: ${expenseViewModel.groupName.value}"
-        )
     }
 
     private fun setDialogStyle() {
@@ -62,7 +56,7 @@ class InviteInfoDialogFragment : DialogFragment() {
         memberAdapter = MemberInfoAdapter { memberUuid ->
             inviteViewModel.sendInviteMessage(
                 expenseViewModel.groupId.value,
-                expenseViewModel.groupName.value,
+                expenseViewModel.groupUIItem.value.groupName,
                 listOf(memberUuid)
             )
         }

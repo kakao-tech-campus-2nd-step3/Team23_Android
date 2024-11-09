@@ -1,6 +1,7 @@
 package com.kappzzang.jeongsan.api
 
 import com.kappzzang.jeongsan.entity.GetCategoryListResponseDTO
+import com.kappzzang.jeongsan.entity.ResponseData
 import com.kappzzang.jeongsan.entity.ResponseWithExpenseIdDTO
 import com.kappzzang.jeongsan.entity.SaveExpensePayloadDTO
 import com.kappzzang.jeongsan.entity.expensedetail.ExpenseDetailEntity
@@ -18,12 +19,12 @@ interface ReceiptRetrofitService {
     suspend fun saveExpense(
         @Path(value = "teamId") groupId: String,
         @Body body: SaveExpensePayloadDTO
-    ): Response<ResponseWithExpenseIdDTO>
+    ): Response<ResponseData<ResponseWithExpenseIdDTO>>
 
     @GET("/api/receipts/items/{expenseId}")
     suspend fun getExpenseDetail(
         @Path(value = "expenseId") expenseId: String
-    ): Response<ExpenseDetailEntity>
+    ): Response<ResponseData<ExpenseDetailEntity>>
 
     @POST("/api/expenses/personal/{teamId}/{expenseId}")
     suspend fun updateExpenseDetail(
@@ -37,8 +38,8 @@ interface ReceiptRetrofitService {
         @Path(value = "teamId") groupId: String,
         @Query("state") state: String,
         @Query("isChecked") checked: Boolean?
-    ): Response<ExpenseListResponseDTO>
+    ): Response<ResponseData<ExpenseListResponseDTO>>
 
     @GET("/api/expenses/categories")
-    suspend fun getCategoryColorList(): Response<GetCategoryListResponseDTO>
+    suspend fun getCategoryColorList(): Response<ResponseData<GetCategoryListResponseDTO>>
 }

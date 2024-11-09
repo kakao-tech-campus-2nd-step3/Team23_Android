@@ -7,9 +7,9 @@ import kotlinx.serialization.Serializable
 data class SaveExpensePayloadDTO(
     @SerializedName("title")
     val title: String,
-    @SerializedName("payment_time")
+    @SerializedName("paymentTime")
     val paymentTime: String,
-    @SerializedName("category_id")
+    @SerializedName("categoryId")
     val categoryId: Long,
     @SerializedName("image")
     val image: ImageEntity,

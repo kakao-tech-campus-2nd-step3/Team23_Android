@@ -1,8 +1,10 @@
 package com.kappzzang.jeongsan.entity
 
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
-data class GetTargetGroupResponse(
+@Serializable
+data class ResponseData<T>(
     @SerializedName("data")
-    val groupInfo: GroupInfo
+    val data: T
 )

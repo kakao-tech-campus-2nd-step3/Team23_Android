@@ -1,8 +1,10 @@
 package com.kappzzang.jeongsan.datasource
 
+import android.util.Log
 import com.kappzzang.jeongsan.api.ReceiptRetrofitService
 import com.kappzzang.jeongsan.entity.GetCategoryListResponseDTO
 import com.kappzzang.jeongsan.entity.ImageEntity
+import com.kappzzang.jeongsan.entity.ResponseData
 import com.kappzzang.jeongsan.entity.ResponseWithExpenseIdDTO
 import com.kappzzang.jeongsan.entity.SaveExpensePayloadDTO
 import com.kappzzang.jeongsan.entity.expenselist.ExpenseListResponseDTO
@@ -60,12 +62,15 @@ class ExpenseListRemoteDatasource @Inject constructor(
                 paymentTime = receiptItem.paymentTime.formatToTransferString(),
                 image = ImageEntity(
                     name = "",
-                    data = receiptItem.imageBase64 ?: "",
+                    // TODO Expense 저장 시 Payload가 너무 크면 오류가 발생하는 것 같아 수정. 추후 논의 후 롤백
+                    data = "receiptItem.imageBase64" ?: "",
                     url = "",
                     format = IMAGE_FORMAT
                 ),
                 categoryId = receiptItem.categoryId.toLong()
             )
+
+            Log.d("KSC", "id: $groupId, body: $postBody")
 
             receiptRetrofitService.saveExpense(
                 groupId = groupId,
@@ -82,30 +87,31 @@ class ExpenseListRemoteDatasource @Inject constructor(
         val response = try {
             receiptRetrofitService.getCategoryColorList()
         } catch (e: Exception) {
+            e.printStackTrace()
             return Result.failure(e)
         }
 
         return processResponseCode(response)
     }
-
-    private fun <T> processResponseCode(response: Response<T>): Result<T> {
+    private fun <T> processResponseCode(response: Response<ResponseData<T>>): Result<T> {
+        Log.d(
+            "KSC",
+            "ProcessExpenseList code: ${response.code()}, Type: ${response.body() ?: Unit::class.java}"
+        )
         when (response.code()) {
             400 -> throw IllegalArgumentException("유효하지 않는 입력 값")
             404 -> throw IllegalStateException(response.message())
             500 -> throw IllegalStateException(response.message())
-
             else -> {
-                if (response.code() / 100 == 2) {
+                return if (response.code() / 100 == 2) {
                     response.body()?.let {
-                        return Result.success<T>(it)
+                        return Result.success(it.data)
                     }
-                        ?: return Result.failure(
+                        ?: Result.failure(
                             IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
                         )
                 } else {
-                    return Result.failure(
-                        IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
-                    )
+                    Result.failure(IllegalStateException("알 수 없는 오류 발생: ${response.message()}"))
                 }
             }
         }
