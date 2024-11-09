@@ -41,11 +41,6 @@ class InviteInfoDialogFragment : DialogFragment() {
         setDialogStyle()
         initRecyclerView()
         setCloseButton()
-
-        Log.d(
-            TAG,
-            "id: ${expenseViewModel.groupId.value}, name: ${expenseViewModel.groupName.value}"
-        )
     }
 
     private fun setDialogStyle() {
@@ -62,7 +57,7 @@ class InviteInfoDialogFragment : DialogFragment() {
         memberAdapter = MemberInfoAdapter { memberUuid ->
             inviteViewModel.sendInviteMessage(
                 expenseViewModel.groupId.value,
-                expenseViewModel.groupName.value,
+                expenseViewModel.groupUIItem.value.groupName,
                 listOf(memberUuid)
             )
         }
