@@ -59,6 +59,23 @@ class ExpenseListRepositoryImpl @Inject constructor(
             }
     }
 
+    override suspend fun forceGetExpenseList(
+        groupId: String,
+        expenseState: ExpenseState
+    ): Result<ExpenseListResponse> {
+        val response = getExpenseListResponseFromAPI(groupId, expenseState)
+        response.fold(
+            onSuccess = {
+                cachedData[ExpenseListCachingKey(expenseState, groupId)] = it
+                return Result.success(it)
+            },
+            onFailure = {
+                it.printStackTrace()
+                return Result.failure(it)
+            }
+        )
+    }
+
     private suspend fun getExpenseListResponseFromAPI(
         groupId: String,
         expenseState: ExpenseState

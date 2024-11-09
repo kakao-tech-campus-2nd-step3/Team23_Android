@@ -7,28 +7,35 @@ import com.kappzzang.jeongsan.expenselist.util.ExpenseUiItemMapper.mapToExpenseU
 import com.kappzzang.jeongsan.expenselist.util.ExpenseUiItemMapper.sortItemsByTime
 import com.kappzzang.jeongsan.model.ExpenseListResponse
 import com.kappzzang.jeongsan.model.ExpenseState
+import com.kappzzang.jeongsan.usecase.ForceFetchExpenseListUseCase
 import com.kappzzang.jeongsan.usecase.GetExpenseListUseCase
 import com.kappzzang.jeongsan.util.IntegerFormatter.formatDecimalSeparator
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-@HiltViewModel
-open class ExpenseListPageViewModel @Inject constructor(
+enum class ExpenseListRefreshingState { IDLE, REFRESHING, FINISHED }
+
+abstract class ExpenseListPageViewModel(
     protected val getExpenseListUseCase: GetExpenseListUseCase,
-    private val ioDispatcher: CoroutineDispatcher
+    protected val forceFetchExpenseListUseCase: ForceFetchExpenseListUseCase,
+    protected val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     protected var expenseListFetchingJob: Job? = null
     protected val expenseList =
         MutableStateFlow(ExpenseListResponse.emptyList())
     protected val groupId = MutableStateFlow("")
+
+    @Suppress("ktlint")
+    protected val _refreshState = MutableStateFlow(ExpenseListRefreshingState.IDLE)
+
+    val refreshState = _refreshState.asStateFlow()
 
     private val _uiData by lazy {
         expenseList.map { expenseList ->
@@ -68,13 +75,36 @@ open class ExpenseListPageViewModel @Inject constructor(
                         expenseList.emit(it)
                     }
                         .onFailure {
-                            // TODO: ExpenseList 조회 실패 시 예외 처리
+                            handleExpenseListException(it)
                         }
                 }
         }
     }
 
-    protected open fun fetchDefaultList(groupId: String) {
+    protected suspend fun forceFetchExpenseList(expenseState: ExpenseState, groupId: String) {
+        if (expenseListFetchingJob?.isCompleted == false) {
+            return
+        }
+
+        val result = forceFetchExpenseListUseCase(groupId, expenseState)
+        result.onSuccess {
+            expenseList.emit(it)
+        }
+            .onFailure {
+                handleExpenseListException(it)
+            }
+    }
+
+    protected fun handleExpenseListException(exception: Throwable) {
+        // TODO: ExpenseList 조회 실패 시 예외 처리
+    }
+
+    protected abstract fun fetchDefaultList(groupId: String)
+
+    abstract fun refresh()
+
+    fun resetRefreshState() {
+        _refreshState.value = ExpenseListRefreshingState.IDLE
     }
 
     fun onFragmentStart(groupId: String) {
