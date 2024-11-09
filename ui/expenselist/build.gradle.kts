@@ -12,4 +12,5 @@ dependencies {
     implementation(project(":domain:ocr"))
     implementation(project(":ui:data"))
     implementation(project(":common:dispatcher"))
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 }
