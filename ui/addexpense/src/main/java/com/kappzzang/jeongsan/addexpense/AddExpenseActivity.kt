@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.addexpense.colorpicker.ColorPickerDialog
+import com.kappzzang.jeongsan.addexpense.data.ExpenseUploadUIState
 import com.kappzzang.jeongsan.addexpense.databinding.ActivityAddExpenseBinding
 import com.kappzzang.jeongsan.intentcontract.AddExpenseContract
 import com.kappzzang.jeongsan.model.OcrResultResponse
@@ -85,16 +86,19 @@ class AddExpenseActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uploadingProgress.collect { state ->
                     when (state) {
-                        ExpenseUploadingProgress.NOT_STARTED -> {
+                        is ExpenseUploadUIState.Idle -> {
                             viewModel.setInputsLock(false)
                         }
-                        ExpenseUploadingProgress.UPLOADING -> {
+
+                        is ExpenseUploadUIState.Uploading -> {
                             viewModel.setInputsLock(true)
                         }
-                        ExpenseUploadingProgress.UPLOAD_SUCCESS -> {
-                            startExpenseDetailActivityAndFinish()
+
+                        is ExpenseUploadUIState.UploadSuccess -> {
+                            startExpenseDetailActivityAndFinish(state.expenseId)
                         }
-                        ExpenseUploadingProgress.UPLOAD_FAILED -> {
+
+                        is ExpenseUploadUIState.UploadFailed -> {
                             viewModel.setInputsLock(false)
                         }
                     }
@@ -103,12 +107,12 @@ class AddExpenseActivity : AppCompatActivity() {
         }
     }
 
-    private fun startExpenseDetailActivityAndFinish() {
+    private fun startExpenseDetailActivityAndFinish(uploadedExpenseId: String) {
         startActivity(
             appNavigator.navigateToExpenseDetail(
                 packageContext = this,
                 groupId = viewModel.groupId.value,
-                expenseId = viewModel.createdExpenseId.value,
+                expenseId = uploadedExpenseId,
                 editable = true
             )
         )
