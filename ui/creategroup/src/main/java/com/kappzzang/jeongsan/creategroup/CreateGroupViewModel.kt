@@ -87,6 +87,7 @@ class CreateGroupViewModel @Inject constructor(
         viewModelScope.launch(ioDispatcher) {
             try {
                 val result = uploadGroupInfoUseCase(groupInfo)
+                _groupId.value = result.toString()
                 _groupUploadState.value = GroupUploadState.SUCCESS
             } catch (e: Exception) {
                 _groupUploadState.value = GroupUploadState.FAILED
