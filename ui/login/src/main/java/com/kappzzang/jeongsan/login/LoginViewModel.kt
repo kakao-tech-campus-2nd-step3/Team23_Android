@@ -1,6 +1,7 @@
 package com.kappzzang.jeongsan.login
 
 import android.app.Application
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,6 +16,7 @@ import com.kappzzang.jeongsan.usecase.AuthenticateWithKakaoUseCase
 import com.kappzzang.jeongsan.usecase.AuthenticateWithServerUseCase
 import com.kappzzang.jeongsan.usecase.AuthorizeWithKakaoUseCase
 import com.kappzzang.jeongsan.usecase.GetUserInfoUseCase
+import com.kappzzang.jeongsan.util.AuthenticationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
@@ -23,6 +25,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 enum class LoginStatus { TRY_AUTOLOGIN, NOT_LOGGED_IN, IN_PROGRESS, FAILED, LOGIN_COMPLETE }
 enum class KakaoLoginStatus { NOT_AVAILABLE, IDLE, ON_LOGIN, FAILED }
@@ -34,6 +37,7 @@ class LoginViewModel @Inject constructor(
     private val authenticateWithKakaoUseCase: AuthenticateWithKakaoUseCase,
     private val authenticateWithServerUseCase: AuthenticateWithServerUseCase,
     private val getUserInfo: GetUserInfoUseCase,
+    private val repo: AuthenticationRepository,
     private val ioDispatcher: CoroutineDispatcher
 ) : AndroidViewModel(application) {
     private val authStatus by lazy {
@@ -49,7 +53,30 @@ class LoginViewModel @Inject constructor(
     val loginStatus = _loginStatus.asStateFlow()
     val kakaoLoginStatus = _kakaoLoginStatus.asStateFlow()
 
+    private suspend fun forceRefreshToken() {
+        val last = repo.getServerAuthData()
+        Log.d("KSC", last.accessToken)
+        val newData = repo.refreshJwtFromServer(
+            authData = last
+        )
+        newData.onSuccess { nd ->
+            Log.d("KSC", "new Token: " + nd.accessToken)
+            repo.updateServerAuthData(nd)
+        }.onFailure {
+            it.printStackTrace()
+        }
+    }
+
     fun login() {
+        /*
+           TODO ==============================================================
+           TODO   현재 토큰 처리 중 발생하는 버그로 인해 강제로 로그인 로직을 추가
+           TODO   여전히 400 에러 발생 시 데이터 제거하고 카카오 로그인 재시도 해보세요
+           TODO ==============================================================
+             */
+        runBlocking {
+            forceRefreshToken()
+        }
         viewModelScope.launch(ioDispatcher) {
             authStatus.collect { status ->
                 when (status) {
