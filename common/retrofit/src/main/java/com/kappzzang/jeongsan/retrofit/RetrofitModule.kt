@@ -89,10 +89,12 @@ object RetrofitModule {
 
     @Provides
     @Singleton
-    fun provideLoggingInterceptor() =
-        HttpLoggingInterceptor()
-            .setLevel(
-                if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
-            )
-
+    fun provideLoggingInterceptor() = HttpLoggingInterceptor()
+        .setLevel(
+            if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor.Level.BODY
+            } else {
+                HttpLoggingInterceptor.Level.NONE
+            }
+        )
 }
