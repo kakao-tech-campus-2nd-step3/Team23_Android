@@ -10,15 +10,8 @@ class SendTransferMessageUseCase @Inject constructor(
     private val transferRepository: TransferRepository
 ) {
     suspend operator fun invoke(transferInfoList: List<TransferDetailItem>): Boolean {
-        val requestUser = userInfoRepository.getUserInfo()
-        if (requestUser == null) {
-            return false
-        }
-
-        val transferLink = transferRepository.getTransferLink(requestUser.uuid)
-        if (transferLink == null) {
-            return false
-        }
+        val requestUser = userInfoRepository.getUserInfo() ?: return false
+        val transferLink = transferRepository.getTransferLink(requestUser.serviceId) ?: return false
 
         return transferRepository.sendTransferMessage(
             transferInfoList,

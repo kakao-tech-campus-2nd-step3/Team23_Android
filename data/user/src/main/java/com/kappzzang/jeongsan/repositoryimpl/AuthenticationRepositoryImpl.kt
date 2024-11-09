@@ -48,6 +48,16 @@ class AuthenticationRepositoryImpl
             }
         )
 
+    override fun getServiceId(): String = authLocalDataSource.getServiceId()
+
+    override fun updateServiceId(uuid: String) {
+        authLocalDataSource.updateServiceId(uuid)
+    }
+
+    override fun removeServiceId() {
+        authLocalDataSource.removeServiceId()
+    }
+
     companion object {
         private const val TAG = "AuthenticationRepositoryImpl"
     }

@@ -1,6 +1,5 @@
 package com.kappzzang.jeongsan.repositoryimpl
 
-import android.util.Log
 import com.kappzzang.jeongsan.datasource.remote.GroupRemoteDataSource
 import com.kappzzang.jeongsan.mapper.GroupEntityMapper.toGroupItem
 import com.kappzzang.jeongsan.model.GroupCreateItem
@@ -54,14 +53,10 @@ class GroupInfoRepositoryImpl @Inject constructor(
     }
 
     override suspend fun uploadGroupInfo(createdGroup: GroupCreateItem): Long {
-        Log.d("GroupRepositoryImpl", createdGroup.memberUuidList.toString())
         val result = groupRemoteDataSource.createGroup(
             groupName = createdGroup.name,
             groupSubject = createdGroup.subject,
-            // groupMemberUuidList = createdGroup.memberUuidList
-            // TODO 멤버 UUID가 null로 들어가 있어서 제대로 처리가 안되는 오류가 있다고 합니다.
-            // TODO 서버 내에 저장된 더미 데이터인 UUID 1 값을 넣게 임시조치 했습니다.
-            groupMemberUuidList = listOf("1")
+            groupMemberUuidList = createdGroup.memberServiceIdList
         )
         return result.getOrThrow()
     }

@@ -8,6 +8,7 @@ import com.kappzzang.jeongsan.usecase.GetInviteInfoUseCase
 import com.kappzzang.jeongsan.usecase.GetProgressingGroupUseCase
 import com.kappzzang.jeongsan.usecase.SendInviteMessageUseCase
 import com.kappzzang.jeongsan.usecase.UploadGroupInfoUseCase
+import com.kappzzang.jeongsan.util.AuthenticationRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,8 +30,10 @@ object GroupUseCaseModule {
         GetInviteInfoUseCase(memberRepository)
 
     @Provides
-    fun provideUploadGroupInfoUseCase(groupInfoRepository: GroupInfoRepository) =
-        UploadGroupInfoUseCase(groupInfoRepository)
+    fun provideUploadGroupInfoUseCase(
+        groupInfoRepository: GroupInfoRepository,
+        authenticationRepository: AuthenticationRepository
+    ) = UploadGroupInfoUseCase(groupInfoRepository, authenticationRepository)
 
     @Provides
     fun provideSendInviteMessageUseCase(inviteRepository: InviteRepository) =

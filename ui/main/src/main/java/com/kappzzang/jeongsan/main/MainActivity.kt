@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity() {
         setGroupListRecyclerView()
         setCreateGroupButton()
         observeViewModel()
+        setSwipeRefresh()
     }
 
     private fun setGroupListRecyclerView() {
@@ -125,5 +126,12 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "MAIN_ACTIVITY"
+    }
+
+    private fun setSwipeRefresh() {
+        binding.groupListSwiperefreshlayout.setOnRefreshListener {
+            viewModel.loadGroupList()
+            binding.groupListSwiperefreshlayout.isRefreshing = false
+        }
     }
 }
