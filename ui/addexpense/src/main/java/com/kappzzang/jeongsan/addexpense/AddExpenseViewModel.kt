@@ -36,7 +36,7 @@ class AddExpenseViewModel @Inject constructor(
         )
     }
 
-    private val _selectedCategory = MutableStateFlow(ExpenseCategory("", "", ""))
+    private val _selectedCategory = MutableStateFlow(ExpenseCategory("", "#ffffff", ""))
     private val _inputsLocked = MutableStateFlow(false)
     private val _createdExpenseId = MutableStateFlow("")
     private val _categoryList by lazy { getCategoryList() }
