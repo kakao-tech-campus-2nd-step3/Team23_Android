@@ -6,6 +6,8 @@
 
     <data>
 
+        <import type="com.kappzzang.jeongsan.expenselist.viewmodel.ChipSelectionState" />
+
         <variable
             name="viewModel"
             type="com.kappzzang.jeongsan.expenselist.viewmodel.ExpenseListOnCalculationPageViewModel" />
@@ -24,7 +26,7 @@
             android:text="@string/expenselist_total_expense_explain"
             android:textSize="@dimen/expense_list_subtitle_text_size"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/my_total_expense_explain_textview"
+            app:layout_constraintBottom_toTopOf="@id/expense_chip_group_chipgroup"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/parent" />
 
@@ -44,17 +46,18 @@
             android:id="@+id/expense_chip_group_chipgroup"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:checkableBehavior="single"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/total_expense_explain_textview">
+            app:layout_constraintTop_toBottomOf="@id/total_expense_explain_textview"
+            app:singleSelection="true">
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/all_expense_chip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:checked="true"
+                android:checked="@{viewModel.chipSelectionState == ChipSelectionState.ALL}"
                 android:onClick="@{()->viewModel.clickAllExpensesChipButton()}"
                 android:text="@string/expenselist_all_expense"
                 app:checkedIconVisible="false"
@@ -62,9 +65,10 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/unconfirmed_expense_chip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="false"
+                android:checked="@{viewModel.chipSelectionState == ChipSelectionState.NOT_CONFIRMED}"
                 android:onClick="@{()->viewModel.clickOnlyNotConfirmedExpensesChipButton()}"
                 android:text="@string/expenselist_unconfirmed_expense"
                 app:checkedIconVisible="false"
@@ -72,9 +76,10 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/confirmed_expense_chip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="false"
+                android:checked="@{viewModel.chipSelectionState == ChipSelectionState.CONFIRMED}"
                 android:onClick="@{()->viewModel.clickOnlyConfirmedExpensesChipButton()}"
                 android:text="@string/expenselist_confirmed_expense"
                 app:checkedIconVisible="false"

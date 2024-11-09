@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 
-enum class ChipSelectionState { UNDEFINED, ALL, NOT_CONFIRMED, CONFIRMED }
+enum class ChipSelectionState { ALL, NOT_CONFIRMED, CONFIRMED }
 
 @HiltViewModel
 class ExpenseListOnCalculationPageViewModel @Inject constructor(
@@ -21,18 +21,24 @@ class ExpenseListOnCalculationPageViewModel @Inject constructor(
     forceFetchExpenseListUseCase: ForceFetchExpenseListUseCase,
     ioDispatcher: CoroutineDispatcher
 ) : ExpenseListPageViewModel(getExpenseListUseCase, forceFetchExpenseListUseCase, ioDispatcher) {
-    private val _chipSelectionState = MutableStateFlow(ChipSelectionState.UNDEFINED)
-    private val chipSelectionState = _chipSelectionState.asStateFlow()
+    private val _chipSelectionState = MutableStateFlow(ChipSelectionState.NOT_CONFIRMED)
+    val chipSelectionState = _chipSelectionState.asStateFlow()
 
     override fun fetchDefaultList(groupId: String) {
-        fetchExpenseList(ExpenseState.NOT_CONFIRMED, groupId)
+        when (chipSelectionState.value) {
+            ChipSelectionState.ALL -> fetchCalculatingExpenseList(groupId)
+            ChipSelectionState.NOT_CONFIRMED -> fetchExpenseList(
+                ExpenseState.NOT_CONFIRMED,
+                groupId
+            )
+            ChipSelectionState.CONFIRMED -> fetchExpenseList(ExpenseState.CONFIRMED, groupId)
+        }
     }
 
     override fun refresh() {
         _refreshState.value = ExpenseListRefreshingState.REFRESHING
         viewModelScope.launch(ioDispatcher) {
             when (_chipSelectionState.value) {
-                ChipSelectionState.UNDEFINED -> {}
                 ChipSelectionState.ALL -> {
                     forceFetchCalculatingExpenseList(groupId.value)
                 }
