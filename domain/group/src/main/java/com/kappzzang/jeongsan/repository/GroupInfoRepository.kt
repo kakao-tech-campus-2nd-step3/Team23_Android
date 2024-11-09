@@ -19,4 +19,6 @@ interface GroupInfoRepository {
     suspend fun uploadGroupInfo(createdGroup: GroupCreateItem): Long
 
     suspend fun completeGroup(groupId: String): Result<Boolean>
+
+    suspend fun joinGroup(groupId: String, memberId: String): Result<Boolean>
 }
