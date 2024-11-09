@@ -40,6 +40,7 @@ class ExpenseListRemoteDatasource @Inject constructor(
             return Result.failure(e)
         }
 
+        Log.d("KSC", "id: $groupId, body: ${response.body()}")
         return processResponseCode(response)
     }
 
@@ -61,10 +62,9 @@ class ExpenseListRemoteDatasource @Inject constructor(
                 },
                 paymentTime = receiptItem.paymentTime.formatToTransferString(),
                 image = ImageEntity(
-                    name = "",
-                    // TODO Expense 저장 시 Payload가 너무 크면 오류가 발생하는 것 같아 수정. 추후 논의 후 롤백
-                    data = "receiptItem.imageBase64" ?: "",
-                    url = "",
+                    name = "empty",
+                    data = receiptItem.imageBase64 ?: "",
+                    url = "empty",
                     format = IMAGE_FORMAT
                 ),
                 categoryId = receiptItem.categoryId.toLong()
@@ -96,7 +96,7 @@ class ExpenseListRemoteDatasource @Inject constructor(
     private fun <T> processResponseCode(response: Response<ResponseData<T>>): Result<T> {
         Log.d(
             "KSC",
-            "ProcessExpenseList code: ${response.code()}, Type: ${response.body() ?: Unit::class.java}"
+            "ProcessExpenseList code: ${response.code()}, message: ${response.message()}"
         )
         when (response.code()) {
             400 -> throw IllegalArgumentException("유효하지 않는 입력 값")
@@ -118,7 +118,7 @@ class ExpenseListRemoteDatasource @Inject constructor(
     }
 
     companion object {
-        const val IMAGE_FORMAT = "JPG"
+        const val IMAGE_FORMAT = "JPEG"
         const val CATEGORY_ID = 0L
     }
 }
