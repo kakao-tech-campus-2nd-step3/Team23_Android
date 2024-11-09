@@ -73,4 +73,7 @@ class GroupInfoRepositoryImpl @Inject constructor(
         "",
         listOf()
     )
+
+    override suspend fun completeGroup(groupId: String): Result<Boolean> =
+        groupRemoteDataSource.completeGroup(groupId.toLong())
 }
