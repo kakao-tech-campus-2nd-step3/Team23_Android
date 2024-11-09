@@ -103,7 +103,7 @@ class SendTransferMessageUseCaseTest {
         val sampleUserInfo =
             UserItem(
                 name = "sampleUser",
-                uuid = "1234",
+                serviceId = "1234",
                 profileUrl = "https://example.org/",
                 email = "example@domain.com"
             )

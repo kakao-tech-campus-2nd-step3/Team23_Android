@@ -6,7 +6,7 @@ data class ExpenseItemWithCategory(
     private val item: ExpenseItem,
     val categoryColor: String,
     val date: LocalDateTime,
-    val payerUuid: String
+    val payerServiceId: String
 ) {
     val id
         get() = item.id
@@ -22,7 +22,7 @@ data class ExpenseItemWithCategory(
             item = ExpenseItem.EMPTY,
             categoryColor = "",
             date = LocalDateTime.now(),
-            payerUuid = ""
+            payerServiceId = ""
         )
     }
 }

@@ -20,7 +20,7 @@ interface AuthenticationRepository {
 
     fun getServiceId(): String
 
-    fun updateServiceId(uuid: String)
+    fun updateServiceId(serviceId: String)
 
     fun removeServiceId()
 }

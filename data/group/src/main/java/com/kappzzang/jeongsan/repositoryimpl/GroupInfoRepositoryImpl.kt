@@ -56,7 +56,7 @@ class GroupInfoRepositoryImpl @Inject constructor(
         val result = groupRemoteDataSource.createGroup(
             groupName = createdGroup.name,
             groupSubject = createdGroup.subject,
-            groupMemberUuidList = createdGroup.memberServiceIdList
+            groupMemberServiceIdList = createdGroup.memberServiceIdList
         )
         return result.getOrThrow()
     }

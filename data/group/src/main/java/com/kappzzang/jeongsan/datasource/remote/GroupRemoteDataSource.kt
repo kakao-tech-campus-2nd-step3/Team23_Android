@@ -55,12 +55,12 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
     suspend fun createGroup(
         groupName: String,
         groupSubject: String,
-        groupMemberUuidList: List<String>
+        groupMemberServiceIdList: List<String>
     ): Result<Long> = try {
         val response = groupApi.createGroup(
             name = groupName,
             subject = groupSubject,
-            memberIdList = groupMemberUuidList
+            memberIdList = groupMemberServiceIdList
         )
         handleCreateGroupResponse(response)
     } catch (e: Exception) {

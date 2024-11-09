@@ -22,23 +22,28 @@ class AuthenticateWithServerUseCase @Inject constructor(
     }
 
     private suspend fun attemptLoginOrRegister(
-        uuid: String,
+        serviceId: String,
         nickname: String,
         email: String,
         profileImageUrl: String
     ): ServerAuthData = serverAuthenticationRepository.loginToServer(email).getOrElse { exception ->
         when (exception) {
-            is NoSuchElementException -> registerToServer(uuid, nickname, email, profileImageUrl)
+            is NoSuchElementException -> registerToServer(
+                serviceId,
+                nickname,
+                email,
+                profileImageUrl
+            )
             else -> throw exception
         }
     }
 
     private suspend fun registerToServer(
-        uuid: String,
+        serviceId: String,
         nickname: String,
         email: String,
         profileImageUrl: String
     ): ServerAuthData =
-        serverAuthenticationRepository.registerToServer(uuid, nickname, email, profileImageUrl)
+        serverAuthenticationRepository.registerToServer(serviceId, nickname, email, profileImageUrl)
             .getOrThrow()
 }
