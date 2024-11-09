@@ -11,7 +11,7 @@ import okhttp3.Route
 class AuthInterceptor @Inject constructor(private val authRepository: AuthenticationRepository) :
     Authenticator {
     override fun authenticate(route: Route?, response: Response): Request? {
-        val originRequest = response.request()
+        val originRequest = response.request
         if (originRequest.header(AUTH_HEADER_KEY).isNullOrEmpty()) {
             return null
         }

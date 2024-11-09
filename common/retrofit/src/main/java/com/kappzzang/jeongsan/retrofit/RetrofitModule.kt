@@ -9,6 +9,7 @@ import dagger.hilt.components.SingletonComponent
 import javax.inject.Qualifier
 import javax.inject.Singleton
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -78,9 +79,20 @@ object RetrofitModule {
     @Singleton
     fun provideOkHttpClient(
         headerInterceptor: HeaderInterceptor,
-        authInterceptor: AuthInterceptor
+        authInterceptor: AuthInterceptor,
+        loggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(headerInterceptor)
+        .addInterceptor(loggingInterceptor)
         .authenticator(authInterceptor)
         .build()
+
+    @Provides
+    @Singleton
+    fun provideLoggingInterceptor() =
+        HttpLoggingInterceptor()
+            .setLevel(
+                if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+            )
+
 }
