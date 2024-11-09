@@ -41,7 +41,7 @@
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/group_tag_textView"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@{viewModel.groupUIItem.groupName}"
+            android:text="@{viewModel.groupUIItem.groupName}"
             />
 
         <ImageView
