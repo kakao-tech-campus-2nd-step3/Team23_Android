@@ -4,6 +4,6 @@ interface InviteRepository {
     suspend fun sendInviteMessage(
         groupId: String,
         groupName: String,
-        memberServiceIdList: List<String>
+        memberUuidList: List<String>
     ): Boolean
 }

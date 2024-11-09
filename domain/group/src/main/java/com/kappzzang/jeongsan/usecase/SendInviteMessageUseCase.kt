@@ -7,10 +7,10 @@ class SendInviteMessageUseCase @Inject constructor(private val inviteRepository:
     suspend operator fun invoke(
         groupId: String,
         groupName: String,
-        memberServiceIdList: List<String>
+        memberUuidList: List<String>
     ): Boolean = inviteRepository.sendInviteMessage(
         groupId,
         groupName,
-        memberServiceIdList
+        memberUuidList
     )
 }
