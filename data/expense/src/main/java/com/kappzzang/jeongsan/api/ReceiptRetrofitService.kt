@@ -1,12 +1,12 @@
 package com.kappzzang.jeongsan.api
 
 import com.kappzzang.jeongsan.entity.GetCategoryListResponseDTO
-import com.kappzzang.jeongsan.entity.ResponseData
 import com.kappzzang.jeongsan.entity.ResponseWithExpenseIdDTO
 import com.kappzzang.jeongsan.entity.SaveExpensePayloadDTO
 import com.kappzzang.jeongsan.entity.expensedetail.ExpenseDetailEntity
 import com.kappzzang.jeongsan.entity.expensedetail.UpdateExpenseDetailPayloadDTO
 import com.kappzzang.jeongsan.entity.expenselist.ExpenseListResponseDTO
+import com.kappzzang.jeongsan.retrofit.ResponseData
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

@@ -14,7 +14,7 @@ object DateConverter {
         .replace('T', ' ')
         .replace('Z', ' ')
 
-    fun parseFromString(timeStamp: String): LocalDateTime {
+    fun parseFromString(timeStamp: String): LocalDateTime = try {
         // String을 Date로 변환
         val fixedTimeStamp = fixTimestampFormat(timeStamp)
         val date = Timestamp.valueOf(fixedTimeStamp)
@@ -24,7 +24,10 @@ object DateConverter {
             .atZone(ZoneId.systemDefault())
 
         // Instant를 LocalDateTime으로 변환
-        return instant.toLocalDateTime()
+        instant.toLocalDateTime()
+    } catch (e: Exception) {
+        e.printStackTrace()
+        LocalDateTime.now()
     }
 
     fun LocalDateTime.formatToTransferString(): String =

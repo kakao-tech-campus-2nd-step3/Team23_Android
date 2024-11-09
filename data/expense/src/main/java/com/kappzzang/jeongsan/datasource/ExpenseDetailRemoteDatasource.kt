@@ -2,11 +2,11 @@ package com.kappzzang.jeongsan.datasource
 
 import android.util.Log
 import com.kappzzang.jeongsan.api.ReceiptRetrofitService
-import com.kappzzang.jeongsan.entity.ResponseData
 import com.kappzzang.jeongsan.entity.expensedetail.ExpenseDetailEntity
 import com.kappzzang.jeongsan.entity.expensedetail.ExpenseDetailSelectionInfoEntity
 import com.kappzzang.jeongsan.entity.expensedetail.UpdateExpenseDetailPayloadDTO
 import com.kappzzang.jeongsan.model.ExpenseDetailItem
+import com.kappzzang.jeongsan.retrofit.ResponseData
 import javax.inject.Inject
 import retrofit2.Response
 
