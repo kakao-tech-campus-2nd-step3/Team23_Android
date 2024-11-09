@@ -1,6 +1,5 @@
 package com.kappzzang.jeongsan.datasource
 
-import android.util.Log
 import com.kappzzang.jeongsan.api.OcrRetrofitService
 import com.kappzzang.jeongsan.entity.ReceiptAnalyzeResponse
 import com.kappzzang.jeongsan.entity.ReceiptImage
@@ -19,13 +18,12 @@ class ReceiptCaptureRemoteDatasource @Inject constructor(
                     url = ""
                 )
             )
-            return if(!response.isSuccessful){
+            return if (!response.isSuccessful) {
                 Result.failure(Exception(""))
-            } else{
+            } else {
                 Result.success(response.body()!!)
             }
-        }
-        catch (e:Exception) {
+        } catch (e: Exception) {
             return Result.failure(e)
         }
     }

@@ -70,7 +70,7 @@ class ExpenseListRemoteDatasource @Inject constructor(
                 categoryId = receiptItem.categoryId.toLong()
             )
 
-            Log.d("KSC", "id: ${groupId}, body: ${postBody.toString()}")
+            Log.d("KSC", "id: $groupId, body: $postBody")
 
             receiptRetrofitService.saveExpense(
                 groupId = groupId,
@@ -94,7 +94,10 @@ class ExpenseListRemoteDatasource @Inject constructor(
         return processResponseCode(response)
     }
     private fun <T> processResponseCode(response: Response<ResponseData<T>>): Result<T> {
-        Log.d("KSC", "ProcessExpenseList code: ${response.code()}, Type: ${response.body() ?:Unit::class.java}")
+        Log.d(
+            "KSC",
+            "ProcessExpenseList code: ${response.code()}, Type: ${response.body() ?: Unit::class.java}"
+        )
         when (response.code()) {
             400 -> throw IllegalArgumentException("유효하지 않는 입력 값")
             404 -> throw IllegalStateException(response.message())

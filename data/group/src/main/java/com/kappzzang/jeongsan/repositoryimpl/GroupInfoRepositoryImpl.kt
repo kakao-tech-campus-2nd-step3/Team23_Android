@@ -50,7 +50,7 @@ class GroupInfoRepositoryImpl @Inject constructor(
             )
         }?.let {
             emit(it)
-        }?: emit(getBlankGroupItem())
+        } ?: emit(getBlankGroupItem())
     }
 
     override suspend fun uploadGroupInfo(createdGroup: GroupCreateItem): Long {

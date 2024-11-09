@@ -112,7 +112,6 @@ class CreateGroupActivity : AppCompatActivity() {
     private fun groupUploadSuccess() {
         viewModel.sendInviteMessageAll(viewModel.groupId.value)
         finish()
-
     }
 
     private fun groupUploadFailed() {
@@ -121,7 +120,6 @@ class CreateGroupActivity : AppCompatActivity() {
             getString(R.string.create_group_fail_create),
             Toast.LENGTH_SHORT
         ).show()
-
     }
 
     private fun setCreateGroupButton() {

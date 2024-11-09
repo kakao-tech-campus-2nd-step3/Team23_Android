@@ -17,7 +17,7 @@ class ReceiptCaptureRepositoryImpl @Inject constructor(
                 OcrResultEntityMapper.mapOcrResultEntityToModel(it)
             },
             onFailure = {
-                OcrResultResponse.OcrFailed(it.message?:"", 0)
+                OcrResultResponse.OcrFailed(it.message ?: "", 0)
             }
         )
     }

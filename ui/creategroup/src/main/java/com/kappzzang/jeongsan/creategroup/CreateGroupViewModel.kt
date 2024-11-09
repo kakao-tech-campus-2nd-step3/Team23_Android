@@ -13,9 +13,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
-enum class GroupUploadState {IDLE, UPLOADING, SUCCESS, FAILED}
+enum class GroupUploadState { IDLE, UPLOADING, SUCCESS, FAILED }
 
 @HiltViewModel
 class CreateGroupViewModel @Inject constructor(
@@ -59,7 +58,7 @@ class CreateGroupViewModel @Inject constructor(
     }
 
     fun uploadGroupInfo() {
-        if(_groupUploadState.value == GroupUploadState.UPLOADING) {
+        if (_groupUploadState.value == GroupUploadState.UPLOADING) {
             return
         }
         val groupInfo = GroupCreateItem(
