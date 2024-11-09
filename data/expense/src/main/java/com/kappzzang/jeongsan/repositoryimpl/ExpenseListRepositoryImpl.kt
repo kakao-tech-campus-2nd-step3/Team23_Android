@@ -57,7 +57,6 @@ class ExpenseListRepositoryImpl @Inject constructor(
             .onFailure {
                 it.printStackTrace()
             }
-
     }
 
     private suspend fun getExpenseListResponseFromAPI(
