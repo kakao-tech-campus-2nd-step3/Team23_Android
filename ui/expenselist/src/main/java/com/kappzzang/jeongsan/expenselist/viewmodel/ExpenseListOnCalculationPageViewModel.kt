@@ -55,7 +55,7 @@ class ExpenseListOnCalculationPageViewModel @Inject constructor(
         return Result.success(
             ExpenseListResponse(
                 expenseList = firstSuccess.expenseList.toMutableList() + secondSuccess.expenseList,
-                totalPrice = firstSuccess.totalPrice + secondSuccess.totalPrice,
+                totalPrice = firstSuccess.totalPrice,
                 totalExpenseToSend = 0
             )
         )
