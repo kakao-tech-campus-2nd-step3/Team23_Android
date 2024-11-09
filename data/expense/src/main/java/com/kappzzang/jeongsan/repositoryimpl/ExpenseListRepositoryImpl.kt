@@ -52,9 +52,12 @@ class ExpenseListRepositoryImpl @Inject constructor(
         val response = getExpenseListResponseFromAPI(groupId, expenseState)
         response.onSuccess {
             cachedData[ExpenseListCachingKey(expenseState, groupId)] = it
+            emit(response)
         }
+            .onFailure {
+                it.printStackTrace()
+            }
 
-        emit(response)
     }
 
     private suspend fun getExpenseListResponseFromAPI(
