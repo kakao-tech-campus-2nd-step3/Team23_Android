@@ -17,7 +17,6 @@ import com.kappzzang.jeongsan.model.ReceiptDetailItem
 import com.kappzzang.jeongsan.util.DateConverter
 import java.util.regex.Pattern
 
-
 object ExpenseEntityMapper {
     private val HEXADECIMAL_PATTERN: Pattern = Pattern.compile("\\p{XDigit}+")
 
@@ -46,7 +45,7 @@ object ExpenseEntityMapper {
         ),
         date = DateConverter.parseFromString(entity.createdAt),
         categoryColor = parseColor(entity.category.color),
-        payerUuid = entity.payerUuid?:""
+        payerUuid = entity.payerUuid ?: ""
     )
 
     fun mapDetailedExpenseEntityToModel(
@@ -83,20 +82,17 @@ object ExpenseEntityMapper {
             unitPrice = model.itemPrice
         )
 
-
     private fun isHexadecimal(input: String): Boolean {
         val matcher = HEXADECIMAL_PATTERN.matcher(input)
         return matcher.matches()
     }
 
-    private fun parseColor(color: String): String {
-        return if(color.startsWith('#')) {
-            color
-        } else if(isHexadecimal(color) && (color.length == 6 || color.length == 8 )) {
-            "#$color"
-        } else{
-            throw IllegalArgumentException("The Input is not a hexcolor")
-        }
+    private fun parseColor(color: String): String = if (color.startsWith('#')) {
+        color
+    } else if (isHexadecimal(color) && (color.length == 6 || color.length == 8)) {
+        "#$color"
+    } else {
+        throw IllegalArgumentException("The Input is not a hexcolor")
     }
 
     private fun getSumOfAllDetailItems(detailItems: List<ExpenseDetailItemEntity>): Int =
@@ -122,11 +118,9 @@ object ExpenseEntityMapper {
     fun mapResponseWithExpenseEntityToModel(entity: ResponseWithExpenseIdDTO): String =
         entity.expenseId
 
-    fun mapCategoryToModel(entity: CategoryEntity): ExpenseCategory {
-        return ExpenseCategory(
-            id = entity.id.toString(),
-            color = parseColor(entity.color),
-            name = entity.name
-        )
-    }
+    fun mapCategoryToModel(entity: CategoryEntity): ExpenseCategory = ExpenseCategory(
+        id = entity.id.toString(),
+        color = parseColor(entity.color),
+        name = entity.name
+    )
 }

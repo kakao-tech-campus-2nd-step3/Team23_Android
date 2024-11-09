@@ -10,10 +10,9 @@ import java.util.Locale
 object DateConverter {
 
     // "2024-11-09T08:05:08.910678" => "2024-11-09 08:05:08.910678"
-    private fun fixTimestampFormat(timestamp: String) =
-        timestamp
-            .replace('T', ' ')
-            .replace('Z', ' ')
+    private fun fixTimestampFormat(timestamp: String) = timestamp
+        .replace('T', ' ')
+        .replace('Z', ' ')
 
     fun parseFromString(timeStamp: String): LocalDateTime {
         // String을 Date로 변환
