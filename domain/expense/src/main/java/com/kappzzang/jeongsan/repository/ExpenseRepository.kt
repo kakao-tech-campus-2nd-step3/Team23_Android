@@ -19,6 +19,11 @@ interface ExpenseRepository {
         expenseState: ExpenseState
     ): Flow<Result<ExpenseListResponse>>
 
+    suspend fun forceGetExpenseList(
+        groupId: String,
+        expenseState: ExpenseState
+    ): Result<ExpenseListResponse>
+
     suspend fun getExpenseListToGetPaid(groupId: String): Result<ExpenseListResponse>
 
     suspend fun uploadExpense(receiptItem: ReceiptItem, groupId: String): Result<String>
