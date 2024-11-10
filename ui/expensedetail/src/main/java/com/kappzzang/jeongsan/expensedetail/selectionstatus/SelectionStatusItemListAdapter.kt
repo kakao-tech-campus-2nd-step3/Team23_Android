@@ -77,6 +77,7 @@ class SelectionStatusItemListAdapter(internal val context: Context) :
                 }
                 Glide.with((bindingAdapter as SelectionStatusItemListAdapter).context)
                     .load(item.imageUrl)
+                    .circleCrop()
                     .into(expenseSelectionThumbnailImageview)
             }
         }
