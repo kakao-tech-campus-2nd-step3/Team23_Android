@@ -20,6 +20,7 @@ class GroupInfoRepositoryImpl @Inject constructor(
                 return it.map { it.toGroupItem() }
             },
             onFailure = {
+                it.printStackTrace()
                 return emptyList()
             }
         )
