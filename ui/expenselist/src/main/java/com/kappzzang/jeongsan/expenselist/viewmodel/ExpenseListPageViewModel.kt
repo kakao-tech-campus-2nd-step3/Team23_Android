@@ -1,5 +1,6 @@
 package com.kappzzang.jeongsan.expenselist.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.data.ExpenseListViewUIData
@@ -72,6 +73,7 @@ abstract class ExpenseListPageViewModel(
             getExpenseListUseCase(groupId, expenseState)
                 .collect { result ->
                     result.onSuccess {
+                        Log.d("KSC", it.toString())
                         expenseList.emit(it)
                     }
                         .onFailure {
@@ -110,9 +112,12 @@ abstract class ExpenseListPageViewModel(
     fun onFragmentStart(groupId: String) {
         if (this.groupId.value != groupId) {
             this.groupId.value = groupId
+        }
+    }
+
+    fun onFragmentReload() {
+        if (this.groupId.value.isNotEmpty()) {
             fetchDefaultList(this.groupId.value)
-        } else {
-            return
         }
     }
 

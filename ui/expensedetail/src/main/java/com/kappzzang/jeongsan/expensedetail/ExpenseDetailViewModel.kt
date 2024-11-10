@@ -2,124 +2,123 @@ package com.kappzzang.jeongsan.expensedetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kappzzang.jeongsan.data.toUIData
-import com.kappzzang.jeongsan.model.ExpenseDetailItem
-import com.kappzzang.jeongsan.model.ExpenseItemWithDetails
-import com.kappzzang.jeongsan.usecase.EditExpenseDetailUseCase
-import com.kappzzang.jeongsan.usecase.GetExpenseDetailUseCase
+import com.kappzzang.jeongsan.usecase.RevertExpenseToOngoingUseCase
+import com.kappzzang.jeongsan.usecase.SetExpenseToPendingUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+
+enum class ExpenseDetailPage { EXPENSE_DETAIL, SELECTION_STATUS }
+
+enum class ExpenseDetailState { IDLE, UPLOADING, SUCCESS, FAILED, SWITCHING_TO_PENDING }
 
 @HiltViewModel
 class ExpenseDetailViewModel @Inject constructor(
-    private val getExpenseDetailUseCase: GetExpenseDetailUseCase,
-    private val editExpenseDetailUseCase: EditExpenseDetailUseCase,
-    private val ioDispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher,
+    private val setExpenseToPendingUseCase: SetExpenseToPendingUseCase,
+    private val setExpenseToOngoingUseCase: RevertExpenseToOngoingUseCase
 ) : ViewModel() {
-    private val _expense = MutableStateFlow(ExpenseItemWithDetails.EMPTY)
-    private val formEditable = MutableStateFlow(true)
+    private val _currentPage = MutableStateFlow(ExpenseDetailPage.EXPENSE_DETAIL)
+    private val _showPayerUI = MutableStateFlow(false)
 
-    val expenseDetailUIData = combine(
-        _expense,
-        formEditable
-    ) { expense, editable ->
-        expense.expenseDetails.map {
-            it.toUIData(editable)
-        }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000L),
-        initialValue = emptyList()
-    )
+    private val _expenseDetailState = MutableStateFlow(ExpenseDetailState.IDLE)
 
-    private val groupId = MutableStateFlow("")
-    private val expenseId = MutableStateFlow("")
-    val expense: StateFlow<ExpenseItemWithDetails> = _expense.asStateFlow()
+    var groupId = ""
+        private set
+    var expenseId = ""
+        private set
+    private val _editable = MutableStateFlow(false)
+    val editable = _editable.asStateFlow()
 
-    fun saveExpenseDetail() {
+    val currentPage = _currentPage.asStateFlow()
+    val showPayerUI = _showPayerUI.asStateFlow()
+    val expenseDetailState = _expenseDetailState.asStateFlow()
+
+    private fun switchToPendingExpense() {
+        _expenseDetailState.value = ExpenseDetailState.SWITCHING_TO_PENDING
+
         viewModelScope.launch(ioDispatcher) {
-            editExpenseDetailUseCase.invoke(
-                expenseDetailUIData.value.map { it.toExpenseDetailItem() },
-                expenseId.value,
-                groupId = groupId.value
-            )
-        }
-    }
-
-    fun setInitialData(expenseId: String, groupId: String, editable: Boolean) {
-        this.expenseId.value = expenseId
-        this.groupId.value = groupId
-        formEditable.value = editable
-        initExpense()
-    }
-
-    private fun initExpense() {
-        viewModelScope.launch(ioDispatcher) {
-            val result = getExpenseDetailUseCase.invoke(expenseId.value)
-            result.onSuccess {
-                _expense.value = it
-            }
+            setExpenseToPendingUseCase.invoke(expenseId, groupId)
+                .onSuccess {
+                    _expenseDetailState.value = ExpenseDetailState.SUCCESS
+                }
                 .onFailure {
-                    // TODO: Expense Detail 조회 실패 시 예외처리
+                    _expenseDetailState.value = ExpenseDetailState.FAILED
+                    it.printStackTrace()
                 }
         }
     }
 
-    private fun getItemWithEnabled(item: ExpenseDetailItem, enabled: Boolean): ExpenseDetailItem =
-        if (enabled) {
-            item.copy(selectedQuantity = 1)
+    private fun switchToOngoingExpense() {
+        _expenseDetailState.value = ExpenseDetailState.SWITCHING_TO_PENDING
+
+        viewModelScope.launch(ioDispatcher) {
+            setExpenseToOngoingUseCase.invoke(expenseId, groupId)
+                .onSuccess {
+                    _expenseDetailState.value = ExpenseDetailState.SUCCESS
+                }
+                .onFailure {
+                    _expenseDetailState.value = ExpenseDetailState.FAILED
+                    it.printStackTrace()
+                }
+        }
+    }
+
+    fun setSaveResult(isSuccess: Boolean) {
+        _expenseDetailState.value =
+            if (isSuccess) ExpenseDetailState.SUCCESS else ExpenseDetailState.FAILED
+    }
+
+    fun setInitialData(expenseId: String, groupId: String, editable: Boolean, isPayer: Boolean) {
+        this.expenseId = expenseId
+        this.groupId = groupId
+        _editable.value = editable
+
+        if (isPayer) {
+            _showPayerUI.value = true
+            _currentPage.value = ExpenseDetailPage.SELECTION_STATUS
         } else {
-            item.copy(selectedQuantity = 0)
-        }
-
-    private fun getItemWithQuantity(item: ExpenseDetailItem, quantity: Int): ExpenseDetailItem =
-        ExpenseDetailItem(
-            id = item.id,
-            itemName = item.itemName,
-            itemQuantity = item.itemQuantity,
-            itemPrice = item.itemPrice,
-            selectedQuantity = quantity
-        )
-
-    fun updateItemCheck(checked: Boolean, index: Int) {
-        if (!checkIsItemIndexValid(index)) {
-            return
-        }
-
-        viewModelScope.launch(Dispatchers.Main) {
-            val modifiedExpense = _expense.value.copy(
-                expenseDetails = _expense.value.expenseDetails.toMutableList().also {
-                    it[index] = getItemWithEnabled(it[index], checked)
-                }
-            )
-            _expense.emit(modifiedExpense)
+            _showPayerUI.value = false
+            _currentPage.value = ExpenseDetailPage.EXPENSE_DETAIL
         }
     }
 
-    fun updateSelectedQuantity(quantity: Int, index: Int) {
-        if (!checkIsItemIndexValid(index)) {
-            return
-        }
-
-        viewModelScope.launch(Dispatchers.Main) {
-            val modifiedExpense = _expense.value.copy(
-                expenseDetails = _expense.value.expenseDetails.toMutableList().also {
-                    it[index] = getItemWithQuantity(it[index], quantity)
-                }
-            )
-            _expense.emit(modifiedExpense)
+    fun clickSubmitButton() {
+        if (editable.value == true) {
+            clickSaveDetailsAndClose()
+        } else {
+            dismissAndClose()
         }
     }
 
-    private fun checkIsItemIndexValid(index: Int): Boolean =
-        index >= 0 && index < _expense.value.expenseDetails.count()
+    private fun dismissAndClose() {
+        _expenseDetailState.value = ExpenseDetailState.SUCCESS
+    }
+
+    private fun clickSaveDetailsAndClose() {
+        _expenseDetailState.value = ExpenseDetailState.UPLOADING
+    }
+
+    fun clickToSelectionStatus() {
+        _currentPage.value = ExpenseDetailPage.SELECTION_STATUS
+    }
+
+    fun clickToExpenseDetail() {
+        _currentPage.value = ExpenseDetailPage.EXPENSE_DETAIL
+    }
+
+    fun clickSwitchToPending() {
+        if (_expenseDetailState.value != ExpenseDetailState.IDLE) {
+            return
+        }
+
+        if (editable.value) {
+            switchToPendingExpense()
+        } else {
+            switchToOngoingExpense()
+        }
+    }
 }

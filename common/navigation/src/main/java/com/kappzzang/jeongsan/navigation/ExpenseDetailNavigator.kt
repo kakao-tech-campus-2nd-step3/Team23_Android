@@ -8,6 +8,7 @@ interface ExpenseDetailNavigator {
         packageContext: Context,
         expenseId: String,
         groupId: String,
-        editable: Boolean
+        editable: Boolean,
+        isPayer: Boolean
     ): Intent
 }

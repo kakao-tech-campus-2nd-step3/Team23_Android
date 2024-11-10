@@ -9,5 +9,6 @@ data class ExpenseUiItem(
     val isLastItem: Boolean,
     val price: String,
     val date: LocalDateTime,
-    val categoryColor: String
+    val categoryColor: String,
+    val isMyPayment: Boolean
 )

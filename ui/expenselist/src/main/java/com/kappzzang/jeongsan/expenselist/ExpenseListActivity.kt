@@ -86,7 +86,7 @@ class ExpenseListActivity : AppCompatActivity() {
                 viewModel.selectedExpense.collect {
                     if (it.expenseId.isNotEmpty()) {
                         viewModel.resetExpenseSelection()
-                        startExpenseDetailActivity(it.expenseId, it.editable)
+                        startExpenseDetailActivity(it.expenseId, it.editable, it.isPayer)
                     }
                 }
             }
@@ -298,14 +298,18 @@ class ExpenseListActivity : AppCompatActivity() {
         activityReceiptCameraLauncher.launch(intent)
     }
 
-    // TODO: 선택한 지출 확인용 임시 코드
-    private fun startExpenseDetailActivity(expenseId: String, isEditable: Boolean) {
+    private fun startExpenseDetailActivity(
+        expenseId: String,
+        isEditable: Boolean,
+        isPayer: Boolean
+    ) {
         val groupId = viewModel.groupId.value
         val intent = expenseDetailNavigator.navigateToExpenseDetail(
             packageContext = this,
             groupId = groupId,
             expenseId = expenseId,
-            editable = isEditable
+            editable = isEditable,
+            isPayer = isPayer
         )
         startActivity(intent)
     }

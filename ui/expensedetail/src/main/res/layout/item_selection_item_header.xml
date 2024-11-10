@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="header"
+            type="com.kappzzang.jeongsan.data.SelectionInfoItem.Header" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:paddingBottom="5dp">
+        <TextView
+            android:id="@+id/expense_selection_header_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="@{header.name}"
+            android:textSize="28sp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@+id/expense_selection_header_textview"
+            app:layout_constraintBottom_toBottomOf="@+id/expense_selection_header_textview"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="20sp"
+            android:text="@{header.priceText}"
+            />
+
+        <TextView
+            android:id="@+id/expense_selection_selector_textview"
+            style="@style/ExpenseDetailHeaderLabel"
+            android:text="@string/expense_selection_status_header_selector"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintWidth_percent="@dimen/expense_selection_status_header_selector_bias"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/expense_selection_quantity_textview"
+            />
+        <TextView
+            android:id="@+id/expense_selection_quantity_textview"
+            style="@style/ExpenseDetailHeaderLabel"
+            android:text="@string/expense_selection_status_header_quantity"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintWidth_percent="@dimen/expense_selection_status_header_quantity_bias"
+            app:layout_constraintStart_toEndOf="@id/expense_selection_selector_textview"
+            app:layout_constraintEnd_toStartOf="@id/expense_selection_price_textview"
+            />
+        <TextView
+            android:id="@+id/expense_selection_price_textview"
+            style="@style/ExpenseDetailHeaderLabel"
+            android:text="@string/expense_selection_status_header_price"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintWidth_percent="@dimen/expense_selection_status_header_price_bias"
+            app:layout_constraintStart_toEndOf="@id/expense_selection_quantity_textview"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
