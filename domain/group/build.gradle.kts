@@ -3,4 +3,5 @@ android {
 }
 dependencies {
     implementation(project(":common:androidutil"))
+    implementation(project(":domain:common-user"))
 }
