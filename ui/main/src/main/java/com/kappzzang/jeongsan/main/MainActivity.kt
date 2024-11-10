@@ -130,6 +130,7 @@ class MainActivity : AppCompatActivity() {
                                 getString(R.string.main_join_success),
                                 Toast.LENGTH_SHORT
                             ).show()
+                            viewModel.clearJoinGroupState()
 
                             startActivity(
                                 expenseListNavigator.navigateToExpenseList(
@@ -145,6 +146,7 @@ class MainActivity : AppCompatActivity() {
                                 state.message,
                                 Toast.LENGTH_SHORT
                             ).show()
+                            viewModel.clearJoinGroupState()
                         }
                     }
                 }

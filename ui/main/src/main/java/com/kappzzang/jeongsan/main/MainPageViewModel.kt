@@ -95,6 +95,14 @@ class MainPageViewModel @Inject constructor(
         }
     }
 
+    fun clearJoinGroupState() {
+        viewModelScope.launch {
+            withContext(ioDispatcher) {
+                _joinGroupState.emit(JoinGroupUIState.Idle)
+            }
+        }
+    }
+
     companion object {
         private const val TAG = "MAIN_PAGE_VIEW_MODEL"
         private const val JOIN_GROUP_FAILED_MESSAGE = "모임에 가입할 수 없습니다."
