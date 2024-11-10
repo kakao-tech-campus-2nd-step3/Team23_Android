@@ -4,11 +4,11 @@ import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.repository.ExpenseDetailRepository
 import javax.inject.Inject
 
-class SetExpenseToPendingUseCase @Inject constructor(
+class RevertExpenseToOngoingUseCase @Inject constructor(
     private val expenseDetailRepository: ExpenseDetailRepository
 ) {
     suspend operator fun invoke(expenseId: String, groupId: String): Result<Unit> =
-        expenseDetailRepository.updateExpenseStateToPending(
+        expenseDetailRepository.updateExpenseStateToOngoing(
             expenseId = expenseId,
             groupId = groupId)
 }
