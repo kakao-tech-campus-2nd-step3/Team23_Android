@@ -120,6 +120,15 @@ class ExpenseListRemoteDatasource @Inject constructor(
         return processResponseCode(response)
     }
 
+    suspend fun getPurchasedExpenseList(groupId: String): Result<ExpenseListResponseDTO> {
+        val response = try {
+            receiptRetrofitService.getPurchasedExpenseList(groupId)
+        } catch (e: Exception) {
+            return Result.failure(e)
+        }
+        return processResponseCodeOnResponseData(response)
+    }
+
     private fun <T> processResponseCodeOnResponseData(
         response: Response<ResponseData<T>>
     ): Result<T> {

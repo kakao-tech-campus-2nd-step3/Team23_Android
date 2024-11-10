@@ -56,4 +56,9 @@ interface ReceiptRetrofitService {
         @Path(value = "teamId") groupId: String,
         @Body body: UpdateExpenseStatePayloadDTO
     ): Response<Unit>
+
+    @GET("/api/expenses/ipaid/{teamId}")
+    suspend fun getPurchasedExpenseList(
+        @Path(value = "teamId") groupId: String
+    ): Response<ResponseData<ExpenseListResponseDTO>>
 }

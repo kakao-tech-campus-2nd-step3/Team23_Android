@@ -25,6 +25,13 @@ object ExpenseListEntityMapper {
         isMyPayment = (entity.payerServiceId?.toString() == serviceId) && (serviceId.isNotEmpty())
     )
 
+    fun mapPurchaseExpenseListToModel(entity: ExpenseRemoteEntity): ExpenseItem = ExpenseItem(
+        name = entity.title,
+        id = entity.id.toString(),
+        price = entity.totalPrice,
+        state = ExpenseState.TRANSFER_PENDING
+    )
+
     private fun mapExpenseStateToDomainState(state: String, checked: Boolean): ExpenseState {
         val trimmed = state.lowercase().trim()
         return when (trimmed) {
