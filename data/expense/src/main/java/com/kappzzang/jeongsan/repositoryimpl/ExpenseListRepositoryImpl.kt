@@ -103,7 +103,7 @@ class ExpenseListRepositoryImpl @Inject constructor(
         if (it.expenseList.any { expense ->
                 !validateServiceIds(searcherServiceId, expense.payerServiceId)
             }) {
-            Log.w("KSC", "잘못된 서비스 ID 값을 포함합니다.")
+            Log.w("KSC", "잘못된 서비스 ID 값을 포함합니다. 사용자 서비스 ID: $searcherServiceId")
         }
         mapResponseBody(it, searcherServiceId)
     }
