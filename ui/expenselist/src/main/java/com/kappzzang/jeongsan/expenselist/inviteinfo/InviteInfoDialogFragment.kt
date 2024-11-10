@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -13,6 +14,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.kappzzang.jeongsan.data.InviteMessageUiState
+import com.kappzzang.jeongsan.expenselist.R
 import com.kappzzang.jeongsan.expenselist.databinding.FragmentInviteInfoDialogBinding
 import com.kappzzang.jeongsan.expenselist.viewmodel.ExpenseListViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,11 +44,7 @@ class InviteInfoDialogFragment : DialogFragment() {
         setDialogStyle()
         initRecyclerView()
         setCloseButton()
-
-        Log.d(
-            TAG,
-            "id: ${expenseViewModel.groupId.value}, name: ${expenseViewModel.groupUIItem.value.groupName}"
-        )
+        collectInviteMessageState()
     }
 
     private fun setDialogStyle() {
@@ -59,11 +58,11 @@ class InviteInfoDialogFragment : DialogFragment() {
     }
 
     private fun initRecyclerView() {
-        memberAdapter = MemberInfoAdapter { memberUuid ->
-            inviteViewModel.sendInviteMessage(
+        memberAdapter = MemberInfoAdapter { memberServiceId ->
+            inviteViewModel.sendInviteMessageWithServiceId(
                 expenseViewModel.groupId.value,
                 expenseViewModel.groupUIItem.value.groupName,
-                listOf(memberUuid)
+                memberServiceId
             )
         }
         binding.memberContentRecyclerview.apply {
@@ -75,6 +74,36 @@ class InviteInfoDialogFragment : DialogFragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 inviteViewModel.inviteInfo.collect { inviteInfo ->
                     memberAdapter.submitList(inviteInfo)
+                }
+            }
+        }
+    }
+
+    private fun collectInviteMessageState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                inviteViewModel.inviteMessageState.collect { state ->
+                    when (state) {
+                        is InviteMessageUiState.Idle -> {}
+
+                        is InviteMessageUiState.Success -> {
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.invite_message_success),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            inviteViewModel.clearInviteMessageState()
+                        }
+
+                        is InviteMessageUiState.Fail -> {
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.invite_message_fail),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            inviteViewModel.clearInviteMessageState()
+                        }
+                    }
                 }
             }
         }
