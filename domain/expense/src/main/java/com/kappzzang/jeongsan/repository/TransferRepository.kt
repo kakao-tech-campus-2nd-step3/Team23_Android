@@ -1,5 +1,6 @@
 package com.kappzzang.jeongsan.repository
 
+import com.kappzzang.jeongsan.model.ExpenseItem
 import com.kappzzang.jeongsan.model.TransferDetailItem
 
 interface TransferRepository {
@@ -10,4 +11,6 @@ interface TransferRepository {
         transferLink: String,
         payeeName: String
     ): Boolean
+
+    suspend fun getPurchasedExpenseList(groupId: String): Result<List<ExpenseItem>>
 }
