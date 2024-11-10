@@ -101,7 +101,7 @@ class ExpenseListRepositoryImpl @Inject constructor(
         groupId = groupId
     ).mapCatching {
         if (it.expenseList.any { expense ->
-                validateServiceIds(searcherServiceId, expense.payerServiceId)
+                !validateServiceIds(searcherServiceId, expense.payerServiceId)
             }) {
             Log.w("KSC", "잘못된 서비스 ID 값을 포함합니다.")
         }
