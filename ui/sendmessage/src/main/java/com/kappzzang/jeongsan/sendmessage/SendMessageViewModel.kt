@@ -76,7 +76,6 @@ class SendMessageViewModel @Inject constructor(
         }
         _transferInfoState.value = TransferInfoUIState.LoadingTransferInfo
         viewModelScope.launch(ioDispatcher) {
-            delay(1000)
             getTransferInfoUseCase(
                 groupId = groupId.value,
                 expenseIdList = emptyList()
