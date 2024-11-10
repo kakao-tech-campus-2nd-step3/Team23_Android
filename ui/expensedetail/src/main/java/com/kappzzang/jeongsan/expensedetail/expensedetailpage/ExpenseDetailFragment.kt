@@ -46,14 +46,14 @@ class ExpenseDetailFragment : Fragment() {
     }
 
     private fun collectStateFlow() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.expenseDetailSaveState.collect {
                     processExpenseDetailSaveResult(it)
                 }
             }
         }
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 activityViewModel.expenseDetailState.collect {
                     if (it == ExpenseDetailState.UPLOADING) {
@@ -66,14 +66,10 @@ class ExpenseDetailFragment : Fragment() {
 
     private fun processExpenseDetailSaveResult(result: ExpenseDetailState) {
         if (result == ExpenseDetailState.SUCCESS) {
-            sendExpenseUploadResult(true)
+            activityViewModel.setSaveResult(true)
         } else if (result == ExpenseDetailState.FAILED) {
-            sendExpenseUploadResult(false)
+            activityViewModel.setSaveResult(false)
         }
-    }
-
-    private fun sendExpenseUploadResult(isSuccess: Boolean) {
-        activityViewModel.setSaveResult(isSuccess)
     }
 
     private fun initiateData() {

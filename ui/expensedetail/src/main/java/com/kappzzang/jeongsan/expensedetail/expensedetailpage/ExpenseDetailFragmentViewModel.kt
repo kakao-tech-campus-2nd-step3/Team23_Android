@@ -1,5 +1,6 @@
 package com.kappzzang.jeongsan.expensedetail.expensedetailpage
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.data.toUIData
@@ -62,6 +63,7 @@ class ExpenseDetailFragmentViewModel @Inject constructor(
     }
 
     private fun uploadEditList(expenseDetailItemList: List<ExpenseDetailItem>) {
+        Log.d("KSC", "Uploading Edit List")
         viewModelScope.launch(ioDispatcher) {
             editExpenseDetailUseCase.invoke(
                 expenseDetailItemList,

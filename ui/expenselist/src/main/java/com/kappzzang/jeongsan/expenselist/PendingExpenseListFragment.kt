@@ -50,7 +50,7 @@ class PendingExpenseListFragment : Fragment() {
     }
 
     private fun setSwipeRefresh() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.refreshState.collect {
                     if (it == ExpenseListRefreshingState.FINISHED) {
