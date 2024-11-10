@@ -1,4 +1,4 @@
-package com.kappzzang.jeongsan.datasource.remote
+package com.kappzzang.jeongsan.datasource
 
 import com.kappzzang.jeongsan.api.GroupRetrofitService
 import com.kappzzang.jeongsan.entity.CompleteGroupResponse
@@ -15,6 +15,7 @@ import javax.inject.Inject
 import retrofit2.Response
 
 class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetrofitService) {
+
     suspend fun getGroupInfo(isCompleted: Boolean): Result<List<GroupInfo>> = try {
         val response = groupApi.getGroupInfo(isCompleted = isCompleted)
         handleGetGroupInfoResponse(response)
@@ -30,7 +31,7 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
         }
 
         else -> {
-            Result.failure(Exception("그룹 정보를 가져오는데 실패"))
+            Result.failure(Exception("그룹 정보를 찾을 수 없습니다."))
         }
     }
 
@@ -47,8 +48,9 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
         response.isSuccessful && response.body() != null -> {
             Result.success(response.body()!!.groupInfo)
         }
+
         else -> {
-            Result.failure(Exception("그룹 정보를 가져오는데 실패"))
+            Result.failure(Exception("모임을 찾을 수 없습니다."))
         }
     }
 
@@ -72,15 +74,14 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
             response.isSuccessful -> {
                 Result.success(response.body()!!.groupId)
             }
-            response.code() == 404 -> {
-                Result.failure(Exception("유저를 찾을 수 없음"))
+
+            response.code() in 400..499 -> {
+                val errorMessage = response.body()?.message ?: "알 수 없는 오류 발생"
+                Result.failure(Exception(errorMessage))
             }
-            // 겹쳐도 되기로 했던 것 같은데
-            response.code() == 409 -> {
-                Result.failure(Exception("중복된 모임 이름이 존재"))
-            }
+
             else -> {
-                Result.failure(Exception("알수없는 오류 발생. 코드:${response.code()}"))
+                Result.failure(Exception("알 수 없는 오류 발생"))
             }
         }
 
@@ -97,14 +98,14 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
         response.isSuccessful -> {
             Result.success(true)
         }
-        response.code() == 400 -> {
-            Result.failure(Exception("모임이 이미 종료된 상태"))
+
+        response.code() in 400..499 -> {
+            val errorMessage = response.body()?.message ?: "알 수 없는 오류 발생"
+            Result.failure(Exception(errorMessage))
         }
-        response.code() == 404 -> {
-            Result.failure(Exception("완료하고자 하는 모임을 찾을 수 없음"))
-        }
+
         else -> {
-            Result.failure(Exception("알수없는 오류 발생"))
+            Result.failure(Exception("알 수 없는 오류 발생"))
         }
     }
 
@@ -121,11 +122,14 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
         response.isSuccessful && !response.body()?.memberList.isNullOrEmpty() -> {
             Result.success(response.body()!!.memberList)
         }
-        response.code() == 404 -> {
-            Result.failure(Exception("모임의 멤버 초대 현황 목록을 찾을 수 없음"))
+
+        response.code() in 400..499 -> {
+            val errorMessage = response.body()?.message ?: "알 수 없는 오류 발생"
+            Result.failure(Exception(errorMessage))
         }
+
         else -> {
-            Result.failure(Exception("알수없는 오류 발생"))
+            Result.failure(Exception("알 수 없는 오류 발생"))
         }
     }
 
@@ -144,14 +148,14 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
             response.isSuccessful -> {
                 Result.success(true)
             }
-            response.code() == 400 -> {
-                Result.failure(Exception("모임에 초대 되지 않은 유저"))
+
+            response.code() in 400..499 -> {
+                val errorMessage = response.body()?.message ?: "알 수 없는 오류 발생"
+                Result.failure(Exception(errorMessage))
             }
-            response.code() == 404 -> {
-                Result.failure(Exception("잘못된 memberId, 사용자를 찾을 수 없음"))
-            }
+
             else -> {
-                Result.failure(Exception("알수없는 오류 발생"))
+                Result.failure(Exception("알 수 없는 오류 발생"))
             }
         }
 
@@ -166,11 +170,14 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
         response.isSuccessful -> {
             Result.success(response.body()!!.link)
         }
-        response.code() == 404 -> {
-            Result.failure(Exception("카카오 페이 송금 링크를 찾을 수 없음"))
+
+        response.code() in 400..499 -> {
+            val errorMessage = response.body()?.message ?: "알 수 없는 오류 발생"
+            Result.failure(Exception(errorMessage))
         }
+
         else -> {
-            Result.failure(Exception("알수없는 오류 발생"))
+            Result.failure(Exception("알 수 없는 오류 발생"))
         }
     }
 }

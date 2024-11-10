@@ -4,9 +4,11 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.data.GroupViewItem
+import com.kappzzang.jeongsan.data.JoinGroupUIState
 import com.kappzzang.jeongsan.usecase.GetDoneGroupUseCase
 import com.kappzzang.jeongsan.usecase.GetProgressingGroupUseCase
 import com.kappzzang.jeongsan.usecase.GetUserInfoUseCase
+import com.kappzzang.jeongsan.usecase.JoinGroupUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
@@ -20,6 +22,7 @@ class MainPageViewModel @Inject constructor(
     private val getProgressingGroupUseCase: GetProgressingGroupUseCase,
     private val getDoneGroupUseCase: GetDoneGroupUseCase,
     private val getUserInfoUseCase: GetUserInfoUseCase,
+    private val joinGroupUseCase: JoinGroupUseCase,
     private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
@@ -31,6 +34,9 @@ class MainPageViewModel @Inject constructor(
 
     private val _groupList = MutableStateFlow<List<GroupViewItem>>(emptyList())
     val groupList: StateFlow<List<GroupViewItem>> = _groupList
+
+    private val _joinGroupState = MutableStateFlow<JoinGroupUIState>(JoinGroupUIState.Idle)
+    val joinGroupState: StateFlow<JoinGroupUIState> = _joinGroupState
 
     init {
         loadUserInfo()
@@ -73,7 +79,32 @@ class MainPageViewModel @Inject constructor(
         }
     }
 
+    fun joinGroup(groupId: String) {
+        viewModelScope.launch {
+            withContext(ioDispatcher) {
+                joinGroupUseCase(groupId).onSuccess {
+                    _joinGroupState.emit(JoinGroupUIState.Success(groupId))
+                }.onFailure {
+                    _joinGroupState.emit(
+                        JoinGroupUIState.Error(
+                            it.message ?: JOIN_GROUP_FAILED_MESSAGE
+                        )
+                    )
+                }
+            }
+        }
+    }
+
+    fun clearJoinGroupState() {
+        viewModelScope.launch {
+            withContext(ioDispatcher) {
+                _joinGroupState.emit(JoinGroupUIState.Idle)
+            }
+        }
+    }
+
     companion object {
         private const val TAG = "MAIN_PAGE_VIEW_MODEL"
+        private const val JOIN_GROUP_FAILED_MESSAGE = "모임에 가입할 수 없습니다."
     }
 }

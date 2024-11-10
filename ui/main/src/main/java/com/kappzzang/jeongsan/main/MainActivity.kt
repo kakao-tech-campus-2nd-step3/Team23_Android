@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.kappzzang.jeongsan.data.JoinGroupUIState
 import com.kappzzang.jeongsan.intentcontract.ExpenseListContract
 import com.kappzzang.jeongsan.main.databinding.ActivityMainBinding
 import com.kappzzang.jeongsan.navigation.CreateGroupNavigator
@@ -42,6 +43,7 @@ class MainActivity : AppCompatActivity() {
         setCreateGroupButton()
         observeViewModel()
         setSwipeRefresh()
+        collectJoinGroupState()
     }
 
     private fun setGroupListRecyclerView() {
@@ -104,18 +106,52 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showJoinGroupDialog(groupId: String) {
-        // TODO: 그룹 아이디를 통해 그룹명 획득
-
         val builder = AlertDialog.Builder(this)
         builder.setTitle(getString(R.string.main_want_join))
-        // TODO: 가입 하기
-        builder.setPositiveButton(getString(R.string.main_positive_response)) { dialog, which ->
+        builder.setPositiveButton(getString(R.string.main_positive_response)) { _, _ ->
+            viewModel.joinGroup(groupId)
         }
-        // TODO: 거절하기
-        builder.setNegativeButton(getString(R.string.main_negative_response)) { dialog, which ->
+        builder.setNegativeButton(getString(R.string.main_negative_response)) { _, _ ->
+            // Do nothing
         }
         val dialog = builder.create()
         dialog.show()
+    }
+
+    private fun collectJoinGroupState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.joinGroupState.collect { state ->
+                    when (state) {
+                        is JoinGroupUIState.Idle -> {}
+                        is JoinGroupUIState.Success -> {
+                            Toast.makeText(
+                                this@MainActivity,
+                                getString(R.string.main_join_success),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            viewModel.clearJoinGroupState()
+
+                            startActivity(
+                                expenseListNavigator.navigateToExpenseList(
+                                    this@MainActivity,
+                                    state.groupId
+                                )
+                            )
+                        }
+
+                        is JoinGroupUIState.Error -> {
+                            Toast.makeText(
+                                this@MainActivity,
+                                state.message,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            viewModel.clearJoinGroupState()
+                        }
+                    }
+                }
+            }
+        }
     }
 
     override fun onResume() {
