@@ -13,7 +13,6 @@ class ExpenseMessageRepositoryImpl @Inject constructor() : ExpenseMessageReposit
         expenseId: String,
         expenseName: String,
         payerName: String,
-        expenseTime: String,
         groupId: String,
         memberUuidList: List<String>
     ): Boolean = suspendCoroutine { continuation ->
@@ -24,7 +23,6 @@ class ExpenseMessageRepositoryImpl @Inject constructor() : ExpenseMessageReposit
                 EXPENSE_ID to expenseId,
                 EXPENSE_NAME to expenseName,
                 PAYER_NAME to payerName,
-                EXPENSE_TIME to expenseTime,
                 GROUP_ID to groupId
             )
         ) { result, error ->
@@ -47,7 +45,6 @@ class ExpenseMessageRepositoryImpl @Inject constructor() : ExpenseMessageReposit
         private const val EXPENSE_ID = "EXPENSE_ID"
         private const val EXPENSE_NAME = "EXPENSE_TITLE"
         private const val PAYER_NAME = "PAYER"
-        private const val EXPENSE_TIME = "EXPENSE_TIME"
         private const val GROUP_ID = "GROUP_ID"
     }
 }

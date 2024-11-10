@@ -6,7 +6,6 @@ interface ExpenseMessageRepository {
         expenseId: String,
         expenseName: String,
         payerName: String,
-        expenseTime: String,
         groupId: String,
         memberUuidList: List<String>
     ): Boolean
