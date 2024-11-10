@@ -12,7 +12,8 @@ class ExpenseDetailNavigatorImpl @Inject constructor() : ExpenseDetailNavigator 
         packageContext: Context,
         expenseId: String,
         groupId: String,
-        editable: Boolean
+        editable: Boolean,
+        isPayer: Boolean
     ): Intent = Intent(packageContext, ExpenseDetailActivity::class.java)
         .apply {
             this.putExtra(ExpenseDetailContract.EXPENSE_ID, expenseId)
@@ -21,5 +22,6 @@ class ExpenseDetailNavigatorImpl @Inject constructor() : ExpenseDetailNavigator 
                 ExpenseDetailContract.EDITABLE,
                 editable
             )
+            this.putExtra(ExpenseDetailContract.IS_PAYER, isPayer)
         }
 }

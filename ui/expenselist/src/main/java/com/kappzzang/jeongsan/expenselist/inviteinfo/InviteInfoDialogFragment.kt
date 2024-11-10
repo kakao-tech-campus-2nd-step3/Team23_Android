@@ -2,6 +2,7 @@ package com.kappzzang.jeongsan.expenselist.inviteinfo
 
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

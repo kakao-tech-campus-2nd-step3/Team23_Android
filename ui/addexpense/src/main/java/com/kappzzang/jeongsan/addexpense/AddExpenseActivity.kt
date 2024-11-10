@@ -113,7 +113,8 @@ class AddExpenseActivity : AppCompatActivity() {
                 packageContext = this,
                 groupId = viewModel.groupId.value,
                 expenseId = uploadedExpenseId,
-                editable = true
+                editable = true,
+                isPayer = false
             )
         )
         finish()

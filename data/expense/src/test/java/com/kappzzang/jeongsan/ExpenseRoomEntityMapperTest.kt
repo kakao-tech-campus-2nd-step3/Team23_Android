@@ -1,7 +1,7 @@
 package com.kappzzang.jeongsan
 
 import com.kappzzang.jeongsan.entity.expenselist.ExpenseRoomEntity
-import com.kappzzang.jeongsan.mapper.ExpenseEntityMapper
+import com.kappzzang.jeongsan.mapper.ExpenseListEntityMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
@@ -23,7 +23,7 @@ class ExpenseRoomEntityMapperTest {
         val entity = getSampleEntity()
 
         // when
-        val mapped = ExpenseEntityMapper.mapExpenseEntityToModel(entity)
+        val mapped = ExpenseListEntityMapper.mapExpenseEntityToModel(entity)
 
         // then
         assertThat(mapped.date.year).isEqualTo(2000)

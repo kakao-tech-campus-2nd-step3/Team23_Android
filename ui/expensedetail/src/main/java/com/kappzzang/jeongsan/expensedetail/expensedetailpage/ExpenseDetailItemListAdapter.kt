@@ -1,4 +1,4 @@
-package com.kappzzang.jeongsan.expensedetail
+package com.kappzzang.jeongsan.expensedetail.expensedetailpage
 
 import android.content.Context
 import android.text.Editable
@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kappzzang.jeongsan.data.ExpenseDetailUIData
+import com.kappzzang.jeongsan.expensedetail.R
 import com.kappzzang.jeongsan.expensedetail.databinding.ItemExpenseDetailItemBinding
 
 interface ExpenseDetailItemCallback {
@@ -57,7 +58,6 @@ class ExpenseDetailItemListAdapter(
         val viewHolderBinding =
             ItemExpenseDetailItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         val viewHolder = ExpenseDetailItemViewHolder(viewHolderBinding)
-        viewHolderBinding.viewHolder = viewHolder
         viewHolderBinding.autoCompleteTextview.setAdapter(createSpinnerAdapter(20))
         viewHolderBinding.itemCallback =
             object : ExpenseDetailItemCallback {

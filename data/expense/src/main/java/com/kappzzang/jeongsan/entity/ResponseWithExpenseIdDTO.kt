@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ResponseWithExpenseIdDTO(
     @SerializedName("expenseId")
-    val expenseId: Int
+    val expenseId: Long
 )

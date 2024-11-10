@@ -39,17 +39,18 @@ class PendingExpenseListFragment : Fragment() {
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = activity
-        binding.pendingExpenseListRecyclerview.adapter = ExpenseListAdapter {
-            activityViewModel.clickExpenseItem(it, ExpenseState.TRANSFER_PENDING)
+        binding.pendingExpenseListRecyclerview.adapter = ExpenseListAdapter { expenseId, isPayer ->
+            activityViewModel.clickExpenseItem(expenseId, ExpenseState.TRANSFER_PENDING, isPayer)
         }
         binding.pendingExpenseListRecyclerview.layoutManager = LinearLayoutManager(this.context)
+        viewModel.onFragmentStart(activityViewModel.groupId.value)
 
         setSwipeRefresh()
         viewModel.onFragmentStart(activityViewModel.groupId.value)
     }
 
     private fun setSwipeRefresh() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.refreshState.collect {
                     if (it == ExpenseListRefreshingState.FINISHED) {
@@ -63,5 +64,10 @@ class PendingExpenseListFragment : Fragment() {
         binding.expenseListSwipeRefreshLayout.setOnRefreshListener {
             viewModel.refresh()
         }
+    }
+
+    override fun onResume() {
+        viewModel.onFragmentReload()
+        super.onResume()
     }
 }
