@@ -173,7 +173,6 @@ class MainActivity : AppCompatActivity() {
                 // Do nothing
             }
         }
-
     }
 
     private fun setSwipeRefresh() {

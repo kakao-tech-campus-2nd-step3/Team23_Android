@@ -13,7 +13,7 @@ class SendNewExpenseMessageUseCase @Inject constructor(
         expenseId: String,
         expenseName: String,
         groupId: String,
-        memberUuidList: List<String>,
+        memberUuidList: List<String>
     ): Boolean {
         val myUserInfo = userInfoRepository.getUserInfo() ?: return false
         return expenseMessageRepository.sendNewExpenseMessage(

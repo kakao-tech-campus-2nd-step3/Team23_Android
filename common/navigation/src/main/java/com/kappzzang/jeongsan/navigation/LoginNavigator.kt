@@ -2,7 +2,6 @@ package com.kappzzang.jeongsan.navigation
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 
 interface LoginNavigator {
     fun login(packageContext: Context): Intent
@@ -12,6 +11,6 @@ interface LoginNavigator {
     fun loginAndEnterDetailExpense(
         packageContext: Context,
         groupId: String,
-        expenseId: String,
+        expenseId: String
     ): Intent
 }

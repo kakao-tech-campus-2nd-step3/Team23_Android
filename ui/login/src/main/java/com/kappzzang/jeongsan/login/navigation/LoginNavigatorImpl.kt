@@ -23,7 +23,7 @@ class LoginNavigatorImpl @Inject constructor() : LoginNavigator {
     override fun loginAndEnterDetailExpense(
         packageContext: Context,
         groupId: String,
-        expenseId: String,
+        expenseId: String
     ): Intent {
         val newExpenseUri = Uri.parse("jeongsan://newExpense/").buildUpon()
             .appendQueryParameter("groupId", groupId)
