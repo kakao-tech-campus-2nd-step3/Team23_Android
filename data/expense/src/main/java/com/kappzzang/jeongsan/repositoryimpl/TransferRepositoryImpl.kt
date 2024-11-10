@@ -15,7 +15,8 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 class TransferRepositoryImpl @Inject constructor(
-    private val expenseListRemoteDatasource: ExpenseListRemoteDatasource
+    private val expenseListRemoteDatasource: ExpenseListRemoteDatasource,
+    private val kakaoClient: TalkApiClient
 ) : TransferRepository {
     override suspend fun getTransferInfo(
         groupId: String,
@@ -46,7 +47,7 @@ class TransferRepositoryImpl @Inject constructor(
 
         return suspendCoroutine { continuation ->
             messageList.forEach {
-                TalkApiClient.instance.sendCustomMessage(
+                kakaoClient.sendCustomMessage(
                     receiverUuids = listOf(it.uuid),
                     templateId = TRANSFER_MESSAGE_TEMPLATE_ID,
                     templateArgs = mapOf(
