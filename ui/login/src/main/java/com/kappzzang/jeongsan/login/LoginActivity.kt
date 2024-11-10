@@ -59,13 +59,13 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun navigateToMainPage() {
-        val intent = intent?.data?.let {
-            appNavigator.navigateToMainPageAndEnterGroup(
+        val uri = intent?.data
+        val intent = when (uri?.path) {
+            "/inviteGroup" -> appNavigator.navigateToMainPageAndEnterGroup(
                 this,
-                Uri.parse(it.toString())
+                Uri.parse(uri.getQueryParameter("groupId") ?: "")
             )
-        } ?: let {
-            appNavigator.navigateToMainPage(
+            else -> appNavigator.navigateToMainPage(
                 this
             )
         }

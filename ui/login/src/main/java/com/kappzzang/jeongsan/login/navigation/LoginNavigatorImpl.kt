@@ -11,9 +11,26 @@ class LoginNavigatorImpl @Inject constructor() : LoginNavigator {
     override fun login(packageContext: Context): Intent =
         Intent(packageContext, LoginActivity::class.java)
 
-    override fun loginAndEnterGroup(packageContext: Context, inviteGroup: Uri): Intent {
-        val intent = Intent(packageContext, LoginActivity::class.java)
-        intent.data = inviteGroup
-        return intent
+    override fun loginAndEnterGroup(packageContext: Context, inviteGroupId: String): Intent {
+        val inviteGroupUri = Uri.parse("jeongsan://app/inviteGroup/").buildUpon()
+            .appendQueryParameter("groupId", inviteGroupId)
+            .build()
+        return Intent(packageContext, LoginActivity::class.java).apply {
+            data = inviteGroupUri
+        }
+    }
+
+    override fun loginAndEnterDetailExpense(
+        packageContext: Context,
+        groupId: String,
+        expenseId: String,
+    ): Intent {
+        val newExpenseUri = Uri.parse("jeongsan://app/newExpense/").buildUpon()
+            .appendQueryParameter("groupId", groupId)
+            .appendQueryParameter("expenseId", expenseId)
+            .build()
+        return Intent(packageContext, LoginActivity::class.java).apply {
+            data = newExpenseUri
+        }
     }
 }
