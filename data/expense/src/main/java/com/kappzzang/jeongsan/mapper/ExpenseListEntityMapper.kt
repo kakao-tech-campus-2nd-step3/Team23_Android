@@ -4,6 +4,7 @@ import com.kappzzang.jeongsan.entity.expenselist.ExpenseRemoteEntity
 import com.kappzzang.jeongsan.model.ExpenseItem
 import com.kappzzang.jeongsan.model.ExpenseItemWithCategory
 import com.kappzzang.jeongsan.model.ExpenseState
+import com.kappzzang.jeongsan.util.ColorParser
 import com.kappzzang.jeongsan.util.DateConverter
 
 object ExpenseListEntityMapper {
@@ -20,7 +21,7 @@ object ExpenseListEntityMapper {
             state = mapExpenseStateToDomainState(entity.state, checked)
         ),
         date = DateConverter.parseFromString(entity.createdAt),
-        categoryColor = entity.category.color,
+        categoryColor = ColorParser.parseColor(entity.category.color),
         isMyPayment = (entity.payerServiceId?.toString() ?: "") == serviceId
     )
 
