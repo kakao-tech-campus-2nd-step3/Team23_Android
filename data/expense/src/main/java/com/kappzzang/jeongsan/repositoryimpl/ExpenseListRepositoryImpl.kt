@@ -16,7 +16,8 @@ import kotlinx.coroutines.flow.flow
 data class ExpenseListCachingKey(val expenseState: ExpenseState, val groupId: String)
 
 class ExpenseListRepositoryImpl @Inject constructor(
-    private val dataSource: ExpenseListRemoteDatasource
+    private val dataSource: ExpenseListRemoteDatasource,
+
 ) : ExpenseRepository {
 
     private val cachedData = HashMap<ExpenseListCachingKey, ExpenseListResponse>()
@@ -36,7 +37,8 @@ class ExpenseListRepositoryImpl @Inject constructor(
 
     override fun getExpenseList(
         groupId: String,
-        expenseState: ExpenseState
+        expenseState: ExpenseState,
+        searcherServiceId: String
     ): Flow<Result<ExpenseListResponse>> = flow {
         // 먼저 캐싱된 데이터 emit
         emit(
@@ -50,7 +52,7 @@ class ExpenseListRepositoryImpl @Inject constructor(
 
         // Remote API로 지출 목록 불러오고 캐싱 데이터 갱신
 
-        val response = getExpenseListResponseFromAPI(groupId, expenseState)
+        val response = getExpenseListResponseFromAPI(groupId, expenseState, searcherServiceId)
         response.onSuccess {
             cachedData[ExpenseListCachingKey(expenseState, groupId)] = it
             emit(response)
@@ -62,9 +64,10 @@ class ExpenseListRepositoryImpl @Inject constructor(
 
     override suspend fun forceGetExpenseList(
         groupId: String,
-        expenseState: ExpenseState
+        expenseState: ExpenseState,
+        searcherServiceId: String
     ): Result<ExpenseListResponse> {
-        val response = getExpenseListResponseFromAPI(groupId, expenseState)
+        val response = getExpenseListResponseFromAPI(groupId, expenseState, searcherServiceId)
         response.fold(
             onSuccess = {
                 cachedData[ExpenseListCachingKey(expenseState, groupId)] = it
@@ -79,21 +82,18 @@ class ExpenseListRepositoryImpl @Inject constructor(
 
     private suspend fun getExpenseListResponseFromAPI(
         groupId: String,
-        expenseState: ExpenseState
+        expenseState: ExpenseState,
+        searcherServiceId: String
     ): Result<ExpenseListResponse> = dataSource.getExpenseList(
         expenseState,
         groupId = groupId
     ).mapCatching {
-        mapResponseBody(it)
+        mapResponseBody(it, searcherServiceId)
     }
 
-    private fun getUuid(): String {
-        TODO("UUID 조회 구현")
-    }
-
-    private fun mapResponseBody(body: ExpenseListResponseDTO): ExpenseListResponse {
+    private fun mapResponseBody(body: ExpenseListResponseDTO, searcherServiceId: String): ExpenseListResponse {
         val expenses = body.expenseList.map {
-            ExpenseListEntityMapper.mapExpenseEntityToModel(it, getUuid())
+            ExpenseListEntityMapper.mapExpenseEntityToModel(it, searcherServiceId)
         }
         return ExpenseListResponse(
             totalExpenseToSend = body.myTotalExpense ?: 0,

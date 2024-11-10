@@ -22,7 +22,7 @@ object ExpenseEntityMapper {
     }
 
     fun mapResponseWithExpenseEntityToModel(entity: ResponseWithExpenseIdDTO): String =
-        entity.expenseId
+        entity.expenseId.toString()
 
     fun mapCategoryToModel(entity: CategoryEntity): ExpenseCategory = ExpenseCategory(
         id = entity.id.toString(),
