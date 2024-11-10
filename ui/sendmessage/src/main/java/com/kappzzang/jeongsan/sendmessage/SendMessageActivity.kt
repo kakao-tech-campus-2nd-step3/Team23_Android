@@ -31,6 +31,9 @@ class SendMessageActivity : AppCompatActivity() {
         binding = ActivitySendMessageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
+
         handleIntent()
         initRecyclerView()
         setSendButton()
@@ -41,8 +44,11 @@ class SendMessageActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.transferInfoState.collect {
-                    when(it) {
-                        TransferInfoUIState.Idle -> { viewModel.getPurchasedExpenseList() }
+                    when (it) {
+                        TransferInfoUIState.Idle -> {
+                            viewModel.getPurchasedExpenseList()
+                        }
+
                         TransferInfoUIState.LoadingPurchaseList -> {}
                         TransferInfoUIState.LoadingTransferInfo -> {}
                         is TransferInfoUIState.PurchaseListGetError -> sendToast(it.message)
@@ -50,9 +56,19 @@ class SendMessageActivity : AppCompatActivity() {
                             sendToast("Count: ${it.size}, Total: ${it.totalPay}")
                             viewModel.getTransferInfo()
                         }
+
                         is TransferInfoUIState.TransferInfoGetError -> sendToast(it.message)
                         is TransferInfoUIState.TransferInfoGetSuccess ->
                             sendToast("Count: ${it.transferInfoList.size}")
+
+                        TransferInfoUIState.SendingTransferMessage -> {}
+                        is TransferInfoUIState.TransferMessageSendError -> {
+                            sendToast(it.message)
+                        }
+
+                        TransferInfoUIState.TransferMessageSendSuccess -> {
+                            startSendCompleteActivity()
+                        }
                     }
                 }
             }
@@ -87,20 +103,9 @@ class SendMessageActivity : AppCompatActivity() {
     }
 
     private fun setSendButton() {
-        return
-        // binding.sendMessageButton.setOnClickListener {
-        //     lifecycleScope.launch {
-        //         if (viewModel.sendTransferMessage()) {
-        //             startSendCompleteActivity()
-        //         } else {
-        //             Toast.makeText(
-        //                 this@SendMessageActivity,
-        //                 getString(R.string.send_message_error),
-        //                 Toast.LENGTH_SHORT
-        //             ).show()
-        //         }
-        //     }
-        // }
+        binding.sendMessageButton.setOnClickListener {
+            viewModel.sendTransferMessage()
+        }
     }
 
     private fun startSendCompleteActivity() {

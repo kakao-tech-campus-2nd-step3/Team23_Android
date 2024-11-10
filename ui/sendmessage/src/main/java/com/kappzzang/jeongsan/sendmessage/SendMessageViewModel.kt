@@ -99,16 +99,29 @@ class SendMessageViewModel @Inject constructor(
         }
     }
 
-    private fun loadTransferInfo(expenseList: List<String>) {
-        viewModelScope.launch(ioDispatcher) {
-            getTransferInfoUseCase(
-                groupId = groupId.value,
-                expenseIdList = expenseList
-            )
+    fun sendTransferMessage() {
+        val transferInfo: List<TransferDetailItem>
+        if (transferInfoState.value is TransferInfoUIState.TransferInfoGetSuccess) {
+            transferInfo =
+                (transferInfoState.value as TransferInfoUIState.TransferInfoGetSuccess).transferInfoList
+        } else {
+            return
+        }
+
+        _transferInfoState.value = TransferInfoUIState.SendingTransferMessage
+
+        viewModelScope.launch {
+            sendTransferMessageUseCase(
+                transferInfoList = transferInfo
+            ).onSuccess {
+                _transferInfoState.value = TransferInfoUIState.TransferMessageSendSuccess
+            }.onFailure {
+                _transferInfoState.value = TransferInfoUIState.TransferMessageSendError(
+                    "송금 요청 메시지 전송을 실패했습니다: ${it.message}"
+                )
+            }
         }
     }
-
-    //suspend fun sendTransferMessage(): Boolean = sendTransferMessageUseCase(_transferInfo.value)
 
     fun setGroupId(groupId: String?) {
         _groupId.value = groupId ?: ""

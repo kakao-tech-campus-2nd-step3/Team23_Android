@@ -24,4 +24,12 @@ sealed class TransferInfoUIState {
     data class TransferInfoGetError(
         val message: String
     ) : TransferInfoUIState()
+
+    data object SendingTransferMessage : TransferInfoUIState()
+
+    data object TransferMessageSendSuccess : TransferInfoUIState()
+
+    data class TransferMessageSendError(
+        val message: String
+    ) : TransferInfoUIState()
 }
