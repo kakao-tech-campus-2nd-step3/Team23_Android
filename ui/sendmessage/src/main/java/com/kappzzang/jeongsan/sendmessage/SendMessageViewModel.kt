@@ -8,9 +8,8 @@ import com.kappzzang.jeongsan.usecase.GetPurchasedExpenseListUseCase
 import com.kappzzang.jeongsan.usecase.GetTransferInfoUseCase
 import com.kappzzang.jeongsan.usecase.SendTransferMessageUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.delay
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,7 +25,9 @@ class SendMessageViewModel @Inject constructor(
     private val _groupId = MutableStateFlow("")
     val groupId: StateFlow<String>
         get() = _groupId
-    private val _transferInfoState: MutableStateFlow<TransferInfoUIState> by lazy { initTransferInfoState() }
+    private val _transferInfoState: MutableStateFlow<TransferInfoUIState> by lazy {
+        initTransferInfoState()
+    }
     val transferInfoState = _transferInfoState.asStateFlow()
 
     private fun initTransferInfoState(): MutableStateFlow<TransferInfoUIState> {
@@ -66,19 +67,11 @@ class SendMessageViewModel @Inject constructor(
         }
     }
 
-    fun getTransferInfo() {
-        val itemToCalculate: List<String>
-        if (_transferInfoState.value !is TransferInfoUIState.PurchaseListGetSuccess) {
-            return
-        } else {
-            itemToCalculate =
-                (_transferInfoState.value as TransferInfoUIState.PurchaseListGetSuccess).expenseIdList
-        }
-        _transferInfoState.value = TransferInfoUIState.LoadingTransferInfo
+    private fun launchGetStartInfoUseCase(expenseIdList: List<String>) {
         viewModelScope.launch(ioDispatcher) {
             getTransferInfoUseCase(
                 groupId = groupId.value,
-                expenseIdList = emptyList()
+                expenseIdList = expenseIdList
             ).onSuccess {
                 _transferInfoState.emit(
                     TransferInfoUIState.TransferInfoGetSuccess(
@@ -86,7 +79,6 @@ class SendMessageViewModel @Inject constructor(
                         totalExpenseToGet = it.sumOf { item -> item.fee }
                     )
                 )
-
             }.onFailure {
                 it.printStackTrace()
                 _transferInfoState.emit(
@@ -98,17 +90,14 @@ class SendMessageViewModel @Inject constructor(
         }
     }
 
-    fun sendTransferMessage() {
-        val transferInfo: List<TransferDetailItem>
-        if (transferInfoState.value is TransferInfoUIState.TransferInfoGetSuccess) {
-            transferInfo =
-                (transferInfoState.value as TransferInfoUIState.TransferInfoGetSuccess).transferInfoList
-        } else {
-            return
+    fun getTransferInfo() {
+        (_transferInfoState.value as? TransferInfoUIState.PurchaseListGetSuccess)?.let {
+            launchGetStartInfoUseCase(it.expenseIdList)
+            _transferInfoState.value = TransferInfoUIState.LoadingTransferInfo
         }
+    }
 
-        _transferInfoState.value = TransferInfoUIState.SendingTransferMessage
-
+    private fun launchSendTransferMessageUseCase(transferInfo: List<TransferDetailItem>) {
         viewModelScope.launch {
             sendTransferMessageUseCase(
                 transferInfoList = transferInfo
@@ -120,6 +109,14 @@ class SendMessageViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    fun sendTransferMessage() {
+        (transferInfoState.value as? TransferInfoUIState.TransferInfoGetSuccess)?.let {
+            launchSendTransferMessageUseCase(it.transferInfoList)
+        }
+
+        _transferInfoState.value = TransferInfoUIState.SendingTransferMessage
     }
 
     fun setGroupId(groupId: String?) {

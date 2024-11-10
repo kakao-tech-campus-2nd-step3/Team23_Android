@@ -14,14 +14,13 @@ class SendTransferMessageUseCase @Inject constructor(
     private fun mapTransferInfoListToMessageList(
         transferInfoList: List<TransferDetailItem>,
         friends: List<UserFriendItem>
-    ): List<TransferMessage> =
-        transferInfoList.mapNotNull { transferInfo ->
-            friends.find { friend ->
-                friend.serviceId == transferInfo.serviceId
-            }?.uuid?.let {
-                TransferMessage(it, transferInfo.fee)
-            }
+    ): List<TransferMessage> = transferInfoList.mapNotNull { transferInfo ->
+        friends.find { friend ->
+            friend.serviceId == transferInfo.serviceId
+        }?.uuid?.let {
+            TransferMessage(it, transferInfo.fee)
         }
+    }
 
     suspend operator fun invoke(transferInfoList: List<TransferDetailItem>): Result<Unit> {
         val requestUser = userInfoRepository.getUserInfo() ?: return Result.failure(

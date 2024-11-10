@@ -11,25 +11,19 @@ sealed class TransferInfoUIState {
         val expenseIdList: List<String>
     ) : TransferInfoUIState()
 
-    data class PurchaseListGetError(
-        val message: String
-    ) : TransferInfoUIState()
+    data class PurchaseListGetError(val message: String) : TransferInfoUIState()
 
     data object LoadingTransferInfo : TransferInfoUIState()
     data class TransferInfoGetSuccess(
         val transferInfoList: List<TransferDetailItem>,
-        val totalExpenseToGet: Int,
+        val totalExpenseToGet: Int
     ) : TransferInfoUIState()
 
-    data class TransferInfoGetError(
-        val message: String
-    ) : TransferInfoUIState()
+    data class TransferInfoGetError(val message: String) : TransferInfoUIState()
 
     data object SendingTransferMessage : TransferInfoUIState()
 
     data object TransferMessageSendSuccess : TransferInfoUIState()
 
-    data class TransferMessageSendError(
-        val message: String
-    ) : TransferInfoUIState()
+    data class TransferMessageSendError(val message: String) : TransferInfoUIState()
 }

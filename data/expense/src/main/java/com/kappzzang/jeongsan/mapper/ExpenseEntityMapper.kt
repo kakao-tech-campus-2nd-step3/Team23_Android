@@ -17,11 +17,12 @@ object ExpenseEntityMapper {
         name = entity.name
     )
 
-    fun mapTransferEntityToModel(entity: TransferItemEntity): TransferDetailItem = TransferDetailItem(
-        name = entity.name,
-        serviceId = entity.serviceId.toString(),
-        profileImageUrl = entity.profileImageUrl,
-        fee = entity.expenseToTransfer,
-        memberId = entity.memberId.toString()
-    )
+    fun mapTransferEntityToModel(entity: TransferItemEntity): TransferDetailItem =
+        TransferDetailItem(
+            name = entity.name,
+            serviceId = entity.serviceId.toString(),
+            profileImageUrl = entity.profileImageUrl,
+            fee = entity.expenseToTransfer,
+            memberId = entity.memberId.toString()
+        )
 }

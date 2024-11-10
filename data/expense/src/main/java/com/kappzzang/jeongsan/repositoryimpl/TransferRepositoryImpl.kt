@@ -43,32 +43,28 @@ class TransferRepositoryImpl @Inject constructor(
         messageList: List<TransferMessage>,
         transferLink: String,
         payeeName: String
-    ): Result<Unit> {
-
-        return suspendCoroutine { continuation ->
-            messageList.forEach {
-                kakaoClient.sendCustomMessage(
-                    receiverUuids = listOf(it.uuid),
-                    templateId = TRANSFER_MESSAGE_TEMPLATE_ID,
-                    templateArgs = mapOf(
-                        "price" to it.fee.formatDecimalSeparator() + "원",
-                        "payee" to payeeName,
-                        "link" to transferLink
-                    )
-                ) { result, error ->
-                    if (error != null) {
-                        Log.e(TAG, "새 지출 등록 메시지 전송 실패", error)
-                        continuation.resume(Result.failure(error))
-                    } else if (result != null) {
-                        Log.i(TAG, "새 지출 등록 메시지 전송 성공")
-                        if (result.failureInfos != null) {
-                            Log.i(TAG, "일부에게 새 지출 등록 메시지 전송 실패")
-                        }
-                        continuation.resume(Result.success(Unit))
+    ): Result<Unit> = suspendCoroutine { continuation ->
+        messageList.forEach {
+            kakaoClient.sendCustomMessage(
+                receiverUuids = listOf(it.uuid),
+                templateId = TRANSFER_MESSAGE_TEMPLATE_ID,
+                templateArgs = mapOf(
+                    "price" to it.fee.formatDecimalSeparator() + "원",
+                    "payee" to payeeName,
+                    "link" to transferLink
+                )
+            ) { result, error ->
+                if (error != null) {
+                    Log.e(TAG, "새 지출 등록 메시지 전송 실패", error)
+                    continuation.resume(Result.failure(error))
+                } else if (result != null) {
+                    Log.i(TAG, "새 지출 등록 메시지 전송 성공")
+                    if (result.failureInfos != null) {
+                        Log.i(TAG, "일부에게 새 지출 등록 메시지 전송 실패")
                     }
+                    continuation.resume(Result.success(Unit))
                 }
             }
-
         }
     }
 

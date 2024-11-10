@@ -7,9 +7,8 @@ import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class ExpenseMessageRepositoryImpl @Inject constructor(
-    private val kakaoClient: TalkApiClient
-) : ExpenseMessageRepository {
+class ExpenseMessageRepositoryImpl @Inject constructor(private val kakaoClient: TalkApiClient) :
+    ExpenseMessageRepository {
 
     override suspend fun sendNewExpenseMessage(
         expenseId: String,
