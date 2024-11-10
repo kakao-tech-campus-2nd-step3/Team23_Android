@@ -1,6 +1,5 @@
 package com.kappzzang.jeongsan.login
 
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
@@ -59,15 +58,10 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun navigateToMainPage() {
-        val uri = intent?.data
-        val intent = when (uri?.path) {
-            "/inviteGroup" -> appNavigator.navigateToMainPageAndEnterGroup(
-                this,
-                Uri.parse(uri.getQueryParameter("groupId") ?: "")
-            )
-            else -> appNavigator.navigateToMainPage(
-                this
-            )
+        val intent = if (intent.data == null) {
+            appNavigator.navigateToMainPage(this)
+        } else {
+            appNavigator.navigateToMainPageAndWithUri(this, intent.data!!)
         }
         startActivity(intent)
     }

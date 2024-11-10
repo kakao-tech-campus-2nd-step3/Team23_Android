@@ -12,7 +12,7 @@ class LoginNavigatorImpl @Inject constructor() : LoginNavigator {
         Intent(packageContext, LoginActivity::class.java)
 
     override fun loginAndEnterGroup(packageContext: Context, inviteGroupId: String): Intent {
-        val inviteGroupUri = Uri.parse("jeongsan://app/inviteGroup/").buildUpon()
+        val inviteGroupUri = Uri.parse("jeongsan://inviteGroup/").buildUpon()
             .appendQueryParameter("groupId", inviteGroupId)
             .build()
         return Intent(packageContext, LoginActivity::class.java).apply {
@@ -25,7 +25,7 @@ class LoginNavigatorImpl @Inject constructor() : LoginNavigator {
         groupId: String,
         expenseId: String,
     ): Intent {
-        val newExpenseUri = Uri.parse("jeongsan://app/newExpense/").buildUpon()
+        val newExpenseUri = Uri.parse("jeongsan://newExpense/").buildUpon()
             .appendQueryParameter("groupId", groupId)
             .appendQueryParameter("expenseId", expenseId)
             .build()
