@@ -39,8 +39,8 @@ class ExpenseListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.expenseListRecyclerview.adapter = ExpenseListAdapter {
-            activityViewModel.clickExpenseItem(it, ExpenseState.CONFIRMED)
+        binding.expenseListRecyclerview.adapter = ExpenseListAdapter { expenseId, isPayer ->
+            activityViewModel.clickExpenseItem(expenseId, ExpenseState.CONFIRMED, isPayer)
         }
 
         binding.expenseListRecyclerview.layoutManager = LinearLayoutManager(this.context)

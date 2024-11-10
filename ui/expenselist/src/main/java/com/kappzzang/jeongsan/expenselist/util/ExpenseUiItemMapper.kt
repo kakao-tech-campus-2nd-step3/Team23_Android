@@ -17,7 +17,8 @@ object ExpenseUiItemMapper {
             name = item.name,
             date = item.date,
             categoryColor = ColorParser.parseColor(item.categoryColor),
-            price = "${item.price.formatDecimalSeparator()} $CURRENCY_POSTFIX"
+            price = "${item.price.formatDecimalSeparator()} $CURRENCY_POSTFIX",
+            isMyPayment = item.isMyPayment
         )
     }
 

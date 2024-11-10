@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-data class SelectedExpenseData(val expenseId: String, val editable: Boolean)
+data class SelectedExpenseData(val expenseId: String, val editable: Boolean, val isPayer: Boolean)
 
 @HiltViewModel
 class ExpenseListViewModel @Inject constructor(
@@ -28,7 +28,10 @@ class ExpenseListViewModel @Inject constructor(
 
     val groupId = _groupId.asStateFlow()
 
-    private val _selectedExpense = MutableStateFlow(SelectedExpenseData("", false))
+    private val _selectedExpense = MutableStateFlow(SelectedExpenseData("",
+        editable = false,
+        isPayer = false
+    ))
     val selectedExpense = _selectedExpense.asStateFlow()
 
     private val _completeGroupState = MutableStateFlow(CompleteGroupState.IDLE)
@@ -53,16 +56,17 @@ class ExpenseListViewModel @Inject constructor(
         fetchGroupInfo()
     }
 
-    fun clickExpenseItem(expenseId: String, state: ExpenseState) {
+    fun clickExpenseItem(expenseId: String, state: ExpenseState, isPayer: Boolean) {
         _selectedExpense.value =
             SelectedExpenseData(
                 expenseId,
-                (state == ExpenseState.NOT_CONFIRMED) || (state == ExpenseState.CONFIRMED)
+                (state == ExpenseState.NOT_CONFIRMED) || (state == ExpenseState.CONFIRMED),
+                isPayer
             )
     }
 
     fun resetExpenseSelection() {
-        _selectedExpense.value = SelectedExpenseData("", false)
+        _selectedExpense.value = SelectedExpenseData("", editable = false, isPayer = false)
     }
 
     fun completeGroup() {

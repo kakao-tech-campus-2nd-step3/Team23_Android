@@ -39,9 +39,8 @@ class CompleteExpenseListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // UI 확인을 위한 임시 코드
-        binding.completeExpenseListRecyclerview.adapter = ExpenseListAdapter {
-            activityViewModel.clickExpenseItem(it, ExpenseState.TRANSFERED)
+        binding.completeExpenseListRecyclerview.adapter = ExpenseListAdapter { expenseId, isPayer ->
+            activityViewModel.clickExpenseItem(expenseId, ExpenseState.TRANSFERED, isPayer)
         }
         binding.completeExpenseListRecyclerview.layoutManager = LinearLayoutManager(this.context)
         viewModel.onFragmentStart(activityViewModel.groupId.value)

@@ -33,8 +33,8 @@ import com.kappzzang.jeongsan.navigation.ExpenseDetailNavigator
 import com.kappzzang.jeongsan.navigation.SendMessageNavigator
 import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ExpenseListActivity : AppCompatActivity() {
@@ -86,7 +86,7 @@ class ExpenseListActivity : AppCompatActivity() {
                 viewModel.selectedExpense.collect {
                     if (it.expenseId.isNotEmpty()) {
                         viewModel.resetExpenseSelection()
-                        startExpenseDetailActivity(it.expenseId, it.editable)
+                        startExpenseDetailActivity(it.expenseId, it.editable, it.isPayer)
                     }
                 }
             }
@@ -155,8 +155,8 @@ class ExpenseListActivity : AppCompatActivity() {
                             Toast.makeText(
                                 this@ExpenseListActivity,
                                 "\"${viewModel.groupUIItem.value.groupSubject} " +
-                                    "${viewModel.groupUIItem.value.groupName}\" " +
-                                    getString(R.string.complete_group_success),
+                                        "${viewModel.groupUIItem.value.groupName}\" " +
+                                        getString(R.string.complete_group_success),
                                 Toast.LENGTH_SHORT
                             ).show()
                             finish()
@@ -298,14 +298,18 @@ class ExpenseListActivity : AppCompatActivity() {
         activityReceiptCameraLauncher.launch(intent)
     }
 
-    // TODO: 선택한 지출 확인용 임시 코드
-    private fun startExpenseDetailActivity(expenseId: String, isEditable: Boolean) {
+    private fun startExpenseDetailActivity(
+        expenseId: String,
+        isEditable: Boolean,
+        isPayer: Boolean
+    ) {
         val groupId = viewModel.groupId.value
         val intent = expenseDetailNavigator.navigateToExpenseDetail(
             packageContext = this,
             groupId = groupId,
             expenseId = expenseId,
-            editable = isEditable
+            editable = isEditable,
+            isPayer = isPayer
         )
         startActivity(intent)
     }

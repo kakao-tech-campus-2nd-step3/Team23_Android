@@ -10,7 +10,7 @@ import com.kappzzang.jeongsan.data.ListViewItemPositionInfo
 import com.kappzzang.jeongsan.expenselist.databinding.ItemExpenseBinding
 import com.kappzzang.jeongsan.util.DateConverter.formatToExpenseDate
 
-class ExpenseListAdapter(private val onExpenseItemClickListener: (expenseId: String) -> Unit) :
+class ExpenseListAdapter(private val onExpenseItemClickListener: (expenseId: String, isPayer: Boolean) -> Unit) :
     ListAdapter<ExpenseUiItem, ExpenseListAdapter.MyViewHolder>(
         object :
             DiffUtil.ItemCallback<ExpenseUiItem>() {
@@ -26,11 +26,13 @@ class ExpenseListAdapter(private val onExpenseItemClickListener: (expenseId: Str
 
     inner class MyViewHolder(
         private val binding: ItemExpenseBinding,
-        private val onExpenseItemClickListener: (expenseId: String) -> Unit
+        private val onExpenseItemClickListener: (expenseId: String, isPayer: Boolean) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
-                onExpenseItemClickListener.invoke(binding.expenseItem?.id ?: "")
+                binding.expenseItem?.let {
+                    onExpenseItemClickListener.invoke(it.id, it.isMyPayment)
+                }
             }
         }
 
