@@ -46,3 +46,5 @@ project(":data").children.forEach { module -> module.name = "data-${module.name}
 include(":common:navigation")
 include(":common:retrofit")
 include(":build-config")
+include(":ui:sendmessage")
+include(":common:dispatcher")

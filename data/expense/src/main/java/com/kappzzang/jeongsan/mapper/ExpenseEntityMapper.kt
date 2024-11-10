@@ -1,10 +1,13 @@
 package com.kappzzang.jeongsan.mapper
 
+import com.kappzzang.jeongsan.entity.CategoryEntity
 import com.kappzzang.jeongsan.entity.ExpenseItemEntity
+import com.kappzzang.jeongsan.entity.ResponseWithExpenseIdDTO
 import com.kappzzang.jeongsan.entity.expensedetail.ExpenseDetailEntity
 import com.kappzzang.jeongsan.entity.expensedetail.ExpenseDetailItemEntity
 import com.kappzzang.jeongsan.entity.expenselist.ExpenseRemoteEntity
 import com.kappzzang.jeongsan.entity.expenselist.ExpenseRoomEntity
+import com.kappzzang.jeongsan.model.ExpenseCategory
 import com.kappzzang.jeongsan.model.ExpenseDetailItem
 import com.kappzzang.jeongsan.model.ExpenseItem
 import com.kappzzang.jeongsan.model.ExpenseItemWithCategory
@@ -23,7 +26,8 @@ object ExpenseEntityMapper {
                 state = ExpenseState.entries[entity.expenseState]
             ),
             date = DateConverter.parseFromString(entity.createdTime),
-            categoryColor = entity.categoryColor
+            categoryColor = entity.categoryColor,
+            payerUuid = ""
         )
 
     fun mapExpenseEntityToModel(
@@ -37,7 +41,8 @@ object ExpenseEntityMapper {
             state = mapExpenseStateToDomainState(entity.state, checked)
         ),
         date = DateConverter.parseFromString(entity.createdAt),
-        categoryColor = entity.category.color
+        categoryColor = entity.category.color,
+        payerUuid = entity.payerUuid
     )
 
     fun mapDetailedExpenseEntityToModel(
@@ -53,18 +58,19 @@ object ExpenseEntityMapper {
         ),
         expenseImageUrl = entity.imageUrl,
         expenseDetails = entity.detailItems.map {
-            mapExpenseDetailEntityToModel(it)
+            mapExpenseDetailItemEntityToModel(it)
         }
     )
 
-    fun mapExpenseDetailEntityToModel(entity: ExpenseDetailItemEntity): ExpenseDetailItem =
-        ExpenseDetailItem(
-            selectedQuantity = entity.quantityConsumed,
-            itemQuantity = entity.quantity,
-            id = entity.id.toString(),
-            itemPrice = entity.unitPrice,
-            itemName = entity.name
-        )
+    private fun mapExpenseDetailItemEntityToModel(
+        entity: ExpenseDetailItemEntity
+    ): ExpenseDetailItem = ExpenseDetailItem(
+        selectedQuantity = entity.quantityConsumed,
+        itemQuantity = entity.quantity,
+        id = entity.id.toString(),
+        itemPrice = entity.unitPrice,
+        itemName = entity.name
+    )
 
     fun mapReceiptDetailItemToExpenseItemEntity(model: ReceiptDetailItem): ExpenseItemEntity =
         ExpenseItemEntity(
@@ -91,5 +97,23 @@ object ExpenseEntityMapper {
                 throw IllegalStateException("Invalid Expense State")
             }
         }
+    }
+
+    fun mapResponseWithExpenseEntityToModel(entity: ResponseWithExpenseIdDTO): String =
+        entity.expenseId
+
+    fun mapCategoryToModel(entity: CategoryEntity): ExpenseCategory {
+        val colorCode =
+            if (entity.color.startsWith("#")) {
+                entity.color
+            } else {
+                "#${entity.color}"
+            }
+
+        return ExpenseCategory(
+            id = entity.id.toString(),
+            color = colorCode,
+            name = entity.name
+        )
     }
 }

@@ -9,6 +9,8 @@ data class ExpenseRemoteEntity(
     val id: Long,
     @SerializedName("title")
     val title: String,
+    @SerializedName("payerId")
+    val payerUuid: String,
     @SerializedName("totalPrice")
     val totalPrice: Int,
     @SerializedName("createdAt")
@@ -16,5 +18,9 @@ data class ExpenseRemoteEntity(
     @SerializedName("state")
     val state: String,
     @SerializedName("category")
-    val category: CategoryEntity
+    val category: CategoryEntity,
+    @SerializedName("checked")
+    val checked: Boolean? = null,
+    @SerializedName("personalExpense")
+    val myExpense: Int? = null
 )

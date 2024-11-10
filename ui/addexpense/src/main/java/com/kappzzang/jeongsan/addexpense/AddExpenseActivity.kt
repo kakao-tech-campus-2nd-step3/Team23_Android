@@ -14,10 +14,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.kappzzang.jeongsan.addexpense.colorpicker.ColorPickerDialog
 import com.kappzzang.jeongsan.addexpense.databinding.ActivityAddExpenseBinding
 import com.kappzzang.jeongsan.intentcontract.AddExpenseContract
 import com.kappzzang.jeongsan.model.OcrResultResponse
-import com.kappzzang.jeongsan.navigation.AppNavigator
+import com.kappzzang.jeongsan.navigation.ExpenseDetailNavigator
 import com.kappzzang.jeongsan.util.Base64BitmapEncoder
 import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,7 +28,10 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class AddExpenseActivity : AppCompatActivity() {
     @Inject
-    lateinit var appNavigator: AppNavigator
+    lateinit var appNavigator: ExpenseDetailNavigator
+    private val colorPickerDialogFragment: ColorPickerDialog by lazy {
+        createColorPickerDialogFragment()
+    }
     private val viewModel: AddExpenseViewModel by viewModels()
     private val binding: ActivityAddExpenseBinding by lazy {
         ActivityAddExpenseBinding.inflate(
@@ -47,16 +51,14 @@ class AddExpenseActivity : AppCompatActivity() {
         initiateRecyclerView()
         setContentView(binding.root)
 
-        // TODO: 임시 연결용 코드
         binding.addexpenseSubmitButton.setOnClickListener {
-            if (viewModel.uploadExpense()) {
-                startActivity(appNavigator.navigateToExpenseDetail(this))
-                finish()
-                return@setOnClickListener
+            if (!viewModel.uploadExpense()) {
+                Toast.makeText(
+                    this,
+                    getString(R.string.add_expense_complete_form_notify),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-
-            // TODO: 값이 완전히 채워지지 않은 경우
-            Toast.makeText(this, "지출 내역을 완성해주세요!", Toast.LENGTH_SHORT).show()
         }
 
         lifecycleScope.launch {
@@ -66,6 +68,55 @@ class AddExpenseActivity : AppCompatActivity() {
                 }
             }
         }
+        subscribeExpenseUploadState()
+        binding.expenseSelectedCategory.setOnClickListener {
+            showColorPickerDialog()
+        }
+    }
+
+    private fun createColorPickerDialogFragment(): ColorPickerDialog {
+        val dialog = ColorPickerDialog()
+        dialog.dialog?.setCanceledOnTouchOutside(true)
+        return dialog
+    }
+
+    private fun subscribeExpenseUploadState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uploadingProgress.collect { state ->
+                    when (state) {
+                        ExpenseUploadingProgress.NOT_STARTED -> {
+                            viewModel.setInputsLock(false)
+                        }
+                        ExpenseUploadingProgress.UPLOADING -> {
+                            viewModel.setInputsLock(true)
+                        }
+                        ExpenseUploadingProgress.UPLOAD_SUCCESS -> {
+                            startExpenseDetailActivityAndFinish()
+                        }
+                        ExpenseUploadingProgress.UPLOAD_FAILED -> {
+                            viewModel.setInputsLock(false)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun startExpenseDetailActivityAndFinish() {
+        startActivity(
+            appNavigator.navigateToExpenseDetail(
+                packageContext = this,
+                groupId = viewModel.groupId.value,
+                expenseId = viewModel.createdExpenseId.value,
+                editable = true
+            )
+        )
+        finish()
+    }
+
+    private fun showColorPickerDialog() {
+        colorPickerDialogFragment.show(supportFragmentManager, "colorPickerDialog")
     }
 
     private fun updateExpenseImage(imageBitmap: Bitmap?) {
@@ -89,6 +140,7 @@ class AddExpenseActivity : AppCompatActivity() {
     }
 
     private fun initiateViewModel() {
+        getGroupId()
         if (checkIfReceiptMode()) {
             viewModel.setManualMode(AddExpenseViewModel.Companion.ManualMode.RECEIPT)
             getExpenseData()
@@ -125,6 +177,22 @@ class AddExpenseActivity : AppCompatActivity() {
             adapter = ExpenseItemListAdapter(viewModel::addNewExpense, viewModel::removeExpense)
             layoutManager =
                 LinearLayoutManager(this@AddExpenseActivity, LinearLayoutManager.VERTICAL, false)
+        }
+    }
+
+    private fun getGroupId() {
+        val groupId = intent?.getParcelableData<String>(
+            AddExpenseContract.GROUP_ID
+        )
+
+        groupId?.let {
+            viewModel.initGroupId(it)
+        } ?: let {
+            Toast.makeText(
+                this,
+                getString(R.string.add_expense_error_message_load_group_info),
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 

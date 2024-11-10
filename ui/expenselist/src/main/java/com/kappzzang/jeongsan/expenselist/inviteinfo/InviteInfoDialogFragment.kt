@@ -37,10 +37,11 @@ class InviteInfoDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        inviteViewModel.getInviteInfo(expenseViewModel.groupId.value)
         setDialogStyle()
         initRecyclerView()
         setCloseButton()
+
         Log.d(
             TAG,
             "id: ${expenseViewModel.groupId.value}, name: ${expenseViewModel.groupName.value}"
@@ -58,11 +59,11 @@ class InviteInfoDialogFragment : DialogFragment() {
     }
 
     private fun initRecyclerView() {
-        memberAdapter = MemberInfoAdapter { memberId ->
+        memberAdapter = MemberInfoAdapter { memberUuid ->
             inviteViewModel.sendInviteMessage(
                 expenseViewModel.groupId.value,
                 expenseViewModel.groupName.value,
-                memberId
+                listOf(memberUuid)
             )
         }
         binding.memberContentRecyclerview.apply {

@@ -1,7 +1,7 @@
 package com.kappzzang.jeongsan.repository
 
-import com.kappzzang.jeongsan.data.AuthData
+import com.kappzzang.jeongsan.data.KakaoAuthData
 
 interface KakaoAuthenticationRepository {
-    suspend fun refreshKakaoToken(authData: AuthData): AuthData
+    suspend fun refreshKakaoToken(authData: KakaoAuthData): KakaoAuthData
 }

@@ -1,9 +1,11 @@
 package com.kappzzang.jeongsan.di
 
 import com.kappzzang.jeongsan.repository.KakaoAuthenticationRepository
+import com.kappzzang.jeongsan.repository.ServerAuthenticationRepository
 import com.kappzzang.jeongsan.repository.UserInfoRepository
 import com.kappzzang.jeongsan.repositoryimpl.AuthenticationRepositoryImpl
 import com.kappzzang.jeongsan.repositoryimpl.KakaoAuthenticationRepositoryImpl
+import com.kappzzang.jeongsan.repositoryimpl.ServerAuthenticationRepositoryImpl
 import com.kappzzang.jeongsan.repositoryimpl.UserInfoRepositoryImpl
 import com.kappzzang.jeongsan.util.AuthenticationRepository
 import dagger.Binds
@@ -32,4 +34,10 @@ abstract class UserRepositoryModule {
     abstract fun bindAuthenticationRepository(
         authenticationRepositoryImpl: AuthenticationRepositoryImpl
     ): AuthenticationRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindServerAuthenticationRepository(
+        serverAuthenticationRepositoryImpl: ServerAuthenticationRepositoryImpl
+    ): ServerAuthenticationRepository
 }

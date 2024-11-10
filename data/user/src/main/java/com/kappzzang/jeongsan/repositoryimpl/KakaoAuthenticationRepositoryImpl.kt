@@ -1,16 +1,16 @@
 package com.kappzzang.jeongsan.repositoryimpl
 
 import android.util.Log
-import com.kappzzang.jeongsan.data.AuthData
-import com.kappzzang.jeongsan.datasource.KakaoAuthenticationDataSource
-import com.kappzzang.jeongsan.mapper.KakaoOAuthTokenAuthDataMapper.mapRefreshDtoToAuthData
+import com.kappzzang.jeongsan.data.KakaoAuthData
+import com.kappzzang.jeongsan.datasource.KakaoAuthRemoteDataSource
+import com.kappzzang.jeongsan.mapper.KakaoOAuthTokenKakaoAuthDataMapper.mapRefreshDtoToAuthData
 import com.kappzzang.jeongsan.repository.KakaoAuthenticationRepository
 import javax.inject.Inject
 
 class KakaoAuthenticationRepositoryImpl @Inject constructor(
-    private val dataSource: KakaoAuthenticationDataSource
+    private val dataSource: KakaoAuthRemoteDataSource
 ) : KakaoAuthenticationRepository {
-    override suspend fun refreshKakaoToken(authData: AuthData): AuthData {
+    override suspend fun refreshKakaoToken(authData: KakaoAuthData): KakaoAuthData {
         val response = dataSource.refreshKakaoToken(authData.kakaoRefreshToken)
 
         if (!response.isSuccessful) {
@@ -21,7 +21,7 @@ class KakaoAuthenticationRepositoryImpl @Inject constructor(
         response.body()?.let {
             return mapRefreshDtoToAuthData(it)
         } ?: let {
-            return AuthData("", 0L, "", null)
+            return KakaoAuthData("", 0L, "")
         }
     }
 }

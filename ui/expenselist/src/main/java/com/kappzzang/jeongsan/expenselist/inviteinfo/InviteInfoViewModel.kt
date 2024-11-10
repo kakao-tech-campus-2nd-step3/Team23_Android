@@ -7,7 +7,7 @@ import com.kappzzang.jeongsan.usecase.GetInviteInfoUseCase
 import com.kappzzang.jeongsan.usecase.SendInviteMessageUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -15,22 +15,21 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class InviteInfoViewModel @Inject constructor(
     private val getInviteInfoUseCase: GetInviteInfoUseCase,
-    private val sendInviteMessageUseCase: SendInviteMessageUseCase
+    private val sendInviteMessageUseCase: SendInviteMessageUseCase,
+    private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _inviteInfo = MutableStateFlow<List<MemberItem>>(emptyList())
     val inviteInfo: StateFlow<List<MemberItem>> = _inviteInfo
 
-    init {
-        // 더미 데이터 삽입 & 적용
-        viewModelScope.launch(Dispatchers.IO) {
-            getInviteInfoUseCase.insertDummyData()
-            _inviteInfo.emit(getInviteInfoUseCase())
+    fun getInviteInfo(groupId: String) {
+        viewModelScope.launch(ioDispatcher) {
+            _inviteInfo.emit(getInviteInfoUseCase.invoke(groupId))
         }
     }
 
-    fun sendInviteMessage(groupId: String, groupName: String, memberId: String) =
+    fun sendInviteMessage(groupId: String, groupName: String, memberUuid: List<String>) =
         viewModelScope.launch {
-            sendInviteMessageUseCase.invoke(groupId, groupName, memberId)
+            sendInviteMessageUseCase.invoke(groupId, groupName, memberUuid)
         }
 }
