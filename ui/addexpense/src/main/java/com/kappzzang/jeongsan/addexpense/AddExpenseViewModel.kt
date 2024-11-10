@@ -211,6 +211,7 @@ class AddExpenseViewModel @Inject constructor(
                 groupId = _groupId.value,
                 memberUuidList = memberUuidList
             )
+            _uploadingProgress.emit(ExpenseUploadUIState.UploadAndSendSuccess(expenseId))
         }
     }
 
