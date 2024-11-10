@@ -26,7 +26,7 @@ class TransferRepositoryImpl @Inject constructor(
         )
 
         return result.mapCatching {
-            it.transferList.map { transferItemEntity ->
+            it.map { transferItemEntity ->
                 ExpenseEntityMapper.mapTransferEntityToModel(transferItemEntity)
             }
         }

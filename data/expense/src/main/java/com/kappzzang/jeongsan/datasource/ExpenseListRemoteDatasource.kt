@@ -4,11 +4,11 @@ import android.util.Log
 import com.kappzzang.jeongsan.api.ReceiptRetrofitService
 import com.kappzzang.jeongsan.entity.GetCategoryListResponseDTO
 import com.kappzzang.jeongsan.entity.GetTransferListPayloadDTO
-import com.kappzzang.jeongsan.entity.GetTransferListResponseDTO
 import com.kappzzang.jeongsan.entity.ImageEntity
 import com.kappzzang.jeongsan.entity.ResponseWithExpenseIdDTO
 import com.kappzzang.jeongsan.entity.SaveExpensePayloadDTO
 import com.kappzzang.jeongsan.entity.SimpleExpenseItemEntity
+import com.kappzzang.jeongsan.entity.TransferItemEntity
 import com.kappzzang.jeongsan.entity.UpdateExpenseStatePayloadDTO
 import com.kappzzang.jeongsan.entity.expenselist.ExpenseListResponseDTO
 import com.kappzzang.jeongsan.mapper.ExpenseDetailMapper
@@ -134,7 +134,7 @@ class ExpenseListRemoteDatasource @Inject constructor(
     suspend fun getTransferList(
         groupId: String,
         expenseList: List<String>
-    ): Result<GetTransferListResponseDTO> {
+    ): Result<List<TransferItemEntity>> {
         try {
             val body = GetTransferListPayloadDTO(
                 expenseList = expenseList.map {
