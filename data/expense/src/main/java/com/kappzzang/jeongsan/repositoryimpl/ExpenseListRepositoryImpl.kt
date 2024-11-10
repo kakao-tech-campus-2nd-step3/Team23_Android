@@ -1,5 +1,6 @@
 package com.kappzzang.jeongsan.repositoryimpl
 
+import android.util.Log
 import com.kappzzang.jeongsan.datasource.ExpenseListRemoteDatasource
 import com.kappzzang.jeongsan.entity.expenselist.ExpenseListResponseDTO
 import com.kappzzang.jeongsan.mapper.ExpenseEntityMapper
@@ -9,16 +10,16 @@ import com.kappzzang.jeongsan.model.ExpenseListResponse
 import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.model.ReceiptItem
 import com.kappzzang.jeongsan.repository.ExpenseRepository
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
 data class ExpenseListCachingKey(val expenseState: ExpenseState, val groupId: String)
 
 class ExpenseListRepositoryImpl @Inject constructor(
     private val dataSource: ExpenseListRemoteDatasource,
 
-) : ExpenseRepository {
+    ) : ExpenseRepository {
 
     private val cachedData = HashMap<ExpenseListCachingKey, ExpenseListResponse>()
 
@@ -34,6 +35,17 @@ class ExpenseListRepositoryImpl @Inject constructor(
                 ExpenseEntityMapper.mapCategoryToModel(category)
             }
         }
+
+    private fun validateServiceIds(searcherServiceId: String, payerServiceId: Long?): Boolean {
+        var valid = true
+        if (searcherServiceId.isEmpty()) {
+            valid = false
+        }
+        if (payerServiceId == null) {
+            valid = false
+        }
+        return valid
+    }
 
     override fun getExpenseList(
         groupId: String,
@@ -88,10 +100,18 @@ class ExpenseListRepositoryImpl @Inject constructor(
         expenseState,
         groupId = groupId
     ).mapCatching {
+        if (it.expenseList.any { expense ->
+                validateServiceIds(searcherServiceId, expense.payerServiceId)
+            }) {
+            Log.w("KSC", "잘못된 서비스 ID 값을 포함합니다.")
+        }
         mapResponseBody(it, searcherServiceId)
     }
 
-    private fun mapResponseBody(body: ExpenseListResponseDTO, searcherServiceId: String): ExpenseListResponse {
+    private fun mapResponseBody(
+        body: ExpenseListResponseDTO,
+        searcherServiceId: String
+    ): ExpenseListResponse {
         val expenses = body.expenseList.map {
             ExpenseListEntityMapper.mapExpenseEntityToModel(it, searcherServiceId)
         }

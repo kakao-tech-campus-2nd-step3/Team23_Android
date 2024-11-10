@@ -1,7 +1,6 @@
 package com.kappzzang.jeongsan.mapper
 
 import com.kappzzang.jeongsan.entity.expenselist.ExpenseRemoteEntity
-import com.kappzzang.jeongsan.entity.expenselist.ExpenseRoomEntity
 import com.kappzzang.jeongsan.model.ExpenseItem
 import com.kappzzang.jeongsan.model.ExpenseItemWithCategory
 import com.kappzzang.jeongsan.model.ExpenseState
