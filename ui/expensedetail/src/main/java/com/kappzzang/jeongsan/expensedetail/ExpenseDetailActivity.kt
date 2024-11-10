@@ -69,7 +69,7 @@ class ExpenseDetailActivity : AppCompatActivity() {
     }
 
     private fun clickSubmitButton() {
-        viewModel.clickSaveDetailsAndClose()
+        viewModel.clickSubmitButton()
     }
 
     private fun clickToStatusButton() {

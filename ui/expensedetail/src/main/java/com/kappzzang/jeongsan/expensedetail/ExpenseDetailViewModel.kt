@@ -13,6 +13,8 @@ import kotlinx.coroutines.launch
 
 enum class ExpenseDetailPage { EXPENSE_DETAIL, SELECTION_STATUS }
 
+enum class ExpenseDetailState { IDLE, UPLOADING, SUCCESS, FAILED, SWITCHING_TO_PENDING }
+
 @HiltViewModel
 class ExpenseDetailViewModel @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher,
@@ -84,7 +86,20 @@ class ExpenseDetailViewModel @Inject constructor(
         }
     }
 
-    fun clickSaveDetailsAndClose() {
+    fun clickSubmitButton() {
+        if(editable.value == true) {
+            clickSaveDetailsAndClose()
+        }
+        else {
+            dismissAndClose()
+        }
+    }
+
+    private fun dismissAndClose() {
+        _expenseDetailState.value = ExpenseDetailState.SUCCESS
+    }
+
+    private fun clickSaveDetailsAndClose() {
         _expenseDetailState.value = ExpenseDetailState.UPLOADING
     }
 
@@ -108,5 +123,3 @@ class ExpenseDetailViewModel @Inject constructor(
         }
     }
 }
-
-enum class ExpenseDetailState { IDLE, UPLOADING, SUCCESS, FAILED, SWITCHING_TO_PENDING }
