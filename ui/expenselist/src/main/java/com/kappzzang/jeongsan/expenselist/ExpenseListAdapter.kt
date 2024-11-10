@@ -10,19 +10,18 @@ import com.kappzzang.jeongsan.data.ListViewItemPositionInfo
 import com.kappzzang.jeongsan.expenselist.databinding.ItemExpenseBinding
 import com.kappzzang.jeongsan.util.DateConverter.formatToExpenseDate
 
-class ExpenseListAdapter(private val onExpenseItemClickListener: (expenseId: String, isPayer: Boolean) -> Unit) :
-    ListAdapter<ExpenseUiItem, ExpenseListAdapter.MyViewHolder>(
-        object :
-            DiffUtil.ItemCallback<ExpenseUiItem>() {
-            override fun areItemsTheSame(oldItem: ExpenseUiItem, newItem: ExpenseUiItem): Boolean =
-                oldItem.id == newItem.id
+class ExpenseListAdapter(
+    private val onExpenseItemClickListener: (expenseId: String, isPayer: Boolean) -> Unit
+) : ListAdapter<ExpenseUiItem, ExpenseListAdapter.MyViewHolder>(
+    object :
+        DiffUtil.ItemCallback<ExpenseUiItem>() {
+        override fun areItemsTheSame(oldItem: ExpenseUiItem, newItem: ExpenseUiItem): Boolean =
+            oldItem.id == newItem.id
 
-            override fun areContentsTheSame(
-                oldItem: ExpenseUiItem,
-                newItem: ExpenseUiItem
-            ): Boolean = oldItem == newItem
-        }
-    ) {
+        override fun areContentsTheSame(oldItem: ExpenseUiItem, newItem: ExpenseUiItem): Boolean =
+            oldItem == newItem
+    }
+) {
 
     inner class MyViewHolder(
         private val binding: ItemExpenseBinding,

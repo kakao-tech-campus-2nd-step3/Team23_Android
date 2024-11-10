@@ -33,8 +33,8 @@ import com.kappzzang.jeongsan.navigation.ExpenseDetailNavigator
 import com.kappzzang.jeongsan.navigation.SendMessageNavigator
 import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ExpenseListActivity : AppCompatActivity() {
@@ -155,8 +155,8 @@ class ExpenseListActivity : AppCompatActivity() {
                             Toast.makeText(
                                 this@ExpenseListActivity,
                                 "\"${viewModel.groupUIItem.value.groupSubject} " +
-                                        "${viewModel.groupUIItem.value.groupName}\" " +
-                                        getString(R.string.complete_group_success),
+                                    "${viewModel.groupUIItem.value.groupName}\" " +
+                                    getString(R.string.complete_group_success),
                                 Toast.LENGTH_SHORT
                             ).show()
                             finish()

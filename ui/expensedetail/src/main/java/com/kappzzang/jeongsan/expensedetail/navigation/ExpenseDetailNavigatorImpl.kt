@@ -13,7 +13,7 @@ class ExpenseDetailNavigatorImpl @Inject constructor() : ExpenseDetailNavigator 
         expenseId: String,
         groupId: String,
         editable: Boolean,
-        isPayer: Boolean,
+        isPayer: Boolean
     ): Intent = Intent(packageContext, ExpenseDetailActivity::class.java)
         .apply {
             this.putExtra(ExpenseDetailContract.EXPENSE_ID, expenseId)

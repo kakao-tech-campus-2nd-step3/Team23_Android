@@ -28,10 +28,13 @@ class ExpenseListViewModel @Inject constructor(
 
     val groupId = _groupId.asStateFlow()
 
-    private val _selectedExpense = MutableStateFlow(SelectedExpenseData("",
-        editable = false,
-        isPayer = false
-    ))
+    private val _selectedExpense = MutableStateFlow(
+        SelectedExpenseData(
+            "",
+            editable = false,
+            isPayer = false
+        )
+    )
     val selectedExpense = _selectedExpense.asStateFlow()
 
     private val _completeGroupState = MutableStateFlow(CompleteGroupState.IDLE)
