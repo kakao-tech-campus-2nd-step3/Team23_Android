@@ -4,4 +4,5 @@ object ExpenseDetailContract {
     const val GROUP_ID = "groupId"
     const val EXPENSE_ID = "expenseId"
     const val EDITABLE = "editable"
+    const val IS_PAYER = "is_payer"
 }
