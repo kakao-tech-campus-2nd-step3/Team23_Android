@@ -42,9 +42,9 @@ class SendMessageActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.transferInfoState.collect {
                     when(it) {
-                        TransferInfoUIState.Idle -> { }
-                        TransferInfoUIState.LoadingPurchaseList -> TODO()
-                        TransferInfoUIState.LoadingTransferInfo -> TODO()
+                        TransferInfoUIState.Idle -> { viewModel.getPurchasedExpenseList() }
+                        TransferInfoUIState.LoadingPurchaseList -> {}
+                        TransferInfoUIState.LoadingTransferInfo -> {}
                         is TransferInfoUIState.PurchaseListGetError -> sendToast(it.message)
                         is TransferInfoUIState.PurchaseListGetSuccess -> {
                             sendToast("Count: ${it.size}, Total: ${it.totalPay}")

@@ -32,11 +32,10 @@ class SendMessageViewModel @Inject constructor(
     private fun initTransferInfoState(): MutableStateFlow<TransferInfoUIState> {
         val state = MutableStateFlow<TransferInfoUIState>(TransferInfoUIState.Idle)
 
-
         return state
     }
 
-    private fun getPurchasedExpenseList() {
+    fun getPurchasedExpenseList() {
         if (_transferInfoState.value != TransferInfoUIState.Idle) {
             return
         }
@@ -80,7 +79,7 @@ class SendMessageViewModel @Inject constructor(
             delay(1000)
             getTransferInfoUseCase(
                 groupId = groupId.value,
-                expenseIdList = itemToCalculate
+                expenseIdList = emptyList()
             ).onSuccess {
                 _transferInfoState.emit(
                     TransferInfoUIState.TransferInfoGetSuccess(
