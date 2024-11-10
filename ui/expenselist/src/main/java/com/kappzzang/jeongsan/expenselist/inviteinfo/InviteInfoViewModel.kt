@@ -19,7 +19,7 @@ class InviteInfoViewModel @Inject constructor(
     private val getInviteInfoUseCase: GetInviteInfoUseCase,
     private val sendInviteMessageUseCase: SendInviteMessageUseCase,
     private val convertServiceIdToUuidUseCase: ConvertServiceIdToUuidUseCase,
-    private val ioDispatcher: CoroutineDispatcher,
+    private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _inviteInfo = MutableStateFlow<List<MemberItem>>(emptyList())
@@ -38,7 +38,7 @@ class InviteInfoViewModel @Inject constructor(
     fun sendInviteMessageWithServiceId(
         groupId: String,
         groupName: String,
-        memberServiceId: String,
+        memberServiceId: String
     ) {
         viewModelScope.launch(ioDispatcher) {
             convertServiceIdToUuidUseCase(listOf(memberServiceId))?.let {

@@ -5,8 +5,8 @@ import com.kakao.sdk.talk.TalkApiClient
 import com.kakao.sdk.user.UserApiClient
 import com.kappzzang.jeongsan.mapper.KakaoUserInfoMapper
 import com.kappzzang.jeongsan.mapper.KakaoUserInfoMapper.toUserFriendItem
-import com.kappzzang.jeongsan.model.UserItem
 import com.kappzzang.jeongsan.model.UserFriendItem
+import com.kappzzang.jeongsan.model.UserItem
 import com.kappzzang.jeongsan.repository.UserInfoRepository
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -33,9 +33,11 @@ class UserInfoRepositoryImpl @Inject constructor() : UserInfoRepository {
                 Log.e(TAG, "카카오톡 친구 목록 가져오기 실패", error)
                 continuation.resume(null)
             } else if (friends != null) {
-                continuation.resume(friends.elements?.map { friend ->
-                    friend.toUserFriendItem()
-                })
+                continuation.resume(
+                    friends.elements?.map { friend ->
+                        friend.toUserFriendItem()
+                    }
+                )
             }
         }
     }
