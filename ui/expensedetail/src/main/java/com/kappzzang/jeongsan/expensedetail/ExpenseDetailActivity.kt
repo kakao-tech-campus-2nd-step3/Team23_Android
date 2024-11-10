@@ -8,6 +8,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.NavHostFragment
+import com.kappzzang.jeongsan.build_config.BuildConfig
 import com.kappzzang.jeongsan.expensedetail.databinding.ActivityExpenseDetailBinding
 import com.kappzzang.jeongsan.intentcontract.ExpenseDetailContract
 import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
@@ -93,6 +94,7 @@ class ExpenseDetailActivity : AppCompatActivity() {
                             ExpenseDetailPage.EXPENSE_DETAIL -> navController.navigate(
                                 R.id.action_selectionStatusFragment_to_expenseDetailFragment
                             )
+
                             ExpenseDetailPage.SELECTION_STATUS -> navController.navigate(
                                 R.id.action_expenseDetailFragment_to_selectionStatusFragment
                             )
@@ -133,7 +135,12 @@ class ExpenseDetailActivity : AppCompatActivity() {
             return
         }
 
-        viewModel.setInitialData(expenseId, groupId, editable, isPayer)
+        viewModel.setInitialData(
+            expenseId,
+            groupId,
+            editable,
+            isPayer || (BuildConfig.DEBUG && ALWAYS_PAYER_FLAG)
+        )
     }
 
     private fun throwExpenseDataLoadFailError() {
@@ -143,5 +150,10 @@ class ExpenseDetailActivity : AppCompatActivity() {
             Toast.LENGTH_LONG
         ).show()
         finish()
+    }
+
+    companion object {
+        // TODO: 항상 결제자로 간주하게 설정하는 플래그; API가 완성되면 false로 수정
+        private const val ALWAYS_PAYER_FLAG = true
     }
 }
