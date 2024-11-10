@@ -40,12 +40,13 @@ class ExpenseDetailViewModel @Inject constructor(
 
         _expenseDetailState.value = ExpenseDetailState.SWITCHING_TO_PENDING
         viewModelScope.launch(ioDispatcher) {
-            setExpenseToPendingUseCase.invoke(expenseId)
+            setExpenseToPendingUseCase.invoke(expenseId, groupId)
                 .onSuccess {
                     _expenseDetailState.value = ExpenseDetailState.SUCCESS
                 }
                 .onFailure {
                     _expenseDetailState.value = ExpenseDetailState.FAILED
+                    it.printStackTrace()
                 }
         }
     }

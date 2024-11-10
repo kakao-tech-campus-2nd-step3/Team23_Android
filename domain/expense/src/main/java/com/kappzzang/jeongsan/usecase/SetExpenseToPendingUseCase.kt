@@ -7,6 +7,9 @@ import javax.inject.Inject
 class SetExpenseToPendingUseCase @Inject constructor(
     private val expenseDetailRepository: ExpenseDetailRepository
 ) {
-    suspend operator fun invoke(expenseId: String): Result<Unit> =
-        expenseDetailRepository.setExpenseState(expenseId, ExpenseState.TRANSFER_PENDING)
+    suspend operator fun invoke(expenseId: String, groupId: String): Result<Unit> =
+        expenseDetailRepository.updateExpenseStateToPending(
+            expenseId = expenseId,
+            expenseState = ExpenseState.TRANSFER_PENDING,
+            groupId = groupId)
 }

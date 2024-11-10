@@ -141,7 +141,7 @@ class ExpenseListRemoteDatasource @Inject constructor(
         }
     }
 
-    private fun <T> processResponseCode(response: Response<T>): Result<T> {
+    private fun processResponseCode(response: Response<Unit>): Result<Unit> {
         Log.d(
             "KSC",
             "ProcessExpenseList code: ${response.code()}, message: ${response.message()}"
@@ -152,12 +152,7 @@ class ExpenseListRemoteDatasource @Inject constructor(
             500 -> throw IllegalStateException(response.message())
             else -> {
                 return if (response.code() / 100 == 2) {
-                    response.body()?.let {
-                        return Result.success(it)
-                    }
-                        ?: Result.failure(
-                            IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
-                        )
+                    return Result.success(Unit)
                 } else {
                     Result.failure(IllegalStateException("알 수 없는 오류 발생: ${response.message()}"))
                 }
@@ -167,6 +162,5 @@ class ExpenseListRemoteDatasource @Inject constructor(
 
     companion object {
         const val IMAGE_FORMAT = "JPEG"
-        const val CATEGORY_ID = 0L
     }
 }
