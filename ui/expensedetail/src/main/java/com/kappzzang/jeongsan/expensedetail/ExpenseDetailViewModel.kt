@@ -87,10 +87,9 @@ class ExpenseDetailViewModel @Inject constructor(
     }
 
     fun clickSubmitButton() {
-        if(editable.value == true) {
+        if (editable.value == true) {
             clickSaveDetailsAndClose()
-        }
-        else {
+        } else {
             dismissAndClose()
         }
     }
