@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UpdateExpenseStatePayloadDTO(
     @SerializedName("state")
-    val state:String,
+    val state: String,
     @SerializedName("expenses")
     val expenses: List<SimpleExpenseItemEntity>
 )

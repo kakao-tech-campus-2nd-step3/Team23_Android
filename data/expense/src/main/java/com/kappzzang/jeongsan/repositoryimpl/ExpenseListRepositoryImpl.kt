@@ -10,16 +10,16 @@ import com.kappzzang.jeongsan.model.ExpenseListResponse
 import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.model.ReceiptItem
 import com.kappzzang.jeongsan.repository.ExpenseRepository
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
 
 data class ExpenseListCachingKey(val expenseState: ExpenseState, val groupId: String)
 
 class ExpenseListRepositoryImpl @Inject constructor(
-    private val dataSource: ExpenseListRemoteDatasource,
+    private val dataSource: ExpenseListRemoteDatasource
 
-    ) : ExpenseRepository {
+) : ExpenseRepository {
 
     private val cachedData = HashMap<ExpenseListCachingKey, ExpenseListResponse>()
 
@@ -102,7 +102,8 @@ class ExpenseListRepositoryImpl @Inject constructor(
     ).mapCatching {
         if (it.expenseList.any { expense ->
                 !validateServiceIds(searcherServiceId, expense.payerServiceId)
-            }) {
+            }
+        ) {
             Log.w("KSC", "잘못된 서비스 ID 값을 포함합니다. 사용자 서비스 ID: $searcherServiceId")
         }
         mapResponseBody(it, searcherServiceId)

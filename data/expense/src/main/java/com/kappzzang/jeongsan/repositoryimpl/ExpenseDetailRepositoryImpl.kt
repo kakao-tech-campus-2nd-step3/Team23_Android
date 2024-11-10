@@ -51,22 +51,18 @@ class ExpenseDetailRepositoryImpl @Inject constructor(
     override suspend fun updateExpenseStateToPending(
         expenseId: String,
         groupId: String
-    ): Result<Unit> {
-        return expenseListRemoteDatasource.updateExpenseState(
-            state = ExpenseState.TRANSFER_PENDING,
-            expenseItemIdList = listOf(expenseId),
-            groupId = groupId
-        )
-    }
+    ): Result<Unit> = expenseListRemoteDatasource.updateExpenseState(
+        state = ExpenseState.TRANSFER_PENDING,
+        expenseItemIdList = listOf(expenseId),
+        groupId = groupId
+    )
 
     override suspend fun updateExpenseStateToOngoing(
         expenseId: String,
         groupId: String
-    ): Result<Unit> {
-        return expenseListRemoteDatasource.updateExpenseState(
-            state = ExpenseState.CONFIRMED,
-            expenseItemIdList = listOf(expenseId),
-            groupId = groupId
-        )
-    }
+    ): Result<Unit> = expenseListRemoteDatasource.updateExpenseState(
+        state = ExpenseState.CONFIRMED,
+        expenseItemIdList = listOf(expenseId),
+        groupId = groupId
+    )
 }

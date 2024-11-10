@@ -14,13 +14,7 @@ interface ExpenseDetailRepository {
 
     suspend fun getExpenseSelectionStatus(expenseId: String): Result<ExpenseSelectionStatus>
 
-    suspend fun updateExpenseStateToPending(
-        expenseId: String,
-        groupId: String
-    ): Result<Unit>
+    suspend fun updateExpenseStateToPending(expenseId: String, groupId: String): Result<Unit>
 
-    suspend fun updateExpenseStateToOngoing(
-        expenseId: String,
-        groupId: String
-    ): Result<Unit>
+    suspend fun updateExpenseStateToOngoing(expenseId: String, groupId: String): Result<Unit>
 }

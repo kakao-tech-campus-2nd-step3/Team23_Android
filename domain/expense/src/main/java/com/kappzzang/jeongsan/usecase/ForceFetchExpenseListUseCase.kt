@@ -8,7 +8,8 @@ import javax.inject.Inject
 
 class ForceFetchExpenseListUseCase @Inject constructor(
     private val repository: ExpenseRepository,
-    private val authenticationRepository: AuthenticationRepository) {
+    private val authenticationRepository: AuthenticationRepository
+) {
     suspend operator fun invoke(
         groupId: String,
         queryExpenseState: ExpenseState

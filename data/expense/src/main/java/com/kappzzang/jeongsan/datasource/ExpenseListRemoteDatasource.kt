@@ -96,9 +96,12 @@ class ExpenseListRemoteDatasource @Inject constructor(
         return processResponseCodeOnResponseData(response)
     }
 
-    suspend fun updateExpenseState(expenseItemIdList: List<String>, groupId: String, state: ExpenseState): Result<Unit> {
+    suspend fun updateExpenseState(
+        expenseItemIdList: List<String>,
+        groupId: String,
+        state: ExpenseState
+    ): Result<Unit> {
         val response = try {
-
             val body = UpdateExpenseStatePayloadDTO(
                 state = mapExpenseStateToDtoState(state),
                 expenses = expenseItemIdList.map {
@@ -117,7 +120,9 @@ class ExpenseListRemoteDatasource @Inject constructor(
         return processResponseCode(response)
     }
 
-    private fun <T> processResponseCodeOnResponseData(response: Response<ResponseData<T>>): Result<T> {
+    private fun <T> processResponseCodeOnResponseData(
+        response: Response<ResponseData<T>>
+    ): Result<T> {
         Log.d(
             "KSC",
             "ProcessExpenseList code: ${response.code()}, message: ${response.message()}"

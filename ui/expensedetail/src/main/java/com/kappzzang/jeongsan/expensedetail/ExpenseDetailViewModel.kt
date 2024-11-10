@@ -101,13 +101,11 @@ class ExpenseDetailViewModel @Inject constructor(
             return
         }
 
-        if(editable.value){
+        if (editable.value) {
             switchToPendingExpense()
-        }
-        else{
+        } else {
             switchToOngoingExpense()
         }
-
     }
 }
 
