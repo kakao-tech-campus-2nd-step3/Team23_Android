@@ -35,7 +35,7 @@ class ExpenseDetailRemoteDatasource @Inject constructor(
             return (Result.failure(e))
         }
 
-        return processResponseBody(response)
+        return processResponseBodyWithData(response)
     }
 
     suspend fun updateExpenseDetail(

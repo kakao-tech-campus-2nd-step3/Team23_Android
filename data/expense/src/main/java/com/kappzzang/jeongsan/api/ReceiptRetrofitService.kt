@@ -47,5 +47,5 @@ interface ReceiptRetrofitService {
     @GET("/api/receipts/items/{expenseId}/state")
     suspend fun getExpenseSelectionStatus(
         @Path(value = "expenseId") expenseId: String
-    ): Response<ExpenseSelectionResponseDTO>
+    ): Response<ResponseData<ExpenseSelectionResponseDTO>>
 }
