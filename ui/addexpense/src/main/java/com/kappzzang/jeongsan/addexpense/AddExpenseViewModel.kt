@@ -10,6 +10,8 @@ import com.kappzzang.jeongsan.model.OcrResultResponse
 import com.kappzzang.jeongsan.model.ReceiptDetailItem
 import com.kappzzang.jeongsan.model.ReceiptItem
 import com.kappzzang.jeongsan.usecase.GetCategoryListUseCase
+import com.kappzzang.jeongsan.usecase.GetGroupMemberServiceIdUseCase
+import com.kappzzang.jeongsan.usecase.SendNewExpenseMessageUseCase
 import com.kappzzang.jeongsan.usecase.UploadExpenseUseCase
 import com.kappzzang.jeongsan.util.Base64BitmapEncoder
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,7 +27,9 @@ import kotlinx.coroutines.launch
 class AddExpenseViewModel @Inject constructor(
     private val uploadExpenseUseCase: UploadExpenseUseCase,
     private val ioDispatcher: CoroutineDispatcher,
-    private val getCategoryListUseCase: GetCategoryListUseCase
+    private val getCategoryListUseCase: GetCategoryListUseCase,
+    private val getGroupMemberServiceIdUseCase: GetGroupMemberServiceIdUseCase,
+    private val sendNewExpenseMessageUseCase: SendNewExpenseMessageUseCase
 ) : ViewModel() {
     private val _expenseItemList by lazy {
         MutableStateFlow(
@@ -192,6 +196,20 @@ class AddExpenseViewModel @Inject constructor(
     fun setExpenseImageBitmap(bitmap: Bitmap) {
         viewModelScope.launch(Dispatchers.Main) {
             _expenseImageBitmap.emit(bitmap)
+        }
+    }
+
+    fun sendNewExpenseMessage(expenseId: String) {
+        viewModelScope.launch(ioDispatcher) {
+            val memberServiceIds = getGroupMemberServiceIdUseCase(_groupId.value, true)
+            // TODO: serviceId를 uuid로 변환하는 UseCase가 필요함
+            val memberUuidList = memberServiceIds
+            sendNewExpenseMessageUseCase(
+                expenseId = expenseId,
+                expenseName = expenseName.value,
+                groupId = _groupId.value,
+                memberUuidList = memberUuidList
+            )
         }
     }
 
