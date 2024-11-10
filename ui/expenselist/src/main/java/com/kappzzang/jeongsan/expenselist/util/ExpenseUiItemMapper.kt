@@ -3,6 +3,7 @@ package com.kappzzang.jeongsan.expenselist.util
 import com.kappzzang.jeongsan.data.ExpenseUiItem
 import com.kappzzang.jeongsan.expenselist.viewmodel.ExpenseListPageViewModel.Companion.CURRENCY_POSTFIX
 import com.kappzzang.jeongsan.model.ExpenseItemWithCategory
+import com.kappzzang.jeongsan.util.ColorParser
 import com.kappzzang.jeongsan.util.IntegerFormatter.formatDecimalSeparator
 
 object ExpenseUiItemMapper {
@@ -15,7 +16,7 @@ object ExpenseUiItemMapper {
             id = item.id,
             name = item.name,
             date = item.date,
-            categoryColor = item.categoryColor,
+            categoryColor = ColorParser.parseColor(item.categoryColor),
             price = "${item.price.formatDecimalSeparator()} $CURRENCY_POSTFIX"
         )
     }
