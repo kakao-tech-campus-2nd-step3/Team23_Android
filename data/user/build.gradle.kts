@@ -7,6 +7,7 @@ android {
 }
 dependencies {
     implementation("com.kakao.sdk:v2-user:2.20.6")
+    implementation("com.kakao.sdk:v2-talk:2.20.6")
     implementation(project(":domain:common-user"))
     implementation(project(":common:androidutil"))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
