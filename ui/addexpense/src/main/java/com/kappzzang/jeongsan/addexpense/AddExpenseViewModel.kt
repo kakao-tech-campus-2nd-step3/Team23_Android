@@ -9,6 +9,7 @@ import com.kappzzang.jeongsan.model.ExpenseCategory
 import com.kappzzang.jeongsan.model.OcrResultResponse
 import com.kappzzang.jeongsan.model.ReceiptDetailItem
 import com.kappzzang.jeongsan.model.ReceiptItem
+import com.kappzzang.jeongsan.usecase.ConvertServiceIdToUuidUseCase
 import com.kappzzang.jeongsan.usecase.GetCategoryListUseCase
 import com.kappzzang.jeongsan.usecase.GetGroupMemberServiceIdUseCase
 import com.kappzzang.jeongsan.usecase.SendNewExpenseMessageUseCase
@@ -29,7 +30,8 @@ class AddExpenseViewModel @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher,
     private val getCategoryListUseCase: GetCategoryListUseCase,
     private val getGroupMemberServiceIdUseCase: GetGroupMemberServiceIdUseCase,
-    private val sendNewExpenseMessageUseCase: SendNewExpenseMessageUseCase
+    private val sendNewExpenseMessageUseCase: SendNewExpenseMessageUseCase,
+    private val convertServiceIdToUuidUseCase: ConvertServiceIdToUuidUseCase
 ) : ViewModel() {
     private val _expenseItemList by lazy {
         MutableStateFlow(
@@ -202,8 +204,7 @@ class AddExpenseViewModel @Inject constructor(
     fun sendNewExpenseMessage(expenseId: String) {
         viewModelScope.launch(ioDispatcher) {
             val memberServiceIds = getGroupMemberServiceIdUseCase(_groupId.value, true)
-            // TODO: serviceId를 uuid로 변환하는 UseCase가 필요함
-            val memberUuidList = memberServiceIds
+            val memberUuidList = convertServiceIdToUuidUseCase(memberServiceIds) ?: return@launch
             sendNewExpenseMessageUseCase(
                 expenseId = expenseId,
                 expenseName = expenseName.value,

@@ -12,4 +12,5 @@ dependencies {
     implementation(project(":ui:data"))
     implementation(project(":common:dispatcher"))
     implementation(project(":domain:group"))
+    implementation(project(":domain:common-user"))
 }
