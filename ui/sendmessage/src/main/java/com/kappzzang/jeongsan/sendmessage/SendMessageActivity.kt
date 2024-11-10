@@ -10,6 +10,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.intentcontract.SendMessageContract
 import com.kappzzang.jeongsan.navigation.SendMessageNavigator
+import com.kappzzang.jeongsan.sendmessage.data.TransferInfoUIState
 import com.kappzzang.jeongsan.sendmessage.databinding.ActivitySendMessageBinding
 import com.kappzzang.jeongsan.util.IntegerFormatter.formatDecimalSeparator
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,8 +33,34 @@ class SendMessageActivity : AppCompatActivity() {
 
         handleIntent()
         initRecyclerView()
-        setTotalPriceObserver()
         setSendButton()
+        collectTransferInfoUIState()
+    }
+
+    private fun collectTransferInfoUIState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.transferInfoState.collect {
+                    when(it) {
+                        TransferInfoUIState.Idle -> { }
+                        TransferInfoUIState.LoadingPurchaseList -> TODO()
+                        TransferInfoUIState.LoadingTransferInfo -> TODO()
+                        is TransferInfoUIState.PurchaseListGetError -> sendToast(it.message)
+                        is TransferInfoUIState.PurchaseListGetSuccess -> {
+                            sendToast("Count: ${it.size}, Total: ${it.totalPay}")
+                            viewModel.getTransferInfo()
+                        }
+                        is TransferInfoUIState.TransferInfoGetError -> sendToast(it.message)
+                        is TransferInfoUIState.TransferInfoGetSuccess ->
+                            sendToast("Count: ${it.transferInfoList.size}")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun sendToast(msg: String) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
     }
 
     private fun handleIntent() {
@@ -50,37 +77,30 @@ class SendMessageActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.transferInfo.collect { memberAdapter.submitList(it) }
-            }
-        }
-    }
-
-    private fun setTotalPriceObserver() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.totalPrice.collect { price ->
-                    binding.totalPriceContentTextview.text = price.formatDecimalSeparator().plus(
-                        getString(R.string.send_message_money_unit)
-                    )
+                viewModel.transferInfoState.collect {
+                    if (it is TransferInfoUIState.TransferInfoGetSuccess) {
+                        memberAdapter.submitList(it.transferInfoList)
+                    }
                 }
             }
         }
     }
 
     private fun setSendButton() {
-        binding.sendMessageButton.setOnClickListener {
-            lifecycleScope.launch {
-                if (viewModel.sendTransferMessage()) {
-                    startSendCompleteActivity()
-                } else {
-                    Toast.makeText(
-                        this@SendMessageActivity,
-                        getString(R.string.send_message_error),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-        }
+        return
+        // binding.sendMessageButton.setOnClickListener {
+        //     lifecycleScope.launch {
+        //         if (viewModel.sendTransferMessage()) {
+        //             startSendCompleteActivity()
+        //         } else {
+        //             Toast.makeText(
+        //                 this@SendMessageActivity,
+        //                 getString(R.string.send_message_error),
+        //                 Toast.LENGTH_SHORT
+        //             ).show()
+        //         }
+        //     }
+        // }
     }
 
     private fun startSendCompleteActivity() {
