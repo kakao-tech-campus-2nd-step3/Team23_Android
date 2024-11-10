@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="com.kappzzang.jeongsan.expensedetail.ButtonTextConverter"/>
 
         <variable
             name="viewModel"
@@ -63,7 +64,7 @@
             android:id="@+id/expense_detail_primary_button"
             style="@style/BottomButton"
             android:enabled="@{(viewModel.expenseDetailState == ExpenseDetailState.IDLE)?true:false}"
-            android:text="@{viewModel.currentPage == ExpenseDetailPage.EXPENSE_DETAIL?@string/expense_detail_submit:@string/expense_detail_switch_to_pending}"
+            android:text="@{ButtonTextConverter.convertCurrentStateToPrimaryButtonText(viewModel.currentPage, viewModel.editable, context)}"
             android:textSize="@dimen/all_bottom_button_text_size"
             android:layout_width="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -74,7 +75,7 @@
             android:id="@+id/expense_detail_secondary_button"
             style="@style/BottomButtonSecondary"
             android:enabled="@{(viewModel.expenseDetailState == ExpenseDetailState.IDLE)?true:false}"
-            android:text="@{viewModel.currentPage == ExpenseDetailPage.EXPENSE_DETAIL?@string/expense_detail_check_status:@string/expense_detail_modify}"
+            android:text="@{ButtonTextConverter.convertCurrentStateToSecondaryButtonText(viewModel.currentPage, viewModel.editable, context)}"
             android:textSize="@dimen/all_bottom_button_text_size"
             android:visibility="@{viewModel.showPayerUI?View.VISIBLE:View.GONE}"
             android:layout_width="0dp"

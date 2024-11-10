@@ -80,7 +80,7 @@ class ExpenseDetailFragment : Fragment() {
         viewModel.setInitialData(
             expenseId = activityViewModel.expenseId,
             groupId = activityViewModel.groupId,
-            editable = activityViewModel.editable
+            editable = activityViewModel.editable.value
         )
     }
 
