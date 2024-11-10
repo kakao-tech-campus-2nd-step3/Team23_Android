@@ -13,4 +13,5 @@ dependencies {
     implementation(project(":ui:data"))
     implementation(project(":common:dispatcher"))
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation(project(":domain:common-user"))
 }

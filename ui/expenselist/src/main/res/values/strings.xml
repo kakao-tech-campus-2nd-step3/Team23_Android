@@ -34,4 +34,8 @@
     <!-- 그룹 삭제 Toast -->
     <string name="complete_group_success">모임을 종료했습니다.</string>
     <string name="complete_group_fail">모임을 종료할 수 없습니다.</string>
+
+    <!-- 초대 메시지 Toast -->
+    <string name="invite_message_success">초대 메시지를 전송했습니다.</string>
+    <string name="invite_message_fail">초대 메시지를 전송할 수 없습니다.\n잠시 후 다시 시도해주세요.</string>
 </resources>

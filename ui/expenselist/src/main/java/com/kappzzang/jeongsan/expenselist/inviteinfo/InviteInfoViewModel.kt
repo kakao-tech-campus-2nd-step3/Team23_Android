@@ -2,7 +2,9 @@ package com.kappzzang.jeongsan.expenselist.inviteinfo
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kappzzang.jeongsan.data.InviteMessageUiState
 import com.kappzzang.jeongsan.model.MemberItem
+import com.kappzzang.jeongsan.usecase.ConvertServiceIdToUuidUseCase
 import com.kappzzang.jeongsan.usecase.GetInviteInfoUseCase
 import com.kappzzang.jeongsan.usecase.SendInviteMessageUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,11 +18,16 @@ import kotlinx.coroutines.launch
 class InviteInfoViewModel @Inject constructor(
     private val getInviteInfoUseCase: GetInviteInfoUseCase,
     private val sendInviteMessageUseCase: SendInviteMessageUseCase,
-    private val ioDispatcher: CoroutineDispatcher
+    private val convertServiceIdToUuidUseCase: ConvertServiceIdToUuidUseCase,
+    private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     private val _inviteInfo = MutableStateFlow<List<MemberItem>>(emptyList())
     val inviteInfo: StateFlow<List<MemberItem>> = _inviteInfo
+
+    private val _inviteMessageState =
+        MutableStateFlow<InviteMessageUiState>(InviteMessageUiState.Idle)
+    val inviteMessageState: StateFlow<InviteMessageUiState> = _inviteMessageState
 
     fun getInviteInfo(groupId: String) {
         viewModelScope.launch(ioDispatcher) {
@@ -28,8 +35,33 @@ class InviteInfoViewModel @Inject constructor(
         }
     }
 
-    fun sendInviteMessage(groupId: String, groupName: String, memberUuid: List<String>) =
-        viewModelScope.launch {
-            sendInviteMessageUseCase.invoke(groupId, groupName, memberUuid)
+    fun sendInviteMessageWithServiceId(
+        groupId: String,
+        groupName: String,
+        memberServiceId: String,
+    ) {
+        viewModelScope.launch(ioDispatcher) {
+            convertServiceIdToUuidUseCase(listOf(memberServiceId))?.let {
+                sendInviteMessage(groupId, groupName, it)
+            } ?: _inviteMessageState.emit(InviteMessageUiState.Fail)
         }
+    }
+
+    private fun sendInviteMessage(groupId: String, groupName: String, memberUuid: List<String>) =
+        viewModelScope.launch(ioDispatcher) {
+            val result = sendInviteMessageUseCase.invoke(groupId, groupName, memberUuid)
+            _inviteMessageState.emit(
+                if (result) {
+                    InviteMessageUiState.Success
+                } else {
+                    InviteMessageUiState.Fail
+                }
+            )
+        }
+
+    fun clearInviteMessageState() {
+        viewModelScope.launch(ioDispatcher) {
+            _inviteMessageState.emit(InviteMessageUiState.Idle)
+        }
+    }
 }
