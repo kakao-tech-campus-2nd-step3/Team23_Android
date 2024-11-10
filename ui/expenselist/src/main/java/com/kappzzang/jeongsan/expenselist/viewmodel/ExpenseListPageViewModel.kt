@@ -110,9 +110,12 @@ abstract class ExpenseListPageViewModel(
     fun onFragmentStart(groupId: String) {
         if (this.groupId.value != groupId) {
             this.groupId.value = groupId
+        }
+    }
+
+    fun onFragmentReload() {
+        if (this.groupId.value.isNotEmpty()) {
             fetchDefaultList(this.groupId.value)
-        } else {
-            return
         }
     }
 

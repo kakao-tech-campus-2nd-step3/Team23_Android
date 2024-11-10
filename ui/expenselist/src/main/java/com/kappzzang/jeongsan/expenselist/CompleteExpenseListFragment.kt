@@ -1,6 +1,7 @@
 package com.kappzzang.jeongsan.expenselist
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,9 +45,9 @@ class CompleteExpenseListFragment : Fragment() {
             activityViewModel.clickExpenseItem(it, ExpenseState.TRANSFERED)
         }
         binding.completeExpenseListRecyclerview.layoutManager = LinearLayoutManager(this.context)
+        viewModel.onFragmentStart(activityViewModel.groupId.value)
 
         setSwipeRefresh()
-        viewModel.onFragmentStart(activityViewModel.groupId.value)
     }
 
     private fun setSwipeRefresh() {
@@ -64,5 +65,10 @@ class CompleteExpenseListFragment : Fragment() {
         binding.expenseListSwipeRefreshLayout.setOnRefreshListener {
             viewModel.refresh()
         }
+    }
+
+    override fun onResume() {
+        viewModel.onFragmentReload()
+        super.onResume()
     }
 }
