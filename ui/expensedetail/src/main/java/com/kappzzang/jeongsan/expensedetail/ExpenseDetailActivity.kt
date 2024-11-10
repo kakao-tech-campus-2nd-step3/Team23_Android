@@ -154,6 +154,6 @@ class ExpenseDetailActivity : AppCompatActivity() {
 
     companion object {
         // TODO: 항상 결제자로 간주하게 설정하는 플래그; API가 완성되면 false로 수정
-        private const val ALWAYS_PAYER_FLAG = true
+        private const val ALWAYS_PAYER_FLAG = false
     }
 }
