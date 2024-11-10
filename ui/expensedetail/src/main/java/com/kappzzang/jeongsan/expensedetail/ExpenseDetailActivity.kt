@@ -126,13 +126,14 @@ class ExpenseDetailActivity : AppCompatActivity() {
         val expenseId = intent?.getParcelableData<String>(ExpenseDetailContract.EXPENSE_ID)
         val groupId = intent?.getParcelableData<String>(ExpenseDetailContract.GROUP_ID)
         val editable = intent?.getParcelableData<Boolean>(ExpenseDetailContract.EDITABLE)
+        val isPayer = intent?.getParcelableData<Boolean>(ExpenseDetailContract.IS_PAYER)
 
-        if (expenseId == null || groupId == null || editable == null) {
+        if (expenseId == null || groupId == null || editable == null || isPayer == null) {
             throwExpenseDataLoadFailError()
             return
         }
 
-        viewModel.setInitialData(expenseId, groupId, editable, true)
+        viewModel.setInitialData(expenseId, groupId, editable, isPayer)
     }
 
     private fun throwExpenseDataLoadFailError() {
