@@ -1,6 +1,7 @@
 package com.kappzzang.jeongsan.usecase
 
 import com.kappzzang.jeongsan.model.TransferDetailItem
+import com.kappzzang.jeongsan.model.TransferMessage
 import com.kappzzang.jeongsan.model.UserFriendItem
 import com.kappzzang.jeongsan.repository.TransferRepository
 import com.kappzzang.jeongsan.repository.UserInfoRepository
@@ -10,14 +11,16 @@ class SendTransferMessageUseCase @Inject constructor(
     private val userInfoRepository: UserInfoRepository,
     private val transferRepository: TransferRepository
 ) {
-    private fun mapServiceIdToUuid(
-        serviceIdList: List<String>,
+    private fun mapTransferInfoListToMessageList(
+        transferInfoList: List<TransferDetailItem>,
         friends: List<UserFriendItem>
-    ): List<String> =
-        serviceIdList.mapNotNull { serviceId ->
+    ): List<TransferMessage> =
+        transferInfoList.mapNotNull { transferInfo ->
             friends.find { friend ->
-                friend.serviceId == serviceId
-            }?.uuid
+                friend.serviceId == transferInfo.serviceId
+            }?.uuid?.let {
+                TransferMessage(it, transferInfo.fee)
+            }
         }
 
     suspend operator fun invoke(transferInfoList: List<TransferDetailItem>): Result<Unit> {
@@ -33,11 +36,11 @@ class SendTransferMessageUseCase @Inject constructor(
                 ?: return Result.failure(
                     IllegalStateException("송금 링크를 조회하는데 실패했습니다.")
                 )
-        val friendUuidList = mapServiceIdToUuid(transferInfoList.map { it.serviceId }, friends)
+        val messageList = mapTransferInfoListToMessageList(transferInfoList, friends)
 
         return transferRepository.sendTransferMessage(
             transferLink = transferLink,
-            friendUuidList = friendUuidList,
+            messageList = messageList,
             payeeName = requestUser.name
         )
     }

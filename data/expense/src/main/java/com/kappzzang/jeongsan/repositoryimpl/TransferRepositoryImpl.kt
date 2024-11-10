@@ -7,6 +7,7 @@ import com.kappzzang.jeongsan.mapper.ExpenseEntityMapper
 import com.kappzzang.jeongsan.mapper.ExpenseListEntityMapper
 import com.kappzzang.jeongsan.model.ExpenseItem
 import com.kappzzang.jeongsan.model.TransferDetailItem
+import com.kappzzang.jeongsan.model.TransferMessage
 import com.kappzzang.jeongsan.repository.TransferRepository
 import com.kappzzang.jeongsan.util.IntegerFormatter.formatDecimalSeparator
 import javax.inject.Inject
@@ -38,28 +39,35 @@ class TransferRepositoryImpl @Inject constructor(
     }
 
     override suspend fun sendTransferMessage(
-        transferInfoList: List<TransferDetailItem>,
+        messageList: List<TransferMessage>,
         transferLink: String,
         payeeName: String
-    ): Boolean {
-        // TODO: 정보를 보낼 친구의 UUID를 현재 알 수 없으므로, 나에게 보내기로 확인 (첫번째 값으로 메시지)
+    ): Result<Unit> {
+
         return suspendCoroutine { continuation ->
-            TalkApiClient.instance.sendCustomMemo(
-                templateId = TRANSFER_MESSAGE_TEMPLATE_ID,
-                templateArgs = mapOf(
-                    "price" to transferInfoList[0].fee.formatDecimalSeparator() + "원",
-                    "payee" to payeeName,
-                    "link" to transferLink
-                )
-            ) { error ->
-                if (error != null) {
-                    Log.e(TAG, "송금 메시지 전송 실패", error)
-                    continuation.resume(false)
-                } else {
-                    Log.i(TAG, "송금 메시지 전송 성공")
-                    continuation.resume(true)
+            messageList.forEach {
+                TalkApiClient.instance.sendCustomMessage(
+                    receiverUuids = listOf(it.uuid),
+                    templateId = TRANSFER_MESSAGE_TEMPLATE_ID,
+                    templateArgs = mapOf(
+                        "price" to it.fee.formatDecimalSeparator() + "원",
+                        "payee" to payeeName,
+                        "link" to transferLink
+                    )
+                ) { result, error ->
+                    if (error != null) {
+                        Log.e(TAG, "새 지출 등록 메시지 전송 실패", error)
+                        continuation.resume(Result.failure(error))
+                    } else if (result != null) {
+                        Log.i(TAG, "새 지출 등록 메시지 전송 성공")
+                        if (result.failureInfos != null) {
+                            Log.i(TAG, "일부에게 새 지출 등록 메시지 전송 실패")
+                        }
+                        continuation.resume(Result.success(Unit))
+                    }
                 }
             }
+
         }
     }
 
