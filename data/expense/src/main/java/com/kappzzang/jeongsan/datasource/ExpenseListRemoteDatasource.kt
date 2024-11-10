@@ -6,6 +6,8 @@ import com.kappzzang.jeongsan.entity.GetCategoryListResponseDTO
 import com.kappzzang.jeongsan.entity.ImageEntity
 import com.kappzzang.jeongsan.entity.ResponseWithExpenseIdDTO
 import com.kappzzang.jeongsan.entity.SaveExpensePayloadDTO
+import com.kappzzang.jeongsan.entity.SimpleExpenseItemEntity
+import com.kappzzang.jeongsan.entity.UpdateExpenseStatePayloadDTO
 import com.kappzzang.jeongsan.entity.expenselist.ExpenseListResponseDTO
 import com.kappzzang.jeongsan.mapper.ExpenseDetailMapper
 import com.kappzzang.jeongsan.model.ExpenseState
@@ -41,7 +43,7 @@ class ExpenseListRemoteDatasource @Inject constructor(
         }
 
         Log.d("KSC", "id: $groupId, body: ${response.body()}")
-        return processResponseCode(response)
+        return processResponseCodeOnResponseData(response)
     }
 
     private fun checkIsChecked(state: ExpenseState): Boolean? = when (state) {
@@ -80,7 +82,7 @@ class ExpenseListRemoteDatasource @Inject constructor(
             return Result.failure(e)
         }
 
-        return processResponseCode(response)
+        return processResponseCodeOnResponseData(response)
     }
 
     suspend fun getCategoryList(): Result<GetCategoryListResponseDTO> {
@@ -91,9 +93,31 @@ class ExpenseListRemoteDatasource @Inject constructor(
             return Result.failure(e)
         }
 
+        return processResponseCodeOnResponseData(response)
+    }
+
+    suspend fun updateExpenseState(expenseItemIdList: List<String>, groupId: String, state: ExpenseState): Result<Unit> {
+        val response = try {
+
+            val body = UpdateExpenseStatePayloadDTO(
+                state = mapExpenseStateToDtoState(state),
+                expenses = expenseItemIdList.map {
+                    SimpleExpenseItemEntity(it.toLong())
+                }
+            )
+
+            receiptRetrofitService.updateExpenseState(
+                groupId = groupId,
+                body = body
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return Result.failure(e)
+        }
         return processResponseCode(response)
     }
-    private fun <T> processResponseCode(response: Response<ResponseData<T>>): Result<T> {
+
+    private fun <T> processResponseCodeOnResponseData(response: Response<ResponseData<T>>): Result<T> {
         Log.d(
             "KSC",
             "ProcessExpenseList code: ${response.code()}, message: ${response.message()}"
@@ -106,6 +130,30 @@ class ExpenseListRemoteDatasource @Inject constructor(
                 return if (response.code() / 100 == 2) {
                     response.body()?.let {
                         return Result.success(it.data)
+                    }
+                        ?: Result.failure(
+                            IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
+                        )
+                } else {
+                    Result.failure(IllegalStateException("알 수 없는 오류 발생: ${response.message()}"))
+                }
+            }
+        }
+    }
+
+    private fun <T> processResponseCode(response: Response<T>): Result<T> {
+        Log.d(
+            "KSC",
+            "ProcessExpenseList code: ${response.code()}, message: ${response.message()}"
+        )
+        when (response.code()) {
+            400 -> throw IllegalArgumentException("유효하지 않는 입력 값")
+            404 -> throw IllegalStateException(response.message())
+            500 -> throw IllegalStateException(response.message())
+            else -> {
+                return if (response.code() / 100 == 2) {
+                    response.body()?.let {
+                        return Result.success(it)
                     }
                         ?: Result.failure(
                             IllegalStateException("알 수 없는 오류 발생: ${response.message()}")

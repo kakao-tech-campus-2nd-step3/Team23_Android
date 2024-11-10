@@ -1,6 +1,7 @@
 package com.kappzzang.jeongsan.repositoryimpl
 
 import com.kappzzang.jeongsan.datasource.ExpenseDetailRemoteDatasource
+import com.kappzzang.jeongsan.datasource.ExpenseListRemoteDatasource
 import com.kappzzang.jeongsan.entity.expensedetail.ExpenseDetailEntity
 import com.kappzzang.jeongsan.mapper.ExpenseDetailMapper
 import com.kappzzang.jeongsan.model.ExpenseDetailItem
@@ -11,7 +12,8 @@ import com.kappzzang.jeongsan.repository.ExpenseDetailRepository
 import javax.inject.Inject
 
 class ExpenseDetailRepositoryImpl @Inject constructor(
-    private val expenseDetailRemoteDatasource: ExpenseDetailRemoteDatasource
+    private val expenseDetailRemoteDatasource: ExpenseDetailRemoteDatasource,
+    private val expenseListRemoteDatasource: ExpenseListRemoteDatasource
 ) : ExpenseDetailRepository {
 
     override suspend fun getExpenseDetail(expenseId: String): Result<ExpenseItemWithDetails> =
@@ -46,10 +48,15 @@ class ExpenseDetailRepositoryImpl @Inject constructor(
         ExpenseDetailMapper.mapExpenseSelectionStatusEntityToModel(it)
     }
 
-    override suspend fun setExpenseState(
+    override suspend fun updateExpenseStateToPending(
         expenseId: String,
-        expenseState: ExpenseState
+        expenseState: ExpenseState,
+        groupId: String
     ): Result<Unit> {
-        TODO("Not yet implemented")
+        return expenseListRemoteDatasource.updateExpenseState(
+            state = ExpenseState.TRANSFER_PENDING,
+            expenseItemIdList = listOf(expenseId),
+            groupId = groupId
+        )
     }
 }
