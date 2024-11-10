@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         observeViewModel()
         setSwipeRefresh()
         collectJoinGroupState()
+        checkIntentHaveUri()
     }
 
     private fun setGroupListRecyclerView() {
@@ -86,22 +87,6 @@ class MainActivity : AppCompatActivity() {
                         .into(binding.profileImageImageview)
                 }
             }
-        }
-    }
-
-    private fun checkIsInvited() {
-        if (intent?.data != null) {
-            val inviteGroupId = intent.data.toString()
-            if (!viewModel.isAlreadyJoined(inviteGroupId)) {
-                showJoinGroupDialog(intent.data.toString())
-            } else {
-                Toast.makeText(
-                    this,
-                    getString(R.string.main_already_joined),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-            intent.data = null
         }
     }
 
@@ -154,14 +139,41 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.loadGroupList()
-        checkIsInvited()
-    }
+    private fun checkIntentHaveUri() {
+        val uri = intent.data ?: return
+        when (uri.host) {
+            // 모임 초대 링크를 통해 들어온 경우
+            "inviteGroup" -> {
+                val inviteGroupId = uri.getQueryParameter("groupId") ?: return
+                intent.data = null
 
-    companion object {
-        private const val TAG = "MAIN_ACTIVITY"
+                if (!viewModel.isAlreadyJoined(inviteGroupId)) {
+                    showJoinGroupDialog(inviteGroupId)
+                } else {
+                    Toast.makeText(
+                        this,
+                        getString(R.string.main_already_joined),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+            // 새로운 지출 등록 링크를 통해 들어온 경우
+            "newExpense" -> {
+                val groupId = uri.getQueryParameter("groupId") ?: return
+                val expenseId = uri.getQueryParameter("expenseId") ?: return
+                intent.data = null
+
+                expenseListNavigator.navigateToExpenseListWithNewExpense(this, groupId, expenseId)
+                    .also {
+                        startActivity(it)
+                    }
+            }
+
+            else -> {
+                // Do nothing
+            }
+        }
+
     }
 
     private fun setSwipeRefresh() {
