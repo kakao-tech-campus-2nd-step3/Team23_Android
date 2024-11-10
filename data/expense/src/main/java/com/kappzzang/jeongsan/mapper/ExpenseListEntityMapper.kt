@@ -8,22 +8,10 @@ import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.util.DateConverter
 
 object ExpenseListEntityMapper {
-    fun mapExpenseEntityToModel(entity: ExpenseRoomEntity): ExpenseItemWithCategory =
-        ExpenseItemWithCategory(
-            item = ExpenseItem(
-                id = entity.id.toString(),
-                name = entity.name,
-                price = entity.totalPrice,
-                state = ExpenseState.entries[entity.expenseState]
-            ),
-            date = DateConverter.parseFromString(entity.createdTime),
-            categoryColor = entity.categoryColor,
-            isMyPayment = (entity.id.toInt() % 2 == 1)
-        )
 
     fun mapExpenseEntityToModel(
         entity: ExpenseRemoteEntity,
-        uuid: String,
+        serviceId: String,
         checked: Boolean = false
     ): ExpenseItemWithCategory = ExpenseItemWithCategory(
         item = ExpenseItem(
@@ -34,7 +22,7 @@ object ExpenseListEntityMapper {
         ),
         date = DateConverter.parseFromString(entity.createdAt),
         categoryColor = entity.category.color,
-        isMyPayment = entity.payerUuid == uuid
+        isMyPayment = entity.payerUuid == serviceId
     )
 
     private fun mapExpenseStateToDomainState(state: String, checked: Boolean): ExpenseState {
