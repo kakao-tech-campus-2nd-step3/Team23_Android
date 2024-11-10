@@ -21,4 +21,6 @@ interface GroupInfoRepository {
     suspend fun completeGroup(groupId: String): Result<Boolean>
 
     suspend fun joinGroup(groupId: String, memberId: String): Result<Boolean>
+
+    suspend fun getMemberServiceIdList(groupId: String): List<String>
 }

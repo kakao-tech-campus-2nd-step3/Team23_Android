@@ -18,6 +18,17 @@ class ExpenseListNavigatorImpl @Inject constructor() : ExpenseListNavigator {
         return intent
     }
 
+    override fun navigateToExpenseListWithNewExpense(
+        packageContext: Context,
+        groupId: String,
+        expenseId: String
+    ): Intent {
+        val intent = Intent(packageContext, ExpenseListActivity::class.java)
+        intent.putExtra(ExpenseListContract.GROUP_ID, groupId)
+        intent.putExtra(ExpenseListContract.EXPENSE_ID, expenseId)
+        return intent
+    }
+
     override fun getExpenseListCancelResult(packageContext: Context): Intent =
         Intent(packageContext, ExpenseListActivity::class.java)
 

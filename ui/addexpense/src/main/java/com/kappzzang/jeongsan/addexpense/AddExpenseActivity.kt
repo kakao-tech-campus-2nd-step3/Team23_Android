@@ -95,6 +95,10 @@ class AddExpenseActivity : AppCompatActivity() {
                         }
 
                         is ExpenseUploadUIState.UploadSuccess -> {
+                            viewModel.sendNewExpenseMessage(state.expenseId)
+                        }
+
+                        is ExpenseUploadUIState.UploadAndSendSuccess -> {
                             startExpenseDetailActivityAndFinish(state.expenseId)
                         }
 

@@ -70,6 +70,14 @@ class GroupInfoRepositoryImpl @Inject constructor(
         listOf()
     )
 
+    override suspend fun getMemberServiceIdList(groupId: String): List<String> {
+        // TODO: API가 구현되면 수정 //
+        // TODO: API가 구현되면 수정 //
+        return listOf("1", "2")
+        // TODO: API가 구현되면 수정 //
+        // TODO: API가 구현되면 수정 //
+    }
+
     override suspend fun completeGroup(groupId: String): Result<Boolean> =
         groupRemoteDataSource.completeGroup(groupId.toLong())
 

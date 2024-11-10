@@ -96,6 +96,7 @@ class ExpenseListActivity : AppCompatActivity() {
         setOnUpperMenuClickedListener()
         setOnAddExpenseFabClickedListener()
         collectCompleteGroupState()
+        checkFromNewExpenseNotify()
 
         activityReceiptCameraLauncher = createReceiptCameraLauncher()
 
@@ -312,5 +313,13 @@ class ExpenseListActivity : AppCompatActivity() {
             isPayer = isPayer
         )
         startActivity(intent)
+    }
+
+    private fun checkFromNewExpenseNotify() {
+        intent.extras?.getString(ExpenseListContract.EXPENSE_ID)?.let { expenseId ->
+            intent.removeExtra(ExpenseListContract.EXPENSE_ID)
+            // TODO: isEditable을 true, isPayer를 false로 설정 -> 수정해야하나..?
+            startExpenseDetailActivity(expenseId, true, false)
+        }
     }
 }

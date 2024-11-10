@@ -20,9 +20,12 @@ class StartActivity : AppCompatActivity() {
         Log.d(TAG, "stared")
         handleIntentData(intent)
     }
+
     private fun handleIntentData(intent: Intent?) {
         val transferLink = intent?.data?.getQueryParameter(StartContract.TRANSFER_LINK)
         val inviteGroup = intent?.data?.getQueryParameter(StartContract.INVITE_GROUP_ID)
+        val newExpenseGroupId = intent?.data?.getQueryParameter(StartContract.NEW_EXPENSE_GROUP_ID)
+        val newExpenseId = intent?.data?.getQueryParameter(StartContract.NEW_EXPENSE_ID)
 
         when {
             // 송금 링크를 클릭해서 옴
@@ -36,7 +39,20 @@ class StartActivity : AppCompatActivity() {
             // 초대링크를 클릭해서 옴
             inviteGroup != null -> {
                 Log.d(TAG, inviteGroup)
-                appNavigator.loginAndEnterGroup(this, Uri.parse(inviteGroup)).also {
+                appNavigator.loginAndEnterGroup(this, inviteGroup).also {
+                    startActivity(it)
+                    finish()
+                }
+            }
+            // 새 지출 등록 링크를 클릭해서 옴
+            newExpenseGroupId != null && newExpenseId != null -> {
+                Log.d(TAG, newExpenseGroupId)
+                Log.d(TAG, newExpenseId)
+                appNavigator.loginAndEnterDetailExpense(
+                    this,
+                    groupId = newExpenseGroupId,
+                    expenseId = newExpenseId
+                ).also {
                     startActivity(it)
                     finish()
                 }

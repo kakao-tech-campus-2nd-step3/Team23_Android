@@ -1,8 +1,10 @@
 package com.kappzzang.jeongsan.di
 
+import com.kappzzang.jeongsan.repository.ExpenseMessageRepository
 import com.kappzzang.jeongsan.repository.GroupInfoRepository
 import com.kappzzang.jeongsan.repository.InviteRepository
 import com.kappzzang.jeongsan.repository.MemberRepository
+import com.kappzzang.jeongsan.repositoryimpl.ExpenseMessageRepositoryImpl
 import com.kappzzang.jeongsan.repositoryimpl.GroupInfoRepositoryImpl
 import com.kappzzang.jeongsan.repositoryimpl.InviteRepositoryImpl
 import com.kappzzang.jeongsan.repositoryimpl.MemberRepositoryImpl
@@ -28,4 +30,10 @@ abstract class GroupRepositoryModule {
     @Binds
     @Singleton
     abstract fun bindInviteRepository(inviteRepositoryImpl: InviteRepositoryImpl): InviteRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindExpenseMessageRepository(
+        expenseMessageRepositoryImpl: ExpenseMessageRepositoryImpl
+    ): ExpenseMessageRepository
 }
