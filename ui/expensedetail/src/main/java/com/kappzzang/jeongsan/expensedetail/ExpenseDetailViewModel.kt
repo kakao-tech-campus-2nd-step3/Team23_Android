@@ -2,6 +2,7 @@ package com.kappzzang.jeongsan.expensedetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.usecase.RevertExpenseToOngoingUseCase
 import com.kappzzang.jeongsan.usecase.SetExpenseToPendingUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,6 +15,9 @@ import kotlinx.coroutines.launch
 enum class ExpenseDetailPage { EXPENSE_DETAIL, SELECTION_STATUS }
 
 enum class ExpenseDetailState { IDLE, UPLOADING, SUCCESS, FAILED, SWITCHING_TO_PENDING }
+
+internal fun ExpenseState.editable(): Boolean =
+    this == ExpenseState.NOT_CONFIRMED || this == ExpenseState.CONFIRMED
 
 @HiltViewModel
 class ExpenseDetailViewModel @Inject constructor(
@@ -30,8 +34,8 @@ class ExpenseDetailViewModel @Inject constructor(
         private set
     var expenseId = ""
         private set
-    private val _editable = MutableStateFlow(false)
-    val editable = _editable.asStateFlow()
+    private val _expenseState = MutableStateFlow(ExpenseState.TRANSFERED)
+    val expenseState = _expenseState.asStateFlow()
 
     val currentPage = _currentPage.asStateFlow()
     val showPayerUI = _showPayerUI.asStateFlow()
@@ -72,10 +76,15 @@ class ExpenseDetailViewModel @Inject constructor(
             if (isSuccess) ExpenseDetailState.SUCCESS else ExpenseDetailState.FAILED
     }
 
-    fun setInitialData(expenseId: String, groupId: String, editable: Boolean, isPayer: Boolean) {
+    fun setInitialData(
+        expenseId: String,
+        groupId: String,
+        expenseState: ExpenseState,
+        isPayer: Boolean
+    ) {
         this.expenseId = expenseId
         this.groupId = groupId
-        _editable.value = editable
+        _expenseState.value = expenseState
 
         if (isPayer) {
             _showPayerUI.value = true
@@ -83,14 +92,6 @@ class ExpenseDetailViewModel @Inject constructor(
         } else {
             _showPayerUI.value = false
             _currentPage.value = ExpenseDetailPage.EXPENSE_DETAIL
-        }
-    }
-
-    fun clickSubmitButton() {
-        if (editable.value == true) {
-            clickSaveDetailsAndClose()
-        } else {
-            dismissAndClose()
         }
     }
 
@@ -102,23 +103,51 @@ class ExpenseDetailViewModel @Inject constructor(
         _expenseDetailState.value = ExpenseDetailState.UPLOADING
     }
 
-    fun clickToSelectionStatus() {
+    private fun clickToSelectionStatus() {
         _currentPage.value = ExpenseDetailPage.SELECTION_STATUS
     }
 
-    fun clickToExpenseDetail() {
+    private fun clickToExpenseDetail() {
         _currentPage.value = ExpenseDetailPage.EXPENSE_DETAIL
     }
 
-    fun clickSwitchToPending() {
-        if (_expenseDetailState.value != ExpenseDetailState.IDLE) {
-            return
+    private fun clickDetailPageLeftButton() {
+        when (expenseState.value) {
+            ExpenseState.CONFIRMED,ExpenseState.NOT_CONFIRMED -> clickSaveDetailsAndClose()
+            ExpenseState.TRANSFER_PENDING -> dismissAndClose()
+            ExpenseState.TRANSFERED -> dismissAndClose()
         }
+    }
 
-        if (editable.value) {
-            switchToPendingExpense()
+    private fun clickStatusPageLeftButton() {
+        when (expenseState.value) {
+            ExpenseState.CONFIRMED, ExpenseState.NOT_CONFIRMED -> switchToPendingExpense()
+            ExpenseState.TRANSFER_PENDING -> switchToOngoingExpense()
+            ExpenseState.TRANSFERED -> dismissAndClose()
+        }
+    }
+
+    private fun clickDetailPageRightButton() {
+        clickToSelectionStatus()
+    }
+
+    private fun clickStatusPageRightButton() {
+        clickToExpenseDetail()
+    }
+
+    fun clickLeftButton() {
+        if (currentPage.value == ExpenseDetailPage.EXPENSE_DETAIL) {
+            clickDetailPageLeftButton()
         } else {
-            switchToOngoingExpense()
+            clickStatusPageLeftButton()
+        }
+    }
+
+    fun clickRightButton() {
+        if (currentPage.value == ExpenseDetailPage.EXPENSE_DETAIL) {
+            clickDetailPageRightButton()
+        } else {
+            clickStatusPageRightButton()
         }
     }
 }

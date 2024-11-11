@@ -54,36 +54,12 @@ class ExpenseDetailActivity : AppCompatActivity() {
 
     private fun setButtonsOnClickListener() {
         binding.expenseDetailPrimaryButton.setOnClickListener {
-            if (viewModel.currentPage.value == ExpenseDetailPage.EXPENSE_DETAIL) {
-                clickSubmitButton()
-            } else {
-                clickSwitchToPendingButton()
-            }
+            viewModel.clickLeftButton()
         }
 
         binding.expenseDetailSecondaryButton.setOnClickListener {
-            if (viewModel.currentPage.value == ExpenseDetailPage.EXPENSE_DETAIL) {
-                clickToStatusButton()
-            } else {
-                clickToDetailButton()
-            }
+            viewModel.clickRightButton()
         }
-    }
-
-    private fun clickSubmitButton() {
-        viewModel.clickSubmitButton()
-    }
-
-    private fun clickToStatusButton() {
-        viewModel.clickToSelectionStatus()
-    }
-
-    private fun clickToDetailButton() {
-        viewModel.clickToExpenseDetail()
-    }
-
-    private fun clickSwitchToPendingButton() {
-        viewModel.clickSwitchToPending()
     }
 
     private fun collectStateFlow() {
@@ -154,7 +130,7 @@ class ExpenseDetailActivity : AppCompatActivity() {
     }
 
     companion object {
-        // TODO: 항상 결제자로 간주하게 설정하는 플래그; API가 완성되면 false로 수정
+        // 항상 결제자로 간주하게 설정하는 플래그; API가 완성되면 false로 수정
         private const val ALWAYS_PAYER_FLAG = false
     }
 }
