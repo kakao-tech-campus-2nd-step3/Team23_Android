@@ -104,7 +104,9 @@ class ExpenseDetailActivity : AppCompatActivity() {
     private fun getIntentData() {
         val expenseId = intent?.getParcelableData<String>(ExpenseDetailContract.EXPENSE_ID)
         val groupId = intent?.getParcelableData<String>(ExpenseDetailContract.GROUP_ID)
-        val expenseState = intent?.getParcelableData<ExpenseState>(ExpenseDetailContract.EXPENSE_STATE)
+        val expenseState = intent?.getParcelableData<ExpenseState>(
+            ExpenseDetailContract.EXPENSE_STATE
+        )
         val isPayer = intent?.getParcelableData<Boolean>(ExpenseDetailContract.IS_PAYER)
 
         if (expenseId == null || groupId == null || expenseState == null || isPayer == null) {

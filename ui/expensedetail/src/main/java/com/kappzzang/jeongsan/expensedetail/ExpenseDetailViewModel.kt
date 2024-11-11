@@ -116,7 +116,7 @@ class ExpenseDetailViewModel @Inject constructor(
 
     private fun clickDetailPageLeftButton() {
         when (expenseState.value) {
-            ExpenseState.CONFIRMED,ExpenseState.NOT_CONFIRMED -> saveDetailsAndClose()
+            ExpenseState.CONFIRMED, ExpenseState.NOT_CONFIRMED -> saveDetailsAndClose()
             ExpenseState.TRANSFER_PENDING -> dismissAndClose()
             ExpenseState.TRANSFERED -> dismissAndClose()
         }
@@ -125,18 +125,16 @@ class ExpenseDetailViewModel @Inject constructor(
     private fun clickStatusPageLeftButton() {
         when (expenseState.value) {
             ExpenseState.CONFIRMED, ExpenseState.NOT_CONFIRMED -> {
-                if(_isPayer.value) {
+                if (_isPayer.value) {
                     switchToPendingExpense()
-                }
-                else{
+                } else {
                     dismissAndClose()
                 }
             }
             ExpenseState.TRANSFER_PENDING -> {
-                if(_isPayer.value) {
+                if (_isPayer.value) {
                     switchToOngoingExpense()
-                }
-                else{
+                } else {
                     dismissAndClose()
                 }
             }

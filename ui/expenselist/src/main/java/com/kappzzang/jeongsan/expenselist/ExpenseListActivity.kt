@@ -157,8 +157,8 @@ class ExpenseListActivity : AppCompatActivity() {
                             Toast.makeText(
                                 this@ExpenseListActivity,
                                 "\"${viewModel.groupUIItem.value.groupSubject} " +
-                                        "${viewModel.groupUIItem.value.groupName}\" " +
-                                        getString(R.string.complete_group_success),
+                                    "${viewModel.groupUIItem.value.groupName}\" " +
+                                    getString(R.string.complete_group_success),
                                 Toast.LENGTH_SHORT
                             ).show()
                             finish()

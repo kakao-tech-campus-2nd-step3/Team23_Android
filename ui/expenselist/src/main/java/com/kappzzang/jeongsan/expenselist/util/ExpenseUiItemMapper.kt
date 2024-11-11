@@ -22,7 +22,12 @@ object ExpenseUiItemMapper {
             price = "${item.price.formatDecimalSeparator()} $CURRENCY_POSTFIX",
             isMyPayment = item.isMyPayment,
             indicateNotConfirmedDot = item.state == ExpenseState.NOT_CONFIRMED,
-            indicateMyPrice = (item.state == ExpenseState.TRANSFERED || item.state == ExpenseState.TRANSFER_PENDING) && item.personalExpense != null,
+            indicateMyPrice =
+            (
+                item.state == ExpenseState.TRANSFERED ||
+                    item.state == ExpenseState.TRANSFER_PENDING
+                ) &&
+                item.personalExpense != null,
             myPrice = item.personalExpense?.let {
                 "$MY_EXPENSE_PREFIX ${it.formatDecimalSeparator()} $CURRENCY_POSTFIX"
             } ?: ""

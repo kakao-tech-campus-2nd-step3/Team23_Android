@@ -20,7 +20,7 @@ object ButtonTextConverter {
         }
 
         ExpenseDetailPage.SELECTION_STATUS -> {
-            if(isPayer) {
+            if (isPayer) {
                 when (expenseState) {
                     ExpenseState.CONFIRMED, ExpenseState.NOT_CONFIRMED -> {
                         context.getString(R.string.expense_detail_switch_to_pending)
@@ -32,8 +32,7 @@ object ButtonTextConverter {
                     ExpenseState.TRANSFERED ->
                         context.getString(R.string.expense_detail_dismiss)
                 }
-            }
-            else{
+            } else {
                 context.getString(R.string.expense_detail_dismiss)
             }
         }
