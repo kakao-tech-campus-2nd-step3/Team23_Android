@@ -11,11 +11,6 @@ import kotlinx.coroutines.withContext
 class MemberRepositoryImpl @Inject constructor(
     private val groupRemoteDataSource: GroupRemoteDataSource
 ) : MemberRepository {
-    override suspend fun addMember(groupId: String, memberId: String) {
-        withContext(Dispatchers.IO) {
-            groupRemoteDataSource.joinGroup(groupId.toLong(), memberId.toLong())
-        }
-    }
 
     override suspend fun getAllMember(groupId: String): List<MemberItem> =
         withContext(Dispatchers.IO) {

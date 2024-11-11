@@ -81,6 +81,6 @@ class GroupInfoRepositoryImpl @Inject constructor(
     override suspend fun completeGroup(groupId: String): Result<Boolean> =
         groupRemoteDataSource.completeGroup(groupId.toLong())
 
-    override suspend fun joinGroup(groupId: String, memberId: String): Result<Boolean> =
-        groupRemoteDataSource.joinGroup(groupId.toLong(), memberId.toLong())
+    override suspend fun joinGroup(groupId: String): Result<Boolean> =
+        groupRemoteDataSource.joinGroup(groupId.toLong())
 }

@@ -8,7 +8,6 @@ import com.kappzzang.jeongsan.entity.GetLinkResponse
 import com.kappzzang.jeongsan.entity.GetMemberInfoResponse
 import com.kappzzang.jeongsan.entity.GetTargetGroupResponse
 import com.kappzzang.jeongsan.entity.GroupInfo
-import com.kappzzang.jeongsan.entity.JoinGroupRequest
 import com.kappzzang.jeongsan.entity.JoinGroupResponse
 import com.kappzzang.jeongsan.entity.MemberInfo
 import javax.inject.Inject
@@ -133,11 +132,8 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
         }
     }
 
-    suspend fun joinGroup(groupId: Long, myId: Long): Result<Boolean> = try {
-        val response = groupApi.joinGroup(
-            groupId = groupId,
-            request = JoinGroupRequest(myId)
-        )
+    suspend fun joinGroup(groupId: Long): Result<Boolean> = try {
+        val response = groupApi.joinGroup(groupId = groupId)
         handleJoinGroupResponse(response)
     } catch (e: Exception) {
         Result.failure(e)
