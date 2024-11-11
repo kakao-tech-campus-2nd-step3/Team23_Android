@@ -9,7 +9,6 @@ import com.kappzzang.jeongsan.usecase.GetTransferInfoUseCase
 import com.kappzzang.jeongsan.usecase.SendTransferMessageUseCase
 import com.kappzzang.jeongsan.usecase.SetExpensesToCompleteUseCase
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.mockk
 import io.mockk.unmockkAll
 import kotlinx.coroutines.Dispatchers

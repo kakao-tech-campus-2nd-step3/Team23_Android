@@ -64,15 +64,19 @@ sealed class TransferInfoUIState {
     data object Idle : TransferInfoUIState()
     data object LoadingPurchaseList : TransferInfoUIState()
 
-    data class PurchaseListGetError(override val message: String) : TransferInfoUIState(),
+    data class PurchaseListGetError(override val message: String) :
+        TransferInfoUIState(),
         ErrorState
 
-    data class TransferInfoGetError(override val message: String) : TransferInfoUIState(),
+    data class TransferInfoGetError(override val message: String) :
+        TransferInfoUIState(),
         ErrorState
 
-    data class TransferMessageSendError(override val message: String) : TransferInfoUIState(),
+    data class TransferMessageSendError(override val message: String) :
+        TransferInfoUIState(),
         ErrorState
 
-    data class ExpenseStateUpdateError(override val message: String) : TransferInfoUIState(),
+    data class ExpenseStateUpdateError(override val message: String) :
+        TransferInfoUIState(),
         ErrorState
 }

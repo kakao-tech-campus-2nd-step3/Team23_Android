@@ -97,7 +97,7 @@ class SendTransferMessageUseCaseTest {
                     "serviceId",
                     "name",
                     100,
-                    "https://example.org/",
+                    "https://example.org/"
                 )
             )
 
