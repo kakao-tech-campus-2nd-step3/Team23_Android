@@ -35,8 +35,6 @@ sealed class TransferInfoUIState {
         HasTransferInfo,
         HasExpenseId
 
-    data class TransferInfoGetError(val message: String) : TransferInfoUIState()
-
     data class SendingTransferMessage(
         override val transferInfoList: List<TransferDetailItem>,
         override val totalExpenseToGet: Int,
@@ -62,12 +60,19 @@ sealed class TransferInfoUIState {
         HasExpenseId
 
     data object ExpenseStateUpdateSuccess : TransferInfoUIState()
-    data class ExpenseStateUpdateError(override val message: String) : TransferInfoUIState(), ErrorState
 
     data object Idle : TransferInfoUIState()
     data object LoadingPurchaseList : TransferInfoUIState()
 
-    data class PurchaseListGetError(override val message: String) : TransferInfoUIState(), ErrorState
+    data class PurchaseListGetError(override val message: String) : TransferInfoUIState(),
+        ErrorState
 
-    data class TransferMessageSendError(override val message: String) : TransferInfoUIState(), ErrorState
+    data class TransferInfoGetError(override val message: String) : TransferInfoUIState(),
+        ErrorState
+
+    data class TransferMessageSendError(override val message: String) : TransferInfoUIState(),
+        ErrorState
+
+    data class ExpenseStateUpdateError(override val message: String) : TransferInfoUIState(),
+        ErrorState
 }

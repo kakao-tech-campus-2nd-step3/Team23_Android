@@ -75,6 +75,15 @@ class SendMessageViewModel @Inject constructor(
             }
     }
 
+    private suspend fun getTransferInfo() {
+        (_transferInfoState.value as? TransferInfoUIState.PurchaseListGetSuccess)?.let {
+            _transferInfoState.value = TransferInfoUIState.LoadingTransferInfo(
+                it.expenseIdList
+            )
+            launchGetStartInfoUseCase(it.expenseIdList)
+        }
+    }
+
     private suspend fun launchGetStartInfoUseCase(expenseIdList: List<String>) {
         getTransferInfoUseCase(
             groupId = groupId.value,
@@ -97,12 +106,15 @@ class SendMessageViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getTransferInfo() {
-        (_transferInfoState.value as? TransferInfoUIState.PurchaseListGetSuccess)?.let {
-            launchGetStartInfoUseCase(it.expenseIdList)
-            _transferInfoState.value = TransferInfoUIState.LoadingTransferInfo(
-                it.expenseIdList
-            )
+    fun sendTransferMessage() {
+        (transferInfoState.value as? TransferInfoUIState.TransferInfoGetSuccess)?.let {
+            launchSendTransferMessageUseCase(it.transferInfoList)
+            _transferInfoState.value =
+                TransferInfoUIState.SendingTransferMessage(
+                    it.transferInfoList,
+                    it.totalExpenseToGet,
+                    it.expenseIdList
+                )
         }
     }
 
@@ -125,18 +137,6 @@ class SendMessageViewModel @Inject constructor(
                     "송금 요청 메시지 전송을 실패했습니다: ${it.message}"
                 )
             }
-        }
-    }
-
-    fun sendTransferMessage() {
-        (transferInfoState.value as? TransferInfoUIState.TransferInfoGetSuccess)?.let {
-            launchSendTransferMessageUseCase(it.transferInfoList)
-            _transferInfoState.value =
-                TransferInfoUIState.SendingTransferMessage(
-                    it.transferInfoList,
-                    it.totalExpenseToGet,
-                    it.expenseIdList
-                )
         }
     }
 
