@@ -6,7 +6,7 @@ import com.kappzzang.jeongsan.model.MemberItem
 object MemberEntityMapper {
 
     fun MemberInfo.toMemberItem() = MemberItem(
-        id = id.toString(),
+        id = id,
         name = name,
         profileImageUrl = profileImageUrl,
         isInvited = isInvited
