@@ -88,7 +88,11 @@ class ExpenseListEntityMapperTest {
         )
 
         // when
-        val mapped = ExpenseListEntityMapper.mapExpenseEntityToModel(entity, serviceId, serverChecked)
+        val mapped = ExpenseListEntityMapper.mapExpenseEntityToModel(
+            entity,
+            serviceId,
+            serverChecked
+        )
 
         // then
         assertThat(mapped.state).isEqualTo(expectedDomainState)
@@ -109,7 +113,11 @@ class ExpenseListEntityMapperTest {
         )
 
         // when
-        val mapped = ExpenseListEntityMapper.mapExpenseEntityToModel(entity, serviceId, serverChecked)
+        val mapped = ExpenseListEntityMapper.mapExpenseEntityToModel(
+            entity,
+            serviceId,
+            serverChecked
+        )
 
         // then
         assertThat(mapped.state).isEqualTo(expectedDomainState)

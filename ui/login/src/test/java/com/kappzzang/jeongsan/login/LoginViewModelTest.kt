@@ -19,6 +19,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkAll
+import java.util.Date
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -31,7 +32,6 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import java.util.Date
 
 @ExperimentalCoroutinesApi
 class LoginViewModelTest {
@@ -112,7 +112,7 @@ class LoginViewModelTest {
 
             coEvery { authenticationWithServerUseCase(any(), any(), any(), any()) } returns
 
-                    viewModel.onKakaoAuthorizationSuccess(token)
+                viewModel.onKakaoAuthorizationSuccess(token)
             advanceUntilIdle()
 
             coVerify { authorizeWithKakaoUseCase(any()) }
@@ -120,26 +120,25 @@ class LoginViewModelTest {
         }
 
     @Test
-    fun `카카오 인증 성공 - 유효한 OAuthToken이면 authenticationWithServerUseCase 호출`() =
-        runTest {
-            val token = mockk<OAuthToken>()
-            every { token.accessToken } returns "valid_token"
-            every { token.refreshToken } returns "valid_refresh_token"
-            every { token.accessTokenExpiresAt } returns Date()
-            coEvery { getUserInfoUseCase() } returns UserItem(
-                serviceId = "",
-                name = "",
-                email = "",
-                profileUrl = ""
-            )
+    fun `카카오 인증 성공 - 유효한 OAuthToken이면 authenticationWithServerUseCase 호출`() = runTest {
+        val token = mockk<OAuthToken>()
+        every { token.accessToken } returns "valid_token"
+        every { token.refreshToken } returns "valid_refresh_token"
+        every { token.accessTokenExpiresAt } returns Date()
+        coEvery { getUserInfoUseCase() } returns UserItem(
+            serviceId = "",
+            name = "",
+            email = "",
+            profileUrl = ""
+        )
 
-            coEvery { authenticationWithServerUseCase(any(), any(), any(), any()) } returns
+        coEvery { authenticationWithServerUseCase(any(), any(), any(), any()) } returns
 
-                    viewModel.onKakaoAuthorizationSuccess(token)
-            advanceUntilIdle()
+            viewModel.onKakaoAuthorizationSuccess(token)
+        advanceUntilIdle()
 
-            coVerify { authenticationWithServerUseCase(any(), any(), any(), any()) }
-        }
+        coVerify { authenticationWithServerUseCase(any(), any(), any(), any()) }
+    }
 
     @Test
     fun `login 시 NoToken의 상태 반영`() = runTest {

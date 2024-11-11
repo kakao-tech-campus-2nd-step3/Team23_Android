@@ -3,14 +3,10 @@ package com.kappzzang.jeongsan.expenselist.inviteinfo
 import com.kappzzang.jeongsan.usecase.ConvertServiceIdToUuidUseCase
 import com.kappzzang.jeongsan.usecase.GetInviteInfoUseCase
 import com.kappzzang.jeongsan.usecase.SendInviteMessageUseCase
-import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
-import io.mockk.just
 import io.mockk.mockk
 import io.mockk.unmockkAll
-import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -52,7 +48,7 @@ class InviteInfoViewModelTest {
 
     @Test
     fun `메시지 전송을 누르면 Uuid로 변환된 값으로 메시지 전송을 보낸다`() = runTest {
-        //given
+        // given
         val testGroupName = ""
         val testGroupId = "1"
         val testServiceId = "2"

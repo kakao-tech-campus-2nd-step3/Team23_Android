@@ -1,15 +1,11 @@
 package com.kappzzang.jeongsan
 
-import com.kappzzang.jeongsan.datasource.ReceiptCaptureFakeDatasource
 import com.kappzzang.jeongsan.datasource.ReceiptCaptureRemoteDatasource
 import com.kappzzang.jeongsan.entity.ReceiptAnalyzeResponse
-import com.kappzzang.jeongsan.mapper.OcrResultEntityMapper
 import com.kappzzang.jeongsan.model.OcrResultResponse
 import com.kappzzang.jeongsan.repository.ReceiptCaptureRepository
 import com.kappzzang.jeongsan.repositoryimpl.ReceiptCaptureRepositoryImpl
-import io.mockk.MockK
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.assertj.core.api.Assertions.assertThat

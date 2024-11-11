@@ -1,7 +1,6 @@
 package com.kappzzang.jeongsan.creategroup
 
 import android.app.Application
-import androidx.constraintlayout.widget.Group
 import com.kappzzang.jeongsan.data.MemberUIData
 import com.kappzzang.jeongsan.usecase.SendInviteMessageUseCase
 import com.kappzzang.jeongsan.usecase.UploadGroupInfoUseCase

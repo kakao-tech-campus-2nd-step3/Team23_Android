@@ -37,7 +37,8 @@ class AddExpenseViewModelTest {
     private val mockGetCategoryListUseCase = mockk<GetCategoryListUseCase>()
     private lateinit var viewModel: AddExpenseViewModel
 
-    private val getGroupMemberServiceIdUseCase = mockk<GetGroupMemberServiceIdUseCase>(relaxed = true)
+    private val getGroupMemberServiceIdUseCase =
+        mockk<GetGroupMemberServiceIdUseCase>(relaxed = true)
     private val sendNewExpenseMessageUseCase = mockk<SendNewExpenseMessageUseCase>(relaxed = true)
     private val convertServiceIdToUuidUseCase = mockk<ConvertServiceIdToUuidUseCase>(relaxed = true)
 
