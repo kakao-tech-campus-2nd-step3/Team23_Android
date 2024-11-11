@@ -15,7 +15,6 @@ import com.kappzzang.jeongsan.usecase.AuthenticateWithKakaoUseCase
 import com.kappzzang.jeongsan.usecase.AuthenticateWithServerUseCase
 import com.kappzzang.jeongsan.usecase.AuthorizeWithKakaoUseCase
 import com.kappzzang.jeongsan.usecase.GetUserInfoUseCase
-import com.kappzzang.jeongsan.util.AuthenticationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
@@ -35,7 +34,6 @@ class LoginViewModel @Inject constructor(
     private val authenticateWithKakaoUseCase: AuthenticateWithKakaoUseCase,
     private val authenticateWithServerUseCase: AuthenticateWithServerUseCase,
     private val getUserInfo: GetUserInfoUseCase,
-    private val repo: AuthenticationRepository,
     private val ioDispatcher: CoroutineDispatcher
 ) : AndroidViewModel(application) {
     private val authStatus by lazy {

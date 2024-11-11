@@ -11,9 +11,9 @@ object ColorParser {
     }
 
     fun parseColor(color: String): String = if (color.startsWith('#')) {
-        color
+        color.lowercase()
     } else if (isHexadecimal(color) && (color.length == 6 || color.length == 8)) {
-        "#$color"
+        "#$color".lowercase()
     } else {
         throw IllegalArgumentException("The Input is not a hexcolor")
     }

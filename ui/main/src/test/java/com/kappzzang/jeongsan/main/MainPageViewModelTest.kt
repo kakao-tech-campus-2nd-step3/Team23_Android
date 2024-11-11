@@ -5,6 +5,7 @@ import com.kappzzang.jeongsan.model.GroupItem
 import com.kappzzang.jeongsan.usecase.GetDoneGroupUseCase
 import com.kappzzang.jeongsan.usecase.GetProgressingGroupUseCase
 import com.kappzzang.jeongsan.usecase.GetUserInfoUseCase
+import com.kappzzang.jeongsan.usecase.JoinGroupUseCase
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -27,6 +28,7 @@ class MainPageViewModelTest {
     private val mockGetProgressingGroupUseCase = mockk<GetProgressingGroupUseCase>()
     private val mockGetDoneGroupUseCase = mockk<GetDoneGroupUseCase>()
     private val mockGetUserInfoUseCase = mockk<GetUserInfoUseCase>()
+    private val mockJoinGroupUseCase = mockk<JoinGroupUseCase>()
     private lateinit var viewModel: MainPageViewModel
 
     private val testDispatcher = StandardTestDispatcher()
@@ -42,6 +44,7 @@ class MainPageViewModelTest {
             mockGetProgressingGroupUseCase,
             mockGetDoneGroupUseCase,
             mockGetUserInfoUseCase,
+            mockJoinGroupUseCase,
             testDispatcher
         )
     }

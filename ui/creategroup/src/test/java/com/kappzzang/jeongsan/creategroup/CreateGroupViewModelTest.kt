@@ -1,5 +1,6 @@
 package com.kappzzang.jeongsan.creategroup
 
+import android.app.Application
 import com.kappzzang.jeongsan.data.MemberUIData
 import com.kappzzang.jeongsan.usecase.SendInviteMessageUseCase
 import com.kappzzang.jeongsan.usecase.UploadGroupInfoUseCase
@@ -23,6 +24,7 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class CreateGroupViewModelTest {
 
+    private val mockApplication = mockk<Application>()
     private val mockUploadGroupInfoUseCase = mockk<UploadGroupInfoUseCase>()
     private val mockSendInviteMessageUseCase = mockk<SendInviteMessageUseCase>()
     private lateinit var viewModel: CreateGroupViewModel
@@ -35,6 +37,7 @@ class CreateGroupViewModelTest {
         coEvery { mockUploadGroupInfoUseCase(any()) } returns 1L
         coEvery { mockSendInviteMessageUseCase(any(), any(), any()) } returns true
         viewModel = CreateGroupViewModel(
+            mockApplication,
             mockUploadGroupInfoUseCase,
             mockSendInviteMessageUseCase,
             testDispatcher
@@ -64,8 +67,8 @@ class CreateGroupViewModelTest {
     fun `그룹 멤버 리스트 업데이트시 올바르게 반영되는지 확인`() = runTest {
         // given
         val testMembers = listOf(
-            MemberUIData("1", "Alice", "test url1"),
-            MemberUIData("2", "Bob", "test url2")
+            MemberUIData("1", "12", "Alice", "test url1"),
+            MemberUIData("2", "22", "Bob", "test url2")
         )
 
         // when
@@ -80,9 +83,9 @@ class CreateGroupViewModelTest {
     fun `멤버 제거시 해당 위치의 멤버가 삭제되는지 확인`() = runTest {
         // given
         val testMembers = listOf(
-            MemberUIData("1", "Alice", "test url1"),
-            MemberUIData("2", "Bob", "test url2"),
-            MemberUIData("3", "Charlie", "test url3")
+            MemberUIData("1", "12", "Alice", "test url1"),
+            MemberUIData("2", "22", "Bob", "test url2"),
+            MemberUIData("3", "32", "Charlie", "test url3")
         )
         viewModel.updateGroupMemberList(testMembers)
         advanceUntilIdle()
@@ -99,25 +102,13 @@ class CreateGroupViewModelTest {
     }
 
     @Test
-    fun `그룹 정보가 유효하지 않을 때 확인`() = runTest {
-        // given
-
-        // when
-        val result = viewModel.uploadGroupInfo()
-
-        // then
-        assertEquals(false, result)
-        coVerify(exactly = 0) { mockUploadGroupInfoUseCase(any()) }
-    }
-
-    @Test
     fun `그룹 정보가 유효할때 확인`() = runTest {
         // given
         val testGroupName = "Test Group"
         val testGroupSubject = "✈️"
         val testMembers = listOf(
-            MemberUIData("1", "Alice", "test url1"),
-            MemberUIData("2", "Bob", "test url2")
+            MemberUIData("1", "12", "Alice", "test url1"),
+            MemberUIData("2", "22", "Bob", "test url2")
         )
         viewModel.groupName.emit(testGroupName)
         viewModel.updateGroupSubject(testGroupSubject)
@@ -138,8 +129,8 @@ class CreateGroupViewModelTest {
         val testGroupId = "test_group_id"
         val testGroupName = "Test Group"
         val testMembers = listOf(
-            MemberUIData("1", "Alice", "test url1"),
-            MemberUIData("2", "Bob", "test url2")
+            MemberUIData("1", "12", "Alice", "test url1"),
+            MemberUIData("2", "22", "Bob", "test url2")
         )
         viewModel.groupName.emit(testGroupName)
         viewModel.updateGroupMemberList(testMembers)

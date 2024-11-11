@@ -1,6 +1,7 @@
 package com.kappzzang.jeongsan.expensedetail
 
 import android.util.Log
+import com.kappzzang.jeongsan.expensedetail.expensedetailpage.ExpenseDetailFragmentViewModel
 import com.kappzzang.jeongsan.model.ExpenseDetailItem
 import com.kappzzang.jeongsan.model.ExpenseItem
 import com.kappzzang.jeongsan.model.ExpenseItemWithDetails
@@ -27,7 +28,7 @@ import org.junit.Test
 class ExpenseDetailViewModelTest {
     private val getExpenseDetailUseCase = mockk<GetExpenseDetailUseCase>(relaxed = true)
     private val editExpenseDetailUseCase = mockk<EditExpenseDetailUseCase>()
-    private lateinit var viewModel: ExpenseDetailViewModel
+    private lateinit var viewModel: ExpenseDetailFragmentViewModel
 
     private val testDispatcher = StandardTestDispatcher()
 
@@ -38,10 +39,10 @@ class ExpenseDetailViewModelTest {
         every { Log.e(any(), any()) } returns 0
         Dispatchers.setMain(testDispatcher)
 
-        viewModel = ExpenseDetailViewModel(
+        viewModel = ExpenseDetailFragmentViewModel(
+            ioDispatcher = testDispatcher,
             getExpenseDetailUseCase = getExpenseDetailUseCase,
-            editExpenseDetailUseCase = editExpenseDetailUseCase,
-            ioDispatcher = testDispatcher
+            editExpenseDetailUseCase = editExpenseDetailUseCase
         )
     }
 
