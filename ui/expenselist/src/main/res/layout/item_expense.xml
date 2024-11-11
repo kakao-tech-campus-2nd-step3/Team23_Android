@@ -20,6 +20,7 @@
         android:elevation="5dp"
         android:layout_height="80dp"
         android:layout_marginBottom="1dp"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
         android:background="@color/white"
         clipUpperCorner="@{positionInfo.firstItem}"
         clipBottomCorner="@{positionInfo.lastItem}">
