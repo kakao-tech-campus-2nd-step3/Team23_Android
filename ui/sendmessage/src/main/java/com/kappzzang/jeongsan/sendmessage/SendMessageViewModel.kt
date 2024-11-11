@@ -115,7 +115,6 @@ class SendMessageViewModel @Inject constructor(
                             it.expenseIdList
                         )
                 }
-
             }.onFailure {
                 _transferInfoState.value = TransferInfoUIState.TransferMessageSendError(
                     "송금 요청 메시지 전송을 실패했습니다: ${it.message}"
@@ -134,7 +133,6 @@ class SendMessageViewModel @Inject constructor(
                     it.expenseIdList
                 )
         }
-
     }
 
     fun updateToCompleted() {
@@ -155,7 +153,6 @@ class SendMessageViewModel @Inject constructor(
                             )
                         )
                     }
-
             }
         }
     }

@@ -18,5 +18,8 @@ interface ExpenseDetailRepository {
 
     suspend fun updateExpenseStateToOngoing(expenseId: String, groupId: String): Result<Unit>
 
-    suspend fun updateExpensesStateToPending(expenseIds: List<String>, groupId: String): Result<Unit>
+    suspend fun updateExpensesStateToPending(
+        expenseIds: List<String>,
+        groupId: String
+    ): Result<Unit>
 }

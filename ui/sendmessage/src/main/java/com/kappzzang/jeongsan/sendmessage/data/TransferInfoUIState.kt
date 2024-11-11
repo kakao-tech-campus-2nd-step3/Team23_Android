@@ -16,17 +16,20 @@ sealed class TransferInfoUIState {
         val size: Int,
         val totalPay: Int,
         override val expenseIdList: List<String>
-    ) : TransferInfoUIState(), HasExpenseId
+    ) : TransferInfoUIState(),
+        HasExpenseId
 
-    data class LoadingTransferInfo(
-        override val expenseIdList: List<String>
-    ) : TransferInfoUIState(), HasExpenseId
-
+    data class LoadingTransferInfo(override val expenseIdList: List<String>) :
+        TransferInfoUIState(),
+        HasExpenseId
 
     data class TransferInfoGetSuccess(
         override val transferInfoList: List<TransferDetailItem>,
-        override val totalExpenseToGet: Int, override val expenseIdList: List<String>
-    ) : TransferInfoUIState(), HasTransferInfo, HasExpenseId
+        override val totalExpenseToGet: Int,
+        override val expenseIdList: List<String>
+    ) : TransferInfoUIState(),
+        HasTransferInfo,
+        HasExpenseId
 
     data class TransferInfoGetError(val message: String) : TransferInfoUIState()
 
@@ -34,19 +37,25 @@ sealed class TransferInfoUIState {
         override val transferInfoList: List<TransferDetailItem>,
         override val totalExpenseToGet: Int,
         override val expenseIdList: List<String>
-    ) : TransferInfoUIState(), HasTransferInfo, HasExpenseId
+    ) : TransferInfoUIState(),
+        HasTransferInfo,
+        HasExpenseId
 
     data class TransferMessageSendSuccess(
         override val transferInfoList: List<TransferDetailItem>,
         override val totalExpenseToGet: Int,
         override val expenseIdList: List<String>
-    ) : TransferInfoUIState(), HasTransferInfo, HasExpenseId
+    ) : TransferInfoUIState(),
+        HasTransferInfo,
+        HasExpenseId
 
     data class UpdatingExpenseState(
         override val transferInfoList: List<TransferDetailItem>,
         override val totalExpenseToGet: Int,
         override val expenseIdList: List<String>
-    ) : TransferInfoUIState(), HasTransferInfo, HasExpenseId
+    ) : TransferInfoUIState(),
+        HasTransferInfo,
+        HasExpenseId
 
     data object ExpenseStateUpdateSuccess : TransferInfoUIState()
     data class ExpenseStateUpdateError(val message: String) : TransferInfoUIState()
@@ -55,7 +64,6 @@ sealed class TransferInfoUIState {
     data object LoadingPurchaseList : TransferInfoUIState()
 
     data class PurchaseListGetError(val message: String) : TransferInfoUIState()
-
 
     data class TransferMessageSendError(val message: String) : TransferInfoUIState()
 }
