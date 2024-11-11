@@ -39,7 +39,7 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/total_expense_explain_textview"
             app:layout_constraintStart_toEndOf="@id/total_expense_explain_textview"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@id/total_expense_explain_textview"
             tools:text="@{viewModel.uiData.totalPriceText}" />
 
         <com.google.android.material.chip.ChipGroup
