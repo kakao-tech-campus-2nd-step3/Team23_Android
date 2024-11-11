@@ -65,4 +65,13 @@ class ExpenseDetailRepositoryImpl @Inject constructor(
         expenseItemIdList = listOf(expenseId),
         groupId = groupId
     )
+
+    override suspend fun updateExpensesStateToPending(
+        expenseIds: List<String>,
+        groupId: String
+    ): Result<Unit> = expenseListRemoteDatasource.updateExpenseState(
+        state = ExpenseState.CONFIRMED,
+        expenseItemIdList = expenseIds,
+        groupId = groupId
+    )
 }

@@ -7,6 +7,7 @@ import com.kappzzang.jeongsan.sendmessage.data.TransferInfoUIState
 import com.kappzzang.jeongsan.usecase.GetPurchasedExpenseListUseCase
 import com.kappzzang.jeongsan.usecase.GetTransferInfoUseCase
 import com.kappzzang.jeongsan.usecase.SendTransferMessageUseCase
+import com.kappzzang.jeongsan.usecase.SetExpensesToCompleteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
@@ -20,6 +21,7 @@ class SendMessageViewModel @Inject constructor(
     private val getTransferInfoUseCase: GetTransferInfoUseCase,
     private val sendTransferMessageUseCase: SendTransferMessageUseCase,
     private val getPurchasedExpenseListUseCase: GetPurchasedExpenseListUseCase,
+    private val setExpensesToCompleteUseCase: SetExpensesToCompleteUseCase,
     private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
     private val _groupId = MutableStateFlow("")
@@ -76,7 +78,8 @@ class SendMessageViewModel @Inject constructor(
                 _transferInfoState.emit(
                     TransferInfoUIState.TransferInfoGetSuccess(
                         transferInfoList = it,
-                        totalExpenseToGet = it.sumOf { item -> item.fee }
+                        totalExpenseToGet = it.sumOf { item -> item.fee },
+                        expenseIdList = expenseIdList
                     )
                 )
             }.onFailure {
@@ -93,7 +96,9 @@ class SendMessageViewModel @Inject constructor(
     fun getTransferInfo() {
         (_transferInfoState.value as? TransferInfoUIState.PurchaseListGetSuccess)?.let {
             launchGetStartInfoUseCase(it.expenseIdList)
-            _transferInfoState.value = TransferInfoUIState.LoadingTransferInfo
+            _transferInfoState.value = TransferInfoUIState.LoadingTransferInfo(
+                it.expenseIdList
+            )
         }
     }
 
@@ -102,7 +107,15 @@ class SendMessageViewModel @Inject constructor(
             sendTransferMessageUseCase(
                 transferInfoList = transferInfo
             ).onSuccess {
-                _transferInfoState.value = TransferInfoUIState.TransferMessageSendSuccess
+                (transferInfoState.value as? TransferInfoUIState.SendingTransferMessage)?.let {
+                    _transferInfoState.value =
+                        TransferInfoUIState.TransferMessageSendSuccess(
+                            it.transferInfoList,
+                            it.totalExpenseToGet,
+                            it.expenseIdList
+                        )
+                }
+
             }.onFailure {
                 _transferInfoState.value = TransferInfoUIState.TransferMessageSendError(
                     "송금 요청 메시지 전송을 실패했습니다: ${it.message}"
@@ -114,9 +127,37 @@ class SendMessageViewModel @Inject constructor(
     fun sendTransferMessage() {
         (transferInfoState.value as? TransferInfoUIState.TransferInfoGetSuccess)?.let {
             launchSendTransferMessageUseCase(it.transferInfoList)
+            _transferInfoState.value =
+                TransferInfoUIState.SendingTransferMessage(
+                    it.transferInfoList,
+                    it.totalExpenseToGet,
+                    it.expenseIdList
+                )
         }
 
-        _transferInfoState.value = TransferInfoUIState.SendingTransferMessage
+    }
+
+    fun updateToCompleted() {
+        (transferInfoState.value as? TransferInfoUIState.TransferMessageSendSuccess)?.let {
+            viewModelScope.launch(ioDispatcher) {
+                setExpensesToCompleteUseCase(
+                    groupId = groupId.value,
+                    expenseIdList = it.expenseIdList
+                )
+                    .onSuccess {
+                        _transferInfoState.emit(
+                            TransferInfoUIState.ExpenseStateUpdateSuccess
+                        )
+                    }.onFailure {
+                        _transferInfoState.emit(
+                            TransferInfoUIState.ExpenseStateUpdateError(
+                                "지출 상태 변경에 실패했습니다: ${it.message}"
+                            )
+                        )
+                    }
+
+            }
+        }
     }
 
     fun setGroupId(groupId: String?) {

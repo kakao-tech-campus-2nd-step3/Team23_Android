@@ -10,6 +10,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.intentcontract.SendMessageContract
 import com.kappzzang.jeongsan.navigation.SendMessageNavigator
+import com.kappzzang.jeongsan.sendmessage.data.HasTransferInfo
 import com.kappzzang.jeongsan.sendmessage.data.TransferInfoUIState
 import com.kappzzang.jeongsan.sendmessage.databinding.ActivitySendMessageBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,24 +49,37 @@ class SendMessageActivity : AppCompatActivity() {
                             viewModel.getPurchasedExpenseList()
                         }
 
-                        TransferInfoUIState.LoadingPurchaseList -> {}
-                        TransferInfoUIState.LoadingTransferInfo -> {}
+                        is TransferInfoUIState.LoadingPurchaseList -> {}
+                        is TransferInfoUIState.LoadingTransferInfo -> {}
                         is TransferInfoUIState.PurchaseListGetError -> sendToast(it.message)
                         is TransferInfoUIState.PurchaseListGetSuccess -> {
                             sendToast("Count: ${it.size}, Total: ${it.totalPay}")
                             viewModel.getTransferInfo()
                         }
 
-                        is TransferInfoUIState.TransferInfoGetError -> sendToast(it.message)
+                        is TransferInfoUIState.TransferInfoGetError -> sendToast(
+                            it.message
+                        )
+
                         is TransferInfoUIState.TransferInfoGetSuccess ->
                             sendToast("Count: ${it.transferInfoList.size}")
 
-                        TransferInfoUIState.SendingTransferMessage -> {}
+                        is TransferInfoUIState.SendingTransferMessage -> {}
                         is TransferInfoUIState.TransferMessageSendError -> {
                             sendToast(it.message)
                         }
 
-                        TransferInfoUIState.TransferMessageSendSuccess -> {
+                        is TransferInfoUIState.TransferMessageSendSuccess -> {
+                            viewModel.updateToCompleted()
+                            startSendCompleteActivity()
+                        }
+
+                        is TransferInfoUIState.UpdatingExpenseState -> {}
+                        is TransferInfoUIState.ExpenseStateUpdateError -> {
+                            sendToast(it.message)
+                        }
+
+                        is TransferInfoUIState.ExpenseStateUpdateSuccess -> {
                             startSendCompleteActivity()
                         }
                     }
@@ -93,7 +107,7 @@ class SendMessageActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.transferInfoState.collect {
-                    if (it is TransferInfoUIState.TransferInfoGetSuccess) {
+                    if (it is HasTransferInfo) {
                         memberAdapter.submitList(it.transferInfoList)
                     }
                 }
