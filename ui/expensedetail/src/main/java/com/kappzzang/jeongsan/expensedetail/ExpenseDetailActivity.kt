@@ -11,6 +11,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.kappzzang.jeongsan.build_config.BuildConfig
 import com.kappzzang.jeongsan.expensedetail.databinding.ActivityExpenseDetailBinding
 import com.kappzzang.jeongsan.intentcontract.ExpenseDetailContract
+import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -127,10 +128,10 @@ class ExpenseDetailActivity : AppCompatActivity() {
     private fun getIntentData() {
         val expenseId = intent?.getParcelableData<String>(ExpenseDetailContract.EXPENSE_ID)
         val groupId = intent?.getParcelableData<String>(ExpenseDetailContract.GROUP_ID)
-        val editable = intent?.getParcelableData<Boolean>(ExpenseDetailContract.EDITABLE)
+        val expenseState = intent?.getParcelableData<ExpenseState>(ExpenseDetailContract.EXPENSE_STATE)
         val isPayer = intent?.getParcelableData<Boolean>(ExpenseDetailContract.IS_PAYER)
 
-        if (expenseId == null || groupId == null || editable == null || isPayer == null) {
+        if (expenseId == null || groupId == null || expenseState == null || isPayer == null) {
             throwExpenseDataLoadFailError()
             return
         }
@@ -138,7 +139,7 @@ class ExpenseDetailActivity : AppCompatActivity() {
         viewModel.setInitialData(
             expenseId,
             groupId,
-            editable,
+            expenseState,
             isPayer || (BuildConfig.DEBUG && ALWAYS_PAYER_FLAG)
         )
     }
