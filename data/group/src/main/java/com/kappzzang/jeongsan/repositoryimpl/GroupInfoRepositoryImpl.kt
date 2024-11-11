@@ -2,6 +2,7 @@ package com.kappzzang.jeongsan.repositoryimpl
 
 import com.kappzzang.jeongsan.datasource.GroupRemoteDataSource
 import com.kappzzang.jeongsan.mapper.GroupEntityMapper.toGroupItem
+import com.kappzzang.jeongsan.mapper.GroupEntityMapper.toServiceIdList
 import com.kappzzang.jeongsan.model.GroupCreateItem
 import com.kappzzang.jeongsan.model.GroupItem
 import com.kappzzang.jeongsan.repository.GroupInfoRepository
@@ -70,17 +71,19 @@ class GroupInfoRepositoryImpl @Inject constructor(
         listOf()
     )
 
-    override suspend fun getMemberServiceIdList(groupId: String): List<String> {
-        // TODO: API가 구현되면 수정 //
-        // TODO: API가 구현되면 수정 //
-        return listOf("1", "2")
-        // TODO: API가 구현되면 수정 //
-        // TODO: API가 구현되면 수정 //
-    }
+    override suspend fun getMemberServiceIdList(groupId: String): Result<List<String>> =
+        groupRemoteDataSource.getMemberServiceId(groupId.toLong()).fold(
+            onSuccess = {
+                return Result.success(it.toServiceIdList())
+            },
+            onFailure = {
+                return Result.failure(it)
+            }
+        )
 
     override suspend fun completeGroup(groupId: String): Result<Boolean> =
         groupRemoteDataSource.completeGroup(groupId.toLong())
 
-    override suspend fun joinGroup(groupId: String, memberId: String): Result<Boolean> =
-        groupRemoteDataSource.joinGroup(groupId.toLong(), memberId.toLong())
+    override suspend fun joinGroup(groupId: String): Result<Boolean> =
+        groupRemoteDataSource.joinGroup(groupId.toLong())
 }

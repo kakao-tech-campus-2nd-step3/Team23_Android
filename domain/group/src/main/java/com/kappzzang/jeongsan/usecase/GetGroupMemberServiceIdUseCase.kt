@@ -9,15 +9,17 @@ class GetGroupMemberServiceIdUseCase @Inject constructor(
     private val authenticationRepository: AuthenticationRepository
 ) {
 
-    suspend operator fun invoke(groupId: String, excludeMyId: Boolean = false): List<String> {
-        val memberServiceIdList = groupInfoRepository.getMemberServiceIdList(groupId)
-
-        return if (excludeMyId) {
-            removeMyId(memberServiceIdList)
-        } else {
-            memberServiceIdList
-        }
-    }
+    suspend operator fun invoke(groupId: String, excludeMyId: Boolean = false): List<String> =
+        groupInfoRepository.getMemberServiceIdList(groupId).fold(
+            onSuccess = { memberServiceIds ->
+                if (excludeMyId) {
+                    removeMyId(memberServiceIds)
+                } else {
+                    memberServiceIds
+                }
+            },
+            onFailure = { emptyList() }
+        )
 
     private fun removeMyId(memberServiceIdList: List<String>): List<String> {
         val myServiceId = authenticationRepository.getServiceId()

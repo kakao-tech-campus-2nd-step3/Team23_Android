@@ -8,9 +8,9 @@ import com.kappzzang.jeongsan.entity.GetLinkResponse
 import com.kappzzang.jeongsan.entity.GetMemberInfoResponse
 import com.kappzzang.jeongsan.entity.GetTargetGroupResponse
 import com.kappzzang.jeongsan.entity.GroupInfo
-import com.kappzzang.jeongsan.entity.JoinGroupRequest
 import com.kappzzang.jeongsan.entity.JoinGroupResponse
 import com.kappzzang.jeongsan.entity.MemberInfo
+import com.kappzzang.jeongsan.entity.MemberServiceIdResponse
 import javax.inject.Inject
 import retrofit2.Response
 
@@ -133,11 +133,8 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
         }
     }
 
-    suspend fun joinGroup(groupId: Long, myId: Long): Result<Boolean> = try {
-        val response = groupApi.joinGroup(
-            groupId = groupId,
-            request = JoinGroupRequest(myId)
-        )
+    suspend fun joinGroup(groupId: Long): Result<Boolean> = try {
+        val response = groupApi.joinGroup(groupId = groupId)
         handleJoinGroupResponse(response)
     } catch (e: Exception) {
         Result.failure(e)
@@ -169,6 +166,34 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
     private fun handleGetLinkResponse(response: Response<GetLinkResponse>): Result<String> = when {
         response.isSuccessful -> {
             Result.success(response.body()!!.link)
+        }
+
+        response.code() in 400..499 -> {
+            val errorMessage = response.body()?.message ?: "알 수 없는 오류 발생"
+            Result.failure(Exception(errorMessage))
+        }
+
+        else -> {
+            Result.failure(Exception("알 수 없는 오류 발생"))
+        }
+    }
+
+    suspend fun getMemberServiceId(groupId: Long): Result<MemberServiceIdResponse> = try {
+        val response = groupApi.getMemberServiceId(groupId = groupId)
+        handleGetMemberServiceIdResponse(response)
+    } catch (e: Exception) {
+        Result.failure(e)
+    }
+
+    private fun handleGetMemberServiceIdResponse(
+        response: Response<MemberServiceIdResponse>
+    ): Result<MemberServiceIdResponse> = when {
+        response.isSuccessful -> {
+            if (response.body() == null) {
+                Result.failure(Exception("멤버 정보를 찾을 수 없습니다."))
+            } else {
+                Result.success(response.body()!!)
+            }
         }
 
         response.code() in 400..499 -> {
