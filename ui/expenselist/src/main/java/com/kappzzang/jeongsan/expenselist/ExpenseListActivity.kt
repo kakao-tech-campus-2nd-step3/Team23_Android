@@ -26,6 +26,7 @@ import com.kappzzang.jeongsan.expenselist.viewmodel.CompleteGroupState
 import com.kappzzang.jeongsan.expenselist.viewmodel.ExpenseListViewModel
 import com.kappzzang.jeongsan.intentcontract.ExpenseListContract
 import com.kappzzang.jeongsan.intentcontract.ReceiptCameraContract
+import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.model.OcrResultResponse
 import com.kappzzang.jeongsan.navigation.AddExpenseNavigator
 import com.kappzzang.jeongsan.navigation.CameraNavigator
@@ -86,7 +87,7 @@ class ExpenseListActivity : AppCompatActivity() {
                 viewModel.selectedExpense.collect {
                     if (it.expenseId.isNotEmpty()) {
                         viewModel.resetExpenseSelection()
-                        startExpenseDetailActivity(it.expenseId, it.editable, it.isPayer)
+                        startExpenseDetailActivity(it.expenseId, it.expenseState, it.isPayer)
                     }
                 }
             }
@@ -156,8 +157,8 @@ class ExpenseListActivity : AppCompatActivity() {
                             Toast.makeText(
                                 this@ExpenseListActivity,
                                 "\"${viewModel.groupUIItem.value.groupSubject} " +
-                                    "${viewModel.groupUIItem.value.groupName}\" " +
-                                    getString(R.string.complete_group_success),
+                                        "${viewModel.groupUIItem.value.groupName}\" " +
+                                        getString(R.string.complete_group_success),
                                 Toast.LENGTH_SHORT
                             ).show()
                             finish()
@@ -301,7 +302,7 @@ class ExpenseListActivity : AppCompatActivity() {
 
     private fun startExpenseDetailActivity(
         expenseId: String,
-        isEditable: Boolean,
+        expenseState: ExpenseState,
         isPayer: Boolean
     ) {
         val groupId = viewModel.groupId.value
@@ -309,7 +310,7 @@ class ExpenseListActivity : AppCompatActivity() {
             packageContext = this,
             groupId = groupId,
             expenseId = expenseId,
-            editable = isEditable,
+            expenseState = expenseState,
             isPayer = isPayer
         )
         startActivity(intent)
@@ -318,8 +319,7 @@ class ExpenseListActivity : AppCompatActivity() {
     private fun checkFromNewExpenseNotify() {
         intent.extras?.getString(ExpenseListContract.EXPENSE_ID)?.let { expenseId ->
             intent.removeExtra(ExpenseListContract.EXPENSE_ID)
-            // TODO: isEditable을 true, isPayer를 false로 설정 -> 수정해야하나..?
-            startExpenseDetailActivity(expenseId, true, false)
+            startExpenseDetailActivity(expenseId, ExpenseState.NOT_CONFIRMED, false)
         }
     }
 }

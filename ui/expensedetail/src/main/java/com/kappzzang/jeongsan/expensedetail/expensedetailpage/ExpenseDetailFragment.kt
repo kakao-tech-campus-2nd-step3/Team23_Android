@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.expensedetail.ExpenseDetailState
 import com.kappzzang.jeongsan.expensedetail.ExpenseDetailViewModel
 import com.kappzzang.jeongsan.expensedetail.databinding.FragmentExpenseDetailBinding
+import com.kappzzang.jeongsan.expensedetail.editable
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -76,7 +77,7 @@ class ExpenseDetailFragment : Fragment() {
         viewModel.setInitialData(
             expenseId = activityViewModel.expenseId,
             groupId = activityViewModel.groupId,
-            editable = activityViewModel.editable.value
+            editable = activityViewModel.expenseState.value.editable()
         )
     }
 

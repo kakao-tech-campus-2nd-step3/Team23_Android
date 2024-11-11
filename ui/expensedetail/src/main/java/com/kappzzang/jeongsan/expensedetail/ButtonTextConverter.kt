@@ -8,6 +8,7 @@ object ButtonTextConverter {
     fun convertCurrentStateToPrimaryButtonText(
         page: ExpenseDetailPage,
         expenseState: ExpenseState,
+        isPayer: Boolean,
         context: Context
     ): String = when (page) {
         ExpenseDetailPage.EXPENSE_DETAIL -> {
@@ -19,15 +20,21 @@ object ButtonTextConverter {
         }
 
         ExpenseDetailPage.SELECTION_STATUS -> {
-            when (expenseState) {
-                ExpenseState.CONFIRMED, ExpenseState.NOT_CONFIRMED ->
-                    context.getString(R.string.expense_detail_switch_to_pending)
+            if(isPayer) {
+                when (expenseState) {
+                    ExpenseState.CONFIRMED, ExpenseState.NOT_CONFIRMED -> {
+                        context.getString(R.string.expense_detail_switch_to_pending)
+                    }
 
-                ExpenseState.TRANSFER_PENDING ->
-                    context.getString(R.string.expense_detail_switch_to_ongoing)
+                    ExpenseState.TRANSFER_PENDING ->
+                        context.getString(R.string.expense_detail_switch_to_ongoing)
 
-                ExpenseState.TRANSFERED ->
-                    context.getString(R.string.expense_detail_dismiss)
+                    ExpenseState.TRANSFERED ->
+                        context.getString(R.string.expense_detail_dismiss)
+                }
+            }
+            else{
+                context.getString(R.string.expense_detail_dismiss)
             }
         }
     }
