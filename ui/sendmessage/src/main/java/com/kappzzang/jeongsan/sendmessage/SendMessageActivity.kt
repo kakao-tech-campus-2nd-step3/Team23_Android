@@ -45,6 +45,9 @@ class SendMessageActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.transferInfoState.collect {
+                    if (it is TransferInfoUIState.Idle) {
+                        viewModel.startFetchUiState()
+                    }
                     if (it is ErrorState) {
                         sendToast(it.message)
                     }

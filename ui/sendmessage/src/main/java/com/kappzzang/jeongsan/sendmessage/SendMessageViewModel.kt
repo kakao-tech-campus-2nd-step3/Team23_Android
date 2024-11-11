@@ -38,36 +38,41 @@ class SendMessageViewModel @Inject constructor(
         return state
     }
 
-    fun getPurchasedExpenseList() {
+    fun startFetchUiState() {
         if (_transferInfoState.value != TransferInfoUIState.Idle) {
             return
         }
-        _transferInfoState.value = TransferInfoUIState.LoadingPurchaseList
+
         viewModelScope.launch(ioDispatcher) {
-            getPurchasedExpenseListUseCase(_groupId.value)
-                .onSuccess {
-                    _transferInfoState.emit(
-                        TransferInfoUIState.PurchaseListGetSuccess(
-                            it.size,
-                            it.sumOf { item ->
-                                item.price
-                            },
-                            it.map { item ->
-                                item.id
-                            }
-                        )
-                    )
-                    getTransferInfo()
-                }
-                .onFailure {
-                    it.printStackTrace()
-                    _transferInfoState.emit(
-                        TransferInfoUIState.PurchaseListGetError(
-                            "결제한 지출 정보를 불러오는 데 실패했습니다.\n${it.message}"
-                        )
-                    )
-                }
+            getPurchaseList()
         }
+    }
+
+    private suspend fun getPurchaseList() {
+        _transferInfoState.value = TransferInfoUIState.LoadingPurchaseList
+        getPurchasedExpenseListUseCase(_groupId.value)
+            .onSuccess {
+                _transferInfoState.emit(
+                    TransferInfoUIState.PurchaseListGetSuccess(
+                        it.size,
+                        it.sumOf { item ->
+                            item.price
+                        },
+                        it.map { item ->
+                            item.id
+                        }
+                    )
+                )
+                getTransferInfo()
+            }
+            .onFailure {
+                it.printStackTrace()
+                _transferInfoState.emit(
+                    TransferInfoUIState.PurchaseListGetError(
+                        "결제한 지출 정보를 불러오는 데 실패했습니다.\n${it.message}"
+                    )
+                )
+            }
     }
 
     private suspend fun launchGetStartInfoUseCase(expenseIdList: List<String>) {
