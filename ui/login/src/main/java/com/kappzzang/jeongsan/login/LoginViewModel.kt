@@ -35,7 +35,6 @@ class LoginViewModel @Inject constructor(
     private val authenticateWithKakaoUseCase: AuthenticateWithKakaoUseCase,
     private val authenticateWithServerUseCase: AuthenticateWithServerUseCase,
     private val getUserInfo: GetUserInfoUseCase,
-    private val repo: AuthenticationRepository,
     private val ioDispatcher: CoroutineDispatcher
 ) : AndroidViewModel(application) {
     private val authStatus by lazy {

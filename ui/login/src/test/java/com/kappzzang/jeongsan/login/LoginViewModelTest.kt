@@ -8,16 +8,17 @@ import com.kakao.sdk.common.model.AuthErrorResponse
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kappzzang.jeongsan.model.AuthenticationResult
+import com.kappzzang.jeongsan.model.UserItem
 import com.kappzzang.jeongsan.usecase.AuthenticateWithKakaoUseCase
+import com.kappzzang.jeongsan.usecase.AuthenticateWithServerUseCase
 import com.kappzzang.jeongsan.usecase.AuthorizeWithKakaoUseCase
-import com.kappzzang.jeongsan.usecase.RegisterWithKakaoUseCase
+import com.kappzzang.jeongsan.usecase.GetUserInfoUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkAll
-import java.util.Date
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -30,12 +31,15 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import java.util.Date
 
 @ExperimentalCoroutinesApi
 class LoginViewModelTest {
-    private val authorizeWithKakaoUseCase = mockk<AuthorizeWithKakaoUseCase>()
+    private val authorizeWithKakaoUseCase = mockk<AuthorizeWithKakaoUseCase>(relaxed = true)
     private val authenticateWithKakaoUseCase = mockk<AuthenticateWithKakaoUseCase>()
-    private val registerUseCase = mockk<RegisterWithKakaoUseCase>()
+    private val authenticationWithServerUseCase =
+        mockk<AuthenticateWithServerUseCase>(relaxed = true)
+    private val getUserInfoUseCase = mockk<GetUserInfoUseCase>()
     private lateinit var viewModel: LoginViewModel
 
     private val testDispatcher = StandardTestDispatcher()
@@ -48,10 +52,11 @@ class LoginViewModelTest {
             every { show() } returns Unit
         }
         viewModel = LoginViewModel(
-            mockk(),
+            mockk(relaxed = true),
             authorizeWithKakaoUseCase,
             authenticateWithKakaoUseCase,
-            registerUseCase,
+            authenticationWithServerUseCase,
+            getUserInfoUseCase,
             testDispatcher
         )
     }
@@ -98,13 +103,42 @@ class LoginViewModelTest {
             every { token.accessToken } returns "valid_token"
             every { token.refreshToken } returns "valid_refresh_token"
             every { token.accessTokenExpiresAt } returns Date()
-            coEvery { authorizeWithKakaoUseCase(any()) } returns Unit
+            coEvery { getUserInfoUseCase() } returns UserItem(
+                serviceId = "",
+                name = "",
+                email = "",
+                profileUrl = ""
+            )
 
-            viewModel.onKakaoAuthorizationSuccess(token)
+            coEvery { authenticationWithServerUseCase(any(), any(), any(), any()) } returns
+
+                    viewModel.onKakaoAuthorizationSuccess(token)
             advanceUntilIdle()
 
             coVerify { authorizeWithKakaoUseCase(any()) }
             assertEquals(KakaoLoginStatus.ON_LOGIN, viewModel.kakaoLoginStatus.value)
+        }
+
+    @Test
+    fun `카카오 인증 성공 - 유효한 OAuthToken이면 authenticationWithServerUseCase 호출`() =
+        runTest {
+            val token = mockk<OAuthToken>()
+            every { token.accessToken } returns "valid_token"
+            every { token.refreshToken } returns "valid_refresh_token"
+            every { token.accessTokenExpiresAt } returns Date()
+            coEvery { getUserInfoUseCase() } returns UserItem(
+                serviceId = "",
+                name = "",
+                email = "",
+                profileUrl = ""
+            )
+
+            coEvery { authenticationWithServerUseCase(any(), any(), any(), any()) } returns
+
+                    viewModel.onKakaoAuthorizationSuccess(token)
+            advanceUntilIdle()
+
+            coVerify { authenticationWithServerUseCase(any(), any(), any(), any()) }
         }
 
     @Test
