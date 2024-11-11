@@ -70,7 +70,7 @@ class ExpenseDetailRepositoryImpl @Inject constructor(
         expenseIds: List<String>,
         groupId: String
     ): Result<Unit> = expenseListRemoteDatasource.updateExpenseState(
-        state = ExpenseState.CONFIRMED,
+        state = ExpenseState.TRANSFERED,
         expenseItemIdList = expenseIds,
         groupId = groupId
     )
