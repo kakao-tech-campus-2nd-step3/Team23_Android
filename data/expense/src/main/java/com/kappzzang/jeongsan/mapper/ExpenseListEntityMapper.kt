@@ -22,7 +22,8 @@ object ExpenseListEntityMapper {
         ),
         date = DateConverter.parseFromString(entity.createdAt),
         categoryColor = ColorParser.parseColor(entity.category.color),
-        isMyPayment = (entity.payerServiceId?.toString() == serviceId) && (serviceId.isNotEmpty())
+        isMyPayment = (entity.payerServiceId?.toString() == serviceId) && (serviceId.isNotEmpty()),
+        personalExpense = entity.myExpense
     )
 
     private fun mapExpenseStateToDomainState(state: String, checked: Boolean): ExpenseState {

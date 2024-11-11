@@ -6,7 +6,8 @@ data class ExpenseItemWithCategory(
     private val item: ExpenseItem,
     val categoryColor: String,
     val date: LocalDateTime,
-    val isMyPayment: Boolean
+    val isMyPayment: Boolean,
+    val personalExpense: Int? = null
 ) {
     val id
         get() = item.id
