@@ -15,12 +15,16 @@ class ServerAuthRemoteDataSource @Inject constructor(
     private val authApi: ServerAuthRetrofitService
 ) {
 
-    suspend fun refreshToken(refreshToken: String): Result<RefreshTokenData> = try {
-        val response = authApi.refreshToken(RefreshTokenRequest(refreshToken = refreshToken))
-        handleRefreshResponse(response)
-    } catch (e: Exception) {
-        Result.failure(e)
-    }
+    suspend fun refreshToken(accessToken: String, refreshToken: String): Result<RefreshTokenData> =
+        try {
+            val response = authApi.refreshToken(
+                accessToken = "Bearer $accessToken",
+                RefreshTokenRequest(refreshToken = refreshToken)
+            )
+            handleRefreshResponse(response)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
 
     // 리프레시 할 때 Response를 처리
     private fun handleRefreshResponse(
