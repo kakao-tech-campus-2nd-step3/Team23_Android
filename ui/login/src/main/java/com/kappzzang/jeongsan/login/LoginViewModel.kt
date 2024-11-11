@@ -14,9 +14,9 @@ import com.kappzzang.jeongsan.data.ServerAuthData
 import com.kappzzang.jeongsan.model.AuthenticationResult
 import com.kappzzang.jeongsan.usecase.AuthenticateWithKakaoUseCase
 import com.kappzzang.jeongsan.usecase.AuthenticateWithServerUseCase
-import com.kappzzang.jeongsan.usecase.LoginOrRegisterUseCase
 import com.kappzzang.jeongsan.usecase.AuthorizeWithKakaoUseCase
 import com.kappzzang.jeongsan.usecase.GetUserInfoUseCase
+import com.kappzzang.jeongsan.usecase.LoginOrRegisterUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
@@ -33,7 +33,7 @@ class LoginViewModel @Inject constructor(
     private val authenticateWithServerUseCase: AuthenticateWithServerUseCase,
     private val loginOrRegisterUseCase: LoginOrRegisterUseCase,
     private val getUserInfoUseCase: GetUserInfoUseCase,
-    private val ioDispatcher: CoroutineDispatcher,
+    private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
     private val kakaoAuthStatus by lazy {
         authenticateWithKakaoUseCase().stateIn(
