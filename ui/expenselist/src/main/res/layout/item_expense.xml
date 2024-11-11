@@ -55,7 +55,7 @@
             android:layout_width="8dp"
             android:layout_height="8dp"
             android:layout_marginLeft="8dp"
-            android:src="@drawable/expenselist_color_dot"
+            android:src="@drawable/expense_list_color_dot"
             android:visibility="@{expenseItem.indicateNotConfirmedDot?View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toBottomOf="@id/expense_name_textview"
             app:layout_constraintLeft_toRightOf="@id/expense_name_textview"
@@ -73,6 +73,23 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/category_color_view"
             tools:text="07/26 13:20" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/expense_list_round_border"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="1dp"
+            android:text="MY"
+            android:textColor="#F09316"
+            android:textSize="11sp"
+            android:visibility="@{expenseItem.myPayment?View.VISIBLE:View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/expense_date_textview"
+            app:layout_constraintLeft_toRightOf="@id/expense_date_textview"
+
+
+            app:layout_constraintTop_toTopOf="@id/expense_date_textview" />
 
         <TextView
             android:id="@+id/expense_amount_textview"
