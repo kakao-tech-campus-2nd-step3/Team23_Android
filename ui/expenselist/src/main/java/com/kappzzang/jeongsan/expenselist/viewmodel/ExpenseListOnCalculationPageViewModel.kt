@@ -21,7 +21,7 @@ class ExpenseListOnCalculationPageViewModel @Inject constructor(
     forceFetchExpenseListUseCase: ForceFetchExpenseListUseCase,
     ioDispatcher: CoroutineDispatcher
 ) : ExpenseListPageViewModel(getExpenseListUseCase, forceFetchExpenseListUseCase, ioDispatcher) {
-    private val _chipSelectionState = MutableStateFlow(ChipSelectionState.NOT_CONFIRMED)
+    private val _chipSelectionState = MutableStateFlow(ChipSelectionState.ALL)
     val chipSelectionState = _chipSelectionState.asStateFlow()
 
     override fun fetchDefaultList(groupId: String) {
