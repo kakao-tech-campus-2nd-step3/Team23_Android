@@ -32,9 +32,7 @@ class AuthenticateWithKakaoUseCaseTest {
             accessTokenExpirationTime = 0
         )
 
-        every { mockAuthenticationRepository.getKakaoAuthData() } returns flow {
-            emit(emptyAuthData)
-        }
+        every { mockAuthenticationRepository.getKakaoAuthData() } returns emptyAuthData
 
         // when
         val useCase = AuthenticateWithKakaoUseCase(
@@ -59,7 +57,7 @@ class AuthenticateWithKakaoUseCaseTest {
             accessTokenExpirationTime = expirationTime
         )
 
-        every { mockAuthenticationRepository.getKakaoAuthData() } returns flow { emit(authData) }
+        every { mockAuthenticationRepository.getKakaoAuthData() } returns authData
 
         // when
         val useCase = AuthenticateWithKakaoUseCase(
@@ -96,7 +94,7 @@ class AuthenticateWithKakaoUseCaseTest {
             accessTokenExpirationTime = newExpirationTime
         )
 
-        every { mockAuthenticationRepository.getKakaoAuthData() } returns flow { emit(authData) }
+        every { mockAuthenticationRepository.getKakaoAuthData() } returns authData
         coEvery { mockKakaoAuthenticationRepository.refreshKakaoToken(any()) } returns newData
 
         // when
