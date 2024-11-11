@@ -4,25 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="android.view.View" />
+
         <variable
             name="expenseItem"
             type="com.kappzzang.jeongsan.data.ExpenseUiItem" />
+
         <variable
             name="expenseDate"
             type="String" />
+
         <variable
             name="positionInfo"
             type="com.kappzzang.jeongsan.data.ListViewItemPositionInfo" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        clipBottomCorner="@{positionInfo.lastItem}"
+        clipUpperCorner="@{positionInfo.firstItem}"
         android:layout_width="match_parent"
-        android:elevation="5dp"
         android:layout_height="80dp"
         android:layout_marginBottom="1dp"
         android:background="@color/white"
-        clipUpperCorner="@{positionInfo.firstItem}"
-        clipBottomCorner="@{positionInfo.lastItem}">
+        android:elevation="5dp"
+        android:foreground="?attr/selectableItemBackgroundBorderless">
 
         <View
             android:id="@+id/category_color_view"
@@ -45,6 +51,17 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="스타벅스" />
 
+        <ImageView
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginLeft="8dp"
+            android:src="@drawable/expense_list_color_dot"
+            android:visibility="@{expenseItem.indicateNotConfirmedDot?View.VISIBLE:View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/expense_name_textview"
+            app:layout_constraintLeft_toRightOf="@id/expense_name_textview"
+            app:layout_constraintTop_toTopOf="@id/expense_name_textview" />
+
+
         <TextView
             android:id="@+id/expense_date_textview"
             android:layout_width="wrap_content"
@@ -56,6 +73,23 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/category_color_view"
             tools:text="07/26 13:20" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/expense_list_round_border"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="1dp"
+            android:text="MY"
+            android:textColor="#F09316"
+            android:textSize="11sp"
+            android:visibility="@{expenseItem.myPayment?View.VISIBLE:View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/expense_date_textview"
+            app:layout_constraintLeft_toRightOf="@id/expense_date_textview"
+
+
+            app:layout_constraintTop_toTopOf="@id/expense_date_textview" />
 
         <TextView
             android:id="@+id/expense_amount_textview"

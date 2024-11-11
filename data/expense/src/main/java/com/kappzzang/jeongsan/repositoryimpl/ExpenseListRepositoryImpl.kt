@@ -106,15 +106,20 @@ class ExpenseListRepositoryImpl @Inject constructor(
         ) {
             Log.w("KSC", "잘못된 서비스 ID 값을 포함합니다. 사용자 서비스 ID: $searcherServiceId")
         }
-        mapResponseBody(it, searcherServiceId)
+        mapResponseBody(it, searcherServiceId, expenseState == ExpenseState.NOT_CONFIRMED)
     }
 
     private fun mapResponseBody(
         body: ExpenseListResponseDTO,
-        searcherServiceId: String
+        searcherServiceId: String,
+        isStateNotConfirmed: Boolean
     ): ExpenseListResponse {
         val expenses = body.expenseList.map {
-            ExpenseListEntityMapper.mapExpenseEntityToModel(it, searcherServiceId)
+            ExpenseListEntityMapper.mapExpenseEntityToModel(
+                it,
+                searcherServiceId,
+                !isStateNotConfirmed
+            )
         }
         return ExpenseListResponse(
             totalExpenseToSend = body.myTotalExpense ?: 0,
