@@ -22,5 +22,5 @@ interface GroupInfoRepository {
 
     suspend fun joinGroup(groupId: String): Result<Boolean>
 
-    suspend fun getMemberServiceIdList(groupId: String): List<String>
+    suspend fun getMemberServiceIdList(groupId: String): Result<List<String>>
 }

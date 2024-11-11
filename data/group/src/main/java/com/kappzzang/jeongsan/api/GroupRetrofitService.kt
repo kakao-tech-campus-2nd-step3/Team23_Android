@@ -8,6 +8,7 @@ import com.kappzzang.jeongsan.entity.GetMemberInfoResponse
 import com.kappzzang.jeongsan.entity.GetMyExpenseResponse
 import com.kappzzang.jeongsan.entity.GetTargetGroupResponse
 import com.kappzzang.jeongsan.entity.JoinGroupResponse
+import com.kappzzang.jeongsan.entity.MemberServiceIdResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.PATCH
@@ -26,7 +27,7 @@ interface GroupRetrofitService {
     suspend fun createGroup(
         @Query("name") name: String,
         @Query("subject") subject: String,
-        @Query("members") memberIdList: List<String>
+        @Query("members") memberIdList: List<String>,
     ): Response<CreateGroupResponse>
 
     @PATCH("/api/teams/{teamId}")
@@ -40,6 +41,9 @@ interface GroupRetrofitService {
 
     @GET("/api/members/link")
     suspend fun getLink(): Response<GetLinkResponse>
+
+    @GET("/api/teams/{teamId}/members/id")
+    suspend fun getMemberServiceId(@Path("teamId") groupId: Long): Response<MemberServiceIdResponse>
 
     // expense모듈에 속해야하는 것 같아 구현을 마치지 않음
     @GET("/api/expenses/ipaid/{teamId}")

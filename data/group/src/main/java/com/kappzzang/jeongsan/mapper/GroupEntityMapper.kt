@@ -1,6 +1,7 @@
 package com.kappzzang.jeongsan.mapper
 
 import com.kappzzang.jeongsan.entity.GroupInfo
+import com.kappzzang.jeongsan.entity.MemberServiceIdResponse
 import com.kappzzang.jeongsan.model.GroupItem
 
 object GroupEntityMapper {
@@ -12,4 +13,8 @@ object GroupEntityMapper {
         subject = subject,
         profileImageURL = previewList.map { it.profileImageUrl }
     )
+
+    fun MemberServiceIdResponse.toServiceIdList() = data.map {
+        it.serviceId
+    }
 }
