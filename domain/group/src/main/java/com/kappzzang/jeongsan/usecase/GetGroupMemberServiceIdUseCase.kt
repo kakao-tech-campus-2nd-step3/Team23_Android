@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class GetGroupMemberServiceIdUseCase @Inject constructor(
     private val groupInfoRepository: GroupInfoRepository,
-    private val authenticationRepository: AuthenticationRepository,
+    private val authenticationRepository: AuthenticationRepository
 ) {
 
     suspend operator fun invoke(groupId: String, excludeMyId: Boolean = false): List<String> =
