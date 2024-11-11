@@ -3,10 +3,12 @@ package com.kappzzang.jeongsan.datasource
 import android.util.Log
 import com.kappzzang.jeongsan.api.ReceiptRetrofitService
 import com.kappzzang.jeongsan.entity.GetCategoryListResponseDTO
+import com.kappzzang.jeongsan.entity.GetTransferListPayloadDTO
 import com.kappzzang.jeongsan.entity.ImageEntity
 import com.kappzzang.jeongsan.entity.ResponseWithExpenseIdDTO
 import com.kappzzang.jeongsan.entity.SaveExpensePayloadDTO
 import com.kappzzang.jeongsan.entity.SimpleExpenseItemEntity
+import com.kappzzang.jeongsan.entity.TransferItemEntity
 import com.kappzzang.jeongsan.entity.UpdateExpenseStatePayloadDTO
 import com.kappzzang.jeongsan.entity.expenselist.ExpenseListResponseDTO
 import com.kappzzang.jeongsan.mapper.ExpenseDetailMapper
@@ -118,6 +120,34 @@ class ExpenseListRemoteDatasource @Inject constructor(
             return Result.failure(e)
         }
         return processResponseCode(response)
+    }
+
+    suspend fun getPurchasedExpenseList(groupId: String): Result<ExpenseListResponseDTO> {
+        val response = try {
+            receiptRetrofitService.getPurchasedExpenseList(groupId)
+        } catch (e: Exception) {
+            return Result.failure(e)
+        }
+        return processResponseCodeOnResponseData(response)
+    }
+
+    suspend fun getTransferList(
+        groupId: String,
+        expenseList: List<String>
+    ): Result<List<TransferItemEntity>> {
+        try {
+            val body = GetTransferListPayloadDTO(
+                expenseList = expenseList.map {
+                    SimpleExpenseItemEntity(it.toLong())
+                }
+            )
+
+            val response = receiptRetrofitService.getTransferList(body = body, groupId = groupId)
+
+            return processResponseCodeOnResponseData(response)
+        } catch (e: Exception) {
+            return Result.failure(e)
+        }
     }
 
     private fun <T> processResponseCodeOnResponseData(

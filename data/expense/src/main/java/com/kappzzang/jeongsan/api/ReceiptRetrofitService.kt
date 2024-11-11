@@ -1,8 +1,10 @@
 package com.kappzzang.jeongsan.api
 
 import com.kappzzang.jeongsan.entity.GetCategoryListResponseDTO
+import com.kappzzang.jeongsan.entity.GetTransferListPayloadDTO
 import com.kappzzang.jeongsan.entity.ResponseWithExpenseIdDTO
 import com.kappzzang.jeongsan.entity.SaveExpensePayloadDTO
+import com.kappzzang.jeongsan.entity.TransferItemEntity
 import com.kappzzang.jeongsan.entity.UpdateExpenseStatePayloadDTO
 import com.kappzzang.jeongsan.entity.expensedetail.ExpenseDetailEntity
 import com.kappzzang.jeongsan.entity.expensedetail.ExpenseSelectionResponseDTO
@@ -56,4 +58,15 @@ interface ReceiptRetrofitService {
         @Path(value = "teamId") groupId: String,
         @Body body: UpdateExpenseStatePayloadDTO
     ): Response<Unit>
+
+    @GET("/api/expenses/ipaid/{teamId}")
+    suspend fun getPurchasedExpenseList(
+        @Path(value = "teamId") groupId: String
+    ): Response<ResponseData<ExpenseListResponseDTO>>
+
+    @POST("/api/teams/{teamId}/transfers")
+    suspend fun getTransferList(
+        @Path(value = "teamId") groupId: String,
+        @Body body: GetTransferListPayloadDTO
+    ): Response<ResponseData<List<TransferItemEntity>>>
 }
