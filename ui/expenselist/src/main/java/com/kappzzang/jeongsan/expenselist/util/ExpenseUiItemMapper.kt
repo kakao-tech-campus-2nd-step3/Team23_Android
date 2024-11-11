@@ -2,6 +2,7 @@ package com.kappzzang.jeongsan.expenselist.util
 
 import com.kappzzang.jeongsan.data.ExpenseUiItem
 import com.kappzzang.jeongsan.expenselist.viewmodel.ExpenseListPageViewModel.Companion.CURRENCY_POSTFIX
+import com.kappzzang.jeongsan.expenselist.viewmodel.ExpenseListPageViewModel.Companion.MY_EXPENSE_PREFIX
 import com.kappzzang.jeongsan.model.ExpenseItemWithCategory
 import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.util.ColorParser
@@ -20,7 +21,11 @@ object ExpenseUiItemMapper {
             categoryColor = ColorParser.parseColor(item.categoryColor),
             price = "${item.price.formatDecimalSeparator()} $CURRENCY_POSTFIX",
             isMyPayment = item.isMyPayment,
-            indicateNotConfirmedDot = item.state == ExpenseState.NOT_CONFIRMED
+            indicateNotConfirmedDot = item.state == ExpenseState.NOT_CONFIRMED,
+            indicateMyPrice = (item.state == ExpenseState.TRANSFERED || item.state == ExpenseState.TRANSFER_PENDING) && item.personalExpense != null,
+            myPrice = item.personalExpense?.let {
+                "$MY_EXPENSE_PREFIX ${it.formatDecimalSeparator()} $CURRENCY_POSTFIX"
+            } ?: ""
         )
     }
 

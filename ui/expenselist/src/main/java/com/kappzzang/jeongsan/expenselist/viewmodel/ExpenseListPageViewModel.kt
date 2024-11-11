@@ -123,5 +123,6 @@ abstract class ExpenseListPageViewModel(
 
     companion object {
         const val CURRENCY_POSTFIX = "원"
+        const val MY_EXPENSE_PREFIX = "내 지출:"
     }
 }
