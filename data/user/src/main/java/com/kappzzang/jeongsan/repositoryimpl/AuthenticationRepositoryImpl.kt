@@ -35,7 +35,7 @@ class AuthenticationRepositoryImpl
     }
 
     override suspend fun refreshJwtFromServer(authData: ServerAuthData): Result<ServerAuthData> =
-        serverAuthRemoteDataSource.refreshToken(authData.refreshToken).fold(
+        serverAuthRemoteDataSource.refreshToken(authData.accessToken, authData.refreshToken).fold(
             onSuccess = { refreshTokenData ->
                 val serverAuthData = authData.copy(
                     accessToken = refreshTokenData.accessToken
