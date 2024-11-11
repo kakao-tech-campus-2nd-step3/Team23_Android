@@ -57,6 +57,7 @@ class SendMessageViewModel @Inject constructor(
                             }
                         )
                     )
+                    getTransferInfo()
                 }
                 .onFailure {
                     it.printStackTrace()
@@ -69,31 +70,29 @@ class SendMessageViewModel @Inject constructor(
         }
     }
 
-    private fun launchGetStartInfoUseCase(expenseIdList: List<String>) {
-        viewModelScope.launch(ioDispatcher) {
-            getTransferInfoUseCase(
-                groupId = groupId.value,
-                expenseIdList = expenseIdList
-            ).onSuccess {
-                _transferInfoState.emit(
-                    TransferInfoUIState.TransferInfoGetSuccess(
-                        transferInfoList = it,
-                        totalExpenseToGet = it.sumOf { item -> item.fee },
-                        expenseIdList = expenseIdList
-                    )
+    private suspend fun launchGetStartInfoUseCase(expenseIdList: List<String>) {
+        getTransferInfoUseCase(
+            groupId = groupId.value,
+            expenseIdList = expenseIdList
+        ).onSuccess {
+            _transferInfoState.emit(
+                TransferInfoUIState.TransferInfoGetSuccess(
+                    transferInfoList = it,
+                    totalExpenseToGet = it.sumOf { item -> item.fee },
+                    expenseIdList = expenseIdList
                 )
-            }.onFailure {
-                it.printStackTrace()
-                _transferInfoState.emit(
-                    TransferInfoUIState.TransferInfoGetError(
-                        "결제 받을 목록을 불러오는 데 실패했습니다.\n${it.message}"
-                    )
+            )
+        }.onFailure {
+            it.printStackTrace()
+            _transferInfoState.emit(
+                TransferInfoUIState.TransferInfoGetError(
+                    "결제 받을 목록을 불러오는 데 실패했습니다.\n${it.message}"
                 )
-            }
+            )
         }
     }
 
-    fun getTransferInfo() {
+    private suspend fun getTransferInfo() {
         (_transferInfoState.value as? TransferInfoUIState.PurchaseListGetSuccess)?.let {
             launchGetStartInfoUseCase(it.expenseIdList)
             _transferInfoState.value = TransferInfoUIState.LoadingTransferInfo(
@@ -114,6 +113,7 @@ class SendMessageViewModel @Inject constructor(
                             it.totalExpenseToGet,
                             it.expenseIdList
                         )
+                    updateToCompleted()
                 }
             }.onFailure {
                 _transferInfoState.value = TransferInfoUIState.TransferMessageSendError(
@@ -135,25 +135,23 @@ class SendMessageViewModel @Inject constructor(
         }
     }
 
-    fun updateToCompleted() {
+    private suspend fun updateToCompleted() {
         (transferInfoState.value as? TransferInfoUIState.TransferMessageSendSuccess)?.let {
-            viewModelScope.launch(ioDispatcher) {
-                setExpensesToCompleteUseCase(
-                    groupId = groupId.value,
-                    expenseIdList = it.expenseIdList
-                )
-                    .onSuccess {
-                        _transferInfoState.emit(
-                            TransferInfoUIState.ExpenseStateUpdateSuccess
+            setExpensesToCompleteUseCase(
+                groupId = groupId.value,
+                expenseIdList = it.expenseIdList
+            )
+                .onSuccess {
+                    _transferInfoState.emit(
+                        TransferInfoUIState.ExpenseStateUpdateSuccess
+                    )
+                }.onFailure {
+                    _transferInfoState.emit(
+                        TransferInfoUIState.ExpenseStateUpdateError(
+                            "지출 상태 변경에 실패했습니다: ${it.message}"
                         )
-                    }.onFailure {
-                        _transferInfoState.emit(
-                            TransferInfoUIState.ExpenseStateUpdateError(
-                                "지출 상태 변경에 실패했습니다: ${it.message}"
-                            )
-                        )
-                    }
-            }
+                    )
+                }
         }
     }
 

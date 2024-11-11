@@ -11,6 +11,10 @@ interface HasTransferInfo {
     val totalExpenseToGet: Int
 }
 
+interface ErrorState {
+    val message: String
+}
+
 sealed class TransferInfoUIState {
     data class PurchaseListGetSuccess(
         val size: Int,
@@ -58,12 +62,12 @@ sealed class TransferInfoUIState {
         HasExpenseId
 
     data object ExpenseStateUpdateSuccess : TransferInfoUIState()
-    data class ExpenseStateUpdateError(val message: String) : TransferInfoUIState()
+    data class ExpenseStateUpdateError(override val message: String) : TransferInfoUIState(), ErrorState
 
     data object Idle : TransferInfoUIState()
     data object LoadingPurchaseList : TransferInfoUIState()
 
-    data class PurchaseListGetError(val message: String) : TransferInfoUIState()
+    data class PurchaseListGetError(override val message: String) : TransferInfoUIState(), ErrorState
 
-    data class TransferMessageSendError(val message: String) : TransferInfoUIState()
+    data class TransferMessageSendError(override val message: String) : TransferInfoUIState(), ErrorState
 }
