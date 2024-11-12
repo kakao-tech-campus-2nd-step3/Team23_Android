@@ -1,20 +1,22 @@
 package com.kappzzang.jeongsan.login
 
-import android.app.Application
-import android.widget.Toast
-import androidx.lifecycle.AndroidViewModel
+import android.util.Log
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.AuthError
 import com.kakao.sdk.common.model.AuthErrorCause
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
+import com.kappzzang.jeongsan.data.AppLoginState
 import com.kappzzang.jeongsan.data.KakaoAuthData
+import com.kappzzang.jeongsan.data.ServerAuthData
 import com.kappzzang.jeongsan.model.AuthenticationResult
 import com.kappzzang.jeongsan.usecase.AuthenticateWithKakaoUseCase
 import com.kappzzang.jeongsan.usecase.AuthenticateWithServerUseCase
 import com.kappzzang.jeongsan.usecase.AuthorizeWithKakaoUseCase
 import com.kappzzang.jeongsan.usecase.GetUserInfoUseCase
+import com.kappzzang.jeongsan.usecase.LoginOrRegisterUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
@@ -24,63 +26,53 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-enum class LoginStatus { TRY_AUTOLOGIN, NOT_LOGGED_IN, IN_PROGRESS, FAILED, LOGIN_COMPLETE }
-enum class KakaoLoginStatus { NOT_AVAILABLE, IDLE, ON_LOGIN, FAILED }
-
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val application: Application,
     private val authorizeWithKakaoUseCase: AuthorizeWithKakaoUseCase,
     private val authenticateWithKakaoUseCase: AuthenticateWithKakaoUseCase,
     private val authenticateWithServerUseCase: AuthenticateWithServerUseCase,
-    private val getUserInfo: GetUserInfoUseCase,
+    private val loginOrRegisterUseCase: LoginOrRegisterUseCase,
+    private val getUserInfoUseCase: GetUserInfoUseCase,
     private val ioDispatcher: CoroutineDispatcher
-) : AndroidViewModel(application) {
-    private val authStatus by lazy {
+) : ViewModel() {
+    private val kakaoAuthStatus by lazy {
         authenticateWithKakaoUseCase().stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000L),
             initialValue = AuthenticationResult.NotLoaded
         )
     }
-    private val _loginStatus = MutableStateFlow(LoginStatus.TRY_AUTOLOGIN)
-    private val _kakaoLoginStatus = MutableStateFlow(KakaoLoginStatus.NOT_AVAILABLE)
+    private val _appLoginStatus = MutableStateFlow<AppLoginState>(AppLoginState.TryAutoLogin)
+    val appLoginStatus = _appLoginStatus.asStateFlow()
 
-    val loginStatus = _loginStatus.asStateFlow()
-    val kakaoLoginStatus = _kakaoLoginStatus.asStateFlow()
+    fun clearAppLoginStatus(state: AppLoginState) {
+        _appLoginStatus.value = state
+    }
 
-    fun login() {
+    fun checkKakaoTokenExist() {
         viewModelScope.launch(ioDispatcher) {
-            authStatus.collect { status ->
-                when (status) {
+            kakaoAuthStatus.collect { result ->
+                when (result) {
                     is AuthenticationResult.NoToken -> {
-                        _loginStatus.emit(LoginStatus.NOT_LOGGED_IN)
-                        _kakaoLoginStatus.emit(KakaoLoginStatus.IDLE)
+                        _appLoginStatus.emit(AppLoginState.Idle.NotKakaoLoggedIn)
                     }
 
                     is AuthenticationResult.AuthenticationError -> {
-                        handleAuthenticationError(status)
-                        _loginStatus.emit(LoginStatus.FAILED)
+                        _appLoginStatus.emit(AppLoginState.KakaoLoginFailed(result.message))
                     }
 
                     is AuthenticationResult.AuthenticationSuccess -> {
-                        _loginStatus.emit(LoginStatus.LOGIN_COMPLETE)
+                        checkServerTokenExist()
                     }
 
                     is AuthenticationResult.RefreshTokenExpired -> {
-                        _loginStatus.emit(LoginStatus.NOT_LOGGED_IN)
-                        _kakaoLoginStatus.emit(KakaoLoginStatus.IDLE)
+                        _appLoginStatus.emit(AppLoginState.Idle.NotKakaoLoggedIn)
                     }
 
                     is AuthenticationResult.NotLoaded -> {}
                 }
             }
         }
-    }
-
-    private fun handleAuthenticationError(errorBody: AuthenticationResult.AuthenticationError) {
-        Toast.makeText(application, errorBody.message, Toast.LENGTH_LONG)
-            .show()
     }
 
     private fun mapOAuthTokenToKakaoAuthData(token: OAuthToken): KakaoAuthData = KakaoAuthData(
@@ -90,43 +82,75 @@ class LoginViewModel @Inject constructor(
     )
 
     fun onKakaoAuthorizationFailure(error: Throwable?) {
-        error?.let {
-            if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
-                _kakaoLoginStatus.value = KakaoLoginStatus.IDLE
-                return
+        viewModelScope.launch(ioDispatcher) {
+            error?.let {
+                // 사용자가 취소한 경우
+                if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
+                    _appLoginStatus.emit(AppLoginState.Idle.NotKakaoLoggedIn)
+                }
+                // 사용자 동의 화면에서 카카오 로그인을 취소한 경우
+                else if (error is AuthError && error.reason == AuthErrorCause.AccessDenied) {
+                    _appLoginStatus.emit(AppLoginState.Idle.NotKakaoLoggedIn)
+                } else {
+                    Log.e(TAG, "카카오 로그인 실패", error)
+                    _appLoginStatus.emit(AppLoginState.KakaoLoginFailed(error.message ?: ERROR))
+                }
             }
-            if (error is AuthError && error.reason == AuthErrorCause.AccessDenied) {
-                _kakaoLoginStatus.value = KakaoLoginStatus.IDLE
-                return
-            }
-            _kakaoLoginStatus.value = KakaoLoginStatus.FAILED
         }
     }
 
     fun onKakaoAuthorizationSuccess(token: OAuthToken?) {
         token?.let {
-            _kakaoLoginStatus.value = KakaoLoginStatus.ON_LOGIN
             viewModelScope.launch(ioDispatcher) {
-                authenticateWithServer()
                 authorizeWithKakao(mapOAuthTokenToKakaoAuthData(token))
             }
+            loginWithServer()
+        } ?: run {
+            _appLoginStatus.value = AppLoginState.KakaoLoginFailed(ERROR)
         }
     }
 
     private suspend fun authorizeWithKakao(authData: KakaoAuthData) {
         authorizeWithKakaoUseCase(authData)
-        _loginStatus.emit(LoginStatus.LOGIN_COMPLETE)
     }
 
-    private suspend fun authenticateWithServer() {
-        getUserInfo()?.let {
-            authenticateWithServerUseCase(it.serviceId, it.name, it.email, it.profileUrl)
-        } ?: run {
-            _loginStatus.emit(LoginStatus.FAILED)
+    private fun isEmptyServerAuthData(authData: ServerAuthData): Boolean =
+        authData.accessToken == "" || authData.refreshToken == ""
+
+    private fun checkServerTokenExist() {
+        viewModelScope.launch(ioDispatcher) {
+            val serverAuthData = authenticateWithServerUseCase()
+
+            if (isEmptyServerAuthData(serverAuthData)) {
+                _appLoginStatus.emit(AppLoginState.Idle.NotServerLoggedIn)
+            } else {
+                _appLoginStatus.emit(AppLoginState.LoginComplete)
+            }
+        }
+    }
+
+    fun loginWithServer() {
+        viewModelScope.launch(ioDispatcher) {
+            getUserInfoUseCase()?.let {
+                try {
+                    loginOrRegisterUseCase(it.serviceId, it.name, it.email, it.profileUrl)
+                    _appLoginStatus.emit(AppLoginState.LoginComplete)
+                } catch (e: Exception) {
+                    Log.e(TAG, "서버 로그인 실패", e)
+                    _appLoginStatus.emit(AppLoginState.ServerLoginFailed(e.message ?: ERROR))
+                }
+            } ?: run {
+                _appLoginStatus.emit(AppLoginState.ServerLoginFailed("유저 정보를 가져올 수 없습니다"))
+            }
         }
     }
 
     fun bypassLogin() {
-        _loginStatus.value = LoginStatus.LOGIN_COMPLETE
+        _appLoginStatus.value = AppLoginState.LoginComplete
+    }
+
+    companion object {
+        private const val TAG = "LoginViewModel"
+        private const val ERROR = "알 수 없는 오류가 발생했습니다"
     }
 }
