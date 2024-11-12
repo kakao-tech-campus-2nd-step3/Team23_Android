@@ -99,7 +99,16 @@ class AddExpenseActivity : AppCompatActivity() {
                             viewModel.sendNewExpenseMessage(state.expenseId)
                         }
 
-                        is ExpenseUploadUIState.UploadAndSendSuccess -> {
+                        is ExpenseUploadUIState.UploadSuccessAndSendSuccess -> {
+                            startExpenseDetailActivityAndFinish(state.expenseId)
+                        }
+
+                        is ExpenseUploadUIState.UploadSuccessAndSendFailed -> {
+                            Toast.makeText(
+                                this@AddExpenseActivity,
+                                getString(R.string.add_expense_message_send_fail),
+                                Toast.LENGTH_SHORT
+                            ).show()
                             startExpenseDetailActivityAndFinish(state.expenseId)
                         }
 

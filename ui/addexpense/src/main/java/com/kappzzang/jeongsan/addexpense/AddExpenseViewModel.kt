@@ -205,13 +205,17 @@ class AddExpenseViewModel @Inject constructor(
         viewModelScope.launch(ioDispatcher) {
             val memberServiceIds = getGroupMemberServiceIdUseCase(_groupId.value, true)
             val memberUuidList = convertServiceIdToUuidUseCase(memberServiceIds) ?: return@launch
-            sendNewExpenseMessageUseCase(
+            val result = sendNewExpenseMessageUseCase(
                 expenseId = expenseId,
                 expenseName = expenseName.value,
                 groupId = _groupId.value,
                 memberUuidList = memberUuidList
             )
-            _uploadingProgress.emit(ExpenseUploadUIState.UploadAndSendSuccess(expenseId))
+            if (result) {
+                _uploadingProgress.emit(ExpenseUploadUIState.UploadSuccessAndSendSuccess(expenseId))
+            } else {
+                _uploadingProgress.emit(ExpenseUploadUIState.UploadSuccessAndSendFailed(expenseId))
+            }
         }
     }
 
