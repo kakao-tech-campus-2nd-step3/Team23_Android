@@ -9,6 +9,7 @@ import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kappzzang.jeongsan.data.AppLoginState
 import com.kappzzang.jeongsan.data.KakaoAuthData
+import com.kappzzang.jeongsan.data.ServerAuthData
 import com.kappzzang.jeongsan.model.AuthenticationResult
 import com.kappzzang.jeongsan.model.UserItem
 import com.kappzzang.jeongsan.usecase.AuthenticateWithKakaoUseCase
@@ -41,8 +42,7 @@ import org.junit.Test
 class LoginViewModelTest {
     private val authorizeWithKakaoUseCase = mockk<AuthorizeWithKakaoUseCase>(relaxed = true)
     private val authenticateWithKakaoUseCase = mockk<AuthenticateWithKakaoUseCase>()
-    private val authenticationWithServerUseCase =
-        mockk<AuthenticateWithServerUseCase>(relaxed = true)
+    private val authenticateWithServerUseCase = mockk<AuthenticateWithServerUseCase>(relaxed = true)
     private val loginOrRegisterUseCase = mockk<LoginOrRegisterUseCase>(relaxed = true)
     private val loginWithTestAccountUseCase = mockk<LoginWithTestAccountUseCase>(relaxed = true)
     private val getUserInfoUseCase = mockk<GetUserInfoUseCase>()
@@ -58,7 +58,7 @@ class LoginViewModelTest {
         viewModel = LoginViewModel(
             authorizeWithKakaoUseCase,
             authenticateWithKakaoUseCase,
-            authenticationWithServerUseCase,
+            authenticateWithServerUseCase,
             loginOrRegisterUseCase,
             loginWithTestAccountUseCase,
             getUserInfoUseCase,
@@ -121,22 +121,11 @@ class LoginViewModelTest {
     @Test
     fun `카카오 인증 성공 - 유효한 OAuthToken이면 토큰을 저장하고 서버 로그인 시도`() = runTest {
         // given
-        val token = mockk<OAuthToken>()
-        every { token.accessToken } returns "valid_token"
-        every { token.refreshToken } returns "valid_refresh_token"
-        val testDate = Date()
-        every { token.accessTokenExpiresAt } returns testDate
-        val testUserItem = UserItem(
-            serviceId = "test-service-id",
-            name = "test-user",
-            email = "test@test.test",
-            profileUrl = "this-is-test-url"
-        )
-        coEvery { getUserInfoUseCase() } returns testUserItem
+        coEvery { getUserInfoUseCase() } returns validUserItem
         coEvery { loginOrRegisterUseCase(any(), any(), any(), any()) } returns Unit
 
         // when
-        viewModel.onKakaoAuthorizationSuccess(token)
+        viewModel.onKakaoAuthorizationSuccess(validOAuthToken)
         advanceUntilIdle()
 
         // then
@@ -151,10 +140,10 @@ class LoginViewModelTest {
         }
         coVerify {
             loginOrRegisterUseCase(
-                testUserItem.serviceId,
-                testUserItem.name,
-                testUserItem.email,
-                testUserItem.profileUrl
+                validUserItem.serviceId,
+                validUserItem.name,
+                validUserItem.email,
+                validUserItem.profileUrl
             )
         }
     }
@@ -202,5 +191,117 @@ class LoginViewModelTest {
 
         // then
         assertEquals(AppLoginState.Idle.NotKakaoLoggedIn, viewModel.appLoginStatus.value)
+    }
+
+    @Test
+    fun `서버 토큰 존재 확인 - 토큰이 없는 경우 AppLoginState는 NotServerLoggedIn으로 설정`() = runTest {
+        // given
+        coEvery { authenticateWithKakaoUseCase() } returns flowOf(
+            AuthenticationResult.AuthenticationSuccess(validKakaoAuthData)
+        )
+        val emptyServerAuthData = ServerAuthData(accessToken = "", refreshToken = "")
+        coEvery { authenticateWithServerUseCase() } returns emptyServerAuthData
+
+        // when
+        viewModel.checkKakaoTokenExist()
+        advanceUntilIdle()
+
+        // then
+        assertEquals(AppLoginState.Idle.NotServerLoggedIn, viewModel.appLoginStatus.value)
+    }
+
+    @Test
+    fun `서버 토큰 존재 확인 - 유효한 토큰이 있는 경우 AppLoginState는 LoginComplete으로 설정`() = runTest {
+        // given
+        coEvery { authenticateWithKakaoUseCase() } returns flowOf(
+            AuthenticationResult.AuthenticationSuccess(validKakaoAuthData)
+        )
+        coEvery { authenticateWithServerUseCase() } returns validServerAuthData
+
+        // when
+        viewModel.checkKakaoTokenExist()
+        advanceUntilIdle()
+
+        // then
+        assertEquals(AppLoginState.LoginComplete, viewModel.appLoginStatus.value)
+    }
+
+    @Test
+    fun `서버 로그인 - 유저 정보가 null인 경우 AppLoginState는 ServerLoginFailed로 설정`() = runTest {
+        // given
+        coEvery { getUserInfoUseCase() } returns null
+
+        // when
+        viewModel.loginWithServer()
+        advanceUntilIdle()
+
+        // then
+        assertEquals(
+            AppLoginState.ServerLoginFailed("유저 정보를 가져올 수 없습니다"),
+            viewModel.appLoginStatus.value
+        )
+    }
+
+    @Test
+    fun `서버 로그인 - loginOrRegister API에서 오류 발생 시 AppLoginState는 ServerLoginFailed로 설정`() = runTest {
+        // given
+        coEvery { getUserInfoUseCase() } returns validUserItem
+        val errorMessages = "서버 오류 발생"
+        coEvery { loginOrRegisterUseCase(any(), any(), any(), any()) } throws Exception(
+            errorMessages
+        )
+
+        // when
+        viewModel.loginWithServer()
+        advanceUntilIdle()
+
+        // then
+        assertEquals(
+            AppLoginState.ServerLoginFailed(errorMessages),
+            viewModel.appLoginStatus.value
+        )
+    }
+
+    @Test
+    fun `서버 로그인 - 모든 과정이 성공하면 AppLoginState는 LoginComplete으로 설정`() = runTest {
+        // given
+        coEvery { getUserInfoUseCase() } returns validUserItem
+        coEvery { loginOrRegisterUseCase(any(), any(), any(), any()) } returns Unit
+
+        // when
+        viewModel.loginWithServer()
+        advanceUntilIdle()
+
+        // then
+        assertEquals(AppLoginState.LoginComplete, viewModel.appLoginStatus.value)
+    }
+
+    companion object {
+
+        private val testDate = Date()
+
+        private val validOAuthToken = mockk<OAuthToken>().apply {
+            every { accessToken } returns "valid_token"
+            every { refreshToken } returns "valid_refresh_token"
+            every { accessTokenExpiresAt } returns testDate
+        }
+
+        private val validKakaoAuthData = KakaoAuthData(
+            kakaoAccessToken = "valid_token",
+            kakaoRefreshToken = "valid_refresh_token",
+            accessTokenExpirationTime = testDate.time
+        )
+
+        private val validServerAuthData = ServerAuthData(
+            accessToken = "valid_access_token",
+            refreshToken = "valid_refresh_token"
+        )
+
+        private val validUserItem = UserItem(
+            serviceId = "test-service-id",
+            name = "test-user",
+            email = "test@test.test",
+            profileUrl = "this-is-test-url"
+        )
     }
 }
