@@ -132,12 +132,10 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun createBypassLogin() {
-        if (BuildConfig.DEBUG) {
-            binding.loginByKakaoImagebutton.isLongClickable = true
-            binding.loginByKakaoImagebutton.setOnLongClickListener {
-                viewModel.bypassLogin()
-                true
-            }
+        binding.loginByKakaoImagebutton.isLongClickable = true
+        binding.loginByKakaoImagebutton.setOnLongClickListener {
+            viewModel.bypassLogin(BuildConfig.TEST_ACCOUNT_EMAIL, BuildConfig.TEST_SERVICE_ID)
+            true
         }
     }
 

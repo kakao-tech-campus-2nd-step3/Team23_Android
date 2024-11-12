@@ -17,6 +17,7 @@ import com.kappzzang.jeongsan.usecase.AuthenticateWithServerUseCase
 import com.kappzzang.jeongsan.usecase.AuthorizeWithKakaoUseCase
 import com.kappzzang.jeongsan.usecase.GetUserInfoUseCase
 import com.kappzzang.jeongsan.usecase.LoginOrRegisterUseCase
+import com.kappzzang.jeongsan.usecase.LoginWithTestAccountUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
@@ -32,6 +33,7 @@ class LoginViewModel @Inject constructor(
     private val authenticateWithKakaoUseCase: AuthenticateWithKakaoUseCase,
     private val authenticateWithServerUseCase: AuthenticateWithServerUseCase,
     private val loginOrRegisterUseCase: LoginOrRegisterUseCase,
+    private val loginWithTestAccountUseCase: LoginWithTestAccountUseCase,
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
@@ -145,8 +147,11 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun bypassLogin() {
-        _appLoginStatus.value = AppLoginState.LoginComplete
+    fun bypassLogin(testAccount: String, testServiceId: String) {
+        viewModelScope.launch(ioDispatcher) {
+            loginWithTestAccountUseCase(testAccount, testServiceId)
+            _appLoginStatus.value = AppLoginState.LoginComplete
+        }
     }
 
     companion object {
