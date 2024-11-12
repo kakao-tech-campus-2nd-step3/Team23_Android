@@ -1,7 +1,9 @@
 package com.kappzzang.jeongsan.datasource
 
 import com.kappzzang.jeongsan.api.GroupRetrofitService
+import com.kappzzang.jeongsan.build_config.BuildConfig
 import com.kappzzang.jeongsan.entity.CompleteGroupResponse
+import com.kappzzang.jeongsan.entity.CreateGroupRequestDTO
 import com.kappzzang.jeongsan.entity.CreateGroupResponse
 import com.kappzzang.jeongsan.entity.GetGroupResponse
 import com.kappzzang.jeongsan.entity.GetLinkResponse
@@ -60,9 +62,11 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
         groupMemberServiceIdList: List<String>
     ): Result<Long> = try {
         val response = groupApi.createGroup(
-            name = groupName,
-            subject = groupSubject,
-            memberIdList = groupMemberServiceIdList
+            CreateGroupRequestDTO(
+                name = groupName,
+                subject = groupSubject,
+                memberIdList = groupMemberServiceIdList + listOf(BuildConfig.TEST_SERVICE_ID)
+            )
         )
         handleCreateGroupResponse(response)
     } catch (e: Exception) {
