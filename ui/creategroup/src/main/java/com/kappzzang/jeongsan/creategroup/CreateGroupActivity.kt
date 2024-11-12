@@ -40,6 +40,7 @@ class CreateGroupActivity : AppCompatActivity() {
         setPickerButton()
         setCreateGroupButton()
         collectGroupUploadState()
+        collectSendMessageState()
     }
 
     private fun initSpinner() {
@@ -109,9 +110,29 @@ class CreateGroupActivity : AppCompatActivity() {
         }
     }
 
+    private fun collectSendMessageState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.sendMessageState.collect { state ->
+                    when (state) {
+                        SendMessageState.IDLE -> {}
+                        SendMessageState.SUCCESS -> finish()
+                        SendMessageState.FAILED -> {
+                            Toast.makeText(
+                                this@CreateGroupActivity,
+                                getString(R.string.send_invite_message_fail),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            finish()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private fun groupUploadSuccess() {
         viewModel.sendInviteMessageAll(viewModel.groupId.value)
-        finish()
     }
 
     private fun groupUploadFailed() {

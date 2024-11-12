@@ -17,17 +17,21 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 enum class GroupUploadState { IDLE, UPLOADING, SUCCESS, FAILED }
+enum class SendMessageState { IDLE, SUCCESS, FAILED }
 
 @HiltViewModel
 class CreateGroupViewModel @Inject constructor(
     private val application: Application,
     private val uploadGroupInfoUseCase: UploadGroupInfoUseCase,
     private val sendInviteMessageUseCase: SendInviteMessageUseCase,
-    private val ioDispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     private val _groupUploadState = MutableStateFlow(GroupUploadState.IDLE)
     val groupUploadState = _groupUploadState.asStateFlow()
+
+    private val _sendMessageState = MutableStateFlow(SendMessageState.IDLE)
+    val sendMessageState = _sendMessageState.asStateFlow()
 
     val groupName = MutableStateFlow("")
 
@@ -96,11 +100,12 @@ class CreateGroupViewModel @Inject constructor(
     }
 
     fun sendInviteMessageAll(groupId: String) = viewModelScope.launch {
-        sendInviteMessageUseCase.invoke(
+        val result = sendInviteMessageUseCase.invoke(
             groupId,
             groupName.value,
             _groupMemberList.value.map { it.uuid }
         )
+        _sendMessageState.emit(if (result) SendMessageState.SUCCESS else SendMessageState.FAILED)
     }
 
     fun checkGroupInfoValidation(): Boolean = groupName.value.isNotEmpty() &&

@@ -19,4 +19,5 @@
     </string-array>
     <string name="create_group_empty_info">모임 정보를 모두 완성해주세요.</string>
     <string name="create_group_fail_create">모임 생성에 실패했어요. 나중에 다시 시도해주세요.</string>
+    <string name="send_invite_message_fail">초대 메시지 전송에 실패했어요.</string>
 </resources>
