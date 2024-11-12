@@ -1,6 +1,7 @@
 package com.kappzzang.jeongsan.api
 
 import com.kappzzang.jeongsan.entity.CompleteGroupResponse
+import com.kappzzang.jeongsan.entity.CreateGroupRequestDTO
 import com.kappzzang.jeongsan.entity.CreateGroupResponse
 import com.kappzzang.jeongsan.entity.GetGroupResponse
 import com.kappzzang.jeongsan.entity.GetLinkResponse
@@ -10,6 +11,7 @@ import com.kappzzang.jeongsan.entity.GetTargetGroupResponse
 import com.kappzzang.jeongsan.entity.JoinGroupResponse
 import com.kappzzang.jeongsan.entity.MemberServiceIdResponse
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
@@ -24,11 +26,7 @@ interface GroupRetrofitService {
     suspend fun getTargetGroupInfo(@Path("teamId") groupId: Long): Response<GetTargetGroupResponse>
 
     @POST("/api/teams")
-    suspend fun createGroup(
-        @Query("name") name: String,
-        @Query("subject") subject: String,
-        @Query("members") memberIdList: List<String>
-    ): Response<CreateGroupResponse>
+    suspend fun createGroup(@Body body: CreateGroupRequestDTO): Response<CreateGroupResponse>
 
     @PATCH("/api/teams/{teamId}")
     suspend fun completeGroup(@Path("teamId") groupId: Long): Response<CompleteGroupResponse>

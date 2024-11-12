@@ -3,6 +3,7 @@ package com.kappzzang.jeongsan.expensedetail.expensedetailpage
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kappzzang.jeongsan.data.ExpenseDetailUIData
 import com.kappzzang.jeongsan.data.toUIData
 import com.kappzzang.jeongsan.expensedetail.ExpenseDetailState
 import com.kappzzang.jeongsan.model.ExpenseDetailItem
@@ -33,6 +34,7 @@ class ExpenseDetailFragmentViewModel @Inject constructor(
     private val expenseId = MutableStateFlow("")
     private val formEditable = MutableStateFlow(true)
     private val _expenseDetailSaveState = MutableStateFlow(ExpenseDetailState.IDLE)
+    private var savedExpenseDetailData = listOf<ExpenseDetailItem>()
 
     val expenseDetailSaveState = _expenseDetailSaveState.asStateFlow()
 
@@ -55,15 +57,43 @@ class ExpenseDetailFragmentViewModel @Inject constructor(
         if (_expenseDetailSaveState.value != ExpenseDetailState.IDLE) {
             return
         }
-        val expenseDetailItemList = expenseDetailUIData.value.map {
-            it.toExpenseDetailItem()
-        }
+        val editedExpenseDetailItemList =
+            mapChangedExpenseDetailList(expenseDetailUIData.value, savedExpenseDetailData)
         _expenseDetailSaveState.value = ExpenseDetailState.UPLOADING
-        uploadEditList(expenseDetailItemList)
+        Log.d("KSC", "Edit List: $editedExpenseDetailItemList")
+        uploadEditList(editedExpenseDetailItemList)
+    }
+
+    private fun convertIfQuantityDiffers(
+        uiData: ExpenseDetailUIData,
+        originData: List<ExpenseDetailItem>
+    ): ExpenseDetailItem? = // ID가 같은 ExpenseDetail 중에서
+        originData.find {
+            it.id == uiData.id
+        }?.let {
+            if (it.selectedQuantity == uiData.selectedQuantity) {
+                // 선택한 값이 같으면 Null
+                null
+            } else {
+                // 선택한 값이 다르면 DetailItem으로 변환하여 반환
+                uiData.toExpenseDetailItem()
+            }
+        } ?: let {
+            null
+        }
+
+    private fun mapChangedExpenseDetailList(
+        uiDataList: List<ExpenseDetailUIData>,
+        originData: List<ExpenseDetailItem>
+    ): List<ExpenseDetailItem> = uiDataList.mapNotNull {
+        convertIfQuantityDiffers(it, originData)
     }
 
     private fun uploadEditList(expenseDetailItemList: List<ExpenseDetailItem>) {
-        Log.d("KSC", "Uploading Edit List")
+        if (expenseDetailItemList.isEmpty()) {
+            _expenseDetailSaveState.value = ExpenseDetailState.SUCCESS
+            return
+        }
         viewModelScope.launch(ioDispatcher) {
             editExpenseDetailUseCase.invoke(
                 expenseDetailItemList,
@@ -88,6 +118,7 @@ class ExpenseDetailFragmentViewModel @Inject constructor(
         viewModelScope.launch(ioDispatcher) {
             val result = getExpenseDetailUseCase.invoke(expenseId.value)
             result.onSuccess {
+                savedExpenseDetailData = it.expenseDetails
                 _expense.value = it
             }
                 .onFailure {

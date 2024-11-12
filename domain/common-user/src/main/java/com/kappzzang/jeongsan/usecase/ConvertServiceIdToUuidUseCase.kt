@@ -7,10 +7,10 @@ class ConvertServiceIdToUuidUseCase @Inject constructor(
     private val userInfoRepository: UserInfoRepository
 ) {
 
-    suspend operator fun invoke(serviceIds: List<String>): List<String>? {
+    suspend operator fun invoke(serviceIds: List<String>): List<String> {
         val friendList = userInfoRepository.getFriendList()
-        return serviceIds.map { serviceId ->
-            friendList?.find { it.serviceId == serviceId }?.uuid ?: return null
+        return serviceIds.mapNotNull { serviceId ->
+            friendList?.find { it.serviceId == serviceId }?.uuid
         }
     }
 }
