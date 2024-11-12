@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="all_header_text_size"> 25sp </dimen>
+    <dimen name="all_expense_text_size"> 25sp </dimen>
+    <dimen name="all_expense_small_text_size"> 16sp </dimen>
     <dimen name="all_header_margin"> 27dp </dimen>
     <dimen name="all_sub_header_text_size"> 16sp </dimen>
     <dimen name="all_description_text_size"> 13sp </dimen>

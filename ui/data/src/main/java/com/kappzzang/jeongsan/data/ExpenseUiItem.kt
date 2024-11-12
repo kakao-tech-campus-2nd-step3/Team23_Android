@@ -11,5 +11,7 @@ data class ExpenseUiItem(
     val date: LocalDateTime,
     val categoryColor: String,
     val isMyPayment: Boolean,
+    val myPrice: String,
+    val indicateMyPrice: Boolean = false,
     val indicateNotConfirmedDot: Boolean = false
 )

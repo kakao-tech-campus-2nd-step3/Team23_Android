@@ -94,14 +94,29 @@
         <TextView
             android:id="@+id/expense_amount_textview"
             android:layout_width="wrap_content"
+            layoutMarginBottom = "@{expenseItem.indicateMyPrice?20:0}"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:text="@{expenseItem.price}"
-            android:textSize="@dimen/all_header_text_size"
+            android:textSize="@dimen/all_expense_text_size"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="105,000원" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:textColor="#88000000"
+            android:text="@{expenseItem.price}"
+            android:textSize="@dimen/all_expense_small_text_size"
+            android:visibility="@{expenseItem.indicateMyPrice?View.VISIBLE:View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/expense_amount_textview"
+            tools:text="@{expenseItem.myPrice}" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

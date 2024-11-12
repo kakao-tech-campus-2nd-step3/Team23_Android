@@ -11,6 +11,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.kappzzang.jeongsan.build_config.BuildConfig
 import com.kappzzang.jeongsan.expensedetail.databinding.ActivityExpenseDetailBinding
 import com.kappzzang.jeongsan.intentcontract.ExpenseDetailContract
+import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.util.IntentHelper.getParcelableData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -53,36 +54,12 @@ class ExpenseDetailActivity : AppCompatActivity() {
 
     private fun setButtonsOnClickListener() {
         binding.expenseDetailPrimaryButton.setOnClickListener {
-            if (viewModel.currentPage.value == ExpenseDetailPage.EXPENSE_DETAIL) {
-                clickSubmitButton()
-            } else {
-                clickSwitchToPendingButton()
-            }
+            viewModel.clickLeftButton()
         }
 
         binding.expenseDetailSecondaryButton.setOnClickListener {
-            if (viewModel.currentPage.value == ExpenseDetailPage.EXPENSE_DETAIL) {
-                clickToStatusButton()
-            } else {
-                clickToDetailButton()
-            }
+            viewModel.clickRightButton()
         }
-    }
-
-    private fun clickSubmitButton() {
-        viewModel.clickSubmitButton()
-    }
-
-    private fun clickToStatusButton() {
-        viewModel.clickToSelectionStatus()
-    }
-
-    private fun clickToDetailButton() {
-        viewModel.clickToExpenseDetail()
-    }
-
-    private fun clickSwitchToPendingButton() {
-        viewModel.clickSwitchToPending()
     }
 
     private fun collectStateFlow() {
@@ -127,10 +104,12 @@ class ExpenseDetailActivity : AppCompatActivity() {
     private fun getIntentData() {
         val expenseId = intent?.getParcelableData<String>(ExpenseDetailContract.EXPENSE_ID)
         val groupId = intent?.getParcelableData<String>(ExpenseDetailContract.GROUP_ID)
-        val editable = intent?.getParcelableData<Boolean>(ExpenseDetailContract.EDITABLE)
+        val expenseState = intent?.getParcelableData<ExpenseState>(
+            ExpenseDetailContract.EXPENSE_STATE
+        )
         val isPayer = intent?.getParcelableData<Boolean>(ExpenseDetailContract.IS_PAYER)
 
-        if (expenseId == null || groupId == null || editable == null || isPayer == null) {
+        if (expenseId == null || groupId == null || expenseState == null || isPayer == null) {
             throwExpenseDataLoadFailError()
             return
         }
@@ -138,7 +117,7 @@ class ExpenseDetailActivity : AppCompatActivity() {
         viewModel.setInitialData(
             expenseId,
             groupId,
-            editable,
+            expenseState,
             isPayer || (BuildConfig.DEBUG && ALWAYS_PAYER_FLAG)
         )
     }
@@ -153,7 +132,7 @@ class ExpenseDetailActivity : AppCompatActivity() {
     }
 
     companion object {
-        // TODO: 항상 결제자로 간주하게 설정하는 플래그; API가 완성되면 false로 수정
+        // 항상 결제자로 간주하게 설정하는 플래그; API가 완성되면 false로 수정
         private const val ALWAYS_PAYER_FLAG = false
     }
 }

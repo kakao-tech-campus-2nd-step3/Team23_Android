@@ -1,16 +1,18 @@
 package com.kappzzang.jeongsan.expensedetail
 
 import android.content.Context
+import com.kappzzang.jeongsan.model.ExpenseState
 
 object ButtonTextConverter {
     @JvmStatic
     fun convertCurrentStateToPrimaryButtonText(
         page: ExpenseDetailPage,
-        isEditable: Boolean,
+        expenseState: ExpenseState,
+        isPayer: Boolean,
         context: Context
     ): String = when (page) {
         ExpenseDetailPage.EXPENSE_DETAIL -> {
-            if (isEditable) {
+            if (expenseState.editable()) {
                 context.getString(R.string.expense_detail_submit)
             } else {
                 context.getString(R.string.expense_detail_dismiss)
@@ -18,10 +20,20 @@ object ButtonTextConverter {
         }
 
         ExpenseDetailPage.SELECTION_STATUS -> {
-            if (isEditable) {
-                context.getString(R.string.expense_detail_switch_to_pending)
+            if (isPayer) {
+                when (expenseState) {
+                    ExpenseState.CONFIRMED, ExpenseState.NOT_CONFIRMED -> {
+                        context.getString(R.string.expense_detail_switch_to_pending)
+                    }
+
+                    ExpenseState.TRANSFER_PENDING ->
+                        context.getString(R.string.expense_detail_switch_to_ongoing)
+
+                    ExpenseState.TRANSFERED ->
+                        context.getString(R.string.expense_detail_dismiss)
+                }
             } else {
-                context.getString(R.string.expense_detail_switch_to_ongoing)
+                context.getString(R.string.expense_detail_dismiss)
             }
         }
     }
@@ -29,7 +41,7 @@ object ButtonTextConverter {
     @JvmStatic
     fun convertCurrentStateToSecondaryButtonText(
         page: ExpenseDetailPage,
-        isEditable: Boolean,
+        expenseState: ExpenseState,
         context: Context
     ): String = when (page) {
         ExpenseDetailPage.EXPENSE_DETAIL -> {
@@ -37,7 +49,7 @@ object ButtonTextConverter {
         }
 
         ExpenseDetailPage.SELECTION_STATUS -> {
-            if (isEditable) {
+            if (expenseState.editable()) {
                 context.getString(R.string.expense_detail_modify)
             } else {
                 context.getString(R.string.expense_detail_check_payer_selection)

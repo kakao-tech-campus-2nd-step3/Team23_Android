@@ -2,6 +2,7 @@ package com.kappzzang.jeongsan.expensedetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.usecase.RevertExpenseToOngoingUseCase
 import com.kappzzang.jeongsan.usecase.SetExpenseToPendingUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,6 +16,9 @@ enum class ExpenseDetailPage { EXPENSE_DETAIL, SELECTION_STATUS }
 
 enum class ExpenseDetailState { IDLE, UPLOADING, SUCCESS, FAILED, SWITCHING_TO_PENDING }
 
+internal fun ExpenseState.editable(): Boolean =
+    this == ExpenseState.NOT_CONFIRMED || this == ExpenseState.CONFIRMED
+
 @HiltViewModel
 class ExpenseDetailViewModel @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher,
@@ -23,6 +27,7 @@ class ExpenseDetailViewModel @Inject constructor(
 ) : ViewModel() {
     private val _currentPage = MutableStateFlow(ExpenseDetailPage.EXPENSE_DETAIL)
     private val _showPayerUI = MutableStateFlow(false)
+    private val _isPayer = MutableStateFlow(false)
 
     private val _expenseDetailState = MutableStateFlow(ExpenseDetailState.IDLE)
 
@@ -30,12 +35,13 @@ class ExpenseDetailViewModel @Inject constructor(
         private set
     var expenseId = ""
         private set
-    private val _editable = MutableStateFlow(false)
-    val editable = _editable.asStateFlow()
+    private val _expenseState = MutableStateFlow(ExpenseState.TRANSFERED)
+    val expenseState = _expenseState.asStateFlow()
 
     val currentPage = _currentPage.asStateFlow()
     val showPayerUI = _showPayerUI.asStateFlow()
     val expenseDetailState = _expenseDetailState.asStateFlow()
+    val isPayer = _isPayer.asStateFlow()
 
     private fun switchToPendingExpense() {
         _expenseDetailState.value = ExpenseDetailState.SWITCHING_TO_PENDING
@@ -72,25 +78,23 @@ class ExpenseDetailViewModel @Inject constructor(
             if (isSuccess) ExpenseDetailState.SUCCESS else ExpenseDetailState.FAILED
     }
 
-    fun setInitialData(expenseId: String, groupId: String, editable: Boolean, isPayer: Boolean) {
+    fun setInitialData(
+        expenseId: String,
+        groupId: String,
+        expenseState: ExpenseState,
+        isPayer: Boolean
+    ) {
         this.expenseId = expenseId
         this.groupId = groupId
-        _editable.value = editable
+        this._isPayer.value = isPayer
+        _expenseState.value = expenseState
 
         if (isPayer) {
             _showPayerUI.value = true
             _currentPage.value = ExpenseDetailPage.SELECTION_STATUS
         } else {
-            _showPayerUI.value = false
+            _showPayerUI.value = (!expenseState.editable())
             _currentPage.value = ExpenseDetailPage.EXPENSE_DETAIL
-        }
-    }
-
-    fun clickSubmitButton() {
-        if (editable.value == true) {
-            clickSaveDetailsAndClose()
-        } else {
-            dismissAndClose()
         }
     }
 
@@ -98,27 +102,67 @@ class ExpenseDetailViewModel @Inject constructor(
         _expenseDetailState.value = ExpenseDetailState.SUCCESS
     }
 
-    private fun clickSaveDetailsAndClose() {
+    private fun saveDetailsAndClose() {
         _expenseDetailState.value = ExpenseDetailState.UPLOADING
     }
 
-    fun clickToSelectionStatus() {
+    private fun navigateToSelectionStatus() {
         _currentPage.value = ExpenseDetailPage.SELECTION_STATUS
     }
 
-    fun clickToExpenseDetail() {
+    private fun navigateToExpenseDetail() {
         _currentPage.value = ExpenseDetailPage.EXPENSE_DETAIL
     }
 
-    fun clickSwitchToPending() {
-        if (_expenseDetailState.value != ExpenseDetailState.IDLE) {
-            return
+    private fun clickDetailPageLeftButton() {
+        when (expenseState.value) {
+            ExpenseState.CONFIRMED, ExpenseState.NOT_CONFIRMED -> saveDetailsAndClose()
+            ExpenseState.TRANSFER_PENDING -> dismissAndClose()
+            ExpenseState.TRANSFERED -> dismissAndClose()
         }
+    }
 
-        if (editable.value) {
-            switchToPendingExpense()
+    private fun clickStatusPageLeftButton() {
+        when (expenseState.value) {
+            ExpenseState.CONFIRMED, ExpenseState.NOT_CONFIRMED -> {
+                if (_isPayer.value) {
+                    switchToPendingExpense()
+                } else {
+                    dismissAndClose()
+                }
+            }
+            ExpenseState.TRANSFER_PENDING -> {
+                if (_isPayer.value) {
+                    switchToOngoingExpense()
+                } else {
+                    dismissAndClose()
+                }
+            }
+            ExpenseState.TRANSFERED -> dismissAndClose()
+        }
+    }
+
+    private fun clickDetailPageRightButton() {
+        navigateToSelectionStatus()
+    }
+
+    private fun clickStatusPageRightButton() {
+        navigateToExpenseDetail()
+    }
+
+    fun clickLeftButton() {
+        if (currentPage.value == ExpenseDetailPage.EXPENSE_DETAIL) {
+            clickDetailPageLeftButton()
         } else {
-            switchToOngoingExpense()
+            clickStatusPageLeftButton()
+        }
+    }
+
+    fun clickRightButton() {
+        if (currentPage.value == ExpenseDetailPage.EXPENSE_DETAIL) {
+            clickDetailPageRightButton()
+        } else {
+            clickStatusPageRightButton()
         }
     }
 }

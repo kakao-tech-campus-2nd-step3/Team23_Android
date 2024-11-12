@@ -18,6 +18,7 @@ import com.kappzzang.jeongsan.addexpense.colorpicker.ColorPickerDialog
 import com.kappzzang.jeongsan.addexpense.data.ExpenseUploadUIState
 import com.kappzzang.jeongsan.addexpense.databinding.ActivityAddExpenseBinding
 import com.kappzzang.jeongsan.intentcontract.AddExpenseContract
+import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.model.OcrResultResponse
 import com.kappzzang.jeongsan.navigation.ExpenseDetailNavigator
 import com.kappzzang.jeongsan.util.Base64BitmapEncoder
@@ -117,7 +118,7 @@ class AddExpenseActivity : AppCompatActivity() {
                 packageContext = this,
                 groupId = viewModel.groupId.value,
                 expenseId = uploadedExpenseId,
-                editable = true,
+                expenseState = ExpenseState.NOT_CONFIRMED,
                 isPayer = false
             )
         )
