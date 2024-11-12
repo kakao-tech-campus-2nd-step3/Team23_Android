@@ -36,7 +36,7 @@ class ExpenseListRepositoryImpl @Inject constructor(
             }
         }
 
-    private fun validateServiceIds(searcherServiceId: String, payerServiceId: Long?): Boolean {
+    private fun validateServiceIds(searcherServiceId: String, payerServiceId: String?): Boolean {
         var valid = true
         if (searcherServiceId.isEmpty()) {
             valid = false

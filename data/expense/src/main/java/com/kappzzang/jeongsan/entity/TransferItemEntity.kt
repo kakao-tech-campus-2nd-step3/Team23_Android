@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class TransferItemEntity(
     @SerializedName("kakaoId")
-    val serviceId: Long,
+    val serviceId: String,
     @SerializedName("memberId")
     val memberId: Long,
     @SerializedName("name")
