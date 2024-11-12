@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class LoginWithTestAccountUseCase @Inject constructor(
     private val serverAuthenticationRepository: ServerAuthenticationRepository,
-    private val authenticationRepository: AuthenticationRepository,
+    private val authenticationRepository: AuthenticationRepository
 ) {
 
     private fun createTestKakaoAuthData() = KakaoAuthData(

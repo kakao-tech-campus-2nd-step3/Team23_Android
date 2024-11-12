@@ -211,10 +211,11 @@ class AddExpenseViewModel @Inject constructor(
                 groupId = _groupId.value,
                 memberUuidList = memberUuidList
             )
-            _uploadingProgress.emit(
-                if (result) ExpenseUploadUIState.UploadSuccessAndSendSuccess(expenseId)
-                else ExpenseUploadUIState.UploadSuccessAndSendFailed(expenseId)
-            )
+            if (result) {
+                _uploadingProgress.emit(ExpenseUploadUIState.UploadSuccessAndSendSuccess(expenseId))
+            } else {
+                _uploadingProgress.emit(ExpenseUploadUIState.UploadSuccessAndSendFailed(expenseId))
+            }
         }
     }
 
