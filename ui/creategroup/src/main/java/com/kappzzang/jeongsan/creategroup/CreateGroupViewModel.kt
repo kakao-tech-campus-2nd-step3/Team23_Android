@@ -24,7 +24,7 @@ class CreateGroupViewModel @Inject constructor(
     private val application: Application,
     private val uploadGroupInfoUseCase: UploadGroupInfoUseCase,
     private val sendInviteMessageUseCase: SendInviteMessageUseCase,
-    private val ioDispatcher: CoroutineDispatcher,
+    private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _groupUploadState = MutableStateFlow(GroupUploadState.IDLE)
