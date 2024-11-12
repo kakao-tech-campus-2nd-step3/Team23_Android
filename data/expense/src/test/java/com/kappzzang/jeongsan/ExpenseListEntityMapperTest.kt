@@ -9,7 +9,7 @@ import org.junit.Test
 
 class ExpenseListEntityMapperTest {
     private fun getSampleEntity() = ExpenseRemoteEntity(
-        payerServiceId = 0,
+        payerServiceId = "0",
         category = CategoryEntity(
             name = "category",
             color = "ffffff"
