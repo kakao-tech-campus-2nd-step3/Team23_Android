@@ -65,7 +65,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent=".5" />
+                app:layout_constraintWidth_percent=".8" />
 
             <TextView
                 android:id="@+id/expense_detail_label_checkbox"
