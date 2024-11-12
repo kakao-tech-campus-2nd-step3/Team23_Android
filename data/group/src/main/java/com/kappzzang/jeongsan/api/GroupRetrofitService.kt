@@ -26,9 +26,7 @@ interface GroupRetrofitService {
     suspend fun getTargetGroupInfo(@Path("teamId") groupId: Long): Response<GetTargetGroupResponse>
 
     @POST("/api/teams")
-    suspend fun createGroup(
-        @Body body: CreateGroupRequestDTO
-    ): Response<CreateGroupResponse>
+    suspend fun createGroup(@Body body: CreateGroupRequestDTO): Response<CreateGroupResponse>
 
     @PATCH("/api/teams/{teamId}")
     suspend fun completeGroup(@Path("teamId") groupId: Long): Response<CompleteGroupResponse>

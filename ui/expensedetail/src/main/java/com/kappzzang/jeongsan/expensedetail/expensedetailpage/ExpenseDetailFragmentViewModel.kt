@@ -67,8 +67,7 @@ class ExpenseDetailFragmentViewModel @Inject constructor(
     private fun convertIfQuantityDiffers(
         uiData: ExpenseDetailUIData,
         originData: List<ExpenseDetailItem>
-    ): ExpenseDetailItem? =
-        // ID가 같은 ExpenseDetail 중에서
+    ): ExpenseDetailItem? = // ID가 같은 ExpenseDetail 중에서
         originData.find {
             it.id == uiData.id
         }?.let {
@@ -86,10 +85,9 @@ class ExpenseDetailFragmentViewModel @Inject constructor(
     private fun mapChangedExpenseDetailList(
         uiDataList: List<ExpenseDetailUIData>,
         originData: List<ExpenseDetailItem>
-    ): List<ExpenseDetailItem> =
-        uiDataList.mapNotNull {
-            convertIfQuantityDiffers(it, originData)
-        }
+    ): List<ExpenseDetailItem> = uiDataList.mapNotNull {
+        convertIfQuantityDiffers(it, originData)
+    }
 
     private fun uploadEditList(expenseDetailItemList: List<ExpenseDetailItem>) {
         if (expenseDetailItemList.isEmpty()) {
