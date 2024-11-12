@@ -48,17 +48,29 @@ class ExpenseDetailItemListAdapter(
             binding.item = item
             binding.isPlaceholder =
                 (this.bindingAdapterPosition + 1 == this.bindingAdapter?.itemCount)
+            (binding.autoCompleteTextview.adapter as? ArrayAdapter<Int>)?.let {
+                if (it.count > item.itemQuantity + 1) {
+                    (item.itemQuantity + 1 until it.count).forEach { num ->
+                        it.remove(num)
+                    }
+                } else if (it.count <= item.itemQuantity) {
+                    (it.count..item.itemQuantity).forEach { num ->
+                        it.add(num)
+                    }
+                }
+            }
+
         }
     }
 
-    private fun createSpinnerAdapter(maxIndex: Int): ArrayAdapter<Int> =
-        ArrayAdapter(context, R.layout.spinner_selected_quantity, (0..maxIndex).toList())
+    private fun createSpinnerAdapter(): ArrayAdapter<Int> =
+        ArrayAdapter(context, R.layout.spinner_selected_quantity, mutableListOf<Int>())
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExpenseDetailItemViewHolder {
         val viewHolderBinding =
             ItemExpenseDetailItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         val viewHolder = ExpenseDetailItemViewHolder(viewHolderBinding)
-        viewHolderBinding.autoCompleteTextview.setAdapter(createSpinnerAdapter(20))
+        viewHolderBinding.autoCompleteTextview.setAdapter(createSpinnerAdapter())
         viewHolderBinding.itemCallback =
             object : ExpenseDetailItemCallback {
                 override fun onCheckedChange(view: CompoundButton, enable: Boolean) {
