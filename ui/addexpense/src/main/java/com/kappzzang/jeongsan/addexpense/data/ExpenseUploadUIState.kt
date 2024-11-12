@@ -6,5 +6,6 @@ sealed class ExpenseUploadUIState {
     data object Uploading : ExpenseUploadUIState()
 
     data class UploadSuccess(val expenseId: String) : ExpenseUploadUIState()
-    data class UploadAndSendSuccess(val expenseId: String) : ExpenseUploadUIState()
+    data class UploadSuccessAndSendSuccess(val expenseId: String) : ExpenseUploadUIState()
+    data class UploadSuccessAndSendFailed(val expenseId: String) : ExpenseUploadUIState()
 }
