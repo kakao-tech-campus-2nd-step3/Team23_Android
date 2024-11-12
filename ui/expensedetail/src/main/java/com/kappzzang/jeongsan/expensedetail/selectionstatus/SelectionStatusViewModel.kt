@@ -53,6 +53,7 @@ class SelectionStatusViewModel @Inject constructor(
             list.add(
                 SelectionInfoItem.Header(
                     item.name,
+                    " (${item.quantity}개)",
                     CURRENCY_PREFIX + item.totalPrice.formatDecimalSeparator() + CURRENCY_POSTFIX
                 )
             )

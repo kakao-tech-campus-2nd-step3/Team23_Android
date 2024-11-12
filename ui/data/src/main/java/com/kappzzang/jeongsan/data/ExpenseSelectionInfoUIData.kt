@@ -1,7 +1,7 @@
 package com.kappzzang.jeongsan.data
 
 sealed class SelectionInfoItem {
-    data class Header(val name: String, val priceText: String) : SelectionInfoItem()
+    data class Header(val name: String, val quantity: String, val priceText: String) : SelectionInfoItem()
 
     data class SelectorItem(
         val imageUrl: String,
