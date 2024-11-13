@@ -16,7 +16,7 @@ class GroupListAdapter(
     private val onGroupItemClickListener: (groupId: String) -> Unit,
     private val onProgressGroupToggle: () -> Unit,
     private val onDoneGroupToggle: () -> Unit
-): ListAdapter<GroupViewItem, RecyclerView.ViewHolder>(diffUtil) {
+) : ListAdapter<GroupViewItem, RecyclerView.ViewHolder>(diffUtil) {
 
     inner class ProgressTitleViewHolder(
         private val binding: ItemMainProgressTitleBinding,
@@ -115,9 +115,12 @@ class GroupListAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (currentList[position]) {
-            is GroupViewItem.ProgressTitle -> (holder as ProgressTitleViewHolder).bind(currentList[position])
-            is GroupViewItem.DoneTitle -> (holder as DoneTitleViewHolder).bind(currentList[position])
-            is GroupViewItem.Group -> (holder as GroupViewHolder).bind(currentList[position])
+            is GroupViewItem.ProgressTitle ->
+                (holder as ProgressTitleViewHolder).bind(currentList[position])
+            is GroupViewItem.DoneTitle ->
+                (holder as DoneTitleViewHolder).bind(currentList[position])
+            is GroupViewItem.Group ->
+                (holder as GroupViewHolder).bind(currentList[position])
         }
     }
 
