@@ -1,7 +1,6 @@
 package com.kappzzang.jeongsan.datasource
 
 import com.kappzzang.jeongsan.api.GroupRetrofitService
-import com.kappzzang.jeongsan.build_config.BuildConfig
 import com.kappzzang.jeongsan.entity.CompleteGroupResponse
 import com.kappzzang.jeongsan.entity.CreateGroupRequestDTO
 import com.kappzzang.jeongsan.entity.CreateGroupResponse
