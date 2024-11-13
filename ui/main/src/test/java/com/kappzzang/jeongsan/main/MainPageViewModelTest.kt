@@ -87,8 +87,12 @@ class MainPageViewModelTest {
         advanceUntilIdle()
 
         // Then
-        assertEquals(testProgressingGroupList.size + 1, viewModel.groupList.value.size)
-        assertEquals(GroupViewItem.ProgressTitle, viewModel.groupList.value[0])
+        assertEquals(testProgressingGroupList.size + 2, viewModel.groupList.value.size)
+        assertEquals(GroupViewItem.ProgressTitle(false), viewModel.groupList.value[0])
+        assertEquals(
+            GroupViewItem.DoneTitle(true),
+            viewModel.groupList.value[viewModel.groupList.value.size - 1]
+        )
         for (i in testProgressingGroupList.indices) {
             assertEquals(
                 GroupViewItem.Group(testProgressingGroupList[i]),
@@ -110,12 +114,13 @@ class MainPageViewModelTest {
         advanceUntilIdle()
 
         // Then
-        assertEquals(testDoneGroupList.size + 1, viewModel.groupList.value.size)
-        assertEquals(GroupViewItem.DoneTitle, viewModel.groupList.value[0])
+        assertEquals(testDoneGroupList.size + 2, viewModel.groupList.value.size)
+        assertEquals(GroupViewItem.ProgressTitle(true), viewModel.groupList.value[0])
+        assertEquals(GroupViewItem.DoneTitle(false), viewModel.groupList.value[1])
         for (i in testDoneGroupList.indices) {
             assertEquals(
                 GroupViewItem.Group(testDoneGroupList[i]),
-                viewModel.groupList.value[i + 1]
+                viewModel.groupList.value[i + 2]
             )
         }
     }
@@ -137,7 +142,7 @@ class MainPageViewModelTest {
             testProgressingGroupList.size + testDoneGroupList.size + 2,
             viewModel.groupList.value.size
         )
-        assertEquals(GroupViewItem.ProgressTitle, viewModel.groupList.value[0])
+        assertEquals(GroupViewItem.ProgressTitle(false), viewModel.groupList.value[0])
         for (i in testProgressingGroupList.indices) {
             assertEquals(
                 GroupViewItem.Group(testProgressingGroupList[i]),
@@ -145,7 +150,7 @@ class MainPageViewModelTest {
             )
         }
         assertEquals(
-            GroupViewItem.DoneTitle,
+            GroupViewItem.DoneTitle(false),
             viewModel.groupList.value[testProgressingGroupList.size + 1]
         )
         for (i in testDoneGroupList.indices) {
