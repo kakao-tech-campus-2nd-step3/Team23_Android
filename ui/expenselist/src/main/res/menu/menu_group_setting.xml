@@ -3,8 +3,4 @@
     <item
         android:id="@+id/menu_invite_status"
         android:title="@string/menu_invite_status" />
-
-    <item
-        android:id="@+id/menu_end_group"
-        android:title="@string/menu_end_group" />
 </menu>

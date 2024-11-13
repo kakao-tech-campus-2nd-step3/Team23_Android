@@ -52,6 +52,7 @@ class LoginActivity : AppCompatActivity() {
 
                         // 카카오 토큰이 없어서 로그인이 필요한 상태
                         is AppLoginState.Idle.NotKakaoLoggedIn -> {
+                            Log.d(TAG, "카카오 토큰이 없습니다. 로그인 시도")
                             binding.loginByKakaoImagebutton.setOnClickListener {
                                 loginWithKakao()
                             }
@@ -59,9 +60,8 @@ class LoginActivity : AppCompatActivity() {
 
                         // 서버 토큰이 없어서 로그인이 필요한 상태
                         is AppLoginState.Idle.NotServerLoggedIn -> {
-                            binding.loginByKakaoImagebutton.setOnClickListener {
-                                viewModel.loginWithServer()
-                            }
+                            Log.d(TAG, "서버 토큰이 없습니다. 로그인 시도")
+                            viewModel.loginWithServer()
                         }
 
                         // 카카오 로그인 실패

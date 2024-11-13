@@ -12,6 +12,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.kakao.sdk.common.model.ClientError
+import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.friend.client.PickerClient
 import com.kakao.sdk.friend.model.OpenPickerFriendRequestParams
 import com.kakao.sdk.friend.model.PickerOrientation
@@ -164,6 +166,9 @@ class CreateGroupActivity : AppCompatActivity() {
         ) { selectedUsers, error ->
             if (error != null) {
                 Log.e(TAG, "친구 선택 실패", error)
+                if (!(error is ClientError && error.reason == ClientErrorCause.Cancelled)) {
+                    Toast.makeText(this, "카카오 서비스를 이용할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                }
             } else {
                 Log.d(TAG, "친구 선택 성공 $selectedUsers")
                 viewModel.updateGroupMemberList(mapSelectedUsersToMemberUIData(selectedUsers))

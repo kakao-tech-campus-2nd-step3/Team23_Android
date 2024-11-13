@@ -132,11 +132,6 @@ class ExpenseListActivity : AppCompatActivity() {
                         true
                     }
 
-                    R.id.menu_end_group -> {
-                        viewModel.completeGroup()
-                        true
-                    }
-
                     else -> {
                         false
                     }
