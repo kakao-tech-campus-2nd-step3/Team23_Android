@@ -1,6 +1,5 @@
 package com.kappzzang.jeongsan.expensedetail.expensedetailpage
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.data.toUIData

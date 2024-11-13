@@ -13,9 +13,7 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
-import io.mockk.spyk
 import io.mockk.unmockkAll
-import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -111,7 +109,7 @@ class ExpenseDetailViewModelTest {
 
     @Test
     fun `초기화 함수 실행 후 뷰모델의 상태가 정상적으로 초기화된다`() = runTest {
-        //given
+        // given
         val firstDetailItem = ExpenseDetailItem("testId1", "testItem1", 1000, 10, 10)
         val secondDetailItem = ExpenseDetailItem("testId2", "testItem2", 1200, 20, 0)
         coEvery { getExpenseDetailUseCase(any()) } returns Result.success(
@@ -129,7 +127,7 @@ class ExpenseDetailViewModelTest {
         viewModel.setInitialData("", "", true)
         advanceUntilIdle()
 
-        //then
+        // then
         assertThat(viewModel.expense.value.expenseDetails[0]).isEqualTo(firstDetailItem)
         assertThat(viewModel.expense.value.expenseDetails[1]).isEqualTo(secondDetailItem)
     }

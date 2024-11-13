@@ -15,6 +15,7 @@ import io.mockk.mockkStatic
 import io.mockk.slot
 import io.mockk.unmockkAll
 import io.mockk.verify
+import java.time.LocalDateTime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,7 +31,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import java.time.LocalDateTime
 
 @ExperimentalCoroutinesApi
 class ExpenseListFragmentViewModelTest {
@@ -168,7 +168,6 @@ class ExpenseListFragmentViewModelTest {
         assertThat(viewModel.uiData.value.expenseItems).isNotEmpty()
     }
 
-
     @Test
     fun `불러온 지출 정보는 날짜의 내림차순으로 정렬된다`() = runTest {
         // given
@@ -212,7 +211,6 @@ class ExpenseListFragmentViewModelTest {
                 )
             )
         }
-
 
         // when
         initiateInjection()

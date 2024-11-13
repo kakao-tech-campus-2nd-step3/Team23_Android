@@ -6,7 +6,6 @@ import com.kappzzang.jeongsan.usecase.GetInviteInfoUseCase
 import com.kappzzang.jeongsan.usecase.SendInviteMessageUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
 import kotlinx.coroutines.Dispatchers
@@ -57,7 +56,6 @@ class InviteInfoViewModelTest {
         val testUuid = "22"
 
         coEvery { mockConvertServiceIdToUuidUseCase(any()) }.returns(listOf(testUuid))
-
 
         // when
         viewModel.sendInviteMessageWithServiceId(

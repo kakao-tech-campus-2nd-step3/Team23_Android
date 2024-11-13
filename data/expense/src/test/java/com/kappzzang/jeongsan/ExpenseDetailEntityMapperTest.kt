@@ -30,7 +30,6 @@ class ExpenseDetailEntityMapperTest {
         val item2Quantity = 10
         val item2QuantityConsumed = 4
 
-
         val itemEntityList = listOf(
             ExpenseDetailItemEntity(
                 unitPrice = item1UnitPrice,
@@ -115,7 +114,7 @@ class ExpenseDetailEntityMapperTest {
                 name = "1stSelectorName2",
                 selectedQuantity = 4,
                 profileImageUrl = "url2"
-            ),
+            )
         )
         val secondSelectionSelectorInfoList = listOf(
             ExpenseSelectorInfo(
@@ -127,7 +126,7 @@ class ExpenseDetailEntityMapperTest {
                 name = "2ndSelectorName2",
                 selectedQuantity = 0,
                 profileImageUrl = "url4"
-            ),
+            )
         )
 
         val firstSelection = ExpenseSelectionStatusItem(
@@ -174,7 +173,7 @@ class ExpenseDetailEntityMapperTest {
         // then
         assertThat(mapped.name).isEqualTo(selectionStatusName)
 
-        for(i in expenseSelectionList.indices){
+        for (i in expenseSelectionList.indices) {
             val mappedItem = mapped.items[i]
             val expectedItem = expenseSelectionList[i]
             assertThat(mappedItem).isEqualTo(expectedItem)

@@ -74,40 +74,39 @@ class SelectionStatusViewModelTest {
         }
     }
 
-    private fun getTestExpenseSelectionItemList() =
-        listOf(
-            ExpenseSelectionStatusItem(
-                itemId = "id1",
-                unitPrice = 200,
-                quantity = 10,
-                name = "name1",
-                selectorList = listOf(
-                    ExpenseSelectorInfo(
-                        name = "selectorName",
-                        selectedQuantity = 2,
-                        profileImageUrl = "url"
-                    ),
-                    ExpenseSelectorInfo(
-                        name = "selectorName2",
-                        selectedQuantity = 8,
-                        profileImageUrl = "url"
-                    )
+    private fun getTestExpenseSelectionItemList() = listOf(
+        ExpenseSelectionStatusItem(
+            itemId = "id1",
+            unitPrice = 200,
+            quantity = 10,
+            name = "name1",
+            selectorList = listOf(
+                ExpenseSelectorInfo(
+                    name = "selectorName",
+                    selectedQuantity = 2,
+                    profileImageUrl = "url"
+                ),
+                ExpenseSelectorInfo(
+                    name = "selectorName2",
+                    selectedQuantity = 8,
+                    profileImageUrl = "url"
                 )
-            ),
-            ExpenseSelectionStatusItem(
-                itemId = "id2",
-                unitPrice = 400,
-                quantity = 20,
-                name = "name2",
-                selectorList = listOf(
-                    ExpenseSelectorInfo(
-                        name = "selectorName",
-                        selectedQuantity = 2,
-                        profileImageUrl = "url"
-                    )
+            )
+        ),
+        ExpenseSelectionStatusItem(
+            itemId = "id2",
+            unitPrice = 400,
+            quantity = 20,
+            name = "name2",
+            selectorList = listOf(
+                ExpenseSelectorInfo(
+                    name = "selectorName",
+                    selectedQuantity = 2,
+                    profileImageUrl = "url"
                 )
             )
         )
+    )
 
     @Test
     fun `UI State 내 헤더의 개수는 Usecase에서 받은 아이템의 개수와 같다`() = runTest {
@@ -190,10 +189,12 @@ class SelectionStatusViewModelTest {
 
         // then
         val uiItemList = viewModel.uiData.value.selectionInfoItemList
-        for (i in 2 until uiItemList.size){
-            if(uiItemList[i] is SelectionInfoItem.Header){
+        for (i in 2 until uiItemList.size) {
+            if (uiItemList[i] is SelectionInfoItem.Header) {
                 assertThat(uiItemList[i - 1]).isInstanceOf(SelectionInfoItem.Divider::class.java)
-                assertThat(uiItemList[i - 2]).isInstanceOf(SelectionInfoItem.SelectorItem::class.java)
+                assertThat(
+                    uiItemList[i - 2]
+                ).isInstanceOf(SelectionInfoItem.SelectorItem::class.java)
             }
         }
     }

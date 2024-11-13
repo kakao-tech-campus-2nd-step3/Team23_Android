@@ -55,14 +55,13 @@ class ExpenseListViewModelTest {
         Dispatchers.resetMain()
     }
 
-    private fun getTestGroupItem(id: String = "1"): GroupItem =
-        GroupItem(
-            id = id,
-            name = "name",
-            subject = "subject",
-            isCompleted = false,
-            profileImageURL = emptyList()
-        )
+    private fun getTestGroupItem(id: String = "1"): GroupItem = GroupItem(
+        id = id,
+        name = "name",
+        subject = "subject",
+        isCompleted = false,
+        profileImageURL = emptyList()
+    )
 
     @Test
     fun `처음 UI State는 Initial 이다`() {
