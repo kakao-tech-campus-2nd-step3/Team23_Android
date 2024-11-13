@@ -3,7 +3,6 @@ package com.kappzzang.jeongsan.expensedetail.expensedetailpage
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kappzzang.jeongsan.data.ExpenseDetailUIData
 import com.kappzzang.jeongsan.data.toUIData
 import com.kappzzang.jeongsan.expensedetail.ExpenseDetailState
 import com.kappzzang.jeongsan.model.ExpenseDetailItem
@@ -56,17 +55,12 @@ class ExpenseDetailFragmentViewModel @Inject constructor(
         if (_expenseDetailSaveState.value != ExpenseDetailState.IDLE) {
             return
         }
-        val editedExpenseDetailItemList =
-            mapChangedExpenseDetailList(expenseDetailUIData.value)
+        val expenseDetailItemList = expenseDetailUIData.value.map {
+            it.toExpenseDetailItem()
+        }
         _expenseDetailSaveState.value = ExpenseDetailState.UPLOADING
-        Log.d("KSC", "Edit List: $editedExpenseDetailItemList")
-        uploadEditList(editedExpenseDetailItemList)
-    }
-
-    private fun mapChangedExpenseDetailList(
-        uiDataList: List<ExpenseDetailUIData>
-    ): List<ExpenseDetailItem> = uiDataList.mapNotNull {
-        it.toExpenseDetailItem()
+        Log.d("KSC", "Edit List: $expenseDetailItemList")
+        uploadEditList(expenseDetailItemList)
     }
 
     private fun uploadEditList(expenseDetailItemList: List<ExpenseDetailItem>) {
