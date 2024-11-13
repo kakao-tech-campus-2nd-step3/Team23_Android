@@ -1,5 +1,17 @@
 package com.kappzzang.jeongsan.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+data class ExpenseDetailItem(
+    val id: String,
+    val itemName: String,
+    val itemPrice: Int,
+    val itemQuantity: Int,
+    val selectedQuantity: Int
+) : Parcelable
+
 data class ExpenseItemWithDetails(
     private val item: ExpenseItem,
     val expenseImageUrl: String,
