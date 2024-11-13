@@ -59,15 +59,11 @@ class ExpenseDetailFragmentViewModel @Inject constructor(
             it.toExpenseDetailItem()
         }
         _expenseDetailSaveState.value = ExpenseDetailState.UPLOADING
-        Log.d("KSC", "Edit List: $expenseDetailItemList")
+
         uploadEditList(expenseDetailItemList)
     }
 
     private fun uploadEditList(expenseDetailItemList: List<ExpenseDetailItem>) {
-        if (expenseDetailItemList.isEmpty()) {
-            _expenseDetailSaveState.value = ExpenseDetailState.SUCCESS
-            return
-        }
         viewModelScope.launch(ioDispatcher) {
             editExpenseDetailUseCase.invoke(
                 expenseDetailItemList,
