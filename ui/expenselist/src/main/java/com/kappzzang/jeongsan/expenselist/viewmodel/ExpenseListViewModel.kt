@@ -74,7 +74,7 @@ class ExpenseListViewModel @Inject constructor(
         (this.uiState.value as? ExpenseListUIState.Idle)?.let {
             viewModelScope.launch(ioDispatcher) {
                 completeGroupUseCase(it.groupId).onSuccess { _ ->
-                    _uiState.emit(ExpenseListUIState.CompleteSuccess(it.groupId, it.groupSubject))
+                    _uiState.emit(ExpenseListUIState.CompleteSuccess(it.groupName, it.groupSubject))
                 }.onFailure { e ->
                     _uiState.emit(ExpenseListUIState.CompleteFailed(e.message ?: ""))
                 }

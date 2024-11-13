@@ -125,6 +125,7 @@ abstract class ExpenseListPageViewModel(
     private fun setGroupId(groupId: String) {
         if (groupId.isNotEmpty() && this.groupId.value != groupId) {
             this.groupId.value = groupId
+            fetchDefaultList(groupId)
         }
     }
 
