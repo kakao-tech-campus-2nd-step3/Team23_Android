@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.kappzzang.jeongsan.data.JoinGroupUIState
 import com.kappzzang.jeongsan.intentcontract.ExpenseListContract
+import com.kappzzang.jeongsan.main.animator.NoAnimationInGroupTitleAnimator
 import com.kappzzang.jeongsan.main.databinding.ActivityMainBinding
 import com.kappzzang.jeongsan.navigation.CreateGroupNavigator
 import com.kappzzang.jeongsan.navigation.ExpenseListNavigator
@@ -61,6 +62,7 @@ class MainActivity : AppCompatActivity() {
         binding.groupListRecyclerview.apply {
             adapter = groupListAdapter
             layoutManager = LinearLayoutManager(this@MainActivity)
+            itemAnimator = NoAnimationInGroupTitleAnimator()
         }
     }
 
