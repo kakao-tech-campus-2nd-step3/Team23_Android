@@ -34,7 +34,6 @@ class ExpenseDetailFragmentViewModel @Inject constructor(
     private val expenseId = MutableStateFlow("")
     private val formEditable = MutableStateFlow(true)
     private val _expenseDetailSaveState = MutableStateFlow(ExpenseDetailState.IDLE)
-    private var savedExpenseDetailData = listOf<ExpenseDetailItem>()
 
     val expenseDetailSaveState = _expenseDetailSaveState.asStateFlow()
 
@@ -58,35 +57,16 @@ class ExpenseDetailFragmentViewModel @Inject constructor(
             return
         }
         val editedExpenseDetailItemList =
-            mapChangedExpenseDetailList(expenseDetailUIData.value, savedExpenseDetailData)
+            mapChangedExpenseDetailList(expenseDetailUIData.value)
         _expenseDetailSaveState.value = ExpenseDetailState.UPLOADING
         Log.d("KSC", "Edit List: $editedExpenseDetailItemList")
         uploadEditList(editedExpenseDetailItemList)
     }
 
-    private fun convertIfQuantityDiffers(
-        uiData: ExpenseDetailUIData,
-        originData: List<ExpenseDetailItem>
-    ): ExpenseDetailItem? = // ID가 같은 ExpenseDetail 중에서
-        originData.find {
-            it.id == uiData.id
-        }?.let {
-            if (it.selectedQuantity == uiData.selectedQuantity) {
-                // 선택한 값이 같으면 Null
-                null
-            } else {
-                // 선택한 값이 다르면 DetailItem으로 변환하여 반환
-                uiData.toExpenseDetailItem()
-            }
-        } ?: let {
-            null
-        }
-
     private fun mapChangedExpenseDetailList(
-        uiDataList: List<ExpenseDetailUIData>,
-        originData: List<ExpenseDetailItem>
+        uiDataList: List<ExpenseDetailUIData>
     ): List<ExpenseDetailItem> = uiDataList.mapNotNull {
-        convertIfQuantityDiffers(it, originData)
+        it.toExpenseDetailItem()
     }
 
     private fun uploadEditList(expenseDetailItemList: List<ExpenseDetailItem>) {
@@ -118,7 +98,6 @@ class ExpenseDetailFragmentViewModel @Inject constructor(
         viewModelScope.launch(ioDispatcher) {
             val result = getExpenseDetailUseCase.invoke(expenseId.value)
             result.onSuccess {
-                savedExpenseDetailData = it.expenseDetails
                 _expense.value = it
             }
                 .onFailure {
