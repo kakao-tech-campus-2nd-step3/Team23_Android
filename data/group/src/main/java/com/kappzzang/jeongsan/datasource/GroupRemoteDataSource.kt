@@ -13,6 +13,7 @@ import com.kappzzang.jeongsan.entity.GroupInfo
 import com.kappzzang.jeongsan.entity.JoinGroupResponse
 import com.kappzzang.jeongsan.entity.MemberInfo
 import com.kappzzang.jeongsan.entity.MemberServiceIdResponse
+import com.kappzzang.jeongsan.retrofit.error.AuthenticateError
 import javax.inject.Inject
 import retrofit2.Response
 
@@ -65,7 +66,7 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
             CreateGroupRequestDTO(
                 name = groupName,
                 subject = groupSubject,
-                memberIdList = groupMemberServiceIdList + listOf(BuildConfig.TEST_SERVICE_ID)
+                memberIdList = groupMemberServiceIdList
             )
         )
         handleCreateGroupResponse(response)
