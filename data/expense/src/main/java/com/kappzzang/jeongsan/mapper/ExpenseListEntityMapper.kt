@@ -8,6 +8,12 @@ import com.kappzzang.jeongsan.util.ColorParser
 import com.kappzzang.jeongsan.util.DateConverter
 
 object ExpenseListEntityMapper {
+    fun mapExpenseStateToDtoState(state: ExpenseState): String = when (state) {
+        ExpenseState.CONFIRMED -> "ongoing"
+        ExpenseState.NOT_CONFIRMED -> "ongoing"
+        ExpenseState.TRANSFER_PENDING -> "pending"
+        ExpenseState.TRANSFERED -> "completed"
+    }
 
     fun mapExpenseEntityToModel(
         entity: ExpenseRemoteEntity,
@@ -22,7 +28,7 @@ object ExpenseListEntityMapper {
         ),
         date = DateConverter.parseFromString(entity.createdAt),
         categoryColor = ColorParser.parseColor(entity.category.color),
-        isMyPayment = (entity.payerServiceId?.toString() == serviceId) && (serviceId.isNotEmpty()),
+        isMyPayment = (entity.payerServiceId == serviceId) && (serviceId.isNotEmpty()),
         personalExpense = entity.myExpense
     )
 
@@ -33,7 +39,7 @@ object ExpenseListEntityMapper {
         state = ExpenseState.TRANSFER_PENDING
     )
 
-    private fun mapExpenseStateToDomainState(state: String, checked: Boolean): ExpenseState {
+    fun mapExpenseStateToDomainState(state: String, checked: Boolean): ExpenseState {
         val trimmed = state.lowercase().trim()
         return when (trimmed) {
             "pending" -> ExpenseState.TRANSFER_PENDING
