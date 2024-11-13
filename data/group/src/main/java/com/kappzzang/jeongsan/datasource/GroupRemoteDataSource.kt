@@ -12,7 +12,6 @@ import com.kappzzang.jeongsan.entity.GroupInfo
 import com.kappzzang.jeongsan.entity.JoinGroupResponse
 import com.kappzzang.jeongsan.entity.MemberInfo
 import com.kappzzang.jeongsan.entity.MemberServiceIdResponse
-import com.kappzzang.jeongsan.retrofit.error.AuthenticateError
 import javax.inject.Inject
 import retrofit2.Response
 
