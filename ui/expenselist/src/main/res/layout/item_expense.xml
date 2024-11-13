@@ -24,7 +24,7 @@
         clipBottomCorner="@{positionInfo.lastItem}"
         clipUpperCorner="@{positionInfo.firstItem}"
         android:layout_width="match_parent"
-        android:layout_height="90dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="1dp"
         android:background="@color/white"
         android:elevation="5dp"
@@ -44,12 +44,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginBottom="14dp"
+            android:layout_marginTop="8dp"
             android:text="@{expenseItem.name}"
             android:textSize="@dimen/all_header_text_size"
-            app:layout_constraintStart_toEndOf="@id/category_color_view"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/expense_amount_textview"
-            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@id/category_color_view"
+            app:layout_constraintBottom_toTopOf="@id/expense_date_textview"
+            app:layout_constraintVertical_bias="1.0"
             tools:text="스타벅스" />
 
         <ImageView
@@ -94,30 +96,29 @@
 
         <TextView
             android:id="@+id/expense_amount_textview"
-            layoutMarginBottom="@{expenseItem.indicateMyPrice?20:0}"
+            layoutMarginBottom="@{expenseItem.indicateMyPrice?0:8}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:text="@{expenseItem.price}"
             android:textSize="@dimen/all_expense_text_size"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/my_expense_amount_textview"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/expense_name_textview"
             tools:text="105,000원" />
 
         <TextView
+            android:id="@+id/my_expense_amount_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:layout_marginBottom="6dp"
             android:textColor="#88000000"
-            android:text="@{expenseItem.price}"
+            android:text="@{expenseItem.myPrice}"
             android:textSize="@dimen/all_expense_small_text_size"
             android:visibility="@{expenseItem.indicateMyPrice?View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/expense_amount_textview"
-            tools:text="@{expenseItem.myPrice}" />
-
+            tools:text="내 지출: 55,000 원" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
