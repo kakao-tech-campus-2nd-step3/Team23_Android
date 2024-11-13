@@ -1,10 +1,12 @@
 package com.kappzzang.jeongsan.expenselist.inviteinfo
 
+import com.kappzzang.jeongsan.data.ExpenseListUIState
 import com.kappzzang.jeongsan.usecase.ConvertServiceIdToUuidUseCase
 import com.kappzzang.jeongsan.usecase.GetInviteInfoUseCase
 import com.kappzzang.jeongsan.usecase.SendInviteMessageUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
 import kotlinx.coroutines.Dispatchers
@@ -56,10 +58,14 @@ class InviteInfoViewModelTest {
 
         coEvery { mockConvertServiceIdToUuidUseCase(any()) }.returns(listOf(testUuid))
 
+
         // when
         viewModel.sendInviteMessageWithServiceId(
-            groupName = testGroupName,
-            groupId = testGroupId,
+            ExpenseListUIState.Idle(
+                groupName = testGroupName,
+                groupId = testGroupId,
+                groupSubject = ""
+            ),
             memberServiceId = testServiceId
         )
         advanceUntilIdle()
