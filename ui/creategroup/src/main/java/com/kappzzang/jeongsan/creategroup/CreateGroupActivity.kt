@@ -164,6 +164,7 @@ class CreateGroupActivity : AppCompatActivity() {
         ) { selectedUsers, error ->
             if (error != null) {
                 Log.e(TAG, "친구 선택 실패", error)
+                Toast.makeText(this, "카카오 서비스를 이용할 수 없습니다.", Toast.LENGTH_SHORT).show()
             } else {
                 Log.d(TAG, "친구 선택 성공 $selectedUsers")
                 viewModel.updateGroupMemberList(mapSelectedUsersToMemberUIData(selectedUsers))
