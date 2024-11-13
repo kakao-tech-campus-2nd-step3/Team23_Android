@@ -109,8 +109,7 @@ class CreateGroupViewModel @Inject constructor(
     }
 
     fun checkGroupInfoValidation(): Boolean = groupName.value.isNotEmpty() &&
-        _groupSubject.value.isNotEmpty() &&
-        _groupMemberList.value.isNotEmpty()
+        _groupSubject.value.isNotEmpty()
 
     companion object {
         private const val UNAUTHORIZED_MEMBER_EXISTS = "가입하지 않은 멤버가 존재합니다!"
