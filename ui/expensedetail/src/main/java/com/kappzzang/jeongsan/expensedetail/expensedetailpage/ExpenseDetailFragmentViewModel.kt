@@ -86,7 +86,8 @@ class ExpenseDetailFragmentViewModel @Inject constructor(
         uiDataList: List<ExpenseDetailUIData>,
         originData: List<ExpenseDetailItem>
     ): List<ExpenseDetailItem> = uiDataList.mapNotNull {
-        convertIfQuantityDiffers(it, originData)
+        // convertIfQuantityDiffers(it, originData)
+        it.toExpenseDetailItem()
     }
 
     private fun uploadEditList(expenseDetailItemList: List<ExpenseDetailItem>) {
