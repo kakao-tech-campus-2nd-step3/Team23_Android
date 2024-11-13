@@ -22,10 +22,20 @@
             android:textSize="28sp"
             />
         <TextView
+            android:id="@+id/expense_quantity_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@+id/expense_selection_header_textview"
-            app:layout_constraintBottom_toBottomOf="@+id/expense_selection_header_textview"
+            app:layout_constraintTop_toTopOf="@id/expense_selection_header_textview"
+            app:layout_constraintBottom_toBottomOf="@id/expense_selection_header_textview"
+            app:layout_constraintStart_toEndOf="@id/expense_selection_header_textview"
+            android:text="@{header.quantity}"
+            android:textSize="20sp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/expense_selection_header_textview"
+            app:layout_constraintBottom_toBottomOf="@id/expense_selection_header_textview"
             app:layout_constraintEnd_toEndOf="parent"
             android:textSize="20sp"
             android:text="@{header.priceText}"
