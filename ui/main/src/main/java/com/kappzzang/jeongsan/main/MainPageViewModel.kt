@@ -62,10 +62,12 @@ class MainPageViewModel @Inject constructor(
             withContext(ioDispatcher) {
                 val progressingGroupList = getProgressingGroupUseCase()
                 isProcessGroupHide = progressingGroupList.isEmpty()
+                originProgressGroupList.clear()
                 originProgressGroupList.addAll(progressingGroupList.map { GroupViewItem.Group(it) })
 
                 val doneGroupList = getDoneGroupUseCase()
                 isDoneGroupHide = doneGroupList.isEmpty()
+                originDoneGroupList.clear()
                 originDoneGroupList.addAll(doneGroupList.map { GroupViewItem.Group(it) })
 
                 _groupList.value = createGroupList()
