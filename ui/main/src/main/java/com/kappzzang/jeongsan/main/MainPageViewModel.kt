@@ -32,6 +32,12 @@ class MainPageViewModel @Inject constructor(
     private val _userProfileUrl = MutableStateFlow("")
     val userProfileUrl: StateFlow<String> = _userProfileUrl
 
+    private var isProcessGroupHide: Boolean = false
+    private var isDoneGroupHide: Boolean = false
+
+    private val originProgressGroupList = mutableListOf<GroupViewItem>()
+    private val originDoneGroupList = mutableListOf<GroupViewItem>()
+
     private val _groupList = MutableStateFlow<List<GroupViewItem>>(emptyList())
     val groupList: StateFlow<List<GroupViewItem>> = _groupList
 
@@ -54,22 +60,43 @@ class MainPageViewModel @Inject constructor(
     fun loadGroupList() {
         viewModelScope.launch {
             withContext(ioDispatcher) {
-                val resultGroupList = mutableListOf<GroupViewItem>()
-
                 val progressingGroupList = getProgressingGroupUseCase()
-                if (progressingGroupList.isNotEmpty()) {
-                    resultGroupList.add(GroupViewItem.ProgressTitle)
-                    resultGroupList.addAll(progressingGroupList.map { GroupViewItem.Group(it) })
-                }
+                isProcessGroupHide = progressingGroupList.isEmpty()
+                originProgressGroupList.addAll(progressingGroupList.map { GroupViewItem.Group(it) })
 
                 val doneGroupList = getDoneGroupUseCase()
-                if (doneGroupList.isNotEmpty()) {
-                    resultGroupList.add(GroupViewItem.DoneTitle)
-                    resultGroupList.addAll(doneGroupList.map { GroupViewItem.Group(it) })
-                }
-                _groupList.value = resultGroupList
+                isDoneGroupHide = doneGroupList.isEmpty()
+                originDoneGroupList.addAll(doneGroupList.map { GroupViewItem.Group(it) })
+
+                _groupList.value = createGroupList()
             }
         }
+    }
+
+    fun toggleProgressGroup() {
+        isProcessGroupHide = !isProcessGroupHide
+        _groupList.value = createGroupList()
+    }
+
+    fun toggleDoneGroup() {
+        isDoneGroupHide = !isDoneGroupHide
+        _groupList.value = createGroupList()
+    }
+
+    private fun createGroupList(): List<GroupViewItem> {
+        val resultGroupList = mutableListOf<GroupViewItem>()
+
+        resultGroupList.add(GroupViewItem.ProgressTitle(isProcessGroupHide))
+        if (!isProcessGroupHide) {
+            resultGroupList.addAll(originProgressGroupList)
+        }
+
+        resultGroupList.add(GroupViewItem.DoneTitle(isDoneGroupHide))
+        if (!isDoneGroupHide) {
+            resultGroupList.addAll(originDoneGroupList)
+        }
+
+        return resultGroupList
     }
 
     fun isAlreadyJoined(inviteGroupId: String): Boolean {

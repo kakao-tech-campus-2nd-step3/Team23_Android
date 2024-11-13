@@ -48,11 +48,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setGroupListRecyclerView() {
-        groupListAdapter = GroupListAdapter { id ->
-            val intent = expenseListNavigator.navigateToExpenseList(this, id)
-            intent.putExtra(ExpenseListContract.GROUP_ID, id)
-            ContextCompat.startActivity(binding.root.context, intent, null)
-        }
+        groupListAdapter = GroupListAdapter(
+            { id ->
+                val intent = expenseListNavigator.navigateToExpenseList(this, id)
+                intent.putExtra(ExpenseListContract.GROUP_ID, id)
+                ContextCompat.startActivity(binding.root.context, intent, null)
+            },
+            viewModel::toggleProgressGroup,
+            viewModel::toggleDoneGroup
+        )
 
         binding.groupListRecyclerview.apply {
             adapter = groupListAdapter
@@ -61,7 +65,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setCreateGroupButton() {
-        // TODO: 이후 Jetpack Navigation을 사용하여 화면 전환
         binding.createGroupButton.setOnClickListener {
             startActivity(
                 createGroupNavigator.navigateToCreateGroup(this)
