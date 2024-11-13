@@ -3,7 +3,9 @@ package com.kappzzang.jeongsan.expenselist.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kappzzang.jeongsan.data.ExpenseListUIState
 import com.kappzzang.jeongsan.data.ExpenseListViewUIData
+import com.kappzzang.jeongsan.data.HasGroupId
 import com.kappzzang.jeongsan.expenselist.util.ExpenseUiItemMapper.mapToExpenseUiItem
 import com.kappzzang.jeongsan.expenselist.util.ExpenseUiItemMapper.sortItemsByTime
 import com.kappzzang.jeongsan.model.ExpenseListResponse
@@ -15,6 +17,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -109,8 +112,18 @@ abstract class ExpenseListPageViewModel(
         _refreshState.value = ExpenseListRefreshingState.IDLE
     }
 
-    fun onFragmentStart(groupId: String) {
-        if (this.groupId.value != groupId) {
+    fun injectActivityViewModelState(state: StateFlow<ExpenseListUIState>) {
+        viewModelScope.launch {
+            state.collect {
+                if (it is HasGroupId) {
+                    setGroupId(it.groupId)
+                }
+            }
+        }
+    }
+
+    private fun setGroupId(groupId: String) {
+        if (groupId.isNotEmpty() && this.groupId.value != groupId) {
             this.groupId.value = groupId
         }
     }

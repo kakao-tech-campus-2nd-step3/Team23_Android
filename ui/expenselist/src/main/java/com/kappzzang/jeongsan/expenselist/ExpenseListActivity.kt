@@ -1,28 +1,25 @@
 package com.kappzzang.jeongsan.expenselist
 
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.kappzzang.jeongsan.data.ExpenseListUIState
+import com.kappzzang.jeongsan.data.HasGroupId
 import com.kappzzang.jeongsan.expenselist.databinding.ActivityExpenseListBinding
 import com.kappzzang.jeongsan.expenselist.inviteinfo.InviteInfoDialogFragment
-import com.kappzzang.jeongsan.expenselist.viewmodel.CompleteGroupState
+import com.kappzzang.jeongsan.expenselist.util.CameraPermissionHelper
 import com.kappzzang.jeongsan.expenselist.viewmodel.ExpenseListViewModel
 import com.kappzzang.jeongsan.intentcontract.ExpenseListContract
 import com.kappzzang.jeongsan.intentcontract.ReceiptCameraContract
@@ -76,6 +73,11 @@ class ExpenseListActivity : AppCompatActivity() {
         }
     }
 
+    private val cameraPermissionHelper = CameraPermissionHelper(
+        requestCameraPermissionLauncher = requestCameraPermissionLauncher,
+        context = this
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -84,10 +86,39 @@ class ExpenseListActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.selectedExpense.collect {
-                    if (it.expenseId.isNotEmpty()) {
-                        viewModel.resetExpenseSelection()
-                        startExpenseDetailActivity(it.expenseId, it.expenseState, it.isPayer)
+                viewModel.uiState.collect { state ->
+                    when (state) {
+                        is ExpenseListUIState.SelectingExpense -> {
+                            if (state.selectedExpenseId.isNotEmpty()) {
+                                viewModel.resetExpenseSelection()
+                                startExpenseDetailActivity(
+                                    state.selectedExpenseId,
+                                    state.expenseState,
+                                    state.isPayer
+                                )
+                            }
+                        }
+
+                        is ExpenseListUIState.CompleteSuccess -> {
+                            Toast.makeText(
+                                this@ExpenseListActivity,
+                                "\"${state.groupSubject} " +
+                                    "${state.groupName}\" " +
+                                    getString(R.string.complete_group_success),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            finish()
+                        }
+
+                        is ExpenseListUIState.CompleteFailed -> {
+                            Toast.makeText(
+                                this@ExpenseListActivity,
+                                getString(R.string.complete_group_fail),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                        else -> {}
                     }
                 }
             }
@@ -96,7 +127,6 @@ class ExpenseListActivity : AppCompatActivity() {
         initiateNavigation()
         setOnUpperMenuClickedListener()
         setOnAddExpenseFabClickedListener()
-        collectCompleteGroupState()
         checkFromNewExpenseNotify()
 
         activityReceiptCameraLauncher = createReceiptCameraLauncher()
@@ -107,7 +137,10 @@ class ExpenseListActivity : AppCompatActivity() {
     }
 
     private fun navigateToSendMessage() {
-        val intent = sendMessageNavigator.navigateToSendMessage(this, viewModel.groupId.value)
+        val groupId = (viewModel.uiState.value as? HasGroupId)?.groupId ?: let {
+            return
+        }
+        val intent = sendMessageNavigator.navigateToSendMessage(this, groupId)
         startActivity(intent)
     }
 
@@ -142,40 +175,13 @@ class ExpenseListActivity : AppCompatActivity() {
         }
     }
 
-    private fun collectCompleteGroupState() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.completeGroupState.collect {
-                    when (it) {
-                        CompleteGroupState.IDLE -> {}
-                        CompleteGroupState.SUCCESS -> {
-                            Toast.makeText(
-                                this@ExpenseListActivity,
-                                "\"${viewModel.groupUIItem.value.groupSubject} " +
-                                    "${viewModel.groupUIItem.value.groupName}\" " +
-                                    getString(R.string.complete_group_success),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            finish()
-                        }
-
-                        CompleteGroupState.FAILED -> {
-                            Toast.makeText(
-                                this@ExpenseListActivity,
-                                getString(R.string.complete_group_fail),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     private fun startAddExpenseActivity() {
+        val groupId = (viewModel.uiState.value as? HasGroupId)?.groupId ?: let {
+            return
+        }
         val intent = addExpenseNavigator.navigateToAddExpenseManually(
             packageContext = this,
-            groupId = viewModel.groupId.value
+            groupId = groupId
         )
         startActivity(intent)
     }
@@ -184,12 +190,15 @@ class ExpenseListActivity : AppCompatActivity() {
         ocrResult: OcrResultResponse.OcrSuccess,
         receiptImage: Uri
     ) {
+        val groupId = (viewModel.uiState.value as? HasGroupId)?.groupId ?: let {
+            return
+        }
         val intent =
             addExpenseNavigator.navigateToAddExpenseWithImage(
                 packageContext = this,
                 ocrResponse = ocrResult,
                 image = receiptImage,
-                groupId = viewModel.groupId.value
+                groupId = groupId
             )
         startActivity(intent)
     }
@@ -219,47 +228,6 @@ class ExpenseListActivity : AppCompatActivity() {
             }
         }
 
-    private fun checkCameraPermission(): Boolean = if (Build.VERSION.SDK_INT >=
-        Build.VERSION_CODES.TIRAMISU
-    ) {
-        ContextCompat.checkSelfPermission(
-            this,
-            android.Manifest.permission.CAMERA
-        ) == PackageManager.PERMISSION_GRANTED
-    } else {
-        true
-    }
-
-    private fun askCameraPermission() {
-        if (shouldShowRequestPermissionRationale(android.Manifest.permission.CAMERA)) {
-            // 권한 요청 이유를 설명하는 UI를 표시
-            showCameraPermissionDialog()
-        } else {
-            // Directly ask for the permission
-            requestCameraPermissionLauncher.launch(android.Manifest.permission.CAMERA)
-        }
-    }
-
-    private fun showCameraPermissionDialog() {
-        AlertDialog.Builder(this).apply {
-            setTitle(getString(R.string.dialog_title_ask_camera))
-            setMessage(
-                String.format(
-                    getString(R.string.dialog_body_ask_camera),
-                    getString(R.string.app_name)
-                )
-            )
-            setPositiveButton(getString(R.string.dialog_allow)) { _, _ ->
-                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                val uri = Uri.fromParts("package", packageName, null)
-                intent.data = uri
-                startActivity(intent)
-            }
-            setNegativeButton(getString(R.string.dialog_deny)) { _, _ -> }
-            show()
-        }
-    }
-
     private fun setOnAddExpenseFabClickedListener() {
         val popupMenu = PopupMenu(this, binding.addExpenseFab)
         popupMenu.menuInflater.inflate(R.menu.menu_add_expense, popupMenu.menu)
@@ -268,9 +236,9 @@ class ExpenseListActivity : AppCompatActivity() {
         popupMenu.setOnMenuItemClickListener {
             return@setOnMenuItemClickListener when (it.itemId) {
                 R.id.menu_from_camera -> {
-                    if (!checkCameraPermission()) {
-                        askCameraPermission()
-                    } else {
+                    cameraPermissionHelper.checkForPermissionAndRun(
+                        shouldShowRequestPermissionRationale(android.Manifest.permission.CAMERA)
+                    ) {
                         startCameraActivity()
                     }
                     true
@@ -300,7 +268,9 @@ class ExpenseListActivity : AppCompatActivity() {
         expenseState: ExpenseState,
         isPayer: Boolean
     ) {
-        val groupId = viewModel.groupId.value
+        val groupId = (viewModel.uiState.value as? HasGroupId)?.groupId ?: let {
+            return
+        }
         val intent = expenseDetailNavigator.navigateToExpenseDetail(
             packageContext = this,
             groupId = groupId,

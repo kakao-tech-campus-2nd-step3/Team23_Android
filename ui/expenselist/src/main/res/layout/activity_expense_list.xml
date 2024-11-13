@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="com.kappzzang.jeongsan.expenselist.util.ExpenseStateConverter"/>
 
         <variable
             name="viewModel"
@@ -27,7 +28,7 @@
             app:layout_constraintTop_toTopOf="@id/group_name_textview"
             app:layout_constraintBottom_toBottomOf="@id/group_name_textview"
             app:layout_constraintStart_toStartOf="parent"
-            android:text="@{viewModel.groupUIItem.groupSubject}"
+            android:text="@{ExpenseStateConverter.convertExpenseUIStateToTagText(viewModel.uiState)}"
             />
 
 
@@ -41,7 +42,7 @@
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/group_tag_textView"
             app:layout_constraintTop_toTopOf="parent"
-            android:text="@{viewModel.groupUIItem.groupName}"
+            android:text="@{ExpenseStateConverter.convertExpenseUIStateToTitleText(viewModel.uiState)}"
             />
 
         <ImageView

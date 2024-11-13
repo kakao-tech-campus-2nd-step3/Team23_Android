@@ -2,6 +2,9 @@ package com.kappzzang.jeongsan.expenselist.inviteinfo
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kappzzang.jeongsan.data.ExpenseListUIState
+import com.kappzzang.jeongsan.data.HasGroupId
+import com.kappzzang.jeongsan.data.HasGroupInfo
 import com.kappzzang.jeongsan.data.InviteMessageUiState
 import com.kappzzang.jeongsan.model.MemberItem
 import com.kappzzang.jeongsan.usecase.ConvertServiceIdToUuidUseCase
@@ -36,14 +39,23 @@ class InviteInfoViewModel @Inject constructor(
     }
 
     fun sendInviteMessageWithServiceId(
-        groupId: String,
-        groupName: String,
+        expenseListState: ExpenseListUIState,
         memberServiceId: String
     ) {
+        val groupId = (expenseListState as? HasGroupId)?.groupId ?: let {
+            return
+        }
+
+        val groupName = (expenseListState as? HasGroupInfo)?.groupName ?: let {
+            return
+        }
+
         viewModelScope.launch(ioDispatcher) {
-            convertServiceIdToUuidUseCase(listOf(memberServiceId))?.let {
-                sendInviteMessage(groupId, groupName, it)
-            } ?: _inviteMessageState.emit(InviteMessageUiState.Fail)
+            sendInviteMessage(
+                groupId,
+                groupName,
+                convertServiceIdToUuidUseCase(listOf(memberServiceId))
+            )
         }
     }
 

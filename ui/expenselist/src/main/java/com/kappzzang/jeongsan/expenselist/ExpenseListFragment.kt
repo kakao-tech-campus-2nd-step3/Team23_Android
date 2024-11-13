@@ -44,7 +44,8 @@ class ExpenseListFragment : Fragment() {
         }
 
         binding.expenseListRecyclerview.layoutManager = LinearLayoutManager(this.context)
-        viewModel.onFragmentStart(activityViewModel.groupId.value)
+
+        viewModel.injectActivityViewModelState(activityViewModel.uiState)
 
         setSwipeRefresh()
     }
