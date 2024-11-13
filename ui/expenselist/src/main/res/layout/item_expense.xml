@@ -74,6 +74,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/expense_amount_textview"
             app:layout_constraintStart_toEndOf="@id/category_color_view"
             app:layout_constraintTop_toTopOf="@+id/expense_amount_textview"
+            app:layout_constraintVertical_bias="1.0"
             tools:text="07/26 13:20" />
 
         <TextView
