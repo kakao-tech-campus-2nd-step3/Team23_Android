@@ -14,7 +14,11 @@ class ReceiptCaptureRepositoryImpl @Inject constructor(
         val result = dataSource.analyzeReceipt(encodedReceiptImage)
         return result.fold(
             onSuccess = {
-                OcrResultEntityMapper.mapOcrResultEntityToModel(it)
+                try {
+                    OcrResultEntityMapper.mapOcrResultEntityToModel(it)
+                } catch (e: Exception) {
+                    OcrResultResponse.OcrFailed("영수증 데이터를 인식하는 중 오류가 발생했습니다.", 0)
+                }
             },
             onFailure = {
                 OcrResultResponse.OcrFailed(it.message ?: "", 0)
