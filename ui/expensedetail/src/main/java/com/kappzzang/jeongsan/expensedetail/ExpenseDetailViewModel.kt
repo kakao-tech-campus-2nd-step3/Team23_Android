@@ -53,7 +53,6 @@ class ExpenseDetailViewModel @Inject constructor(
                 }
                 .onFailure {
                     _expenseDetailState.value = ExpenseDetailState.FAILED
-                    it.printStackTrace()
                 }
         }
     }
@@ -84,6 +83,9 @@ class ExpenseDetailViewModel @Inject constructor(
         expenseState: ExpenseState,
         isPayer: Boolean
     ) {
+        if (this.groupId.isNotEmpty()) {
+            return
+        }
         this.expenseId = expenseId
         this.groupId = groupId
         this._isPayer.value = isPayer
@@ -93,7 +95,7 @@ class ExpenseDetailViewModel @Inject constructor(
             _showPayerUI.value = true
             _currentPage.value = ExpenseDetailPage.SELECTION_STATUS
         } else {
-            _showPayerUI.value = (!expenseState.editable())
+            _showPayerUI.value = false
             _currentPage.value = ExpenseDetailPage.EXPENSE_DETAIL
         }
     }
@@ -131,6 +133,7 @@ class ExpenseDetailViewModel @Inject constructor(
                     dismissAndClose()
                 }
             }
+
             ExpenseState.TRANSFER_PENDING -> {
                 if (_isPayer.value) {
                     switchToOngoingExpense()
@@ -138,6 +141,7 @@ class ExpenseDetailViewModel @Inject constructor(
                     dismissAndClose()
                 }
             }
+
             ExpenseState.TRANSFERED -> dismissAndClose()
         }
     }

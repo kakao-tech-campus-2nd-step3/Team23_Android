@@ -38,9 +38,7 @@ class ExpenseDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (savedInstanceState == null) {
-            initiateViewModel()
-        }
+        initiateViewModel()
 
         setContentView(binding.root)
 

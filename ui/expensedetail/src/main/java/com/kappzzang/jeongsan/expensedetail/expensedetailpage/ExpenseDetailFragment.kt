@@ -1,7 +1,6 @@
 package com.kappzzang.jeongsan.expensedetail.expensedetailpage
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +16,7 @@ import com.kappzzang.jeongsan.expensedetail.ExpenseDetailViewModel
 import com.kappzzang.jeongsan.expensedetail.databinding.FragmentExpenseDetailBinding
 import com.kappzzang.jeongsan.expensedetail.editable
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -38,10 +38,7 @@ class ExpenseDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (savedInstanceState == null) {
-            initiateData()
-            Log.d("KSC", "ExpenseDetailFragment View Created")
-        }
+        initiateData()
         initiateRecyclerView()
         collectStateFlow()
     }

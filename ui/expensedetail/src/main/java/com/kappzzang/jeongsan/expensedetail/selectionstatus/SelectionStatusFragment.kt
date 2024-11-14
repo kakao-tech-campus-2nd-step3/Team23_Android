@@ -31,9 +31,7 @@ class SelectionStatusFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (savedInstanceState == null) {
-            viewModel.initExpenseId(activityViewModel.expenseId)
-        }
+        viewModel.initExpenseId(activityViewModel.expenseId)
         initiateRecyclerView()
     }
 

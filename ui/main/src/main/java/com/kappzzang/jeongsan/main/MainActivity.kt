@@ -100,6 +100,7 @@ class MainActivity : AppCompatActivity() {
         builder.setTitle(getString(R.string.main_want_join))
         builder.setPositiveButton(getString(R.string.main_positive_response)) { _, _ ->
             viewModel.joinGroup(groupId)
+            finish()
         }
         builder.setNegativeButton(getString(R.string.main_negative_response)) { _, _ ->
             // Do nothing
@@ -185,5 +186,10 @@ class MainActivity : AppCompatActivity() {
             viewModel.loadGroupList()
             binding.groupListSwiperefreshlayout.isRefreshing = false
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadGroupList()
     }
 }
