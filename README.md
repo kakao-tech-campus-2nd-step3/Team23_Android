@@ -140,13 +140,13 @@ https://github.com/user-attachments/assets/e5da715b-1a3b-4594-9c85-5885f7fc2d19
 
 ---
 
-## 기술 스택
-![Android Tech Stack](https://github.com/user-attachments/assets/5280814b-dd68-48fa-9298-ea4aed326f6e)
+## Project Architecture
+### Tech Stack
+#### Android
+![android-skills](https://github.com/user-attachments/assets/b9113606-c88d-4662-a0c3-4f092ff9407d)
 
----
-
-## 프로젝트 모듈 구조
-```
+### Module Structure
+```text
 📦23조 正산 - Android Module Structure
 ├─🟢app				
 ├─🔵common
@@ -179,3 +179,9 @@ https://github.com/user-attachments/assets/e5da715b-1a3b-4594-9c85-5885f7fc2d19
     ├─🟢main							
     └─🟢sendmessage
 ```
+
+### ERD
+![Jeongsan-ERD](https://github.com/user-attachments/assets/aabc8d5a-1412-45ad-b82b-73190c750ed1)
+
+### System Architecture
+![Jeongsan-Architecture](https://github.com/user-attachments/assets/7792c51c-8403-4b89-995f-ca08036f4268)
