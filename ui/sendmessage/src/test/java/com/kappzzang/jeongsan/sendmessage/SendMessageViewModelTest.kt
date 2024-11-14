@@ -4,6 +4,7 @@ import com.kappzzang.jeongsan.model.ExpenseItem
 import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.model.TransferDetailItem
 import com.kappzzang.jeongsan.sendmessage.data.HasTransferInfo
+import com.kappzzang.jeongsan.sendmessage.data.TransferInfoUIState
 import com.kappzzang.jeongsan.usecase.GetPurchasedExpenseListUseCase
 import com.kappzzang.jeongsan.usecase.GetTransferInfoUseCase
 import com.kappzzang.jeongsan.usecase.SendTransferMessageUseCase
@@ -95,6 +96,55 @@ class SendMessageViewModelTest {
         assertEquals(
             expectedTotalPrice,
             (viewModel.transferInfoState.value as? HasTransferInfo)?.totalExpenseToGet
+        )
+    }
+
+    @Test
+    fun `소비 내역 조회 실패 시 상태가 PurchaseListGetError로 변경되는지 확인`() = runTest {
+        // Given
+        val errorMessage = "소비 내역 조회 실패"
+        coEvery { mockGetPurchasedExpenseListUseCase(any()) } returns Result.failure(
+            Exception(errorMessage)
+        )
+        viewModel.setGroupId("test_group_id")
+
+        // When
+        viewModel.startFetchUiState()
+        advanceUntilIdle()
+
+        // Then
+        assertEquals(
+            "결제한 지출 정보를 불러오는 데 실패했습니다.\n$errorMessage",
+            (viewModel.transferInfoState.value as TransferInfoUIState.PurchaseListGetError).message
+        )
+    }
+
+    @Test
+    fun `송금 요청 메시지 전송 실패 시 상태가 TransferMessageSendError로 변경되는지 확인`() = runTest {
+        // Given
+        val errorMessage = "송금 메시지 전송 실패"
+        coEvery { mockGetPurchasedExpenseListUseCase(any()) } returns Result.success(
+            listOf(ExpenseItem("", "", 100, ExpenseState.TRANSFER_PENDING))
+        )
+        coEvery { mockGetTransferInfoUseCase(any(), any()) } returns Result.success(
+            listOf(TransferDetailItem("1", "12", "item", 100, "url"))
+        )
+        coEvery { mockSendTransferMessageUseCase(any()) } returns Result.failure(
+            Exception(errorMessage)
+        )
+        viewModel.setGroupId("test_group_id")
+        viewModel.startFetchUiState()
+        advanceUntilIdle()
+
+        // When
+        viewModel.sendTransferMessage()
+        advanceUntilIdle()
+
+        // Then
+        assertEquals(
+            "송금 요청 메시지 전송을 실패했습니다: $errorMessage",
+            (viewModel.transferInfoState.value as TransferInfoUIState.TransferMessageSendError)
+                .message
         )
     }
 }
