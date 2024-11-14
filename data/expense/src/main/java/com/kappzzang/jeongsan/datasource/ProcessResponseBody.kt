@@ -8,8 +8,6 @@ import com.kappzzang.jeongsan.retrofit.error.ItemNotFoundError
 import com.kappzzang.jeongsan.retrofit.error.ServerInternalError
 import retrofit2.Response
 
-
-
 internal fun <T> processResponse(response: Response<T>): Result<T> {
     Log.d(
         "KSC",

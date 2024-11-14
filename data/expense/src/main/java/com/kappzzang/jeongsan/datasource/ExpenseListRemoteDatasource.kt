@@ -14,10 +14,8 @@ import com.kappzzang.jeongsan.entity.expenselist.ExpenseListResponseDTO
 import com.kappzzang.jeongsan.mapper.ExpenseDetailMapper
 import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.model.ReceiptItem
-import com.kappzzang.jeongsan.retrofit.ResponseData
 import com.kappzzang.jeongsan.util.DateConverter.formatToTransferString
 import javax.inject.Inject
-import retrofit2.Response
 
 class ExpenseListRemoteDatasource @Inject constructor(
     private val receiptRetrofitService: ReceiptRetrofitService
@@ -149,7 +147,6 @@ class ExpenseListRemoteDatasource @Inject constructor(
             return Result.failure(e)
         }
     }
-
 
     companion object {
         const val IMAGE_FORMAT = "JPEG"

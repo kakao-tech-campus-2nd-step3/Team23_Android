@@ -1,7 +1,6 @@
 package com.kappzzang.jeongsan.expensedetail.expensedetailpage
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.kappzzang.jeongsan.expensedetail.ExpenseDetailState
 import com.kappzzang.jeongsan.expensedetail.ExpenseDetailViewModel
 import com.kappzzang.jeongsan.expensedetail.databinding.FragmentExpenseDetailBinding

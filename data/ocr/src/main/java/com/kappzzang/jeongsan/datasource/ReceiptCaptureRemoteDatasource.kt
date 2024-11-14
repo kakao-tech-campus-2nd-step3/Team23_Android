@@ -18,7 +18,9 @@ class ReceiptCaptureRemoteDatasource @Inject constructor(
                     url = null
                 )
             )
-            return if (!response.isSuccessful || response.body()?.data?.items?.isNotEmpty() != true) {
+            return if (!response.isSuccessful ||
+                response.body()?.data?.items?.isNotEmpty() != true
+            ) {
                 Result.failure(Exception(""))
             } else {
                 Result.success(response.body()!!.data)
