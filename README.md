@@ -8,7 +8,7 @@
 ## Deploy Link
 > Backend: [Swagger API](http://ecs-alb-50894514.ap-northeast-2.elb.amazonaws.com/swagger-ui/index.html)
 >
-> Android: [github release](https://github.com/kakao-tech-campus-2nd-step3/Team23_Android/releases/tag/pre.1.3.0)
+> Android: [github release](https://github.com/kakao-tech-campus-2nd-step3/Team23_Android/releases/tag/pre.1.3.2)
 
 ## Contributors
 
