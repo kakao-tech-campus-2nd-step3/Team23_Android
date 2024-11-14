@@ -93,7 +93,7 @@ class ExpenseDetailViewModel @Inject constructor(
             _showPayerUI.value = true
             _currentPage.value = ExpenseDetailPage.SELECTION_STATUS
         } else {
-            _showPayerUI.value = (!expenseState.editable())
+            _showPayerUI.value = false
             _currentPage.value = ExpenseDetailPage.EXPENSE_DETAIL
         }
     }
