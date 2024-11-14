@@ -27,7 +27,7 @@ class ExpenseDetailRemoteDatasource @Inject constructor(
             return (Result.failure(e))
         }
 
-        return processResponseBodyWithData(response)
+        return processResponseOnResponseData(response)
     }
 
     suspend fun getExpenseSelectionStatus(expenseId: String): Result<ExpenseSelectionResponseDTO> {
@@ -39,7 +39,7 @@ class ExpenseDetailRemoteDatasource @Inject constructor(
             return (Result.failure(e))
         }
 
-        return processResponseBodyWithData(response)
+        return processResponseOnResponseData(response)
     }
 
     suspend fun updateExpenseDetail(
@@ -65,6 +65,6 @@ class ExpenseDetailRemoteDatasource @Inject constructor(
             return (Result.failure(e))
         }
 
-        return processResponseBody(response)
+        return processResponse(response)
     }
 }
