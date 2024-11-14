@@ -11,7 +11,9 @@ object IntentHelper {
                 T::class.java
             )
         } else {
-            getParcelableExtra(key)
+            (getParcelableExtra(key) as? T) ?: let{
+                getSerializableExtra(key) as? T
+            }
         }
         return data
     }

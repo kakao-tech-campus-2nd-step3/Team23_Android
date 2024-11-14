@@ -24,8 +24,7 @@ class CameraPermissionHelper(
         }
     }
 
-    private fun checkCameraPermission(): Boolean = if (Build.VERSION.SDK_INT >=
-        Build.VERSION_CODES.TIRAMISU
+    private fun checkCameraPermission(): Boolean = if (true
     ) {
         ContextCompat.checkSelfPermission(
             context,
