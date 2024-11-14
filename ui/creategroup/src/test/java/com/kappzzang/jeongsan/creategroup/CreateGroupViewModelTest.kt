@@ -1,12 +1,15 @@
 package com.kappzzang.jeongsan.creategroup
 
 import android.app.Application
+import android.widget.Toast
 import com.kappzzang.jeongsan.data.MemberUIData
 import com.kappzzang.jeongsan.usecase.SendInviteMessageUseCase
 import com.kappzzang.jeongsan.usecase.UploadGroupInfoUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkStatic
 import io.mockk.unmockkAll
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -144,5 +147,52 @@ class CreateGroupViewModelTest {
         coVerify {
             mockSendInviteMessageUseCase(testGroupId, testGroupName, testMembers.map { it.uuid })
         }
+    }
+
+    @Test
+    fun `그룹 업로드 실패시 상태가 FAILED로 변경되는지 확인`() = runTest {
+        // given
+        coEvery { mockUploadGroupInfoUseCase(any()) } throws Exception("Upload Failed")
+
+        // when
+        viewModel.uploadGroupInfo()
+        advanceUntilIdle()
+
+        // then
+        assertEquals(GroupUploadState.FAILED, viewModel.groupUploadState.value)
+    }
+
+    @Test
+    fun `그룹 정보 유효성 검사 실패시 false를 반환하는지 확인`() = runTest {
+        // given
+        viewModel.groupName.emit("") // 빈 그룹 이름
+        viewModel.updateGroupSubject("✈️")
+        advanceUntilIdle()
+
+        // when
+        val result = viewModel.checkGroupInfoValidation()
+        advanceUntilIdle()
+
+        // then
+        assertEquals(false, result)
+    }
+
+    @Test
+    fun `잘못된 멤버가 포함된 경우 유효한 멤버 리스트로 업데이트되는지 확인`() = runTest {
+        // given
+        val invalidMembers = listOf(
+            MemberUIData("1", "", "Alice", "test url1"), // 제거되야 함
+            MemberUIData("2", "22", "Bob", "test url2")
+        )
+        mockkStatic(Toast::class)
+        every { Toast.makeText(mockApplication, any<CharSequence>(), any()).show() } returns mockk()
+
+        // when
+        viewModel.updateGroupMemberList(invalidMembers)
+        advanceUntilIdle()
+
+        val updatedList = viewModel.groupMemberList.value
+        assertEquals(1, updatedList.size)
+        assertEquals("Bob", updatedList[0].name)
     }
 }
