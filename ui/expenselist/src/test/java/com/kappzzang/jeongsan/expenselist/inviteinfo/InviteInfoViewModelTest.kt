@@ -1,5 +1,6 @@
 package com.kappzzang.jeongsan.expenselist.inviteinfo
 
+import com.kappzzang.jeongsan.data.ExpenseListUIState
 import com.kappzzang.jeongsan.usecase.ConvertServiceIdToUuidUseCase
 import com.kappzzang.jeongsan.usecase.GetInviteInfoUseCase
 import com.kappzzang.jeongsan.usecase.SendInviteMessageUseCase
@@ -58,8 +59,11 @@ class InviteInfoViewModelTest {
 
         // when
         viewModel.sendInviteMessageWithServiceId(
-            groupName = testGroupName,
-            groupId = testGroupId,
+            ExpenseListUIState.Idle(
+                groupName = testGroupName,
+                groupId = testGroupId,
+                groupSubject = ""
+            ),
             memberServiceId = testServiceId
         )
         advanceUntilIdle()

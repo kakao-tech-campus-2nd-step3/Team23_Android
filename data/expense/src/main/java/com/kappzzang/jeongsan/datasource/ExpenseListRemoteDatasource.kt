@@ -12,6 +12,7 @@ import com.kappzzang.jeongsan.entity.TransferItemEntity
 import com.kappzzang.jeongsan.entity.UpdateExpenseStatePayloadDTO
 import com.kappzzang.jeongsan.entity.expenselist.ExpenseListResponseDTO
 import com.kappzzang.jeongsan.mapper.ExpenseDetailMapper
+import com.kappzzang.jeongsan.mapper.ExpenseListEntityMapper.mapExpenseStateToDtoState
 import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.model.ReceiptItem
 import com.kappzzang.jeongsan.retrofit.ResponseData
@@ -22,14 +23,6 @@ import retrofit2.Response
 class ExpenseListRemoteDatasource @Inject constructor(
     private val receiptRetrofitService: ReceiptRetrofitService
 ) {
-
-    private fun mapExpenseStateToDtoState(state: ExpenseState): String = when (state) {
-        ExpenseState.CONFIRMED -> "ongoing"
-        ExpenseState.NOT_CONFIRMED -> "ongoing"
-        ExpenseState.TRANSFER_PENDING -> "pending"
-        ExpenseState.TRANSFERED -> "completed"
-    }
-
     suspend fun getExpenseList(
         expenseState: ExpenseState,
         groupId: String
