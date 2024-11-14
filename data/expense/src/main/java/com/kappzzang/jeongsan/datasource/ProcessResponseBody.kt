@@ -8,7 +8,7 @@ import com.kappzzang.jeongsan.retrofit.error.ItemNotFoundError
 import com.kappzzang.jeongsan.retrofit.error.ServerInternalError
 import retrofit2.Response
 
-internal fun <T> processResponse(response: Response<T>): Result<T> {
+internal fun processResponse(response: Response<Unit>): Result<Unit> {
     Log.d(
         "KSC",
         "ProcessExpenseDetail code: ${response.code()}, message: ${response.message()}"
@@ -20,12 +20,7 @@ internal fun <T> processResponse(response: Response<T>): Result<T> {
         500 -> return Result.failure(ServerInternalError(response.message()))
         else -> {
             return if (response.code() / 100 == 2) {
-                response.body()?.let {
-                    return Result.success(it)
-                }
-                    ?: Result.failure(
-                        Exception("알 수 없는 오류 발생: ${response.message()}")
-                    )
+                return Result.success(Unit)
             } else {
                 Result.failure(Exception("알 수 없는 오류 발생: ${response.message()}"))
             }
