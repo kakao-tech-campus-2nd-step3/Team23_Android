@@ -21,7 +21,6 @@ class SelectionStatusViewModel @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher,
     private val expenseSelectionStatusUseCase: GetExpenseSelectionStatusUseCase
 ) : ViewModel() {
-    private var isViewModelInitialized: Boolean = false
     private val expenseSelectionStatus =
         MutableStateFlow(ExpenseSelectionStatus.EMPTY)
 
@@ -34,7 +33,7 @@ class SelectionStatusViewModel @Inject constructor(
     )
 
     fun initExpenseId(expenseId: String) {
-        if (isViewModelInitialized) {
+        if (expenseSelectionStatus.value != ExpenseSelectionStatus.EMPTY) {
             return
         }
         viewModelScope.launch(ioDispatcher) {

@@ -3,6 +3,7 @@ package com.kappzzang.jeongsan.expensedetail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.model.ExpenseState
+import com.kappzzang.jeongsan.retrofit.error.InvalidInputError
 import com.kappzzang.jeongsan.usecase.RevertExpenseToOngoingUseCase
 import com.kappzzang.jeongsan.usecase.SetExpenseToPendingUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -53,7 +54,6 @@ class ExpenseDetailViewModel @Inject constructor(
                 }
                 .onFailure {
                     _expenseDetailState.value = ExpenseDetailState.FAILED
-                    it.printStackTrace()
                 }
         }
     }
@@ -84,6 +84,9 @@ class ExpenseDetailViewModel @Inject constructor(
         expenseState: ExpenseState,
         isPayer: Boolean
     ) {
+        if (this.groupId.isNotEmpty()) {
+            return
+        }
         this.expenseId = expenseId
         this.groupId = groupId
         this._isPayer.value = isPayer
@@ -131,6 +134,7 @@ class ExpenseDetailViewModel @Inject constructor(
                     dismissAndClose()
                 }
             }
+
             ExpenseState.TRANSFER_PENDING -> {
                 if (_isPayer.value) {
                     switchToOngoingExpense()
@@ -138,6 +142,7 @@ class ExpenseDetailViewModel @Inject constructor(
                     dismissAndClose()
                 }
             }
+
             ExpenseState.TRANSFERED -> dismissAndClose()
         }
     }

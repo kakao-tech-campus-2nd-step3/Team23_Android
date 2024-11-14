@@ -38,10 +38,7 @@ class ExpenseDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (savedInstanceState == null) {
-            initiateData()
-            Log.d("KSC", "ExpenseDetailFragment View Created")
-        }
+        initiateData()
         initiateRecyclerView()
         collectStateFlow()
     }

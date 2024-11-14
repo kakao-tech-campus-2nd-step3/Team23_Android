@@ -88,6 +88,9 @@ class ExpenseDetailFragmentViewModel @Inject constructor(
     }
 
     fun setInitialData(expenseId: String, groupId: String, editable: Boolean) {
+        if(this.expenseId.value.isNotEmpty()){
+            return
+        }
         this.expenseId.value = expenseId
         this.groupId.value = groupId
         formEditable.value = editable
