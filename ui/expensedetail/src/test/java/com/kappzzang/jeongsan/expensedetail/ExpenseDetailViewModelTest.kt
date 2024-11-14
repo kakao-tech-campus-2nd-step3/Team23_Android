@@ -205,6 +205,8 @@ class ExpenseDetailViewModelTest {
         advanceUntilIdle()
 
         // then
-        assertThat(viewModel.expenseDetailSaveState.value).isInstanceOf(ExpenseDetailState.Failed::class.java)
+        assertThat(
+            viewModel.expenseDetailSaveState.value
+        ).isInstanceOf(ExpenseDetailState.Failed::class.java)
     }
 }

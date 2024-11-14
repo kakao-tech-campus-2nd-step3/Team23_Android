@@ -9,11 +9,11 @@ import com.kappzzang.jeongsan.retrofit.error.InvalidInputError
 import com.kappzzang.jeongsan.usecase.RevertExpenseToOngoingUseCase
 import com.kappzzang.jeongsan.usecase.SetExpenseToPendingUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 enum class ExpenseDetailPage { EXPENSE_DETAIL, SELECTION_STATUS }
 
@@ -56,19 +56,22 @@ class ExpenseDetailViewModel @Inject constructor(
                     when (it) {
                         is AuthenticateError -> {
                             _expenseDetailState.value = ExpenseDetailState.Failed(
-                                true, "인증 오류가 발생했습니다. 다시 로그인 해주세요"
+                                true,
+                                "인증 오류가 발생했습니다. 다시 로그인 해주세요"
                             )
                         }
 
                         is InvalidInputError -> {
                             _expenseDetailState.value = ExpenseDetailState.Failed(
-                                false, "멤버들의 선택 항목이 결제 수량보다 같거나 커야 합니다."
+                                false,
+                                "멤버들의 선택 항목이 결제 수량보다 같거나 커야 합니다."
                             )
                         }
 
                         else -> {
                             _expenseDetailState.value = ExpenseDetailState.Failed(
-                                true, "알 수 없는 오류 발생: ${it.message}"
+                                true,
+                                "알 수 없는 오류 발생: ${it.message}"
                             )
                         }
                     }
@@ -88,19 +91,22 @@ class ExpenseDetailViewModel @Inject constructor(
                     when (it) {
                         is AuthenticateError -> {
                             _expenseDetailState.value = ExpenseDetailState.Failed(
-                                true, "인증 오류가 발생했습니다. 다시 로그인 해주세요"
+                                true,
+                                "인증 오류가 발생했습니다. 다시 로그인 해주세요"
                             )
                         }
 
                         is InvalidInputError -> {
                             _expenseDetailState.value = ExpenseDetailState.Failed(
-                                false, "멤버들의 선택 항목이 결제 수량보다 같거나 커야 합니다."
+                                false,
+                                "멤버들의 선택 항목이 결제 수량보다 같거나 커야 합니다."
                             )
                         }
 
                         else -> {
                             _expenseDetailState.value = ExpenseDetailState.Failed(
-                                true, "알 수 없는 오류 발생: ${it.message}"
+                                true,
+                                "알 수 없는 오류 발생: ${it.message}"
                             )
                         }
                     }
@@ -114,8 +120,11 @@ class ExpenseDetailViewModel @Inject constructor(
 
     fun setSaveResult(isSuccess: Boolean) {
         _expenseDetailState.value =
-            if (isSuccess) ExpenseDetailState.Success
-            else ExpenseDetailState.Failed(true, "지출 등록에 실패했습니다.")
+            if (isSuccess) {
+                ExpenseDetailState.Success
+            } else {
+                ExpenseDetailState.Failed(true, "지출 등록에 실패했습니다.")
+            }
     }
 
     fun setInitialData(

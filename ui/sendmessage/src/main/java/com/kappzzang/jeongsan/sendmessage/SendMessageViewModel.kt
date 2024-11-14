@@ -98,15 +98,13 @@ class SendMessageViewModel @Inject constructor(
                 )
             )
         }.onFailure {
-            if(it is InvalidInputError){
+            if (it is InvalidInputError) {
                 _transferInfoState.emit(
                     TransferInfoUIState.TransferInfoGetError(
                         "송금 받을 지출이 존재하지 않습니다."
                     )
                 )
-
-            }
-            else {
+            } else {
                 _transferInfoState.emit(
                     TransferInfoUIState.TransferInfoGetError(
                         "결제 받을 목록을 불러오는 데 실패했습니다.\n${it.message}"

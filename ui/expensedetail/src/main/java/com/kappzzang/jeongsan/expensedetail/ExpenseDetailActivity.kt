@@ -93,10 +93,9 @@ class ExpenseDetailActivity : AppCompatActivity() {
                             it.message,
                             Toast.LENGTH_LONG
                         ).show()
-                        if(it.closeAfterCatch) {
+                        if (it.closeAfterCatch) {
                             finish()
-                        }
-                        else{
+                        } else {
                             viewModel.revertStateToIdle()
                         }
                     }

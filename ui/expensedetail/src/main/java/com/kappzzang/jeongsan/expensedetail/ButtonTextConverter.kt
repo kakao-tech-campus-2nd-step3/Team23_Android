@@ -59,7 +59,6 @@ object ButtonTextConverter {
     }
 
     @JvmStatic
-    fun convertCurrentErrorStateToButtonEnable(
-        expenseState: ExpenseDetailState
-    ): Boolean = expenseState is ExpenseDetailState.Idle
+    fun convertCurrentErrorStateToButtonEnable(expenseState: ExpenseDetailState): Boolean =
+        expenseState is ExpenseDetailState.Idle
 }
