@@ -85,6 +85,7 @@
 
             <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/group_category_content_spinner"
+                android:popupBackground="@color/background_base"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="@id/group_category_menu_textview"
