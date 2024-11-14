@@ -45,7 +45,7 @@ class ExpenseListRemoteDatasource @Inject constructor(
         }
 
         Log.d("KSC", "id: $groupId, body: ${response.body()}")
-        return processResponseCodeOnResponseData(response)
+        return processResponseOnResponseData(response)
     }
 
     private fun checkIsChecked(state: ExpenseState): Boolean? = when (state) {
@@ -84,7 +84,7 @@ class ExpenseListRemoteDatasource @Inject constructor(
             return Result.failure(e)
         }
 
-        return processResponseCodeOnResponseData(response)
+        return processResponseOnResponseData(response)
     }
 
     suspend fun getCategoryList(): Result<GetCategoryListResponseDTO> {
@@ -95,7 +95,7 @@ class ExpenseListRemoteDatasource @Inject constructor(
             return Result.failure(e)
         }
 
-        return processResponseCodeOnResponseData(response)
+        return processResponseOnResponseData(response)
     }
 
     suspend fun updateExpenseState(
@@ -119,7 +119,7 @@ class ExpenseListRemoteDatasource @Inject constructor(
             e.printStackTrace()
             return Result.failure(e)
         }
-        return processResponseCode(response)
+        return processResponse(response)
     }
 
     suspend fun getPurchasedExpenseList(groupId: String): Result<ExpenseListResponseDTO> {
@@ -128,7 +128,7 @@ class ExpenseListRemoteDatasource @Inject constructor(
         } catch (e: Exception) {
             return Result.failure(e)
         }
-        return processResponseCodeOnResponseData(response)
+        return processResponseOnResponseData(response)
     }
 
     suspend fun getTransferList(
@@ -144,56 +144,12 @@ class ExpenseListRemoteDatasource @Inject constructor(
 
             val response = receiptRetrofitService.getTransferList(body = body, groupId = groupId)
 
-            return processResponseCodeOnResponseData(response)
+            return processResponseOnResponseData(response)
         } catch (e: Exception) {
             return Result.failure(e)
         }
     }
 
-    private fun <T> processResponseCodeOnResponseData(
-        response: Response<ResponseData<T>>
-    ): Result<T> {
-        Log.d(
-            "KSC",
-            "ProcessExpenseList code: ${response.code()}, message: ${response.message()}"
-        )
-        when (response.code()) {
-            400 -> throw IllegalArgumentException("유효하지 않는 입력 값")
-            404 -> throw IllegalStateException(response.message())
-            500 -> throw IllegalStateException(response.message())
-            else -> {
-                return if (response.code() / 100 == 2) {
-                    response.body()?.let {
-                        return Result.success(it.data)
-                    }
-                        ?: Result.failure(
-                            IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
-                        )
-                } else {
-                    Result.failure(IllegalStateException("알 수 없는 오류 발생: ${response.message()}"))
-                }
-            }
-        }
-    }
-
-    private fun processResponseCode(response: Response<Unit>): Result<Unit> {
-        Log.d(
-            "KSC",
-            "ProcessExpenseList code: ${response.code()}, message: ${response.message()}"
-        )
-        when (response.code()) {
-            400 -> throw IllegalArgumentException("유효하지 않는 입력 값")
-            404 -> throw IllegalStateException(response.message())
-            500 -> throw IllegalStateException(response.message())
-            else -> {
-                return if (response.code() / 100 == 2) {
-                    return Result.success(Unit)
-                } else {
-                    Result.failure(IllegalStateException("알 수 없는 오류 발생: ${response.message()}"))
-                }
-            }
-        }
-    }
 
     companion object {
         const val IMAGE_FORMAT = "JPEG"
