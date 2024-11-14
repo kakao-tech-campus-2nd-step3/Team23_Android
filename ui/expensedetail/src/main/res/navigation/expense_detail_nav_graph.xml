@@ -12,7 +12,9 @@
         tools:layout="@layout/fragment_expense_detail">
         <action
             android:id="@+id/action_expenseDetailFragment_to_selectionStatusFragment"
-            app:destination="@id/selectionStatusFragment" />
+            app:destination="@id/selectionStatusFragment"
+            app:enterAnim="@anim/slide_up_in"
+            app:exitAnim="@anim/slide_up_out" />
     </fragment>
     <fragment
         android:id="@+id/selectionStatusFragment"
@@ -21,6 +23,8 @@
         tools:layout="@layout/fragment_selection_status">
         <action
             android:id="@+id/action_selectionStatusFragment_to_expenseDetailFragment"
-            app:destination="@id/expenseDetailFragment" />
+            app:destination="@id/expenseDetailFragment"
+            app:enterAnim="@anim/slide_down_in"
+            app:exitAnim="@anim/slide_down_out"/>
     </fragment>
 </navigation>
