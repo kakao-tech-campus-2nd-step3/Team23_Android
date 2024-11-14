@@ -2,14 +2,13 @@ package com.kappzzang.jeongsan.expensedetail.expensedetailpage
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kappzzang.jeongsan.data.ExpenseDetailState
 import com.kappzzang.jeongsan.data.toUIData
-import com.kappzzang.jeongsan.expensedetail.ExpenseDetailState
 import com.kappzzang.jeongsan.model.ExpenseDetailItem
 import com.kappzzang.jeongsan.model.ExpenseItemWithDetails
 import com.kappzzang.jeongsan.usecase.EditExpenseDetailUseCase
 import com.kappzzang.jeongsan.usecase.GetExpenseDetailUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,6 +18,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class ExpenseDetailFragmentViewModel @Inject constructor(
@@ -31,7 +31,7 @@ class ExpenseDetailFragmentViewModel @Inject constructor(
     private val groupId = MutableStateFlow("")
     private val expenseId = MutableStateFlow("")
     private val formEditable = MutableStateFlow(true)
-    private val _expenseDetailSaveState = MutableStateFlow(ExpenseDetailState.IDLE)
+    private val _expenseDetailSaveState = MutableStateFlow<ExpenseDetailState>(ExpenseDetailState.Idle)
 
     val expenseDetailSaveState = _expenseDetailSaveState.asStateFlow()
 
@@ -51,13 +51,13 @@ class ExpenseDetailFragmentViewModel @Inject constructor(
     val expense: StateFlow<ExpenseItemWithDetails> = _expense.asStateFlow()
 
     fun saveExpenseDetail() {
-        if (_expenseDetailSaveState.value != ExpenseDetailState.IDLE) {
+        if (_expenseDetailSaveState.value != ExpenseDetailState.Idle) {
             return
         }
         val expenseDetailItemList = expenseDetailUIData.value.map {
             it.toExpenseDetailItem()
         }
-        _expenseDetailSaveState.value = ExpenseDetailState.UPLOADING
+        _expenseDetailSaveState.value = ExpenseDetailState.Uploading
 
         uploadEditList(expenseDetailItemList)
     }
@@ -69,9 +69,9 @@ class ExpenseDetailFragmentViewModel @Inject constructor(
                 expenseId.value,
                 groupId = groupId.value
             ).onSuccess {
-                _expenseDetailSaveState.value = ExpenseDetailState.SUCCESS
+                _expenseDetailSaveState.value = ExpenseDetailState.Success
             }.onFailure {
-                _expenseDetailSaveState.value = ExpenseDetailState.FAILED
+                _expenseDetailSaveState.value = ExpenseDetailState.Failed(true, it.message?:"")
             }
         }
     }

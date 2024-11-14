@@ -1,6 +1,7 @@
 package com.kappzzang.jeongsan.expensedetail
 
 import android.content.Context
+import com.kappzzang.jeongsan.data.ExpenseDetailState
 import com.kappzzang.jeongsan.model.ExpenseState
 
 object ButtonTextConverter {
@@ -56,4 +57,9 @@ object ButtonTextConverter {
             }
         }
     }
+
+    @JvmStatic
+    fun convertCurrentErrorStateToButtonEnable(
+        expenseState: ExpenseDetailState
+    ): Boolean = expenseState is ExpenseDetailState.Idle
 }

@@ -1,6 +1,7 @@
 package com.kappzzang.jeongsan.expensedetail
 
 import android.util.Log
+import com.kappzzang.jeongsan.data.ExpenseDetailState
 import com.kappzzang.jeongsan.expensedetail.expensedetailpage.ExpenseDetailFragmentViewModel
 import com.kappzzang.jeongsan.model.ExpenseDetailItem
 import com.kappzzang.jeongsan.model.ExpenseItem
@@ -182,7 +183,7 @@ class ExpenseDetailViewModelTest {
         advanceUntilIdle()
 
         // then
-        assertThat(viewModel.expenseDetailSaveState.value).isEqualTo(ExpenseDetailState.SUCCESS)
+        assertThat(viewModel.expenseDetailSaveState.value).isEqualTo(ExpenseDetailState.Success)
     }
 
     @Test
@@ -204,6 +205,6 @@ class ExpenseDetailViewModelTest {
         advanceUntilIdle()
 
         // then
-        assertThat(viewModel.expenseDetailSaveState.value).isEqualTo(ExpenseDetailState.FAILED)
+        assertThat(viewModel.expenseDetailSaveState.value).isInstanceOf(ExpenseDetailState.Failed::class.java)
     }
 }
