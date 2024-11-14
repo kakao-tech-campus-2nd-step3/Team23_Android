@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.NavHostFragment
 import com.kappzzang.jeongsan.build_config.BuildConfig
+import com.kappzzang.jeongsan.data.ExpenseDetailState
 import com.kappzzang.jeongsan.expensedetail.databinding.ActivityExpenseDetailBinding
 import com.kappzzang.jeongsan.intentcontract.ExpenseDetailContract
 import com.kappzzang.jeongsan.model.ExpenseState
@@ -84,15 +85,19 @@ class ExpenseDetailActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.expenseDetailState.collect {
-                    if (it == ExpenseDetailState.SUCCESS) {
+                    if (it is ExpenseDetailState.Success) {
                         finish()
-                    } else if (it == ExpenseDetailState.FAILED) {
+                    } else if (it is ExpenseDetailState.Failed) {
                         Toast.makeText(
                             this@ExpenseDetailActivity,
-                            R.string.expense_detail_error_message_save_expense_info,
+                            it.message,
                             Toast.LENGTH_LONG
                         ).show()
-                        finish()
+                        if (it.closeAfterCatch) {
+                            finish()
+                        } else {
+                            viewModel.revertStateToIdle()
+                        }
                     }
                 }
             }

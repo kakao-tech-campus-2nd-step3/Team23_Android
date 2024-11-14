@@ -93,7 +93,7 @@ class ReceiptCameraViewModelTest {
         advanceUntilIdle()
 
         // then
-        assertEquals(errorMessage, viewModel.serverErrorMessage)
+        assertEquals(ReceiptCameraViewModel.ANALYZE_ERROR, viewModel.serverErrorMessage)
         assertEquals(
             ReceiptCameraViewModel.ReceiptPictureState.ERROR,
             viewModel.receiptPictureState.value

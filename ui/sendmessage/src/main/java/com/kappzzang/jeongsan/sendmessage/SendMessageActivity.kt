@@ -50,6 +50,7 @@ class SendMessageActivity : AppCompatActivity() {
                     }
                     if (it is ErrorState) {
                         sendToast(it.message)
+                        finish()
                     }
                     if (it is TransferInfoUIState.ExpenseStateUpdateSuccess) {
                         startSendCompleteActivity()

@@ -12,7 +12,7 @@
         <import type="android.view.View" />
 
         <import type="com.kappzzang.jeongsan.expensedetail.ExpenseDetailPage" />
-        <import type="com.kappzzang.jeongsan.expensedetail.ExpenseDetailState" />
+        <import type="com.kappzzang.jeongsan.data.ExpenseDetailState" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -63,7 +63,7 @@
         <Button
             android:id="@+id/expense_detail_primary_button"
             style="@style/BottomButton"
-            android:enabled="@{(viewModel.expenseDetailState == ExpenseDetailState.IDLE)?true:false}"
+            android:enabled="@{ButtonTextConverter.convertCurrentErrorStateToButtonEnable(viewModel.expenseDetailState)}"
             android:text="@{ButtonTextConverter.convertCurrentStateToPrimaryButtonText(viewModel.currentPage, viewModel.expenseState, viewModel.isPayer, context)}"
             android:textSize="@dimen/all_bottom_button_text_size"
             android:layout_width="0dp"
@@ -74,7 +74,7 @@
         <Button
             android:id="@+id/expense_detail_secondary_button"
             style="@style/BottomButtonSecondary"
-            android:enabled="@{(viewModel.expenseDetailState == ExpenseDetailState.IDLE)?true:false}"
+            android:enabled="@{ButtonTextConverter.convertCurrentErrorStateToButtonEnable(viewModel.expenseDetailState)}"
             android:text="@{ButtonTextConverter.convertCurrentStateToSecondaryButtonText(viewModel.currentPage, viewModel.expenseState, context)}"
             android:textSize="@dimen/all_bottom_button_text_size"
             android:visibility="@{viewModel.showPayerUI?View.VISIBLE:View.GONE}"

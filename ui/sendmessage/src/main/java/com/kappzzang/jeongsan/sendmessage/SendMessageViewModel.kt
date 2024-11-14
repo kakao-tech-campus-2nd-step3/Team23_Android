@@ -3,6 +3,7 @@ package com.kappzzang.jeongsan.sendmessage
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.model.TransferDetailItem
+import com.kappzzang.jeongsan.retrofit.error.InvalidInputError
 import com.kappzzang.jeongsan.sendmessage.data.TransferInfoUIState
 import com.kappzzang.jeongsan.usecase.GetPurchasedExpenseListUseCase
 import com.kappzzang.jeongsan.usecase.GetTransferInfoUseCase
@@ -97,12 +98,19 @@ class SendMessageViewModel @Inject constructor(
                 )
             )
         }.onFailure {
-            it.printStackTrace()
-            _transferInfoState.emit(
-                TransferInfoUIState.TransferInfoGetError(
-                    "결제 받을 목록을 불러오는 데 실패했습니다.\n${it.message}"
+            if (it is InvalidInputError) {
+                _transferInfoState.emit(
+                    TransferInfoUIState.TransferInfoGetError(
+                        "송금 받을 지출이 존재하지 않습니다."
+                    )
                 )
-            )
+            } else {
+                _transferInfoState.emit(
+                    TransferInfoUIState.TransferInfoGetError(
+                        "결제 받을 목록을 불러오는 데 실패했습니다.\n${it.message}"
+                    )
+                )
+            }
         }
     }
 
