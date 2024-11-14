@@ -149,7 +149,12 @@ class GroupRemoteDataSource @Inject constructor(private val groupApi: GroupRetro
                 Result.success(true)
             }
 
-            response.code() in 400..499 -> {
+            response.code() == 400 -> {
+                val errorMessage = response.body()?.message ?: "이미 가입한 그룹입니다"
+                Result.failure(Exception(errorMessage))
+            }
+
+            response.code() in 401..499 -> {
                 val errorMessage = response.body()?.message ?: "알 수 없는 오류 발생"
                 Result.failure(Exception(errorMessage))
             }
