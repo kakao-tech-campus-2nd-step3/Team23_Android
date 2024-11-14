@@ -36,7 +36,6 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         collectAppLoginState()
-        createBypassLogin()
     }
 
     private fun collectAppLoginState() {
