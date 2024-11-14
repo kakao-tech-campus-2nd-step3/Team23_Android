@@ -100,6 +100,7 @@ class MainActivity : AppCompatActivity() {
         builder.setTitle(getString(R.string.main_want_join))
         builder.setPositiveButton(getString(R.string.main_positive_response)) { _, _ ->
             viewModel.joinGroup(groupId)
+            finish()
         }
         builder.setNegativeButton(getString(R.string.main_negative_response)) { _, _ ->
             // Do nothing
