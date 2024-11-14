@@ -1,6 +1,5 @@
 package com.kappzzang.jeongsan.expenselist.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.data.ExpenseListUIState
@@ -38,7 +37,8 @@ class ExpenseListViewModel @Inject constructor(
 
     fun updateGroupId(groupId: String) {
         if (uiState.value is ExpenseListUIState.Initial ||
-            (uiState.value as? HasGroupId)?.groupId.isNullOrEmpty()) {
+            (uiState.value as? HasGroupId)?.groupId.isNullOrEmpty()
+        ) {
             _uiState.value = ExpenseListUIState.FetchingGroupUIItem(groupId)
 
             viewModelScope.launch(ioDispatcher) {
