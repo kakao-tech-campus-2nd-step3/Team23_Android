@@ -13,6 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.kappzzang.jeongsan.data.HasGroupId
 import com.kappzzang.jeongsan.data.InviteMessageUiState
 import com.kappzzang.jeongsan.expenselist.R
 import com.kappzzang.jeongsan.expenselist.databinding.FragmentInviteInfoDialogBinding
@@ -39,7 +40,10 @@ class InviteInfoDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        inviteViewModel.getInviteInfo(expenseViewModel.groupId.value)
+        (expenseViewModel.uiState.value as? HasGroupId)?.let {
+            inviteViewModel.getInviteInfo(it.groupId)
+        }
+
         setDialogStyle()
         initRecyclerView()
         setCloseButton()
@@ -59,8 +63,7 @@ class InviteInfoDialogFragment : DialogFragment() {
     private fun initRecyclerView() {
         memberAdapter = MemberInfoAdapter { memberServiceId ->
             inviteViewModel.sendInviteMessageWithServiceId(
-                expenseViewModel.groupId.value,
-                expenseViewModel.groupUIItem.value.groupName,
+                expenseViewModel.uiState.value,
                 memberServiceId
             )
         }

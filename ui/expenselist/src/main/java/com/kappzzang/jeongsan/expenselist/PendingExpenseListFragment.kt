@@ -43,10 +43,10 @@ class PendingExpenseListFragment : Fragment() {
             activityViewModel.clickExpenseItem(expenseId, ExpenseState.TRANSFER_PENDING, isPayer)
         }
         binding.pendingExpenseListRecyclerview.layoutManager = LinearLayoutManager(this.context)
-        viewModel.onFragmentStart(activityViewModel.groupId.value)
+
+        viewModel.injectActivityViewModelState(activityViewModel.uiState)
 
         setSwipeRefresh()
-        viewModel.onFragmentStart(activityViewModel.groupId.value)
     }
 
     private fun setSwipeRefresh() {

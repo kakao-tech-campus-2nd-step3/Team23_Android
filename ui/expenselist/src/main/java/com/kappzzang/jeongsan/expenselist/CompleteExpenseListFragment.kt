@@ -43,7 +43,8 @@ class CompleteExpenseListFragment : Fragment() {
             activityViewModel.clickExpenseItem(expenseId, ExpenseState.TRANSFERED, isPayer)
         }
         binding.completeExpenseListRecyclerview.layoutManager = LinearLayoutManager(this.context)
-        viewModel.onFragmentStart(activityViewModel.groupId.value)
+
+        viewModel.injectActivityViewModelState(activityViewModel.uiState)
 
         setSwipeRefresh()
     }

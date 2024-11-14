@@ -7,3 +7,5 @@ data class TransferDetailItem(
     val fee: Int,
     val profileImageUrl: String
 )
+
+data class TransferMessage(val uuid: String, val fee: Int)
