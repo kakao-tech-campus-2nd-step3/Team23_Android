@@ -32,7 +32,7 @@ class ReceiptCameraViewModel @Inject constructor(
     }
 
     private val _receiptPictureState = MutableStateFlow(ReceiptPictureState.NOT_TAKEN)
-    private val _pictureData = MutableStateFlow<Uri>(Uri.EMPTY)
+    private val _pictureData = MutableStateFlow<Uri>(Uri.parse(""))
 
     val receiptPictureState = _receiptPictureState.asStateFlow()
     val pictureData = _pictureData.asStateFlow()
