@@ -187,4 +187,9 @@ class MainActivity : AppCompatActivity() {
             binding.groupListSwiperefreshlayout.isRefreshing = false
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadGroupList()
+    }
 }
