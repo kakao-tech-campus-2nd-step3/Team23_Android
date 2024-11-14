@@ -1,6 +1,7 @@
 package com.kappzzang.jeongsan.main
 
 import com.kappzzang.jeongsan.data.GroupViewItem
+import com.kappzzang.jeongsan.data.JoinGroupUIState
 import com.kappzzang.jeongsan.model.GroupItem
 import com.kappzzang.jeongsan.usecase.GetDoneGroupUseCase
 import com.kappzzang.jeongsan.usecase.GetProgressingGroupUseCase
@@ -159,5 +160,78 @@ class MainPageViewModelTest {
                 viewModel.groupList.value[testProgressingGroupList.size + i + 2]
             )
         }
+    }
+
+    @Test
+    fun `모입 가입 실패시 Error 상태가 되는지 확인`() = runTest {
+        // Given
+        val testGroupId = "test_group_id"
+        val errorMessage = "모임 가입 실패 메시지..."
+        coEvery { mockJoinGroupUseCase(testGroupId) } returns Result.failure(
+            Exception(errorMessage)
+        )
+
+        // When
+        viewModel.joinGroup(testGroupId)
+        advanceUntilIdle()
+
+        // Then
+        assertEquals(JoinGroupUIState.Error(errorMessage), viewModel.joinGroupState.value)
+    }
+
+    @Test
+    fun `진행중인 모임의 타이틀 클릭 시 정상적으로 토글하는지 확인`() = runTest {
+        // Given
+        val testProgressingGroupList = listOf<GroupItem>(mockk(), mockk())
+        coEvery { mockGetProgressingGroupUseCase() } returns testProgressingGroupList
+        coEvery { mockGetDoneGroupUseCase() } returns emptyList()
+        viewModel.loadGroupList()
+        advanceUntilIdle()
+
+        // When 1
+        viewModel.toggleProgressGroup()
+        advanceUntilIdle()
+
+        // Then 1
+        val result1 = viewModel.groupList.value
+        assertEquals(true, (result1[0] as GroupViewItem.ProgressTitle).isHide)
+        assertEquals(2, result1.size)
+
+        // When 2
+        viewModel.toggleProgressGroup()
+        advanceUntilIdle()
+
+        // Then 2
+        val result2 = viewModel.groupList.value
+        assertEquals(false, (result2[0] as GroupViewItem.ProgressTitle).isHide)
+        assertEquals(testProgressingGroupList.size + 2, result2.size)
+    }
+
+    @Test
+    fun `완료된 모임의 타이틀 클릭 시 정상적으로 토글하는지 확인`() = runTest {
+        // Given
+        val testDoneGroupList = listOf<GroupItem>(mockk(), mockk())
+        coEvery { mockGetProgressingGroupUseCase() } returns emptyList()
+        coEvery { mockGetDoneGroupUseCase() } returns testDoneGroupList
+        viewModel.loadGroupList()
+        advanceUntilIdle()
+
+        // When 1
+        viewModel.toggleDoneGroup()
+        advanceUntilIdle()
+
+        // Then 1
+        val result1 = viewModel.groupList.value
+        assertEquals(true, (result1[1] as GroupViewItem.DoneTitle).isHide)
+        assertEquals(2, result1.size)
+
+        // When 2
+        viewModel.toggleDoneGroup()
+        advanceUntilIdle()
+
+        // Then 2
+        val result2 = viewModel.groupList.value
+        assertEquals(false, (result2[1] as GroupViewItem.DoneTitle).isHide)
+        assertEquals(testDoneGroupList.size + 2, result2.size)
     }
 }
