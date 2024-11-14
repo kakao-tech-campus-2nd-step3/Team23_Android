@@ -1,8 +1,10 @@
 package com.kappzzang.jeongsan.expenselist.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.data.ExpenseListUIState
+import com.kappzzang.jeongsan.data.HasGroupId
 import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.usecase.CompleteGroupUseCase
 import com.kappzzang.jeongsan.usecase.GetCurrentGroupInfoUseCase
@@ -35,7 +37,8 @@ class ExpenseListViewModel @Inject constructor(
     }
 
     fun updateGroupId(groupId: String) {
-        if (uiState.value is ExpenseListUIState.Initial) {
+        if (uiState.value is ExpenseListUIState.Initial ||
+            (uiState.value as? HasGroupId)?.groupId.isNullOrEmpty()) {
             _uiState.value = ExpenseListUIState.FetchingGroupUIItem(groupId)
 
             viewModelScope.launch(ioDispatcher) {

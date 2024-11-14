@@ -82,7 +82,9 @@ class ExpenseListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        viewModel.updateGroupId(intent.extras?.getString(ExpenseListContract.GROUP_ID).toString())
+        intent.extras?.getString(ExpenseListContract.GROUP_ID)?.let {
+            viewModel.updateGroupId(it)
+        }
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
