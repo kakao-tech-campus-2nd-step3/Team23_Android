@@ -59,8 +59,7 @@ class ReceiptCameraViewModel @Inject constructor(
 
             when (response) {
                 is OcrResultResponse.OcrFailed -> {
-                    Log.e("KSC", response.message)
-                    serverErrorMessage = response.message
+                    serverErrorMessage = ANALYZE_ERROR
                     _receiptPictureState.value = ReceiptPictureState.ERROR
                 }
 
@@ -77,5 +76,9 @@ class ReceiptCameraViewModel @Inject constructor(
         _receiptPictureState.value = ReceiptPictureState.READY_TO_SEND
         sendPictureToServer(pictureUri)
         Log.d("KSC", "Saved Picture")
+    }
+
+    companion object {
+        const val ANALYZE_ERROR = "영수증 인식에 실패했습니다. 다시 시도해주세요"
     }
 }
