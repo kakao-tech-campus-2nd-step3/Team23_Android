@@ -49,5 +49,10 @@ sealed class ExpenseListUIState {
         ExpenseListUIState(),
         HasGroupInfo
 
-    data class CompleteFailed(val message: String) : ExpenseListUIState()
+    data class CompleteFailed(
+        override val groupName: String,
+        override val groupSubject: String,
+        val message: String
+    ) : ExpenseListUIState(),
+        HasGroupInfo
 }

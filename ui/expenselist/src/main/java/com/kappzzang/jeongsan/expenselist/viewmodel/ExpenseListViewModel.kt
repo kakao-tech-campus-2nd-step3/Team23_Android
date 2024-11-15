@@ -76,7 +76,13 @@ class ExpenseListViewModel @Inject constructor(
                 completeGroupUseCase(it.groupId).onSuccess { _ ->
                     _uiState.emit(ExpenseListUIState.CompleteSuccess(it.groupName, it.groupSubject))
                 }.onFailure { e ->
-                    _uiState.emit(ExpenseListUIState.CompleteFailed(e.message ?: ""))
+                    _uiState.emit(
+                        ExpenseListUIState.CompleteFailed(
+                            it.groupName,
+                            it.groupSubject,
+                            e.message ?: ""
+                        )
+                    )
                 }
             }
             this._uiState.value = ExpenseListUIState.Completing(

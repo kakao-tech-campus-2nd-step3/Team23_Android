@@ -217,7 +217,7 @@ class ExpenseListViewModelTest {
 
         // then
         assertThat(viewModel.uiState.value)
-            .isEqualTo(ExpenseListUIState.CompleteFailed(testErrorMessage))
+            .isEqualTo(ExpenseListUIState.CompleteFailed("name", "subject", testErrorMessage))
     }
 
     @Test
