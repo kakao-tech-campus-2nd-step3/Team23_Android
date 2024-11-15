@@ -7,12 +7,16 @@ import com.kappzzang.jeongsan.entity.RefreshTokenRequest
 import com.kappzzang.jeongsan.entity.RegisterRequest
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface ServerAuthRetrofitService {
 
     @POST("/api/members/token/refresh")
-    suspend fun refreshToken(@Body request: RefreshTokenRequest): Response<RefreshResponse>
+    suspend fun refreshToken(
+        @Header("Authorization") accessToken: String,
+        @Body request: RefreshTokenRequest
+    ): Response<RefreshResponse>
 
     @POST("/api/members/register")
     suspend fun register(@Body request: RegisterRequest): Response<AuthResponse>

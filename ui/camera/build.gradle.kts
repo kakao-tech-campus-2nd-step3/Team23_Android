@@ -1,5 +1,11 @@
 android {
     namespace = "com.kappzzang.jeongsan.camera"
+
+    testOptions {
+        unitTests {
+            isReturnDefaultValues = true
+        }
+    }
 }
 
 dependencies {

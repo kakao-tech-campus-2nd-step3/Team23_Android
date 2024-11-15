@@ -4,9 +4,10 @@ import com.kappzzang.jeongsan.repository.KakaoAuthenticationRepository
 import com.kappzzang.jeongsan.repository.ServerAuthenticationRepository
 import com.kappzzang.jeongsan.repository.UserInfoRepository
 import com.kappzzang.jeongsan.usecase.AuthenticateWithKakaoUseCase
-import com.kappzzang.jeongsan.usecase.AuthenticateWithServerUseCase
 import com.kappzzang.jeongsan.usecase.AuthorizeWithKakaoUseCase
 import com.kappzzang.jeongsan.usecase.GetUserInfoUseCase
+import com.kappzzang.jeongsan.usecase.GetUserServiceIdUseCase
+import com.kappzzang.jeongsan.usecase.LoginOrRegisterUseCase
 import com.kappzzang.jeongsan.util.AuthenticationRepository
 import dagger.Module
 import dagger.Provides
@@ -27,7 +28,7 @@ object UserUseCaseModule {
     fun provideAuthenticateWithServerUseCase(
         authenticationRepository: AuthenticationRepository,
         serverAuthenticationRepository: ServerAuthenticationRepository
-    ) = AuthenticateWithServerUseCase(authenticationRepository, serverAuthenticationRepository)
+    ) = LoginOrRegisterUseCase(authenticationRepository, serverAuthenticationRepository)
 
     @Provides
     fun provideAuthorizeWithKakaoUseCase(authenticationRepository: AuthenticationRepository) =
@@ -36,4 +37,8 @@ object UserUseCaseModule {
     @Provides
     fun provideGetUserInfoUseCase(userInfoRepository: UserInfoRepository) =
         GetUserInfoUseCase(userInfoRepository)
+
+    @Provides
+    fun provideGetUserServiceIdUseCase(authenticationRepository: AuthenticationRepository) =
+        GetUserServiceIdUseCase(authenticationRepository)
 }

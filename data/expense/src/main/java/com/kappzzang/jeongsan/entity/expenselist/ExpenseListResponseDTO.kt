@@ -9,6 +9,6 @@ data class ExpenseListResponseDTO(
     val expenseList: List<ExpenseRemoteEntity>,
     @SerializedName("totalPrice")
     val totalPrice: Long,
-    @SerializedName("totalExpense")
+    @SerializedName("totalPersonalExpense")
     val myTotalExpense: Int? = null
 )

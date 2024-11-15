@@ -1,8 +1,10 @@
 package com.kappzzang.jeongsan.repositoryimpl
 
+import android.util.Log
 import com.kappzzang.jeongsan.datasource.ExpenseListRemoteDatasource
 import com.kappzzang.jeongsan.entity.expenselist.ExpenseListResponseDTO
 import com.kappzzang.jeongsan.mapper.ExpenseEntityMapper
+import com.kappzzang.jeongsan.mapper.ExpenseListEntityMapper
 import com.kappzzang.jeongsan.model.ExpenseCategory
 import com.kappzzang.jeongsan.model.ExpenseListResponse
 import com.kappzzang.jeongsan.model.ExpenseState
@@ -16,6 +18,7 @@ data class ExpenseListCachingKey(val expenseState: ExpenseState, val groupId: St
 
 class ExpenseListRepositoryImpl @Inject constructor(
     private val dataSource: ExpenseListRemoteDatasource
+
 ) : ExpenseRepository {
 
     private val cachedData = HashMap<ExpenseListCachingKey, ExpenseListResponse>()
@@ -33,9 +36,21 @@ class ExpenseListRepositoryImpl @Inject constructor(
             }
         }
 
+    private fun validateServiceIds(searcherServiceId: String, payerServiceId: String?): Boolean {
+        var valid = true
+        if (searcherServiceId.isEmpty()) {
+            valid = false
+        }
+        if (payerServiceId == null) {
+            valid = false
+        }
+        return valid
+    }
+
     override fun getExpenseList(
         groupId: String,
-        expenseState: ExpenseState
+        expenseState: ExpenseState,
+        searcherServiceId: String
     ): Flow<Result<ExpenseListResponse>> = flow {
         // 먼저 캐싱된 데이터 emit
         emit(
@@ -49,26 +64,63 @@ class ExpenseListRepositoryImpl @Inject constructor(
 
         // Remote API로 지출 목록 불러오고 캐싱 데이터 갱신
 
-        val response = getExpenseListResponseFromAPI(groupId, expenseState)
+        val response = getExpenseListResponseFromAPI(groupId, expenseState, searcherServiceId)
         response.onSuccess {
             cachedData[ExpenseListCachingKey(expenseState, groupId)] = it
+            emit(response)
         }
+            .onFailure {
+                it.printStackTrace()
+            }
+    }
 
-        emit(response)
+    override suspend fun forceGetExpenseList(
+        groupId: String,
+        expenseState: ExpenseState,
+        searcherServiceId: String
+    ): Result<ExpenseListResponse> {
+        val response = getExpenseListResponseFromAPI(groupId, expenseState, searcherServiceId)
+        response.fold(
+            onSuccess = {
+                cachedData[ExpenseListCachingKey(expenseState, groupId)] = it
+                return Result.success(it)
+            },
+            onFailure = {
+                it.printStackTrace()
+                return Result.failure(it)
+            }
+        )
     }
 
     private suspend fun getExpenseListResponseFromAPI(
         groupId: String,
-        expenseState: ExpenseState
+        expenseState: ExpenseState,
+        searcherServiceId: String
     ): Result<ExpenseListResponse> = dataSource.getExpenseList(
         expenseState,
         groupId = groupId
     ).mapCatching {
-        mapResponseBody(it)
+        if (it.expenseList.any { expense ->
+                !validateServiceIds(searcherServiceId, expense.payerServiceId)
+            }
+        ) {
+            Log.w("KSC", "잘못된 서비스 ID 값을 포함합니다. 사용자 서비스 ID: $searcherServiceId")
+        }
+        mapResponseBody(it, searcherServiceId, expenseState == ExpenseState.NOT_CONFIRMED)
     }
 
-    private fun mapResponseBody(body: ExpenseListResponseDTO): ExpenseListResponse {
-        val expenses = body.expenseList.map { ExpenseEntityMapper.mapExpenseEntityToModel(it) }
+    private fun mapResponseBody(
+        body: ExpenseListResponseDTO,
+        searcherServiceId: String,
+        isStateNotConfirmed: Boolean
+    ): ExpenseListResponse {
+        val expenses = body.expenseList.map {
+            ExpenseListEntityMapper.mapExpenseEntityToModel(
+                it,
+                searcherServiceId,
+                !isStateNotConfirmed
+            )
+        }
         return ExpenseListResponse(
             totalExpenseToSend = body.myTotalExpense ?: 0,
             expenseList = expenses,

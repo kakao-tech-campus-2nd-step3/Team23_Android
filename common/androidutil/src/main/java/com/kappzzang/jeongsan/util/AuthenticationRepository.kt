@@ -17,4 +17,10 @@ interface AuthenticationRepository {
     fun removeServerAuthData()
 
     suspend fun refreshJwtFromServer(authData: ServerAuthData): Result<ServerAuthData>
+
+    fun getServiceId(): String
+
+    fun updateServiceId(serviceId: String)
+
+    fun removeServiceId()
 }

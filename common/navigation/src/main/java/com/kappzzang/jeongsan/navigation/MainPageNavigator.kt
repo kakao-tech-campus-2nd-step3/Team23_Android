@@ -7,5 +7,5 @@ import android.net.Uri
 interface MainPageNavigator {
     fun navigateToMainPage(packageContext: Context): Intent
 
-    fun navigateToMainPageAndEnterGroup(packageContext: Context, inviteGroup: Uri): Intent
+    fun navigateToMainPageAndWithUri(packageContext: Context, infoUri: Uri): Intent
 }

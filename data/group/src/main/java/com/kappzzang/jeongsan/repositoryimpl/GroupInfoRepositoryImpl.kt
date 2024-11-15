@@ -1,8 +1,8 @@
 package com.kappzzang.jeongsan.repositoryimpl
 
-import android.util.Log
-import com.kappzzang.jeongsan.datasource.remote.GroupRemoteDataSource
+import com.kappzzang.jeongsan.datasource.GroupRemoteDataSource
 import com.kappzzang.jeongsan.mapper.GroupEntityMapper.toGroupItem
+import com.kappzzang.jeongsan.mapper.GroupEntityMapper.toServiceIdList
 import com.kappzzang.jeongsan.model.GroupCreateItem
 import com.kappzzang.jeongsan.model.GroupItem
 import com.kappzzang.jeongsan.repository.GroupInfoRepository
@@ -21,6 +21,7 @@ class GroupInfoRepositoryImpl @Inject constructor(
                 return it.map { it.toGroupItem() }
             },
             onFailure = {
+                it.printStackTrace()
                 return emptyList()
             }
         )
@@ -49,18 +50,15 @@ class GroupInfoRepositoryImpl @Inject constructor(
                 }
             )
         }?.let {
-            emit(
-                getBlankGroupItem()
-            )
-        }
+            emit(it)
+        } ?: emit(getBlankGroupItem())
     }
 
     override suspend fun uploadGroupInfo(createdGroup: GroupCreateItem): Long {
-        Log.d("GroupRepositoryImpl", createdGroup.memberUuidList.toString())
         val result = groupRemoteDataSource.createGroup(
             groupName = createdGroup.name,
             groupSubject = createdGroup.subject,
-            groupMemberUuidList = createdGroup.memberUuidList
+            groupMemberServiceIdList = createdGroup.memberServiceIdList
         )
         return result.getOrThrow()
     }
@@ -72,4 +70,20 @@ class GroupInfoRepositoryImpl @Inject constructor(
         "",
         listOf()
     )
+
+    override suspend fun getMemberServiceIdList(groupId: String): Result<List<String>> =
+        groupRemoteDataSource.getMemberServiceId(groupId.toLong()).fold(
+            onSuccess = {
+                return Result.success(it.toServiceIdList())
+            },
+            onFailure = {
+                return Result.failure(it)
+            }
+        )
+
+    override suspend fun completeGroup(groupId: String): Result<Boolean> =
+        groupRemoteDataSource.completeGroup(groupId.toLong())
+
+    override suspend fun joinGroup(groupId: String): Result<Boolean> =
+        groupRemoteDataSource.joinGroup(groupId.toLong())
 }

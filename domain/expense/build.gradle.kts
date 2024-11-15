@@ -7,4 +7,5 @@ android {
 }
 dependencies {
     implementation(project(":domain:common-user"))
+    implementation(project(":common:androidutil"))
 }

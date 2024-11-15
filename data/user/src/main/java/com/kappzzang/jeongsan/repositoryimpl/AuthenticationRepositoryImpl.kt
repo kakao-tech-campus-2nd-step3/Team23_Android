@@ -35,7 +35,7 @@ class AuthenticationRepositoryImpl
     }
 
     override suspend fun refreshJwtFromServer(authData: ServerAuthData): Result<ServerAuthData> =
-        serverAuthRemoteDataSource.refreshToken(authData.refreshToken).fold(
+        serverAuthRemoteDataSource.refreshToken(authData.accessToken, authData.refreshToken).fold(
             onSuccess = { refreshTokenData ->
                 val serverAuthData = authData.copy(
                     accessToken = refreshTokenData.accessToken
@@ -47,6 +47,16 @@ class AuthenticationRepositoryImpl
                 Result.failure(exception)
             }
         )
+
+    override fun getServiceId(): String = authLocalDataSource.getServiceId()
+
+    override fun updateServiceId(serviceId: String) {
+        authLocalDataSource.updateServiceId(serviceId)
+    }
+
+    override fun removeServiceId() {
+        authLocalDataSource.removeServiceId()
+    }
 
     companion object {
         private const val TAG = "AuthenticationRepositoryImpl"

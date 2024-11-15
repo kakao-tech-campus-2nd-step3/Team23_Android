@@ -1,5 +1,7 @@
 package com.kappzzang.jeongsan.creategroup
 
+import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kappzzang.jeongsan.data.MemberUIData
@@ -14,12 +16,22 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+enum class GroupUploadState { IDLE, UPLOADING, SUCCESS, FAILED }
+enum class SendMessageState { IDLE, SUCCESS, FAILED }
+
 @HiltViewModel
 class CreateGroupViewModel @Inject constructor(
+    private val application: Application,
     private val uploadGroupInfoUseCase: UploadGroupInfoUseCase,
     private val sendInviteMessageUseCase: SendInviteMessageUseCase,
     private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
+
+    private val _groupUploadState = MutableStateFlow(GroupUploadState.IDLE)
+    val groupUploadState = _groupUploadState.asStateFlow()
+
+    private val _sendMessageState = MutableStateFlow(SendMessageState.IDLE)
+    val sendMessageState = _sendMessageState.asStateFlow()
 
     val groupName = MutableStateFlow("")
 
@@ -39,10 +51,23 @@ class CreateGroupViewModel @Inject constructor(
     }
 
     fun updateGroupMemberList(memberList: List<MemberUIData>) {
+        var validMemberList = memberList
+        if (!isValidMemberList(memberList)) {
+            Toast.makeText(application, UNAUTHORIZED_MEMBER_EXISTS, Toast.LENGTH_SHORT).show()
+            validMemberList = removeInvalidMember(memberList)
+        }
+
         viewModelScope.launch {
-            _groupMemberList.emit(memberList)
+            _groupMemberList.emit(validMemberList)
         }
     }
+
+    // 모두 가입된 멤버인지 확인
+    private fun isValidMemberList(memberList: List<MemberUIData>): Boolean =
+        memberList.all { it.serviceId.isNotEmpty() }
+
+    private fun removeInvalidMember(memberList: List<MemberUIData>): List<MemberUIData> =
+        memberList.filter { it.serviceId.isNotEmpty() }
 
     fun removeMember(removedMemberPosition: Int) {
         viewModelScope.launch {
@@ -52,34 +77,41 @@ class CreateGroupViewModel @Inject constructor(
         }
     }
 
-    fun uploadGroupInfo(): Boolean {
+    fun uploadGroupInfo() {
+        if (_groupUploadState.value == GroupUploadState.UPLOADING) {
+            return
+        }
         val groupInfo = GroupCreateItem(
             name = groupName.value,
             subject = _groupSubject.value,
-            memberUuidList = _groupMemberList.value.map { it.uuid }
+            memberServiceIdList = _groupMemberList.value.map { it.serviceId }
         )
-        var isSuccess = false
+
+        _groupUploadState.value = GroupUploadState.UPLOADING
         viewModelScope.launch(ioDispatcher) {
-            isSuccess = try {
+            try {
                 val result = uploadGroupInfoUseCase(groupInfo)
                 _groupId.value = result.toString()
-                true
+                _groupUploadState.value = GroupUploadState.SUCCESS
             } catch (e: Exception) {
-                false
+                _groupUploadState.value = GroupUploadState.FAILED
             }
         }
-        return isSuccess
     }
 
     fun sendInviteMessageAll(groupId: String) = viewModelScope.launch {
-        sendInviteMessageUseCase.invoke(
+        val result = sendInviteMessageUseCase.invoke(
             groupId,
             groupName.value,
             _groupMemberList.value.map { it.uuid }
         )
+        _sendMessageState.emit(if (result) SendMessageState.SUCCESS else SendMessageState.FAILED)
     }
 
     fun checkGroupInfoValidation(): Boolean = groupName.value.isNotEmpty() &&
-        _groupSubject.value.isNotEmpty() &&
-        _groupMemberList.value.isNotEmpty()
+        _groupSubject.value.isNotEmpty()
+
+    companion object {
+        private const val UNAUTHORIZED_MEMBER_EXISTS = "가입하지 않은 멤버가 존재합니다!"
+    }
 }

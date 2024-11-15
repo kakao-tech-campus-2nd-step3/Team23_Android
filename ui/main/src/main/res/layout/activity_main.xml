@@ -52,14 +52,21 @@
             app:layout_constraintStart_toEndOf="@id/user_name_textview"
             app:layout_constraintTop_toTopOf="@id/user_name_textview" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/group_list_recyclerview"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/group_list_swiperefreshlayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="16dp"
             app:layout_constraintBottom_toTopOf="@id/create_group_button"
-            app:layout_constraintTop_toBottomOf="@id/user_name_suffix_textview"
-            tools:listitem="@layout/item_main_group" />
+            app:layout_constraintTop_toBottomOf="@id/user_name_suffix_textview">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/group_list_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:listitem="@layout/item_main_group" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <Button
             android:id="@+id/create_group_button"

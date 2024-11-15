@@ -2,9 +2,25 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Jeongsan" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/blue500</item>
-        <item name="colorSurface">@color/white</item>
+        <item name="colorSurface">@color/background_base</item>
+        <item name="colorPrimaryContainer">@color/white</item>
+        <item name="popupMenuStyle">@style/CustomPopupMenu</item>
+        <item name="itemBackground">@color/transparent</item>
+        <item name="listMenuViewStyle">@style/CustomListMenu</item>
+        <item name="android:windowBackground">@color/background_base</item>
+
+
         <!-- Customize your light theme here. -->
     </style>
 
     <style name="Theme.Jeongsan" parent="Base.Theme.Jeongsan" />
+
+    <style name="CustomListMenu" parent="Widget.AppCompat.ListView">
+        <item name="backgroundColor">@color/white</item>
+        <item name="background">@color/white</item>
+    </style>
+    <style name="CustomPopupMenu" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@color/background_base</item>
+        <item name="elevation">1dp</item>
+    </style>
 </resources>

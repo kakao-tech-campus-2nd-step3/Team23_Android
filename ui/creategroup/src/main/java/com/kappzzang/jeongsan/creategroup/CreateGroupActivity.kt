@@ -12,6 +12,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.kakao.sdk.common.model.ClientError
+import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.friend.client.PickerClient
 import com.kakao.sdk.friend.model.OpenPickerFriendRequestParams
 import com.kakao.sdk.friend.model.PickerOrientation
@@ -39,6 +41,8 @@ class CreateGroupActivity : AppCompatActivity() {
         initRecyclerView()
         setPickerButton()
         setCreateGroupButton()
+        collectGroupUploadState()
+        collectSendMessageState()
     }
 
     private fun initSpinner() {
@@ -93,6 +97,54 @@ class CreateGroupActivity : AppCompatActivity() {
         }
     }
 
+    private fun collectGroupUploadState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.groupUploadState.collect {
+                    when (it) {
+                        GroupUploadState.IDLE -> {}
+                        GroupUploadState.UPLOADING -> {}
+                        GroupUploadState.SUCCESS -> groupUploadSuccess()
+                        GroupUploadState.FAILED -> groupUploadFailed()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun collectSendMessageState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.sendMessageState.collect { state ->
+                    when (state) {
+                        SendMessageState.IDLE -> {}
+                        SendMessageState.SUCCESS -> finish()
+                        SendMessageState.FAILED -> {
+                            Toast.makeText(
+                                this@CreateGroupActivity,
+                                getString(R.string.send_invite_message_fail),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            finish()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun groupUploadSuccess() {
+        viewModel.sendInviteMessageAll(viewModel.groupId.value)
+    }
+
+    private fun groupUploadFailed() {
+        Toast.makeText(
+            this,
+            getString(R.string.create_group_fail_create),
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
     private fun setCreateGroupButton() {
         binding.createGroupButton.setOnClickListener {
             if (!viewModel.checkGroupInfoValidation()) {
@@ -102,17 +154,7 @@ class CreateGroupActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-                val isUploadSuccess = viewModel.uploadGroupInfo()
-                if (isUploadSuccess) {
-                    viewModel.sendInviteMessageAll(viewModel.groupId.value)
-                    finish()
-                } else {
-                    Toast.makeText(
-                        this,
-                        getString(R.string.create_group_fail_create),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+                viewModel.uploadGroupInfo()
             }
         }
     }
@@ -124,6 +166,9 @@ class CreateGroupActivity : AppCompatActivity() {
         ) { selectedUsers, error ->
             if (error != null) {
                 Log.e(TAG, "친구 선택 실패", error)
+                if (!(error is ClientError && error.reason == ClientErrorCause.Cancelled)) {
+                    Toast.makeText(this, "카카오 서비스를 이용할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                }
             } else {
                 Log.d(TAG, "친구 선택 성공 $selectedUsers")
                 viewModel.updateGroupMemberList(mapSelectedUsersToMemberUIData(selectedUsers))
@@ -135,6 +180,7 @@ class CreateGroupActivity : AppCompatActivity() {
         selectedUsers?.users?.map { user ->
             MemberUIData(
                 uuid = user.uuid,
+                serviceId = user.id?.toString() ?: "",
                 name = user.profileNickname ?: UNKNOWN_NICKNAME,
                 profileImageUrl = user.profileThumbnailImage ?: DEFAULT_THUMBNAIL_URL
             )
@@ -144,7 +190,7 @@ class CreateGroupActivity : AppCompatActivity() {
         private const val TAG = "CreateGroupActivity"
         private const val UNKNOWN_NICKNAME = "알 수 없음"
         private const val DEFAULT_THUMBNAIL_URL =
-            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+            "https://img1.kakaocdn.net/thumb/R110x110.q70/?fname=https://t1.kakaocdn.net/account_images/default_profile.jpeg"
         private val openPickerFriendRequestParams = OpenPickerFriendRequestParams(
             title = "멀티 피커", // 피커 이름
             viewAppearance = ViewAppearance.AUTO, // 피커 화면 모드

@@ -4,7 +4,10 @@ import android.graphics.Bitmap
 import com.kappzzang.jeongsan.model.OcrDetailItem
 import com.kappzzang.jeongsan.model.OcrResultResponse
 import com.kappzzang.jeongsan.model.ReceiptItem
+import com.kappzzang.jeongsan.usecase.ConvertServiceIdToUuidUseCase
 import com.kappzzang.jeongsan.usecase.GetCategoryListUseCase
+import com.kappzzang.jeongsan.usecase.GetGroupMemberServiceIdUseCase
+import com.kappzzang.jeongsan.usecase.SendNewExpenseMessageUseCase
 import com.kappzzang.jeongsan.usecase.UploadExpenseUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -34,6 +37,11 @@ class AddExpenseViewModelTest {
     private val mockGetCategoryListUseCase = mockk<GetCategoryListUseCase>()
     private lateinit var viewModel: AddExpenseViewModel
 
+    private val getGroupMemberServiceIdUseCase =
+        mockk<GetGroupMemberServiceIdUseCase>(relaxed = true)
+    private val sendNewExpenseMessageUseCase = mockk<SendNewExpenseMessageUseCase>(relaxed = true)
+    private val convertServiceIdToUuidUseCase = mockk<ConvertServiceIdToUuidUseCase>(relaxed = true)
+
     private val testDispatcher = StandardTestDispatcher(TestCoroutineScheduler())
 
     @Before
@@ -45,7 +53,10 @@ class AddExpenseViewModelTest {
                 AddExpenseViewModel(
                     mockUploadExpenseUseCase,
                     testDispatcher,
-                    mockGetCategoryListUseCase
+                    mockGetCategoryListUseCase,
+                    getGroupMemberServiceIdUseCase,
+                    sendNewExpenseMessageUseCase,
+                    convertServiceIdToUuidUseCase
                 )
             )
     }

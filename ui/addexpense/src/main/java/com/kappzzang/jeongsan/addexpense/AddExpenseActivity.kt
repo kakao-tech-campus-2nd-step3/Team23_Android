@@ -15,8 +15,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.addexpense.colorpicker.ColorPickerDialog
+import com.kappzzang.jeongsan.addexpense.data.ExpenseUploadUIState
 import com.kappzzang.jeongsan.addexpense.databinding.ActivityAddExpenseBinding
 import com.kappzzang.jeongsan.intentcontract.AddExpenseContract
+import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.model.OcrResultResponse
 import com.kappzzang.jeongsan.navigation.ExpenseDetailNavigator
 import com.kappzzang.jeongsan.util.Base64BitmapEncoder
@@ -85,16 +87,32 @@ class AddExpenseActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uploadingProgress.collect { state ->
                     when (state) {
-                        ExpenseUploadingProgress.NOT_STARTED -> {
+                        is ExpenseUploadUIState.Idle -> {
                             viewModel.setInputsLock(false)
                         }
-                        ExpenseUploadingProgress.UPLOADING -> {
+
+                        is ExpenseUploadUIState.Uploading -> {
                             viewModel.setInputsLock(true)
                         }
-                        ExpenseUploadingProgress.UPLOAD_SUCCESS -> {
-                            startExpenseDetailActivityAndFinish()
+
+                        is ExpenseUploadUIState.UploadSuccess -> {
+                            viewModel.sendNewExpenseMessage(state.expenseId)
                         }
-                        ExpenseUploadingProgress.UPLOAD_FAILED -> {
+
+                        is ExpenseUploadUIState.UploadSuccessAndSendSuccess -> {
+                            startExpenseDetailActivityAndFinish(state.expenseId)
+                        }
+
+                        is ExpenseUploadUIState.UploadSuccessAndSendFailed -> {
+                            Toast.makeText(
+                                this@AddExpenseActivity,
+                                getString(R.string.add_expense_message_send_fail),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            startExpenseDetailActivityAndFinish(state.expenseId)
+                        }
+
+                        is ExpenseUploadUIState.UploadFailed -> {
                             viewModel.setInputsLock(false)
                         }
                     }
@@ -103,13 +121,14 @@ class AddExpenseActivity : AppCompatActivity() {
         }
     }
 
-    private fun startExpenseDetailActivityAndFinish() {
+    private fun startExpenseDetailActivityAndFinish(uploadedExpenseId: String) {
         startActivity(
             appNavigator.navigateToExpenseDetail(
                 packageContext = this,
                 groupId = viewModel.groupId.value,
-                expenseId = viewModel.createdExpenseId.value,
-                editable = true
+                expenseId = uploadedExpenseId,
+                expenseState = ExpenseState.NOT_CONFIRMED,
+                isPayer = false
             )
         )
         finish()

@@ -23,4 +23,17 @@
             @dimen/all_bottom_button_margin_horizontal</item>>
         <item name="fontFamily">sans-serif-black</item>
     </style>
+
+    <style name="BottomButtonSecondary" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/round_rect_button_gray</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:textSize">@dimen/all_bottom_button_text_size</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_marginBottom">@dimen/all_bottom_button_margin_bottom</item>
+        <item name="android:layout_marginHorizontal">
+            @dimen/all_bottom_button_margin_horizontal</item>>
+        <item name="fontFamily">sans-serif-black</item>
+    </style>
 </resources>

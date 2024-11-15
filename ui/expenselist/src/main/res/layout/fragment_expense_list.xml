@@ -5,6 +5,9 @@
     tools:context=".expenselist.ExpenseListFragment">
 
     <data>
+
+        <import type="com.kappzzang.jeongsan.expenselist.viewmodel.ChipSelectionState" />
+
         <variable
             name="viewModel"
             type="com.kappzzang.jeongsan.expenselist.viewmodel.ExpenseListOnCalculationPageViewModel" />
@@ -23,9 +26,9 @@
             android:text="@string/expenselist_total_expense_explain"
             android:textSize="@dimen/expense_list_subtitle_text_size"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/my_total_expense_explain_textview"
+            app:layout_constraintBottom_toTopOf="@id/expense_chip_group_chipgroup"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/parent" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/total_expense_textview"
@@ -36,60 +39,71 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/total_expense_explain_textview"
             app:layout_constraintStart_toEndOf="@id/total_expense_explain_textview"
-            app:layout_constraintTop_toTopOf="@id/parent"
+            app:layout_constraintTop_toTopOf="@id/total_expense_explain_textview"
             tools:text="@{viewModel.uiData.totalPriceText}" />
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/expense_chip_group_chipgroup"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:checkableBehavior="single"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/total_expense_explain_textview">
+            app:layout_constraintTop_toBottomOf="@id/total_expense_explain_textview"
+            app:selectionRequired="true"
+            app:singleSelection="true">
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/all_expense_chip"
-                android:layout_marginTop="12dp"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"
+                android:layout_marginTop="12dp"
+                android:checked="@{viewModel.chipSelectionState == ChipSelectionState.ALL}"
+                android:onClick="@{()->viewModel.clickAllExpensesChipButton()}"
                 android:text="@string/expenselist_all_expense"
                 app:checkedIconVisible="false"
-                android:onClick="@{()->viewModel.clickAllExpensesChipButton()}"
                 app:chipBackgroundColor="@drawable/expense_list_chip_color" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/unconfirmed_expense_chip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="false"
+                android:checked="@{viewModel.chipSelectionState == ChipSelectionState.NOT_CONFIRMED}"
+                android:onClick="@{()->viewModel.clickOnlyNotConfirmedExpensesChipButton()}"
                 android:text="@string/expenselist_unconfirmed_expense"
                 app:checkedIconVisible="false"
-                android:onClick="@{()->viewModel.clickOnlyNotConfirmedExpensesChipButton()}"
                 app:chipBackgroundColor="@drawable/expense_list_chip_color" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/confirmed_expense_chip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="false"
+                android:checked="@{viewModel.chipSelectionState == ChipSelectionState.CONFIRMED}"
+                android:onClick="@{()->viewModel.clickOnlyConfirmedExpensesChipButton()}"
                 android:text="@string/expenselist_confirmed_expense"
                 app:checkedIconVisible="false"
-                android:onClick="@{()->viewModel.clickOnlyConfirmedExpensesChipButton()}"
                 app:chipBackgroundColor="@drawable/expense_list_chip_color" />
 
         </com.google.android.material.chip.ChipGroup>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:padding="5dp"
-            android:clipToPadding="false"
-            android:id="@+id/expense_list_recyclerview"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/expense_list_swipe_refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/expense_chip_group_chipgroup"
-            expenseItems="@{viewModel.uiData}"/>
+            app:layout_constraintTop_toBottomOf="@id/expense_chip_group_chipgroup">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/expense_list_recyclerview"
+                expenseItems="@{viewModel.uiData}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:padding="5dp" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
