@@ -1,7 +1,7 @@
 # KAPP짱 - 正산
 우리 모임의 지출 관리를 쉽고 편하게!
 
-![正산 (1)](https://github.com/user-attachments/assets/caa81f9b-b6d4-439a-8623-adab9cbfcb20)
+![正산 소개 이미지](images/Jeongsan-Introduce.png)
 ## 기획 의도
 > 正산은 여행, 동호회 등 다양한 모임에서 발생하는 복잡한 정산 과정을 간편하게 해결해주는 서비스입니다. 기존의 유사 서비스들이 모임 내 지출 금액을 단순히 1/N로 나누는 기능만 제공하는 데 반해, 저희 서비스는 **OCR 기술**을 통해 모임에서 발생한 지출 영수증의 소비된 상품명과 수량을 자동으로 추출하여 **사용자가 실제 소비한 내역을 직접 선택할 수 있는 기능을 지원**합니다. 이를 통해 실제 소비 내역을 기반으로 한 세부적인 정산이 가능합니다. **正산**은 모임 내 정산을 더욱 편리하고 정확하게 만들어 사용자에게 차별화된 정산 경험을 제공합니다.
 
@@ -107,7 +107,7 @@
     - 카카오 API를 통한 카카오 로그인 기능
     - 서비스 서버에서 로그인 및 회원가입 후 토큰 발급 및 저장
     - 저장된 토큰으로 자동 로그인 기능 지원
-        ![로그인 흐름 (4)](https://github.com/user-attachments/assets/438943f5-f9a7-4962-a337-c3bef3fb0a52)
+        ![android-login-logic](/images/android-login-logic.png)
 
 ### [Expense 관련]
 
@@ -232,7 +232,7 @@ https://github.com/user-attachments/assets/e5da715b-1a3b-4594-9c85-5885f7fc2d19
 ## Project Architecture
 ### Tech Stack
 #### Android
-![android-skills](https://github.com/user-attachments/assets/b9113606-c88d-4662-a0c3-4f092ff9407d)
+![android-skills](images/android-skills.png)
 ```text
 - Language: Kotlin 1.9.0
 - Minimum SDK: 26 (Android 8.0)
@@ -275,7 +275,7 @@ https://github.com/user-attachments/assets/e5da715b-1a3b-4594-9c85-5885f7fc2d19
 ```
 
 ### ERD
-![Jeongsan-ERD](https://github.com/user-attachments/assets/aabc8d5a-1412-45ad-b82b-73190c750ed1)
+![Jeongsan-ERD](images/Jeongsan-ERD.png)
 
 ### System Architecture
-![Jeongsan-Architecture](https://github.com/user-attachments/assets/7792c51c-8403-4b89-995f-ca08036f4268)
+![Jeongsan-Architecture](images/Jeongsan-Architecture.png)
