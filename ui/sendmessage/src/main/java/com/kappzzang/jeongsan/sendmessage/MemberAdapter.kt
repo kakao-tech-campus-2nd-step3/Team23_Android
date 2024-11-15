@@ -44,7 +44,7 @@ class MemberAdapter : ListAdapter<TransferDetailItem, MemberAdapter.MemberViewHo
             override fun areItemsTheSame(
                 oldItem: TransferDetailItem,
                 newItem: TransferDetailItem
-            ): Boolean = oldItem.id == newItem.id
+            ): Boolean = oldItem.serviceId == newItem.serviceId
 
             override fun areContentsTheSame(
                 oldItem: TransferDetailItem,

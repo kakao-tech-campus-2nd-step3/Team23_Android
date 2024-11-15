@@ -12,14 +12,41 @@ import com.kappzzang.jeongsan.main.databinding.ItemMainDoneTitleBinding
 import com.kappzzang.jeongsan.main.databinding.ItemMainGroupBinding
 import com.kappzzang.jeongsan.main.databinding.ItemMainProgressTitleBinding
 
-class GroupListAdapter(private val onGroupItemClickListener: (groupId: String) -> Unit) :
-    ListAdapter<GroupViewItem, RecyclerView.ViewHolder>(diffUtil) {
+class GroupListAdapter(
+    private val onGroupItemClickListener: (groupId: String) -> Unit,
+    private val onProgressGroupToggle: () -> Unit,
+    private val onDoneGroupToggle: () -> Unit
+) : ListAdapter<GroupViewItem, RecyclerView.ViewHolder>(diffUtil) {
 
-    inner class ProgressTitleViewHolder(binding: ItemMainProgressTitleBinding) :
-        RecyclerView.ViewHolder(binding.root)
+    inner class ProgressTitleViewHolder(
+        private val binding: ItemMainProgressTitleBinding,
+        private val onProgressGroupToggle: () -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnClickListener {
+                onProgressGroupToggle.invoke()
+            }
+        }
 
-    inner class DoneTitleViewHolder(binding: ItemMainDoneTitleBinding) :
-        RecyclerView.ViewHolder(binding.root)
+        fun bind(groupViewItem: GroupViewItem) {
+            binding.titleInfo = groupViewItem as GroupViewItem.ProgressTitle
+        }
+    }
+
+    inner class DoneTitleViewHolder(
+        private val binding: ItemMainDoneTitleBinding,
+        private val onDoneGroupToggle: () -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnClickListener {
+                onDoneGroupToggle.invoke()
+            }
+        }
+
+        fun bind(groupViewItem: GroupViewItem) {
+            binding.titleInfo = groupViewItem as GroupViewItem.DoneTitle
+        }
+    }
 
     inner class GroupViewHolder(
         private val binding: ItemMainGroupBinding,
@@ -65,7 +92,7 @@ class GroupListAdapter(private val onGroupItemClickListener: (groupId: String) -
                     parent,
                     false
                 )
-                ProgressTitleViewHolder(binding)
+                ProgressTitleViewHolder(binding, onProgressGroupToggle)
             }
 
             ViewType.DONE_TITLE -> {
@@ -74,7 +101,7 @@ class GroupListAdapter(private val onGroupItemClickListener: (groupId: String) -
                     parent,
                     false
                 )
-                DoneTitleViewHolder(binding)
+                DoneTitleViewHolder(binding, onDoneGroupToggle)
             }
 
             ViewType.GROUP -> {
@@ -87,8 +114,13 @@ class GroupListAdapter(private val onGroupItemClickListener: (groupId: String) -
         }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (currentList[position] is GroupViewItem.Group) {
-            (holder as GroupViewHolder).bind(currentList[position])
+        when (currentList[position]) {
+            is GroupViewItem.ProgressTitle ->
+                (holder as ProgressTitleViewHolder).bind(currentList[position])
+            is GroupViewItem.DoneTitle ->
+                (holder as DoneTitleViewHolder).bind(currentList[position])
+            is GroupViewItem.Group ->
+                (holder as GroupViewHolder).bind(currentList[position])
         }
     }
 

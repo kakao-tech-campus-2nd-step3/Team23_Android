@@ -8,16 +8,26 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 object DateConverter {
-    fun parseFromString(timeStamp: String): LocalDateTime {
+
+    // "2024-11-09T08:05:08.910678" => "2024-11-09 08:05:08.910678"
+    private fun fixTimestampFormat(timestamp: String) = timestamp
+        .replace('T', ' ')
+        .replace('Z', ' ')
+
+    fun parseFromString(timeStamp: String): LocalDateTime = try {
         // String을 Date로 변환
-        val date = Timestamp.valueOf(timeStamp)
+        val fixedTimeStamp = fixTimestampFormat(timeStamp)
+        val date = Timestamp.valueOf(fixedTimeStamp)
 
         // Date를 서울 타임존의 Instant로 변환
         val instant = Instant.ofEpochMilli(date.time)
             .atZone(ZoneId.systemDefault())
 
         // Instant를 LocalDateTime으로 변환
-        return instant.toLocalDateTime()
+        instant.toLocalDateTime()
+    } catch (e: Exception) {
+        e.printStackTrace()
+        LocalDateTime.now()
     }
 
     fun LocalDateTime.formatToTransferString(): String =

@@ -9,4 +9,7 @@
     <string name="main_positive_response">할래요</string>
     <string name="main_negative_response">안할래요</string>
     <string name="main_already_joined">이미 가입한 모임이에요.</string>
+
+    <!-- 모임 참여 메시지 -->
+    <string name="main_join_success">모임에 가입했습니다!</string>
 </resources>

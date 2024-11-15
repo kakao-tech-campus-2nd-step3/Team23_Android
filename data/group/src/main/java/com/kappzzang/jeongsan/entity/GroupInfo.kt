@@ -8,7 +8,7 @@ data class GroupInfo(
     @SerializedName("name")
     val name: String,
     @SerializedName("ownerKakaoId")
-    val ownerUuid: String,
+    val ownerServiceId: Long?,
     @SerializedName("isCompleted")
     val isCompleted: Boolean,
     @SerializedName("subject")

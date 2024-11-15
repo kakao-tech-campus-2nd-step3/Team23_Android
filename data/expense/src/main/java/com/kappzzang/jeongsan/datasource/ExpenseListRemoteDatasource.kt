@@ -1,29 +1,26 @@
 package com.kappzzang.jeongsan.datasource
 
+import android.util.Log
 import com.kappzzang.jeongsan.api.ReceiptRetrofitService
 import com.kappzzang.jeongsan.entity.GetCategoryListResponseDTO
+import com.kappzzang.jeongsan.entity.GetTransferListPayloadDTO
 import com.kappzzang.jeongsan.entity.ImageEntity
 import com.kappzzang.jeongsan.entity.ResponseWithExpenseIdDTO
 import com.kappzzang.jeongsan.entity.SaveExpensePayloadDTO
+import com.kappzzang.jeongsan.entity.SimpleExpenseItemEntity
+import com.kappzzang.jeongsan.entity.TransferItemEntity
+import com.kappzzang.jeongsan.entity.UpdateExpenseStatePayloadDTO
 import com.kappzzang.jeongsan.entity.expenselist.ExpenseListResponseDTO
-import com.kappzzang.jeongsan.mapper.ExpenseEntityMapper
+import com.kappzzang.jeongsan.mapper.ExpenseDetailMapper
+import com.kappzzang.jeongsan.mapper.ExpenseListEntityMapper.mapExpenseStateToDtoState
 import com.kappzzang.jeongsan.model.ExpenseState
 import com.kappzzang.jeongsan.model.ReceiptItem
 import com.kappzzang.jeongsan.util.DateConverter.formatToTransferString
 import javax.inject.Inject
-import retrofit2.Response
 
 class ExpenseListRemoteDatasource @Inject constructor(
     private val receiptRetrofitService: ReceiptRetrofitService
 ) {
-
-    private fun mapExpenseStateToDtoState(state: ExpenseState): String = when (state) {
-        ExpenseState.CONFIRMED -> "ongoing"
-        ExpenseState.NOT_CONFIRMED -> "ongoing"
-        ExpenseState.TRANSFER_PENDING -> "pending"
-        ExpenseState.TRANSFERED -> "completed"
-    }
-
     suspend fun getExpenseList(
         expenseState: ExpenseState,
         groupId: String
@@ -38,7 +35,8 @@ class ExpenseListRemoteDatasource @Inject constructor(
             return Result.failure(e)
         }
 
-        return processResponseCode(response)
+        Log.d("KSC", "id: $groupId, body: ${response.body()}")
+        return processResponseOnResponseData(response)
     }
 
     private fun checkIsChecked(state: ExpenseState): Boolean? = when (state) {
@@ -55,17 +53,19 @@ class ExpenseListRemoteDatasource @Inject constructor(
             val postBody = SaveExpensePayloadDTO(
                 title = receiptItem.title,
                 items = receiptItem.expenseDetailItemList.map {
-                    ExpenseEntityMapper.mapReceiptDetailItemToExpenseItemEntity(it)
+                    ExpenseDetailMapper.mapReceiptDetailItemToExpenseItemEntity(it)
                 },
                 paymentTime = receiptItem.paymentTime.formatToTransferString(),
                 image = ImageEntity(
-                    name = "",
+                    name = "empty",
                     data = receiptItem.imageBase64 ?: "",
-                    url = "",
+                    url = "empty",
                     format = IMAGE_FORMAT
                 ),
                 categoryId = receiptItem.categoryId.toLong()
             )
+
+            Log.d("KSC", "id: $groupId, body: $postBody")
 
             receiptRetrofitService.saveExpense(
                 groupId = groupId,
@@ -75,44 +75,73 @@ class ExpenseListRemoteDatasource @Inject constructor(
             return Result.failure(e)
         }
 
-        return processResponseCode(response)
+        return processResponseOnResponseData(response)
     }
 
     suspend fun getCategoryList(): Result<GetCategoryListResponseDTO> {
         val response = try {
             receiptRetrofitService.getCategoryColorList()
         } catch (e: Exception) {
+            e.printStackTrace()
             return Result.failure(e)
         }
 
-        return processResponseCode(response)
+        return processResponseOnResponseData(response)
     }
 
-    private fun <T> processResponseCode(response: Response<T>): Result<T> {
-        when (response.code()) {
-            400 -> throw IllegalArgumentException("유효하지 않는 입력 값")
-            404 -> throw IllegalStateException(response.message())
-            500 -> throw IllegalStateException(response.message())
-
-            else -> {
-                if (response.code() / 100 == 2) {
-                    response.body()?.let {
-                        return Result.success<T>(it)
-                    }
-                        ?: return Result.failure(
-                            IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
-                        )
-                } else {
-                    return Result.failure(
-                        IllegalStateException("알 수 없는 오류 발생: ${response.message()}")
-                    )
+    suspend fun updateExpenseState(
+        expenseItemIdList: List<String>,
+        groupId: String,
+        state: ExpenseState
+    ): Result<Unit> {
+        val response = try {
+            val body = UpdateExpenseStatePayloadDTO(
+                state = mapExpenseStateToDtoState(state),
+                expenses = expenseItemIdList.map {
+                    SimpleExpenseItemEntity(it.toLong())
                 }
-            }
+            )
+
+            receiptRetrofitService.updateExpenseState(
+                groupId = groupId,
+                body = body
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return Result.failure(e)
+        }
+        return processResponse(response)
+    }
+
+    suspend fun getPurchasedExpenseList(groupId: String): Result<ExpenseListResponseDTO> {
+        val response = try {
+            receiptRetrofitService.getPurchasedExpenseList(groupId)
+        } catch (e: Exception) {
+            return Result.failure(e)
+        }
+        return processResponseOnResponseData(response)
+    }
+
+    suspend fun getTransferList(
+        groupId: String,
+        expenseList: List<String>
+    ): Result<List<TransferItemEntity>> {
+        try {
+            val body = GetTransferListPayloadDTO(
+                expenseList = expenseList.map {
+                    SimpleExpenseItemEntity(it.toLong())
+                }
+            )
+
+            val response = receiptRetrofitService.getTransferList(body = body, groupId = groupId)
+
+            return processResponseOnResponseData(response)
+        } catch (e: Exception) {
+            return Result.failure(e)
         }
     }
 
     companion object {
-        const val IMAGE_FORMAT = "JPG"
-        const val CATEGORY_ID = 0L
+        const val IMAGE_FORMAT = "JPEG"
     }
 }

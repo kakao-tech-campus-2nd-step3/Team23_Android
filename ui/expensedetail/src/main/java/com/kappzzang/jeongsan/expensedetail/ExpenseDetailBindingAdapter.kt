@@ -6,6 +6,9 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kappzzang.jeongsan.data.ExpenseDetailUIData
+import com.kappzzang.jeongsan.data.ExpenseSelectionInfoUIData
+import com.kappzzang.jeongsan.expensedetail.expensedetailpage.ExpenseDetailItemListAdapter
+import com.kappzzang.jeongsan.expensedetail.selectionstatus.SelectionStatusItemListAdapter
 import kotlinx.coroutines.flow.StateFlow
 
 object ExpenseDetailBindingAdapter {
@@ -37,5 +40,19 @@ object ExpenseDetailBindingAdapter {
             return
         }
         view.setText(view.adapter.getItem(position).toString(), false)
+    }
+
+    @BindingAdapter("expenseSelectionItems")
+    @JvmStatic
+    fun attachExpenseSelectionList(
+        recyclerView: RecyclerView,
+        items: StateFlow<ExpenseSelectionInfoUIData>?
+    ) {
+        items?.let {
+            (recyclerView.adapter as? SelectionStatusItemListAdapter)
+                ?.submitList(
+                    it.value.selectionInfoItemList
+                )
+        }
     }
 }

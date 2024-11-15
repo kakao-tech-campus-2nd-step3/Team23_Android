@@ -11,12 +11,8 @@ class MainPageNavigatorImpl @Inject constructor() : MainPageNavigator {
     override fun navigateToMainPage(packageContext: Context): Intent =
         Intent(packageContext, MainActivity::class.java)
 
-    override fun navigateToMainPageAndEnterGroup(
-        packageContext: Context,
-        inviteGroup: Uri
-    ): Intent {
-        val intent = Intent(packageContext, MainActivity::class.java)
-        intent.data = inviteGroup
-        return intent
-    }
+    override fun navigateToMainPageAndWithUri(packageContext: Context, infoUri: Uri) =
+        Intent(packageContext, MainActivity::class.java).apply {
+            data = infoUri
+        }
 }

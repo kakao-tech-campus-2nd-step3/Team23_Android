@@ -9,3 +9,5 @@ data class ReceiptItem(
     val expenseDetailItemList: List<ReceiptDetailItem>,
     val paymentTime: LocalDateTime = LocalDateTime.now()
 )
+
+data class ReceiptDetailItem(val itemName: String, val itemPrice: Int, val itemQuantity: Int)

@@ -1,6 +1,8 @@
 package com.kappzzang.jeongsan.expenselist
 
 import android.view.View
+import android.view.ViewGroup
+import androidx.core.view.updateLayoutParams
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kappzzang.jeongsan.expenselist.customview.CustomOutlineProvider
@@ -47,5 +49,15 @@ object ExpenseListBindingAdapter {
             boxType
         )
         view.clipToOutline = true
+    }
+
+    @BindingAdapter("layoutMarginBottom")
+    @JvmStatic
+    fun setLayoutMarginBottom(view: View, dimen: Float) {
+        val px = Math.round(dimen * view.context.resources.displayMetrics.density)
+
+        view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+            bottomMargin = px
+        }
     }
 }

@@ -32,7 +32,7 @@ class SendTransferMessageUseCaseTest {
                 any(),
                 any()
             )
-        } returns true
+        } returns Result.success(Unit)
 
         usecase = SendTransferMessageUseCase(
             mockUserInfoRepository,
@@ -46,14 +46,14 @@ class SendTransferMessageUseCaseTest {
         coEvery { mockUserInfoRepository.getUserInfo() } returns null
         val input = sampleTransferList
 
-        val result: Boolean
+        val result: Result<Unit>
         // when
         runBlocking {
             result = usecase.invoke(input)
         }
 
         // then
-        assertThat(result).isEqualTo(false)
+        assertThat(result.isFailure).isEqualTo(true)
     }
 
     @Test
@@ -62,7 +62,7 @@ class SendTransferMessageUseCaseTest {
         coEvery { mockTransferMessageRepository.getTransferLink(any()) } returns null
         val input = sampleTransferList
 
-        val result: Boolean
+        val result: Result<Unit>
 
         // when
         runBlocking {
@@ -70,7 +70,7 @@ class SendTransferMessageUseCaseTest {
         }
 
         // then
-        assertThat(result).isEqualTo(false)
+        assertThat(result.isFailure).isEqualTo(true)
     }
 
     @Test
@@ -78,7 +78,7 @@ class SendTransferMessageUseCaseTest {
         // given
         val input = sampleTransferList
 
-        val result: Boolean
+        val result: Result<Unit>
 
         // when
         runBlocking {
@@ -86,14 +86,15 @@ class SendTransferMessageUseCaseTest {
         }
 
         // then
-        assertThat(result).isEqualTo(true)
+        assertThat(result.isSuccess).isEqualTo(true)
     }
 
     companion object {
         val sampleTransferList =
             listOf(
                 TransferDetailItem(
-                    "sampleItem",
+                    "memberId",
+                    "serviceId",
                     "name",
                     100,
                     "https://example.org/"
@@ -103,7 +104,7 @@ class SendTransferMessageUseCaseTest {
         val sampleUserInfo =
             UserItem(
                 name = "sampleUser",
-                uuid = "1234",
+                serviceId = "1234",
                 profileUrl = "https://example.org/",
                 email = "example@domain.com"
             )

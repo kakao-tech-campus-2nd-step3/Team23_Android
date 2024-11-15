@@ -49,11 +49,26 @@ class AuthLocalDataSource @Inject constructor(private val sharedPreferences: Sha
         }
     }
 
+    fun getServiceId(): String = sharedPreferences.getString(KAKAO_SERVICE_ID, "") ?: ""
+
+    fun removeServiceId() {
+        sharedPreferences.edit {
+            remove(KAKAO_SERVICE_ID)
+        }
+    }
+
+    fun updateServiceId(serviceId: String) {
+        sharedPreferences.edit {
+            putString(KAKAO_SERVICE_ID, serviceId)
+        }
+    }
+
     companion object {
-        const val KAKAO_ACCESS_TOKEN = "kakao_access_token"
+        private const val KAKAO_ACCESS_TOKEN = "kakao_access_token"
         private const val KAKAO_REFRESH_TOKEN = "kakao_refresh_token"
         private const val KAKAO_ACCESS_EXPIRATION = "kakao_access_token_expiration"
         private const val SERVER_ACCESS_TOKEN = "server_access_token"
         private const val SERVER_REFRESH_TOKEN = "server_refresh_token"
+        private const val KAKAO_SERVICE_ID = "kakao_service_id"
     }
 }

@@ -17,4 +17,10 @@ interface GroupInfoRepository {
     fun getTargetGroupInfo(groupId: String): Flow<GroupItem>
 
     suspend fun uploadGroupInfo(createdGroup: GroupCreateItem): Long
+
+    suspend fun completeGroup(groupId: String): Result<Boolean>
+
+    suspend fun joinGroup(groupId: String): Result<Boolean>
+
+    suspend fun getMemberServiceIdList(groupId: String): Result<List<String>>
 }

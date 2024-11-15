@@ -1,10 +1,12 @@
 package com.kappzzang.jeongsan.main
 
 import com.kappzzang.jeongsan.data.GroupViewItem
+import com.kappzzang.jeongsan.data.JoinGroupUIState
 import com.kappzzang.jeongsan.model.GroupItem
 import com.kappzzang.jeongsan.usecase.GetDoneGroupUseCase
 import com.kappzzang.jeongsan.usecase.GetProgressingGroupUseCase
 import com.kappzzang.jeongsan.usecase.GetUserInfoUseCase
+import com.kappzzang.jeongsan.usecase.JoinGroupUseCase
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -27,6 +29,7 @@ class MainPageViewModelTest {
     private val mockGetProgressingGroupUseCase = mockk<GetProgressingGroupUseCase>()
     private val mockGetDoneGroupUseCase = mockk<GetDoneGroupUseCase>()
     private val mockGetUserInfoUseCase = mockk<GetUserInfoUseCase>()
+    private val mockJoinGroupUseCase = mockk<JoinGroupUseCase>()
     private lateinit var viewModel: MainPageViewModel
 
     private val testDispatcher = StandardTestDispatcher()
@@ -42,6 +45,7 @@ class MainPageViewModelTest {
             mockGetProgressingGroupUseCase,
             mockGetDoneGroupUseCase,
             mockGetUserInfoUseCase,
+            mockJoinGroupUseCase,
             testDispatcher
         )
     }
@@ -84,8 +88,12 @@ class MainPageViewModelTest {
         advanceUntilIdle()
 
         // Then
-        assertEquals(testProgressingGroupList.size + 1, viewModel.groupList.value.size)
-        assertEquals(GroupViewItem.ProgressTitle, viewModel.groupList.value[0])
+        assertEquals(testProgressingGroupList.size + 2, viewModel.groupList.value.size)
+        assertEquals(GroupViewItem.ProgressTitle(false), viewModel.groupList.value[0])
+        assertEquals(
+            GroupViewItem.DoneTitle(true),
+            viewModel.groupList.value[viewModel.groupList.value.size - 1]
+        )
         for (i in testProgressingGroupList.indices) {
             assertEquals(
                 GroupViewItem.Group(testProgressingGroupList[i]),
@@ -107,12 +115,13 @@ class MainPageViewModelTest {
         advanceUntilIdle()
 
         // Then
-        assertEquals(testDoneGroupList.size + 1, viewModel.groupList.value.size)
-        assertEquals(GroupViewItem.DoneTitle, viewModel.groupList.value[0])
+        assertEquals(testDoneGroupList.size + 2, viewModel.groupList.value.size)
+        assertEquals(GroupViewItem.ProgressTitle(true), viewModel.groupList.value[0])
+        assertEquals(GroupViewItem.DoneTitle(false), viewModel.groupList.value[1])
         for (i in testDoneGroupList.indices) {
             assertEquals(
                 GroupViewItem.Group(testDoneGroupList[i]),
-                viewModel.groupList.value[i + 1]
+                viewModel.groupList.value[i + 2]
             )
         }
     }
@@ -134,7 +143,7 @@ class MainPageViewModelTest {
             testProgressingGroupList.size + testDoneGroupList.size + 2,
             viewModel.groupList.value.size
         )
-        assertEquals(GroupViewItem.ProgressTitle, viewModel.groupList.value[0])
+        assertEquals(GroupViewItem.ProgressTitle(false), viewModel.groupList.value[0])
         for (i in testProgressingGroupList.indices) {
             assertEquals(
                 GroupViewItem.Group(testProgressingGroupList[i]),
@@ -142,7 +151,7 @@ class MainPageViewModelTest {
             )
         }
         assertEquals(
-            GroupViewItem.DoneTitle,
+            GroupViewItem.DoneTitle(false),
             viewModel.groupList.value[testProgressingGroupList.size + 1]
         )
         for (i in testDoneGroupList.indices) {
@@ -151,5 +160,78 @@ class MainPageViewModelTest {
                 viewModel.groupList.value[testProgressingGroupList.size + i + 2]
             )
         }
+    }
+
+    @Test
+    fun `모입 가입 실패시 Error 상태가 되는지 확인`() = runTest {
+        // Given
+        val testGroupId = "test_group_id"
+        val errorMessage = "모임 가입 실패 메시지..."
+        coEvery { mockJoinGroupUseCase(testGroupId) } returns Result.failure(
+            Exception(errorMessage)
+        )
+
+        // When
+        viewModel.joinGroup(testGroupId)
+        advanceUntilIdle()
+
+        // Then
+        assertEquals(JoinGroupUIState.Error(errorMessage), viewModel.joinGroupState.value)
+    }
+
+    @Test
+    fun `진행중인 모임의 타이틀 클릭 시 정상적으로 토글하는지 확인`() = runTest {
+        // Given
+        val testProgressingGroupList = listOf<GroupItem>(mockk(), mockk())
+        coEvery { mockGetProgressingGroupUseCase() } returns testProgressingGroupList
+        coEvery { mockGetDoneGroupUseCase() } returns emptyList()
+        viewModel.loadGroupList()
+        advanceUntilIdle()
+
+        // When 1
+        viewModel.toggleProgressGroup()
+        advanceUntilIdle()
+
+        // Then 1
+        val result1 = viewModel.groupList.value
+        assertEquals(true, (result1[0] as GroupViewItem.ProgressTitle).isHide)
+        assertEquals(2, result1.size)
+
+        // When 2
+        viewModel.toggleProgressGroup()
+        advanceUntilIdle()
+
+        // Then 2
+        val result2 = viewModel.groupList.value
+        assertEquals(false, (result2[0] as GroupViewItem.ProgressTitle).isHide)
+        assertEquals(testProgressingGroupList.size + 2, result2.size)
+    }
+
+    @Test
+    fun `완료된 모임의 타이틀 클릭 시 정상적으로 토글하는지 확인`() = runTest {
+        // Given
+        val testDoneGroupList = listOf<GroupItem>(mockk(), mockk())
+        coEvery { mockGetProgressingGroupUseCase() } returns emptyList()
+        coEvery { mockGetDoneGroupUseCase() } returns testDoneGroupList
+        viewModel.loadGroupList()
+        advanceUntilIdle()
+
+        // When 1
+        viewModel.toggleDoneGroup()
+        advanceUntilIdle()
+
+        // Then 1
+        val result1 = viewModel.groupList.value
+        assertEquals(true, (result1[1] as GroupViewItem.DoneTitle).isHide)
+        assertEquals(2, result1.size)
+
+        // When 2
+        viewModel.toggleDoneGroup()
+        advanceUntilIdle()
+
+        // Then 2
+        val result2 = viewModel.groupList.value
+        assertEquals(false, (result2[1] as GroupViewItem.DoneTitle).isHide)
+        assertEquals(testDoneGroupList.size + 2, result2.size)
     }
 }

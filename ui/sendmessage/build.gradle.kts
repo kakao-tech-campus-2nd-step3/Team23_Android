@@ -4,4 +4,5 @@ android {
 dependencies {
     implementation(project(":domain:expense"))
     implementation(project(":ui:data"))
+    implementation(project(":common:retrofit"))
 }

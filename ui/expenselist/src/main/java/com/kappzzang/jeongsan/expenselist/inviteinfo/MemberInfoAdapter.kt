@@ -2,10 +2,9 @@ package com.kappzzang.jeongsan.expenselist.inviteinfo
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.kappzzang.jeongsan.R
+import com.bumptech.glide.Glide
 import com.kappzzang.jeongsan.expenselist.databinding.ItemMemberInfoBinding
 import com.kappzzang.jeongsan.model.MemberItem
 
@@ -17,15 +16,27 @@ class MemberInfoAdapter(private val sendMessageClickListener: (String) -> Unit) 
         RecyclerView.ViewHolder(
             binding.root
         ) {
-        fun bind(id: String) {
-            binding.sendInviteButton.setOnClickListener {
-                sendMessageClickListener(id)
+        fun bind(memberItem: MemberItem) {
+            Glide.with(binding.root)
+                .load(memberItem.profileImageUrl)
+                .circleCrop()
+                .into(binding.profileImageImageview)
+            binding.profileNameTextview.text = memberItem.name
+            binding.sendInviteButton.isEnabled = !memberItem.isInvited
+
+            if (!memberItem.isInvited) {
+                binding.inviteInfoTextview.text = binding.root.context.getString(
+                    com.kappzzang.jeongsan.expenselist.R.string.item_member_info_pending
+                )
+                binding.sendInviteButton.setOnClickListener {
+                    sendMessageClickListener(memberItem.id)
+                }
+            } else {
+                binding.inviteInfoTextview.text = binding.root.context.getString(
+                    com.kappzzang.jeongsan.expenselist.R.string.item_member_info_complete
+                )
             }
         }
-        val name: TextView =
-            binding.memberLayout.findViewById(R.id.profile_name_textview)
-        val inviteInfo = binding.inviteInfoTextview
-        val inviteButton = binding.sendInviteButton
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,20 +46,6 @@ class MemberInfoAdapter(private val sendMessageClickListener: (String) -> Unit) 
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currItem = getItem(position)
-        holder.name.text = currItem.name
-        holder.inviteInfo.text =
-            if (!currItem.isInvited) {
-                holder.bind(currItem.id)
-                holder.inviteButton.isEnabled = true
-                holder.itemView.context.getString(
-                    com.kappzzang.jeongsan.expenselist.R.string.item_member_info_pending
-                )
-            } else {
-                holder.inviteButton.isEnabled = false
-                holder.itemView.context.getString(
-                    com.kappzzang.jeongsan.expenselist.R.string.item_member_info_complete
-                )
-            }
+        holder.bind(getItem(position))
     }
 }

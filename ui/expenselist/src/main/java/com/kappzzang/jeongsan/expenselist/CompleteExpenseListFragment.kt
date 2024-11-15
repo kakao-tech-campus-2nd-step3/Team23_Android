@@ -7,12 +7,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kappzzang.jeongsan.expenselist.databinding.FragmentCompleteExpenseListBinding
 import com.kappzzang.jeongsan.expenselist.viewmodel.CompleteExpenseListPageViewModel
+import com.kappzzang.jeongsan.expenselist.viewmodel.ExpenseListRefreshingState
 import com.kappzzang.jeongsan.expenselist.viewmodel.ExpenseListViewModel
 import com.kappzzang.jeongsan.model.ExpenseState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CompleteExpenseListFragment : Fragment() {
@@ -34,11 +39,35 @@ class CompleteExpenseListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // UI 확인을 위한 임시 코드
-        binding.completeExpenseListRecyclerview.adapter = ExpenseListAdapter {
-            activityViewModel.clickExpenseItem(it, ExpenseState.TRANSFERED)
+        binding.completeExpenseListRecyclerview.adapter = ExpenseListAdapter { expenseId, isPayer ->
+            activityViewModel.clickExpenseItem(expenseId, ExpenseState.TRANSFERED, isPayer)
         }
         binding.completeExpenseListRecyclerview.layoutManager = LinearLayoutManager(this.context)
-        viewModel.onFragmentStart(activityViewModel.groupId.value)
+
+        viewModel.injectActivityViewModelState(activityViewModel.uiState)
+
+        setSwipeRefresh()
+    }
+
+    private fun setSwipeRefresh() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+                viewModel.refreshState.collect {
+                    if (it == ExpenseListRefreshingState.FINISHED) {
+                        binding.expenseListSwipeRefreshLayout.isRefreshing = false
+                        viewModel.resetRefreshState()
+                    }
+                }
+            }
+        }
+
+        binding.expenseListSwipeRefreshLayout.setOnRefreshListener {
+            viewModel.refresh()
+        }
+    }
+
+    override fun onResume() {
+        viewModel.onFragmentReload()
+        super.onResume()
     }
 }

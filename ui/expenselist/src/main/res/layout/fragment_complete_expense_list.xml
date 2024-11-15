@@ -5,6 +5,7 @@
     tools:context=".expenselist.ExpenseListFragment">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.kappzzang.jeongsan.expenselist.viewmodel.CompleteExpenseListPageViewModel" />
@@ -24,7 +25,7 @@
             android:textSize="@dimen/expense_list_subtitle_text_size"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/parent" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/total_expense_textview"
@@ -46,19 +47,26 @@
             android:layout_marginTop="@dimen/expense_list_fragment_title_top_margin"
             android:text="@string/all_complete"
             android:textSize="@dimen/expense_list_fragment_title"
-            app:layout_constraintTop_toBottomOf="@id/total_expense_explain_textview"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/total_expense_explain_textview" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:padding="5dp"
-            android:clipToPadding="false"
-            android:id="@+id/complete_expense_list_recyclerview"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/expense_list_swipe_refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/complete_textview"
-            expenseItems="@{viewModel.uiData}"/>
+            app:layout_constraintTop_toBottomOf="@id/complete_textview">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/complete_expense_list_recyclerview"
+                expenseItems="@{viewModel.uiData}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:padding="5dp" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
