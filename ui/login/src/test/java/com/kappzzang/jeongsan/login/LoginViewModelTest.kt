@@ -17,7 +17,6 @@ import com.kappzzang.jeongsan.usecase.AuthenticateWithServerUseCase
 import com.kappzzang.jeongsan.usecase.AuthorizeWithKakaoUseCase
 import com.kappzzang.jeongsan.usecase.GetUserInfoUseCase
 import com.kappzzang.jeongsan.usecase.LoginOrRegisterUseCase
-import com.kappzzang.jeongsan.usecase.LoginWithTestAccountUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -44,7 +43,6 @@ class LoginViewModelTest {
     private val authenticateWithKakaoUseCase = mockk<AuthenticateWithKakaoUseCase>()
     private val authenticateWithServerUseCase = mockk<AuthenticateWithServerUseCase>(relaxed = true)
     private val loginOrRegisterUseCase = mockk<LoginOrRegisterUseCase>(relaxed = true)
-    private val loginWithTestAccountUseCase = mockk<LoginWithTestAccountUseCase>(relaxed = true)
     private val getUserInfoUseCase = mockk<GetUserInfoUseCase>()
     private lateinit var viewModel: LoginViewModel
 
@@ -60,7 +58,6 @@ class LoginViewModelTest {
             authenticateWithKakaoUseCase,
             authenticateWithServerUseCase,
             loginOrRegisterUseCase,
-            loginWithTestAccountUseCase,
             getUserInfoUseCase,
             testDispatcher
         )

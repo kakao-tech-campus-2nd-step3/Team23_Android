@@ -23,8 +23,6 @@ android {
             buildConfigField("String", "KAKAO_API_URL", getApiKey("KAKAO_API_URL"))
             buildConfigField("String", "SERVICE_URL", getApiKey("SERVICE_URL"))
             buildConfigField("String", "KAKAO_AUTH_URL", getApiKey("KAKAO_AUTH_URL"))
-            buildConfigField("String", "TEST_ACCOUNT_EMAIL", getApiKey("TEST_ACCOUNT_EMAIL"))
-            buildConfigField("String", "TEST_SERVICE_ID", getApiKey("TEST_SERVICE_ID"))
         }
 
         release {
@@ -37,8 +35,6 @@ android {
             buildConfigField("String", "KAKAO_API_URL", getApiKey("KAKAO_API_URL"))
             buildConfigField("String", "SERVICE_URL", getApiKey("SERVICE_URL"))
             buildConfigField("String", "KAKAO_AUTH_URL", getApiKey("KAKAO_AUTH_URL"))
-            buildConfigField("String", "TEST_ACCOUNT_EMAIL", getApiKey("TEST_ACCOUNT_EMAIL"))
-            buildConfigField("String", "TEST_SERVICE_ID", getApiKey("TEST_SERVICE_ID"))
         }
     }
     buildFeatures {
