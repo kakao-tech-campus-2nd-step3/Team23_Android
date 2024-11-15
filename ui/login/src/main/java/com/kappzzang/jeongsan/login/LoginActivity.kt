@@ -12,7 +12,6 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
-import com.kappzzang.jeongsan.build_config.BuildConfig
 import com.kappzzang.jeongsan.data.AppLoginState
 import com.kappzzang.jeongsan.login.databinding.ActivityLoginBinding
 import com.kappzzang.jeongsan.navigation.MainPageNavigator
