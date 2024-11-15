@@ -6,9 +6,11 @@
 > 正산은 여행, 동호회 등 다양한 모임에서 발생하는 복잡한 정산 과정을 간편하게 해결해주는 서비스입니다. 기존의 유사 서비스들이 모임 내 지출 금액을 단순히 1/N로 나누는 기능만 제공하는 데 반해, 저희 서비스는 **OCR 기술**을 통해 모임에서 발생한 지출 영수증의 소비된 상품명과 수량을 자동으로 추출하여 **사용자가 실제 소비한 내역을 직접 선택할 수 있는 기능을 지원**합니다. 이를 통해 실제 소비 내역을 기반으로 한 세부적인 정산이 가능합니다. **正산**은 모임 내 정산을 더욱 편리하고 정확하게 만들어 사용자에게 차별화된 정산 경험을 제공합니다.
 
 ## Deploy Link
-> Backend: [Swagger API](http://ecs-alb-50894514.ap-northeast-2.elb.amazonaws.com/swagger-ui/index.html)
+> Backend | _[http://ecs-alb-50894514.ap-northeast-2.elb.amazonaws.com/](http://ecs-alb-50894514.ap-northeast-2.elb.amazonaws.com/)_
 >
-> Android: [ONEstore](https://m.onestore.co.kr/ko-kr/apps/appsDetail.omp?prodId=0000779533)
+> API Specs | _[github page release](https://kakao-tech-campus-2nd-step3.github.io/Team23_BE/api-spec.html)_
+> 
+> Android | _[OneStore](https://m.onestore.co.kr/ko-kr/apps/appsDetail.omp?prodId=0000779533)_
 
 ## Contributors
 
